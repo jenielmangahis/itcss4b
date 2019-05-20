@@ -35,7 +35,7 @@
 	    </li>
 	    <?php 
 	    	$multi_tab_product = '';
-	    	if(Route::current()->getName() == 'users' || Route::current()->getName() == 'user_groups') {
+	    	if(Route::current()->getName() == 'users' || Route::current()->getName() == 'groups') {
 	    		$multi_tab_product = 'active';
 	    	}
 	    ?>		    
@@ -47,7 +47,7 @@
 	      </a>
 	      <ul class="treeview-menu">
 	        <li <?php echo Route::current()->getName() == 'users' ? 'class="active"' : ''; ?>><a href="{{route('users')}}"><i class="fa fa-odnoklassniki"></i>Users</a></li>
-	        <li><a href="#"><i class="fa fa-gear"></i>Groups</a></li>
+	        <li><a href="{{route('groups')}}"><i class="fa fa-gear"></i>Groups</a></li>
 	      </ul>
 	    </li>
 	  </ul>
