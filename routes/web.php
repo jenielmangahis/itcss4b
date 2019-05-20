@@ -38,5 +38,8 @@ Route::get('user/edit/{user_id}', ['as'=>'user/edit','uses'=>'UserController@edi
 Route::post('user/update', ['as'=>'user/update','uses'=>'UserController@update'])->middleware('auth');
 Route::post('user/destroy', ['as'=>'user/destroy','uses'=>'UserController@destroy'])->middleware('auth');
 
+//Group Module
+Route::get('/groups', ['as'=>'groups','uses'=>'GroupController@index'])->middleware('auth');
+
 //Benchmark
 Route::get('benchmark/test_model', ['as'=>'benchmark/test_model','uses'=>'BenchmarkController@testModel'])->middleware('auth');
