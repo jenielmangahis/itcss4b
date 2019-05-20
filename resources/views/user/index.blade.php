@@ -40,7 +40,7 @@
               <button type="button" class="close" data-dismiss="alert">&times</button>
               {{ Session::get('message') }}
             </div>
-        @endif              
+        @endif    
         
         <div class="row">
             <div class="col-md-12">
@@ -54,7 +54,43 @@
                     </div>
                 </div>
                 <!-- /.box-header -->
+
                 <div class="box-body">
+
+                  <div class="row">
+                    {{ Form::open(array('url' => 'users', 'class' => '', 'method' => 'get')) }}
+
+                      <div class="col-xs-12">
+                        <!-- <div><a href="javascript:ajaxLoadTaskFilter();">load</a></div> -->
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label>Search By: </label><br />
+                              <select name="search_by" class="form-control select2" style="width: 30%; float: left;">
+                                <option value="firstname" selected="selected">Firstname</option>
+                                <option value="lastname">Lastname</option>
+                                <option value="email" >Email</option>
+                              </select>
+                              <input class="form-control" type="text" value="<?php echo $search_field; ?>" name="search_field" placeholder="Default Search" style="width: 70%; float: right;">
+                            </div>
+                            <!-- /.form-group -->
+                          </div>
+                          <!-- /.col -->
+
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label>&nbsp;</label><br />
+                              <button type="submit" class="btn btn-primary">Filter</button>
+                              <a class="btn btn-success" href="{{route('users')}}">Refresh</a>
+                            </div>
+                            <!-- /.form-group -->
+                          </div>
+                        </div>                
+
+                      </div>                      
+                    {!! Form::close() !!}         
+                  </div>
+
                   <table class="table table-bordered">
                     <tr>
                       <th >#</th>
@@ -105,6 +141,7 @@
 
                     @endforeach
                   </table>
+
                 </div>
                 <!-- /.box-body -->
 
