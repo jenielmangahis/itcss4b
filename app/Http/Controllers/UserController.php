@@ -22,10 +22,24 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-    	$users = User::paginate(15);
+        $search_by    = $request->input('search_by');
+        $search_field = $request->input('search_field');  
+
+        if($search_by != '' && $search_field != '') {
+            $users_query = User::query();
+            $users_query = $users_query->where('is_active', '=', 0);
+
+            if($search_by != '' && $search_field != '') {
+                $users_query = $users_query->where('users.'.$search_by, 'like', '%' . $search_field . '%');
+                $users = $users_query->paginate(15);
+            }            
+        } else {
+            $users = User::where('is_active', '=', 0)->paginate(15);
+        }
 
         return view('user.index',[
-        	'users' => $users
+        	'users' => $users,
+            'search_field' => $search_field
         ]); 
     }   
 
