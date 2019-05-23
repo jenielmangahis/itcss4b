@@ -33,9 +33,12 @@
 	    <li <?php echo Route::current()->getName() == 'dashboard' ? 'class="active"' : ''; ?>>
 	    	<a href="{{route('dashboard')}}"><i class="fa fa-dashboard"></i> <span>Dashboard </span></a>
 	    </li>
+	    <li <?php echo Route::current()->getName() == 'companies' ? 'class="active"' : ''; ?>>
+	    	<a href="{{route('companies')}}"><i class="fa fa-briefcase"></i> <span>Companies </span></a>
+	    </li>
 	    <?php 
 	    	$multi_tab_product = '';
-	    	if(Route::current()->getName() == 'users' || Route::current()->getName() == 'groups') {
+	    	if(Route::current()->getName() == 'users' || Route::current()->getName() == 'groups' || Route::current()->getName() == 'company_users') {
 	    		$multi_tab_product = 'active';
 	    	}
 	    ?>		    
@@ -47,6 +50,7 @@
 	      </a>
 	      <ul class="treeview-menu">
 	        <li <?php echo Route::current()->getName() == 'users' ? 'class="active"' : ''; ?>><a href="{{route('users')}}"><i class="fa fa-odnoklassniki"></i>Users</a></li>
+	        <li <?php echo Route::current()->getName() == 'company_users' ? 'class="active"' : ''; ?>><a href="{{route('company_users')}}"><i class="fa fa-odnoklassniki"></i>Company Users</a></li>
 	        <li><a href="{{route('groups')}}"><i class="fa fa-gear"></i>Groups</a></li>
 	      </ul>
 	    </li>

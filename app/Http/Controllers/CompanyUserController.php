@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
+use App\Companies;
+use App\CompanyUser;
 use App\User;
 
 use View;
@@ -13,7 +15,7 @@ use Hashids;
 
 use Session;
 
-class UserController extends Controller
+class CompanyUserController extends Controller
 {
     public function __construct()
     {
@@ -26,27 +28,30 @@ class UserController extends Controller
         $search_field = $request->input('search_field');  
 
         if($search_by != '' && $search_field != '') {
-            $users_query = User::query();
+            /*$users_query = User::query();
             $users_query = $users_query->where('is_active', '=', 0);
 
             if($search_by != '' && $search_field != '') {
                 $users_query = $users_query->where('users.'.$search_by, 'like', '%' . $search_field . '%');
                 $users = $users_query->paginate(15);
-            }            
+            }*/            
         } else {
-            $users = User::where('is_active', '=', 0)->paginate(15);
+            $company_users = CompanyUser::paginate(15);
         }
 
-        return view('user.index',[
-        	'users' => $users,
+        $company_users = CompanyUser::paginate(15);
+
+        return view('company_user.index',[
+        	'company_users' => $company_users,
             'search_field' => $search_field
         ]); 
     }   
 
     public function create()
     {
-        return view('user.create', [
-        	
+    	$companies = Companies::where('is_active','=',0)->get();
+        return view('company_user.create', [
+        	'companies' => $companies
         ]);
     }     
 
@@ -59,19 +64,20 @@ class UserController extends Controller
                 'lastname'         => 'required',
                 'email'            => 'required|email',
                 'password'         => 'min:6|required_with:confirm_password|same:confirm_password',
-                'mobile_number'    => 'required',              
+                'mobile_number'    => 'required',       
+                'company_id'       => 'required',       
              ]);
 
             if(!$this->validateEmail($request->input('email'))) {
                 Session::flash('message', 'Email already exist.');
                 Session::flash('alert_class', 'alert-danger');
-                return redirect('user/create');
+                return redirect('company_user/create');
             }
 
             if(!$this->validateUsername($request->input('username'))) {
                 Session::flash('message', 'Username already exist.');
                 Session::flash('alert_class', 'alert-danger');
-                return redirect('user/create');
+                return redirect('company_user/create');
             }
 
             if($request->input('password') == $request->input('confirm_password')) {
@@ -89,17 +95,24 @@ class UserController extends Controller
                 $user->is_active     = $request->input('is_active');
                 $user->save();
 
-                Session::flash('message', 'You have successfully created an account');
-                Session::flash('alert_class', 'alert-success');
-                return redirect('users');
+                if($user) {
+                	$company_user = new CompanyUser; 
+                	$company_user->company_id  = $request->input('company_id');
+                	$company_user->user_id     = $user->id;
+                	$company_user->save();
+
+	                Session::flash('message', 'You have successfully created an account');
+	                Session::flash('alert_class', 'alert-success');
+	                return redirect('company_users');                	
+                }
 
             }else{
                 Session::flash('message', 'Password does not match');
                 Session::flash('alert_class', 'alert-danger');
-                return redirect('user/create');
+                return redirect('company_users/create');
             }
         }else{
-            return redirect('users');
+            return redirect('company_users');
         }
     }    
 
@@ -108,7 +121,7 @@ class UserController extends Controller
         $id = Hashids::decode($id)[0];
         $user   = User::where('id', '=', $id)->first();
 
-    	return view('user.edit', [
+    	return view('company_user.edit', [
     		'user' => $user
     	]);
     }
@@ -140,7 +153,7 @@ class UserController extends Controller
                     } else {
                         Session::flash('message', 'Password does not match');
                         Session::flash('alert_class', 'alert-danger');
-                        return redirect('user/edit/' . Hashids::encode($request->input('id')));                        
+                        return redirect('company_user/edit/' . Hashids::encode($request->input('id')));                        
                     }
                 }
 
@@ -148,13 +161,13 @@ class UserController extends Controller
 
                 Session::flash('message', 'User has been updated');
                 Session::flash('alert_class', 'alert-success');
-                return redirect('users');
+                return redirect('company_user');
             }
         }
 
         Session::flash('message', 'Unable to update user');
         Session::flash('alert_class', 'alert-danger');
-        return redirect('users');
+        return redirect('company_user');
     }    
 
     public function destroy(Request $request)
@@ -163,13 +176,13 @@ class UserController extends Controller
         {
             $id = $request->input('id');
             $id = Hashids::decode($id)[0];
-            $u = User::find($id);
+            $u = CompanyUser::find($id);
 
             if($u) {   
                 $u->delete();
                 Session::flash('message', "Delete Successful");
                 Session::flash('alert_class', 'alert-success');
-                return redirect('users');
+                return redirect('company_users');
             }
         }
     } 
@@ -192,6 +205,5 @@ class UserController extends Controller
         }else{
             return true;
         }
-    }        
-
+    }
 }
