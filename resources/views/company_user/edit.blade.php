@@ -55,9 +55,25 @@
         
         <div class="box box-primary">
 
-          {{ Form::open(array('url' => 'company_user/update', 'class' => '')) }}
-          <input type="hidden" name="id" value="<?= Hashids::encode($user->id); ?>">          
+          {{ Form::open(array('url' => 'company_users/update', 'class' => '')) }}
+          <input type="hidden" name="id" value="<?= Hashids::encode($user->id); ?>">  
+          <input type="hidden" name="company_user_id" value="<?= Hashids::encode($company_user->id); ?>">         
             <div class="box-body">
+
+              <div class="form-group">
+                <h2 class="page-header">
+                  <i class="fa fa-info-circle"></i> Company
+                  <small class="pull-right"></small>
+                </h2>
+              </div>     
+
+              <div class="form-group">
+                <select name="company_id" class="form-control">
+                  @foreach($companies as $company)
+                    <option <?php echo $company_user->company_id == $company->id ? 'selected="selected"' : ''; ?> value="{{$company->id}}">{{ $company->name }}</option>
+                  @endforeach
+                </select>                    
+              </div>                 
           
               <div class="form-group">
                 <h2 class="page-header">

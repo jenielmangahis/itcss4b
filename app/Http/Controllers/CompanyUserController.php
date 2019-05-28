@@ -119,11 +119,24 @@ class CompanyUserController extends Controller
     public function edit($id)
     {     
         $id = Hashids::decode($id)[0];
-        $user   = User::where('id', '=', $id)->first();
 
-    	return view('company_user.edit', [
-    		'user' => $user
-    	]);
+        $company_user = CompanyUser::find($id);
+        if($company_user) {
+
+        	$user   = User::where('id', '=', $company_user->user_id)->first();
+        	if($user) {
+        		$companies = Companies::where('is_active','=',0)->get();
+		    	return view('company_user.edit', [
+		    		'user' 			=> $user,
+		    		'company_user' 	=> $company_user,
+		    		'companies' 	=> $companies,
+		    	]);
+
+        	} else {
+        		return redirect('company_users');
+        	}
+        }   
+
     }
 
     public function update(Request $request)
@@ -159,15 +172,22 @@ class CompanyUserController extends Controller
 
                 $user->save();
 
+                $company_user_id = Hashids::decode($request->input('company_user_id'))[0]; 
+                $company_user    = CompanyUser::find($company_user_id);
+                if($company_user) {
+                	$company_user->company_id = $request->input('company_id');
+                	$company_user->save();
+                }
+
                 Session::flash('message', 'User has been updated');
                 Session::flash('alert_class', 'alert-success');
-                return redirect('company_user');
+                return redirect('company_users');
             }
         }
 
         Session::flash('message', 'Unable to update user');
         Session::flash('alert_class', 'alert-danger');
-        return redirect('company_user');
+        return redirect('company_users');
     }    
 
     public function destroy(Request $request)
