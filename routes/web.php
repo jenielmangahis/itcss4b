@@ -46,7 +46,6 @@ Route::get('company_users/edit/{user_id}', ['as'=>'company_users/edit','uses'=>'
 Route::post('company_users/update', ['as'=>'company_users/update','uses'=>'CompanyUserController@update'])->middleware('auth');
 Route::post('company_users/destroy', ['as'=>'company_users/destroy','uses'=>'CompanyUserController@destroy'])->middleware('auth');
 
-
 //Group Module
 Route::get('/groups', ['as'=>'groups','uses'=>'GroupController@index'])->middleware('auth');
 
