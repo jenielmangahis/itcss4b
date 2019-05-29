@@ -48,7 +48,11 @@ Route::post('company_users/destroy', ['as'=>'company_users/destroy','uses'=>'Com
 
 //Group Module
 Route::get('/groups', ['as'=>'groups','uses'=>'GroupController@index'])->middleware('auth');
-
+Route::get('group/create', ['as'=>'group/create','uses'=>'GroupController@create'])->middleware('auth');
+Route::post('group/store', ['as'=>'group/store','uses'=>'GroupController@store'])->middleware('auth');
+Route::get('group/edit/{group_id}', ['as'=>'group/edit','uses'=>'GroupController@edit'])->middleware('auth');
+Route::post('group/update', ['as'=>'group/update','uses'=>'GroupController@update'])->middleware('auth');
+Route::post('group/destroy', ['as'=>'group/destroy','uses'=>'GroupController@destroy'])->middleware('auth');
 //Componies Module
 Route::get('/companies', ['as'=>'companies','uses'=>'CompaniesController@index'])->middleware('auth');
 Route::get('companies/create', ['as'=>'companies/create','uses'=>'CompaniesController@create'])->middleware('auth');

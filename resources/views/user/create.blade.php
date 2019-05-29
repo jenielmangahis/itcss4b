@@ -79,11 +79,17 @@
               <div class="form-group">
                 <label>Confirm Password</label>
                 <?php echo Form::password('confirm_password' ,['id' => 'confirm_password', 'minLength' => 4, 'class' => 'form-control', 'required' => '']); ?>
-              </div>  
+              </div>    
+
               <div class="form-group">
                 <label>Group</label>
+                <select name="group_id" class="form-control">
+                  @foreach($groups as $group)
+                    <option value="{{ $group->id }}">{{ $group->name }}</option>
+                  @endforeach
+                </select>                    
+              </div> 
 
-              </div>     
               <br />
               <div class="form-group">
                 <h2 class="page-header">

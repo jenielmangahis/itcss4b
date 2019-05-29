@@ -48,7 +48,7 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Group List</h3>
                     <div class="pull-right">
-                        <a href="{{route('user/create')}}" class="btn btn-primary">
+                        <a href="{{route('group/create')}}" class="btn btn-primary">
                             <i class="fa fa-plus"></i> Create New
                         </a>
                     </div>
@@ -99,12 +99,12 @@
                             <td>{{ $group->id }}</td>
                             <td>{{ $group->name }}</td>
                             <td>
+                                <a href="{{route('group/edit',[Hashids::encode($group->id)])}}" class="btn btn-xs btn-primary">
+                                    <i class="fa fa-edit"></i> Edit
+                                </a>                                
                                 <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $group->id; ?>">
                                     <i class="fa fa-trash"></i> Delete
-                                </a>
-                                <a href="{{route('user/edit',[Hashids::encode($group->id)])}}" class="btn btn-xs btn-primary">
-                                    <i class="fa fa-edit"></i> Edit
-                                </a>                                                              
+                                </a>                                                            
                             </td>
                         </tr>
 
@@ -121,7 +121,7 @@
                                   Are you sure you want to delete selected group?
                                 </div>
                                 <div class="modal-footer">
-                                  {{ Form::open(array('url' => 'user/destroy')) }}
+                                  {{ Form::open(array('url' => 'group/destroy')) }}
                                     <?php echo Form::hidden('id', Hashids::encode($group->id) ,[]); ?>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                                     <button type="submit" class="btn btn-danger">Yes</button>

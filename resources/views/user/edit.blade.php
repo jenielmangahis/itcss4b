@@ -83,7 +83,11 @@
               </div>  
               <div class="form-group">
                 <label>Group</label>
-
+                <select name="group_id" class="form-control">
+                  @foreach($groups as $group)
+                    <option <?php echo $group->id == $user->group_id ? 'selected="selected"' : ''; ?> value="{{ $group->id }}">{{ $group->name }}</option>
+                  @endforeach
+                </select>                    
               </div>     
               <br />
               <div class="form-group">

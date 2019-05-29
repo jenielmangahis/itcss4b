@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use App\Group;
 
 use View;
 use Hash;
@@ -45,8 +46,9 @@ class UserController extends Controller
 
     public function create()
     {
+        $groups = Group::all();
         return view('user.create', [
-        	
+        	'groups' => $groups
         ]);
     }     
 
@@ -76,7 +78,7 @@ class UserController extends Controller
 
             if($request->input('password') == $request->input('confirm_password')) {
                 $user = new User;
-                $user->group_id   	 = 0;
+                $user->group_id   	 = $request->input('group_id');
                 $user->firstname     = ucfirst($request->input('firstname'));
                 $user->lastname      = ucfirst($request->input('lastname'));
                 $user->nickname      = $request->input('nickname');
@@ -105,11 +107,13 @@ class UserController extends Controller
 
     public function edit($id)
     {     
-        $id = Hashids::decode($id)[0];
+        $id     = Hashids::decode($id)[0];
         $user   = User::where('id', '=', $id)->first();
+        $groups = Group::all();
 
     	return view('user.edit', [
-    		'user' => $user
+    		'user' => $user,
+            'groups' => $groups
     	]);
     }
 
@@ -126,6 +130,7 @@ class UserController extends Controller
             $id = Hashids::decode($request->input('id'))[0];
             $user = User::find($id);
             if($user) {
+                $user->group_id      = $request->input('group_id');
                 $user->firstname     = $request->input('firstname');
                 $user->lastname      = $request->input('lastname');
                 $user->nickname      = $request->input('nickname');
