@@ -27,8 +27,8 @@
 	      </ul>
 	    </li>
 
-	    <li <?php echo Route::current()->getName() == 'companies' ? 'class="active"' : ''; ?>>
-	    	<a href="{{route('companies')}}"><i class="fa fa-phone-square"></i> <span>Contacts </span></a>
+	    <li <?php echo Route::current()->getName() == 'contact' ? 'class="active"' : ''; ?>>
+	    	<a href="{{route('contact')}}"><i class="fa fa-phone-square"></i> <span>Contacts </span></a>
 	    </li>
 
 	    <li <?php echo Route::current()->getName() == 'companies' ? 'class="active"' : ''; ?>>

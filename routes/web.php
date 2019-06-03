@@ -60,6 +60,10 @@ Route::post('companies/store', ['as'=>'companies/store','uses'=>'CompaniesContro
 Route::post('companies/destroy', ['as'=>'companies/destroy','uses'=>'CompaniesController@destroy'])->middleware('auth');
 Route::get('companies/edit/{user_id}', ['as'=>'companies/edit','uses'=>'CompaniesController@edit'])->middleware('auth');
 Route::post('companies/update', ['as'=>'companies/update','uses'=>'CompaniesController@update'])->middleware('auth');
-
+//Contact Module
+Route::get('/contact', ['as'=>'contact','uses'=>'ContactController@index'])->middleware('auth');
+Route::get('contact/create', ['as'=>'contact/create','uses'=>'ContactController@create'])->middleware('auth');
+Route::get('contact/edit/{user_id}', ['as'=>'contact/edit','uses'=>'ContactController@edit'])->middleware('auth');
+Route::post('contact/update', ['as'=>'contact/update','uses'=>'ContactController@update'])->middleware('auth');
 //Benchmark
 Route::get('benchmark/test_model', ['as'=>'benchmark/test_model','uses'=>'BenchmarkController@testModel'])->middleware('auth');
