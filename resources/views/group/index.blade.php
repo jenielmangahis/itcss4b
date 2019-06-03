@@ -99,12 +99,14 @@
                             <td>{{ $group->id }}</td>
                             <td>{{ $group->name }}</td>
                             <td>
+                              @if($group->id != 1 && $group->id != 2)
                                 <a href="{{route('group/edit',[Hashids::encode($group->id)])}}" class="btn btn-xs btn-primary">
                                     <i class="fa fa-edit"></i> Edit
                                 </a>                                
                                 <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $group->id; ?>">
                                     <i class="fa fa-trash"></i> Delete
-                                </a>                                                            
+                                </a>   
+                              @endif                                                         
                             </td>
                         </tr>
 
