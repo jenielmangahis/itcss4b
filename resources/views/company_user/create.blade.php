@@ -95,10 +95,7 @@
                 <label>Confirm Password</label>
                 <?php echo Form::password('confirm_password' ,['id' => 'confirm_password', 'minLength' => 4, 'class' => 'form-control', 'required' => '']); ?>
               </div>  
-              <div class="form-group">
-                <label>Group</label>
-
-              </div>     
+    
               <br />
               <div class="form-group">
                 <h2 class="page-header">

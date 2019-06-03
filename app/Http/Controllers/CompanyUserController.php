@@ -82,7 +82,7 @@ class CompanyUserController extends Controller
 
             if($request->input('password') == $request->input('confirm_password')) {
                 $user = new User;
-                $user->group_id   	 = 0;
+                $user->group_id   	 = 2;
                 $user->firstname     = ucfirst($request->input('firstname'));
                 $user->lastname      = ucfirst($request->input('lastname'));
                 $user->nickname      = $request->input('nickname');
