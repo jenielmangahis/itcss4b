@@ -233,6 +233,7 @@ return [
         'Html' => 'Collective\Html\HtmlFacade',
 
         'GlobalHelper' => App\Helpers\GlobalHelper::class,
+        'UserHelper' => App\Helpers\UserHelper::class,
 
     ],
 

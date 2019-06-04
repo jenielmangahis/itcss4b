@@ -30,10 +30,16 @@
   <!-- Main content -->
   <section class="content container-fluid">
 
-    <p>THIS IS ONLY A TEST</p>
     <!--------------------------
       | Your Page Content Here |
       -------------------------->
+
+      @if(Session::has('message'))
+          <div class="alert {{ Session::get('alert_class') }}">
+            <button type="button" class="close" data-dismiss="alert">&times</button>
+            {{ Session::get('message') }}
+          </div>
+      @endif      
 
   </section>
   <!-- /.content -->
