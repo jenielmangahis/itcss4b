@@ -60,6 +60,26 @@ Route::post('companies/store', ['as'=>'companies/store','uses'=>'CompaniesContro
 Route::post('companies/destroy', ['as'=>'companies/destroy','uses'=>'CompaniesController@destroy'])->middleware('auth');
 Route::get('companies/edit/{user_id}', ['as'=>'companies/edit','uses'=>'CompaniesController@edit'])->middleware('auth');
 Route::post('companies/update', ['as'=>'companies/update','uses'=>'CompaniesController@update'])->middleware('auth');
+//Contact Module
+Route::get('/contact', ['as'=>'contact','uses'=>'ContactController@index'])->middleware('auth');
+Route::get('contact/create', ['as'=>'contact/create','uses'=>'ContactController@create'])->middleware('auth');
+Route::get('contact/edit/{user_id}', ['as'=>'contact/edit','uses'=>'ContactController@edit'])->middleware('auth');
+Route::post('contact/update', ['as'=>'contact/update','uses'=>'ContactController@update'])->middleware('auth');
+//Workflow Categories
+Route::get('/workflow_category', ['as'=>'workflow_category','uses'=>'WorkflowCategoryController@index'])->middleware('auth');
+Route::get('/workflow_category/create', ['as'=>'workflow_category/create','uses'=>'WorkflowCategoryController@create'])->middleware('auth');
+Route::post('workflow_category/store', ['as'=>'workflow_category/store','uses'=>'WorkflowCategoryController@store'])->middleware('auth');
+Route::get('workflow_category/edit/{workflow_category_id}', ['as'=>'workflow_category/edit','uses'=>'WorkflowCategoryController@edit'])->middleware('auth');
+Route::post('workflow_category/update', ['as'=>'workflow_category/update','uses'=>'WorkflowCategoryController@update'])->middleware('auth');
+Route::post('workflow_category/destroy', ['as'=>'workflow_category/destroy','uses'=>'WorkflowCategoryController@destroy'])->middleware('auth');
+//Stage
+Route::get('/stage', ['as'=>'stage','uses'=>'StageController@index'])->middleware('auth');
+Route::get('/stage/create', ['as'=>'stage/create','uses'=>'StageController@create'])->middleware('auth');
+Route::post('stage/store', ['as'=>'stage/store','uses'=>'StageController@store'])->middleware('auth');
+Route::get('stage/edit/{stage_id}', ['as'=>'stage/edit','uses'=>'StageController@edit'])->middleware('auth');
+Route::post('stage/update', ['as'=>'stage/update','uses'=>'StageController@update'])->middleware('auth');
+Route::post('stage/destroy', ['as'=>'stage/destroy','uses'=>'StageController@destroy'])->middleware('auth');
 
+Route::post('stage/update', ['as'=>'stage/update','uses'=>'StageController@update'])->middleware('auth');
 //Benchmark
 Route::get('benchmark/test_model', ['as'=>'benchmark/test_model','uses'=>'BenchmarkController@testModel'])->middleware('auth');
