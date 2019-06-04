@@ -31,16 +31,31 @@
 	    	<a href="{{route('contact')}}"><i class="fa fa-phone-square"></i> <span>Contacts </span></a>
 	    </li>
 
-	    <li <?php echo Route::current()->getName() == 'companies' ? 'class="active"' : ''; ?>>
+	    <li <?php echo Route::current()->getName() == 'email_templates' ? 'class="active"' : ''; ?>>
 	    	<a href="{{route('companies')}}"><i class="fa fa-mail-reply-all"></i> <span>Email Templates </span></a>
 	    </li>
 
-	    <li <?php echo Route::current()->getName() == 'companies' ? 'class="active"' : ''; ?>>
+	    <li <?php echo Route::current()->getName() == 'reports' ? 'class="active"' : ''; ?>>
 	    	<a href="{{route('companies')}}"><i class="fa fa-newspaper-o"></i> <span>Reports </span></a>
 	    </li>
 
-	    <li <?php echo Route::current()->getName() == 'companies' ? 'class="active"' : ''; ?>>
-	    	<a href="{{route('companies')}}"><i class="fa fa-gears"></i> <span>Settings </span></a>
+	    <?php 
+	    	$multi_tab_settings = '';
+	    	if(Route::current()->getName() == 'stage' || Route::current()->getName() == 'workflow_category') {
+	    		$multi_tab_settings = 'active';
+	    	}
+	    ?>
+
+	    <li class="treeview {{ $multi_tab_settings }}">
+	      <a href="#"><i class="fa fa-gear"></i> <span>Settings</span>
+	        <span class="pull-right-container">
+	            <i class="fa fa-angle-left pull-right"></i>
+	          </span>
+	      </a>
+	      <ul class="treeview-menu">
+	        <li <?php echo Route::current()->getName() == 'workflow_category' ? 'class="active"' : ''; ?>><a href="{{route('workflow_category')}}"><i class="fa fa-circle-o"></i>Workflow Category</a></li>
+	        <li <?php echo Route::current()->getName() == 'stage' ? 'class="active"' : ''; ?>><a href="{{route('stage')}}"><i class="fa fa-circle-o"></i>Stage</a></li>
+	      </ul>
 	    </li>
 
 	</ul>
