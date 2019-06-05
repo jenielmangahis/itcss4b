@@ -79,7 +79,12 @@ Route::post('stage/store', ['as'=>'stage/store','uses'=>'StageController@store']
 Route::get('stage/edit/{stage_id}', ['as'=>'stage/edit','uses'=>'StageController@edit'])->middleware('auth');
 Route::post('stage/update', ['as'=>'stage/update','uses'=>'StageController@update'])->middleware('auth');
 Route::post('stage/destroy', ['as'=>'stage/destroy','uses'=>'StageController@destroy'])->middleware('auth');
-
-Route::post('stage/update', ['as'=>'stage/update','uses'=>'StageController@update'])->middleware('auth');
+//Workflow
+Route::get('/workflow', ['as'=>'workflow','uses'=>'WorkflowController@index'])->middleware('auth');
+Route::get('/workflow/create', ['as'=>'workflow/create','uses'=>'WorkflowController@create'])->middleware('auth');
+Route::post('workflow/store', ['as'=>'workflow/store','uses'=>'WorkflowController@store'])->middleware('auth');
+Route::get('workflow/edit/{stage_id}', ['as'=>'workflow/edit','uses'=>'WorkflowController@edit'])->middleware('auth');
+Route::post('workflow/update', ['as'=>'workflow/update','uses'=>'WorkflowController@update'])->middleware('auth');
+Route::post('workflow/destroy', ['as'=>'workflow/destroy','uses'=>'WorkflowController@destroy'])->middleware('auth');
 //Benchmark
 Route::get('benchmark/test_model', ['as'=>'benchmark/test_model','uses'=>'BenchmarkController@testModel'])->middleware('auth');
