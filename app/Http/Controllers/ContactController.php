@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use App\Contact;
+use App\CompanyUser;
 
 use UserHelper;
 
@@ -62,4 +63,72 @@ class ContactController extends Controller
             'search_field' => $search_field
         ]); 
     } 
+
+    public function create()
+    {
+        if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
+            return view('contact.c_create', [
+            ]);   
+        }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
+            return view('contact.create', [
+            ]);   
+        }
+        
+    }      
+
+    
+    public function c_store(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $this->validate($request, [
+                'firstname'        => 'required',
+                'lastname'         => 'required',
+                'email'            => 'required|email',
+                'mobile_number'    => 'required',  
+                'address1'         => 'required',   
+                'zip_code'         => 'required',          
+             ]);
+
+            $company_id   = 0;
+            $user_id      = Auth::user()->id;
+            $company_user = CompanyUser::where('user_id','=', $user_id)->first();
+            if($company_user) {
+                $company_id  = $company_user->company_id;
+            }
+
+            $contact = new Contact;
+            $contact->user_id       = $user_id;
+            $contact->company_id    = $company_id;
+            $contact->firstname     = ucfirst($request->input('firstname'));
+            $contact->lastname      = ucfirst($request->input('lastname'));
+            $contact->email         = $request->input('email');
+            $contact->mobile_number = $request->input('mobile_number');
+            $contact->work_number   = $request->input('work_number');
+            $contact->home_number   = $request->input('home_number');
+            $contact->address1      = $request->input('address1');
+            $contact->address2      = $request->input('address2');
+            $contact->city          = $request->input('city');
+            $contact->state         = $request->input('state');
+            $contact->zip_code      = $request->input('zip_code');
+            $contact->stage_id      = $request->input('stage_id');
+
+            $contact->save();
+
+            if($contact) {
+                Session::flash('message', 'You have successfully add contact');
+                Session::flash('alert_class', 'alert-success');
+                return redirect('contact');
+            } else {
+                Session::flash('message', 'Unable to add new contact');
+                Session::flash('alert_class', 'alert-danger');
+                return redirect('contact');
+            }
+
+        }else{
+            Session::flash('message', 'Unable to add new contact');
+            Session::flash('alert_class', 'alert-danger');           
+            return redirect()->back();
+        }
+    }       
 }

@@ -63,6 +63,9 @@ Route::post('companies/update', ['as'=>'companies/update','uses'=>'CompaniesCont
 //Contact Module
 Route::get('/contact', ['as'=>'contact','uses'=>'ContactController@index'])->middleware('auth');
 Route::get('contact/create', ['as'=>'contact/create','uses'=>'ContactController@create'])->middleware('auth');
+
+Route::post('contact/c_store', ['as'=>'contact/c_store','uses'=>'ContactController@c_store'])->middleware('auth');
+
 Route::get('contact/edit/{user_id}', ['as'=>'contact/edit','uses'=>'ContactController@edit'])->middleware('auth');
 Route::post('contact/update', ['as'=>'contact/update','uses'=>'ContactController@update'])->middleware('auth');
 //Workflow Categories
