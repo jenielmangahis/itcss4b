@@ -1,4 +1,4 @@
-r@extends('layouts.backend.master')
+@extends('layouts.backend.master')
 
 @section('header-php')
   <?php
@@ -16,7 +16,7 @@ r@extends('layouts.backend.master')
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      Stage Management
+      Workflow Management
     </h1>
     
     <!-- 
@@ -46,9 +46,9 @@ r@extends('layouts.backend.master')
             <div class="col-md-12">
               <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Workflow Category List</h3>
+                    <h3 class="box-title">Workflow List</h3>
                     <div class="pull-right">
-                        <a href="{{route('stage/create')}}" class="btn btn-primary">
+                        <a href="{{route('workflow/create')}}" class="btn btn-primary">
                             <i class="fa fa-plus"></i> Create New
                         </a>
                     </div>
@@ -58,7 +58,7 @@ r@extends('layouts.backend.master')
                 <div class="box-body">
 
                   <div class="row">
-                    {{ Form::open(array('url' => 'stage', 'class' => '', 'method' => 'get')) }}
+                    {{ Form::open(array('url' => 'workflow', 'class' => '', 'method' => 'get')) }}
 
                       <div class="col-xs-12">
                         <div class="row">
@@ -66,7 +66,9 @@ r@extends('layouts.backend.master')
                             <div class="form-group">
                               <label>Search By: </label><br />
                               <select name="search_by" class="form-control select2" style="width: 30%; float: left;">
-                                <option value="name" selected="selected">Name</option>
+                                <option value="category_name" selected="selected">Category Name</option>
+                                <option value="stage_name" selected="selected">Stage Name</option>
+                                <option value="status" selected="selected">Status</option>
                               </select>
                               <input class="form-control" type="text" value="<?php echo $search_field; ?>" name="search_field" placeholder="Default Search" style="width: 70%; float: right;">
                             </div>
@@ -78,7 +80,7 @@ r@extends('layouts.backend.master')
                             <div class="form-group">
                               <label>&nbsp;</label><br />
                               <button type="submit" class="btn btn-primary">Filter</button>
-                              <a class="btn btn-success" href="{{route('stage')}}">Refresh</a>
+                              <a class="btn btn-success" href="{{route('workflow')}}">Refresh</a>
                             </div>
                             <!-- /.form-group -->
                           </div>
@@ -91,24 +93,28 @@ r@extends('layouts.backend.master')
                   <table class="table table-bordered table-hover">
                     <tr>
                       <th style="width: 1%;" >#</th>
-                      <th>Name</th>
+                      <th>Category</th>
+                      <th>Status</th>
+                      <th style="width:10%;">Color Code</th>
                       <th style="width:10%;">Action</th>
                     </tr>
-                    @foreach($stage as $s)
+                    @foreach($workflow as $wc)
                         <tr>
-                            <td>{{ $s->id }}</td>
-                            <td>{{ $s->name }}</td>
+                            <td>{{ $wc->id }}</td>
+                            <td>{{ $wc->workflow_category->name }}</td>
+                            <td>{{ $wc->stage->name }}</td>
+                            <td style="background-color: <?= $wc->color_code; ?>;text-align: center;color:#ffffff;">{{ $wc->color_code }}</td>
                             <td>
-                                <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $s->id; ?>">
+                                <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $wc->id; ?>">
                                     <i class="fa fa-trash"></i> Delete
                                 </a>
-                                <a href="{{route('stage/edit',[Hashids::encode($s->id)])}}" class="btn btn-xs btn-primary">
+                                <a href="{{route('workflow/edit',[Hashids::encode($wc->id)])}}" class="btn btn-xs btn-primary">
                                     <i class="fa fa-edit"></i> Edit
                                 </a>                                                              
                             </td>
                         </tr>
 
-                        <div id="modalDelete-<?= $s->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
+                        <div id="modalDelete-<?= $wc->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
                             <div class="modal-dialog modal-md">
                               <div class="modal-content">
 
@@ -121,8 +127,8 @@ r@extends('layouts.backend.master')
                                   Are you sure you want to delete selected workflow category?
                                 </div>
                                 <div class="modal-footer">
-                                  {{ Form::open(array('url' => 'stage/destroy')) }}
-                                    <?php echo Form::hidden('id', Hashids::encode($s->id) ,[]); ?>
+                                  {{ Form::open(array('url' => 'workflow/destroy')) }}
+                                    <?php echo Form::hidden('id', Hashids::encode($wc->id) ,[]); ?>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                                     <button type="submit" class="btn btn-danger">Yes</button>
                                   {!! Form::close() !!}
@@ -139,7 +145,7 @@ r@extends('layouts.backend.master')
                 <!-- /.box-body -->
 
                 <div style="text-align: center;" class="box-footer clearfix">
-                    {{ $stage->links() }}
+                    {{ $workflow->links() }}
                 </div>
 
               </div>

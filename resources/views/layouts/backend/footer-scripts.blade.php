@@ -6,3 +6,5 @@
 <script src="{{ asset ('/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset ('/bower_components/admin-lte/dist/js/adminlte.min.js') }}"></script>
+<script src="{{ asset ('/bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js') }}"></script>
+<script src="{{ asset ('/js/admin.js') }}"></script>

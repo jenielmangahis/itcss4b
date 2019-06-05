@@ -35,6 +35,10 @@
 	    	<a href="{{route('companies')}}"><i class="fa fa-mail-reply-all"></i> <span>Email Templates </span></a>
 	    </li>
 
+	    <li <?php echo Route::current()->getName() == 'workflow' ? 'class="active"' : ''; ?>>
+	    	<a href="{{route('workflow')}}"><i class="fa fa-server"></i> <span>Workflow </span></a>
+	    </li>
+
 	    <li <?php echo Route::current()->getName() == 'reports' ? 'class="active"' : ''; ?>>
 	    	<a href="{{route('companies')}}"><i class="fa fa-newspaper-o"></i> <span>Reports </span></a>
 	    </li>
