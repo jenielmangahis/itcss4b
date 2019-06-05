@@ -28,7 +28,7 @@ class UserController extends Controller
             $module   = 'users';
             $with_permission = UserHelper::checkUserRole($group_id, $module); 
             if(!$with_permission) {
-                Session::flash('message', 'You have no permission to access '. $module . ' the page.');
+                Session::flash('message', 'You have no permission to access the '. $module . ' page.');
                 Session::flash('alert_class', 'alert-danger');                
                 return redirect('dashboard');
             }    

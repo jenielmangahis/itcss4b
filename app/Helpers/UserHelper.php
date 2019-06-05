@@ -20,6 +20,7 @@ class UserHelper
                   'company_users',
                   'users',
                   'contacts',
+                  'workflow',
                   'email_templates',
                   'reports',
                   'settings',
