@@ -39,6 +39,7 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
+        $group_id     = Auth::user()->group_id;
         $search_by    = $request->input('search_by');
         $search_field = $request->input('search_field');  
 
@@ -46,12 +47,21 @@ class UserController extends Controller
             $users_query = User::query();
             $users_query = $users_query->where('is_active', '=', 0);
 
+            if(UserHelper::isCompanyUser($group_id)) {
+                $users_query = $users_query->where('group_id', '=', $group_id);
+            }            
+
             if($search_by != '' && $search_field != '') {
                 $users_query = $users_query->where('users.'.$search_by, 'like', '%' . $search_field . '%');
                 $users = $users_query->paginate(15);
             }            
         } else {
-            $users = User::where('is_active', '=', 0)->paginate(15);
+            $users_query = User::query();
+            $users_query = $users_query->where('is_active', '=', 0);
+            if(UserHelper::isCompanyUser($group_id)) {
+                $users_query = $users_query->where('group_id', '=', $group_id);
+            }
+            $users = $users_query->paginate(15);
         }
 
         return view('user.index',[

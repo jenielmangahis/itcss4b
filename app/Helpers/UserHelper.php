@@ -7,6 +7,8 @@ class UserHelper
 {
       const ADMIN_USER   = 1;
       const COMPANY_USER = 2;
+      const USER_ACTIVE    = 0;
+      const USER_SUSPENDED = 1;
 
       public static function checkUserRole($group_id = null,$module = null) {
 
@@ -44,12 +46,22 @@ class UserHelper
             return $with_permission;
       }
 
-      public static function isCompanyUser() {
+      public static function isCompanyUser($group_id = null) {
+            $return = FALSE;
+            if($group_id == self::COMPANY_USER) {
+                  $return = TRUE;
+            }
 
+            return $return;
       }
 
-      public static function isAdminUser() {
+      public static function isAdminUser($group_id = null) {
+            $return = FALSE;
+            if($group_id == self::ADMIN_USER) {
+                  $return = TRUE;
+            }
 
+            return $return;
       }
 }
 ?>

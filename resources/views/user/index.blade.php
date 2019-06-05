@@ -106,7 +106,7 @@
                             <td>{{ $user->firstname }} {{ $user->lastname }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->is_active == 0 ? 'active' : 'Suspended' }}</td>
-                            <td>{{ $user->group_id }}</td>
+                            <td>{{ !empty($user->group->name) ? $user->group->name : '-' }}</td>
                             <td>
                                 <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $user->id; ?>">
                                     <i class="fa fa-trash"></i> Delete
