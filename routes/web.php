@@ -63,11 +63,12 @@ Route::post('companies/update', ['as'=>'companies/update','uses'=>'CompaniesCont
 //Contact Module
 Route::get('/contact', ['as'=>'contact','uses'=>'ContactController@index'])->middleware('auth');
 Route::get('contact/create', ['as'=>'contact/create','uses'=>'ContactController@create'])->middleware('auth');
-
-Route::post('contact/c_store', ['as'=>'contact/c_store','uses'=>'ContactController@c_store'])->middleware('auth');
-
-Route::get('contact/edit/{user_id}', ['as'=>'contact/edit','uses'=>'ContactController@edit'])->middleware('auth');
+Route::post('contact/store', ['as'=>'contact/store','uses'=>'ContactController@store'])->middleware('auth');
+Route::get('contact/edit/{contact_id}', ['as'=>'contact/edit','uses'=>'ContactController@edit'])->middleware('auth');
 Route::post('contact/update', ['as'=>'contact/update','uses'=>'ContactController@update'])->middleware('auth');
+Route::post('contact/destroy', ['as'=>'contact/destroy','uses'=>'ContactController@destroy'])->middleware('auth');
+Route::get('contact/ajax_load_company_users', ['as'=>'contact/ajax_load_company_users','uses'=>'ContactController@ajax_load_company_users'])->middleware('auth');
+
 //Workflow Categories
 Route::get('/workflow_category', ['as'=>'workflow_category','uses'=>'WorkflowCategoryController@index'])->middleware('auth');
 Route::get('/workflow_category/create', ['as'=>'workflow_category/create','uses'=>'WorkflowCategoryController@create'])->middleware('auth');

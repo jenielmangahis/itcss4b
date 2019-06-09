@@ -111,7 +111,7 @@
                                 <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $con->id; ?>">
                                     <i class="fa fa-trash"></i> Delete
                                 </a>
-                                <a href="{{route('companies/edit',[Hashids::encode($con->id)])}}" class="btn btn-xs btn-primary">
+                                <a href="{{route('contact/edit',[Hashids::encode($con->id)])}}" class="btn btn-xs btn-primary">
                                     <i class="fa fa-edit"></i> Edit
                                 </a>                                                              
                             </td>

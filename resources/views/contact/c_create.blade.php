@@ -55,7 +55,7 @@
         
         <div class="box box-primary">
 
-          {{ Form::open(array('url' => 'contact/c_store', 'class' => '')) }}
+          {{ Form::open(array('url' => 'contact/store', 'class' => '')) }}
             <div class="box-body">
                         
               <div class="form-group">
@@ -135,7 +135,7 @@
               </div>               
 
               <div class="form-group">
-                <select name="is_active" class="form-control">
+                <select name="status" class="form-control">
                   <option value="0" selected="selected">Active</option>
                   <option value="1">Suspended</option>
                 </select>                    
@@ -150,8 +150,9 @@
 
               <div class="form-group">
                 <select name="stage_id" class="form-control">
-                  <option value="0" selected="selected">-</option>
-                  <option value="1">-</option>
+                  @foreach($stages as $stage)
+                  <option value="{{ $stage->id }}">{{ $stage->name }}</option>
+                  @endforeach
                 </select>                    
               </div>                               
 

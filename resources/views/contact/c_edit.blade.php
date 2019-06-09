@@ -16,7 +16,7 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      Contacts | Create
+      Contacts | Edit
     </h1>
     
     <!-- 
@@ -55,30 +55,10 @@
         
         <div class="box box-primary">
 
-          {{ Form::open(array('url' => 'contact/store', 'class' => '', 'id' => 'add-contact-form')) }}
+          {{ Form::open(array('url' => 'contact/update', 'class' => '')) }}
+          <input type="hidden" name="id" value="<?= Hashids::encode($contact->id); ?>">          
             <div class="box-body">
-
-              <div class="form-group">
-                <h2 class="page-header">
-                  <i class="fa fa-info-circle"></i> Company
-                  <small class="pull-right"></small>
-                </h2>
-              </div> 
-
-              <div class="form-group">
-                <label>Company:</label>
-                <select name="company_id" id="company_id" class="form-control">
-                  @foreach($companies as $company)
-                  <option value="{{ $company->id }}">{{ $company->name }}</option>
-                  @endforeach
-                </select>                    
-              </div>
-
-              <div class="form-group">
-                <div id="company-users-container"></div>           
-              </div>                
-              <br />
-
+                        
               <div class="form-group">
                 <h2 class="page-header">
                   <i class="fa fa-info-circle"></i> Info.
@@ -88,32 +68,32 @@
 
               <div class="form-group">
                 <label>Firstname <span class="required">*</span></label>
-                <?php echo Form::text('firstname', old('firstname') ,['class' => 'form-control', 'required' => '']); ?>
+                <?php echo Form::text('firstname', $contact->firstname ,['class' => 'form-control', 'required' => '']); ?>
               </div>
 
               <div class="form-group">
                 <label>Lastname <span class="required">*</span></label>
-                <?php echo Form::text('lastname', old('lastname') ,['class' => 'form-control', 'required' => '']); ?>
+                <?php echo Form::text('lastname', $contact->lastname ,['class' => 'form-control', 'required' => '']); ?>
               </div>
 
               <div class="form-group">
                 <label>Email <span class="required">*</span></label>
-                <?php echo Form::email('email', old('email') ,['class' => 'form-control', 'required' => '']); ?>
+                <?php echo Form::email('email', $contact->email ,['class' => 'form-control', 'required' => '']); ?>
               </div>
 
               <div class="form-group">
                 <label>Mobile Number <span class="required"></span></label>
-                <?php echo Form::text('mobile_number', old('mobile_number') ,['class' => 'form-control']); ?>
+                <?php echo Form::text('mobile_number', $contact->mobile_number ,['class' => 'form-control']); ?>
               </div>
 
               <div class="form-group">
                 <label>Work Number <span class="required"></span></label>
-                <?php echo Form::text('work_number', old('work_number') ,['class' => 'form-control']); ?>
+                <?php echo Form::text('work_number', $contact->work_number ,['class' => 'form-control']); ?>
               </div>
 
               <div class="form-group">
                 <label>Home Number <span class="required"></span></label>
-                <?php echo Form::text('home_number', old('home_number') ,['class' => 'form-control']); ?>
+                <?php echo Form::text('home_number', $contact->home_number ,['class' => 'form-control']); ?>
               </div>
 
               <div class="form-group">
@@ -125,27 +105,27 @@
 
               <div class="form-group">
                 <label>Address 1 <span class="required">*</span></label>
-                <?php echo Form::text('address1', old('address1') ,['class' => 'form-control', 'required' => '']); ?>
+                <?php echo Form::text('address1', $contact->address1 ,['class' => 'form-control', 'required' => '']); ?>
               </div>
 
               <div class="form-group">
                 <label>Address 2 <span class="required"></span></label>
-                <?php echo Form::text('address2', old('address2') ,['class' => 'form-control']); ?>
+                <?php echo Form::text('address2', $contact->address2 ,['class' => 'form-control']); ?>
               </div>
 
               <div class="form-group">
                 <label>City <span class="required"></span></label>
-                <?php echo Form::text('city', old('city') ,['class' => 'form-control']); ?>
+                <?php echo Form::text('city', $contact->city ,['class' => 'form-control']); ?>
               </div>
 
               <div class="form-group">
                 <label>State <span class="required"></span></label>
-                <?php echo Form::text('state', old('state') ,['class' => 'form-control']); ?>
+                <?php echo Form::text('state', $contact->state ,['class' => 'form-control']); ?>
               </div>
 
               <div class="form-group">
                 <label>Zip Code <span class="required">*</span></label>
-                <?php echo Form::text('zip_code', old('zip_code') ,['class' => 'form-control', 'required' => '']); ?>
+                <?php echo Form::text('zip_code', $contact->zip_code ,['class' => 'form-control', 'required' => '']); ?>
               </div>
 
               <div class="form-group">
@@ -172,7 +152,7 @@
               <div class="form-group">
                 <select name="stage_id" class="form-control">
                   @foreach($stages as $stage)
-                  <option value="{{ $stage->id }}">{{ $stage->name }}</option>
+                  <option <?php echo $contact->stage_id == $stage->id ? 'selected="selected"' : ''; ?> value="{{ $stage->id }}">{{ $stage->name }}</option>
                   @endforeach
                 </select>                    
               </div>                               
@@ -210,7 +190,7 @@
             <!-- /.box-body -->
 
             <div class="box-footer">
-              <button type="submit" class="btn btn-success">Add</button>
+              <button type="submit" class="btn btn-success">Update</button>
               <a class="btn btn-primary" href="{{route('contact')}}">Cancel</a>
             </div>
           {!! Form::close() !!}     
@@ -220,36 +200,4 @@
     </section>
   <!-- /.content -->
 @endsection
-
-@section('page-footer-scripts')
-<script>
-  var base_url = '<?php echo url("/"); ?>'; 
-
-  function load_company_users_dropdown() {
-      $.get(base_url + '/contact/ajax_load_company_users', $('#add-contact-form').serialize() , function (o) {
-        $('#company-users-container').html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
-
-        setTimeout(function () {
-          $('#company-users-container').html(o);
-        }, 250);
-      });    
-  }
-
-  $(function () {
-    load_company_users_dropdown();
-    $('#company_id').change(function () {
-      $.get(base_url + '/contact/ajax_load_company_users', $('#add-contact-form').serialize() , function (o) {
-        $('#company-users-container').html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
-
-        setTimeout(function () {
-          $('#company-users-container').html(o);
-        }, 250);
-      });
-    });     
-
-  });
-
-</script>
-@endsection
-
 

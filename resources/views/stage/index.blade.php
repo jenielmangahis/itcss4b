@@ -1,4 +1,4 @@
-r@extends('layouts.backend.master')
+@extends('layouts.backend.master')
 
 @section('header-php')
   <?php
