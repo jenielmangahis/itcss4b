@@ -53,6 +53,7 @@ Route::post('group/store', ['as'=>'group/store','uses'=>'GroupController@store']
 Route::get('group/edit/{group_id}', ['as'=>'group/edit','uses'=>'GroupController@edit'])->middleware('auth');
 Route::post('group/update', ['as'=>'group/update','uses'=>'GroupController@update'])->middleware('auth');
 Route::post('group/destroy', ['as'=>'group/destroy','uses'=>'GroupController@destroy'])->middleware('auth');
+
 //Componies Module
 Route::get('/companies', ['as'=>'companies','uses'=>'CompaniesController@index'])->middleware('auth');
 Route::get('companies/create', ['as'=>'companies/create','uses'=>'CompaniesController@create'])->middleware('auth');
@@ -60,6 +61,7 @@ Route::post('companies/store', ['as'=>'companies/store','uses'=>'CompaniesContro
 Route::post('companies/destroy', ['as'=>'companies/destroy','uses'=>'CompaniesController@destroy'])->middleware('auth');
 Route::get('companies/edit/{user_id}', ['as'=>'companies/edit','uses'=>'CompaniesController@edit'])->middleware('auth');
 Route::post('companies/update', ['as'=>'companies/update','uses'=>'CompaniesController@update'])->middleware('auth');
+
 //Contact Module
 Route::get('/contact', ['as'=>'contact','uses'=>'ContactController@index'])->middleware('auth');
 Route::get('contact/create', ['as'=>'contact/create','uses'=>'ContactController@create'])->middleware('auth');
@@ -68,6 +70,7 @@ Route::get('contact/edit/{contact_id}', ['as'=>'contact/edit','uses'=>'ContactCo
 Route::post('contact/update', ['as'=>'contact/update','uses'=>'ContactController@update'])->middleware('auth');
 Route::post('contact/destroy', ['as'=>'contact/destroy','uses'=>'ContactController@destroy'])->middleware('auth');
 Route::get('contact/ajax_load_company_users', ['as'=>'contact/ajax_load_company_users','uses'=>'ContactController@ajax_load_company_users'])->middleware('auth');
+Route::get('contact/ajax_load_stage_status', ['as'=>'contact/ajax_load_stage_status','uses'=>'ContactController@ajax_load_stage_status'])->middleware('auth');
 
 //Workflow Categories
 Route::get('/workflow_category', ['as'=>'workflow_category','uses'=>'WorkflowCategoryController@index'])->middleware('auth');
@@ -76,6 +79,7 @@ Route::post('workflow_category/store', ['as'=>'workflow_category/store','uses'=>
 Route::get('workflow_category/edit/{workflow_category_id}', ['as'=>'workflow_category/edit','uses'=>'WorkflowCategoryController@edit'])->middleware('auth');
 Route::post('workflow_category/update', ['as'=>'workflow_category/update','uses'=>'WorkflowCategoryController@update'])->middleware('auth');
 Route::post('workflow_category/destroy', ['as'=>'workflow_category/destroy','uses'=>'WorkflowCategoryController@destroy'])->middleware('auth');
+
 //Stage
 Route::get('/stage', ['as'=>'stage','uses'=>'StageController@index'])->middleware('auth');
 Route::get('/stage/create', ['as'=>'stage/create','uses'=>'StageController@create'])->middleware('auth');

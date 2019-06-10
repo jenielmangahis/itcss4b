@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Contact;
 use App\CompanyUser;
 use App\Companies;
+use App\Workflow;
 use App\Stage;
 
 use UserHelper;
@@ -87,7 +88,8 @@ class ContactController extends Controller
 
         if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
             return view('contact.c_create', [
-                'stages' => $stages
+                'stages' => $stages,
+                'companies' => $companies
             ]);   
         }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
             return view('contact.create', [
@@ -286,4 +288,12 @@ class ContactController extends Controller
             'c_user_id'     => $c_user_id
         ]);
     } 
+
+    public function ajax_load_stage_status(Request $request)
+    {
+        $workflow = Workflow::where('stage_id', '=', $request->input('stage_id'))->get();
+        return view('workflow.ajax_load_stage_status_dropdown',[
+            'workflow' => $workflow
+        ]);
+    }     
 }
