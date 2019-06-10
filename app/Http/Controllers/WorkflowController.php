@@ -169,4 +169,12 @@ class WorkflowController extends Controller
             }
         }
     }
+
+    public function ajax_load_stage_status(Request $request)
+    {
+        $workflow = Workflow::where('stage_id', '=', $request->input('stage_id'))->get();
+        return view('workflow.ajax_load_stage_status_dropdown',[
+            'workflow' => $workflow
+        ]);
+    } 
 }

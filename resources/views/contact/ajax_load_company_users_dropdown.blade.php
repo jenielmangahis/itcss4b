@@ -16,5 +16,7 @@
     @endforeach
   </select>   
 @else
-  <p>No company users available</p>
+  <select name="user_id" id="user_id" class="form-control">
+    <option value="">No company users available</option>
+  </select>
 @endif

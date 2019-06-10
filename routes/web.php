@@ -90,5 +90,6 @@ Route::post('workflow/store', ['as'=>'workflow/store','uses'=>'WorkflowControlle
 Route::get('workflow/edit/{stage_id}', ['as'=>'workflow/edit','uses'=>'WorkflowController@edit'])->middleware('auth');
 Route::post('workflow/update', ['as'=>'workflow/update','uses'=>'WorkflowController@update'])->middleware('auth');
 Route::post('workflow/destroy', ['as'=>'workflow/destroy','uses'=>'WorkflowController@destroy'])->middleware('auth');
+Route::get('workflow/ajax_load_stage_status', ['as'=>'workflow/ajax_load_stage_status','uses'=>'WorkflowController@ajax_load_stage_status'])->middleware('auth');
 //Benchmark
 Route::get('benchmark/test_model', ['as'=>'benchmark/test_model','uses'=>'BenchmarkController@testModel'])->middleware('auth');
