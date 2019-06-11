@@ -1,25 +1,6 @@
 <div class="row">
   <div class="col-md-5">
     <div class="form-group">
-      <label>Company:</label>
-      <select name="company_id" id="company_id" class="form-control">
-        @foreach($companies as $company)
-        <option value="{{ $company->id }}">{{ $company->name }}</option>
-        @endforeach
-      </select>                    
-    </div>
-  </div>
-
-  <div class="col-md-5">
-    <div class="form-group">
-      <div id="company-users-container"></div>           
-    </div>  
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md-5">
-    <div class="form-group">
       <label>Firstname <span class="required">*</span></label>
       <?php echo Form::text('firstname', old('firstname') ,['class' => 'form-control', 'required' => '']); ?>
     </div>
