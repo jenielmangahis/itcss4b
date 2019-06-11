@@ -13,10 +13,14 @@
 @endsection
 
 @section('main')
-
+<style>
+.login-page, .register-page {
+  background-color: #070707;
+}
+</style>
 <div class="login-box">
-  <div class="login-logo">
-    <a href="#"><b>coreCMS</b></a>
+  <div class="login-logo" style="margin-bottom: 10px;">
+    <a href="#"><img src="{{ asset('/images/corelogo_big.jpg') }}" alt="CoreCMS" style="width:100%;" /></a>
   </div>
 
   <div class="login-box-body">

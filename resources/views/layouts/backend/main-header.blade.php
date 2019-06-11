@@ -1,10 +1,15 @@
+<style>
+.skin-blue .main-header .logo, .skin-blue .main-header .navbar, a.logo:hover {
+	background-color: #070707 !important;
+}
+</style>
 <header class="main-header">
 	<!-- Logo -->
 	<a href="index2.html" class="logo">
 	  <!-- mini logo for sidebar mini 50x50 pixels -->
-	  <span class="logo-mini"><b>CO</b>RE</span>
+	  <span class="logo-mini"><img src="{{ asset('/images/corelogo.jpg') }}" alt="CoreCMS" style="width:77%;" /></span>
 	  <!-- logo for regular state and mobile devices -->
-	  <span class="logo-lg"><b>core</b>CMS</span>
+	  <span class="logo-lg"><img src="{{ asset('/images/corelogo_big.jpg') }}" alt="CoreCMS" style="width:50%;" /></span>
 	</a>
 
 	<!-- Header Navbar -->
