@@ -1,5 +1,22 @@
 @extends('layouts.backend.master')
-
+<style>
+.nav-tabs-custom>.tab-content{
+  border:1px solid #d2d6de !important;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+}
+.nav-tabs-custom>.nav-tabs{
+  background-color: #3c8dbc !important;
+}
+.nav-tabs-custom>.nav-tabs>li a{
+  color: #ffffff !important;
+}
+.nav-tabs-custom>.nav-tabs>li.active a{
+  color: #000000 !important;
+}
+.nav-tabs-custom>.nav-tabs>li.active {
+  padding-left: 3px;
+}
+</style>
 @section('header-php')
   <?php
   $body_id = '';
@@ -57,150 +74,32 @@
 
           {{ Form::open(array('url' => 'contact/update', 'class' => '', 'id' => 'edit-contact-form')) }}
           <input type="hidden" name="id" value="<?= Hashids::encode($contact->id); ?>">
-          <input type="hidden" name="c_user_id" value="<?= Hashids::encode($contact->user_id); ?>">          
+          <input type="hidden" id="c_user_id" name="c_user_id" value="<?= Hashids::encode($contact->user_id); ?>">            
             <div class="box-body">
-
-              <div class="form-group">
-                <h2 class="page-header">
-                  <i class="fa fa-info-circle"></i> Company
-                  <small class="pull-right"></small>
-                </h2>
-              </div> 
-
-              <div class="form-group">
-                <label>Company:</label>
-                <select name="company_id" id="company_id" class="form-control">
-                  @foreach($companies as $company)
-                  <option <?php echo $contact->company_id == $company->id ? 'selected="selected"' : ''; ?> value="{{ $company->id }}">{{ $company->name }}</option>
-                  @endforeach
-                </select>                    
-              </div>
-
-              <div class="form-group">
-                <div id="company-users-container"></div>           
-              </div>                
-              <br />              
-                        
-              <div class="form-group">
-                <h2 class="page-header">
-                  <i class="fa fa-info-circle"></i> Info.
-                  <small class="pull-right"></small>
-                </h2>
-              </div> 
-
-              <div class="form-group">
-                <label>Firstname <span class="required">*</span></label>
-                <?php echo Form::text('firstname', $contact->firstname ,['class' => 'form-control', 'required' => '']); ?>
-              </div>
-
-              <div class="form-group">
-                <label>Lastname <span class="required">*</span></label>
-                <?php echo Form::text('lastname', $contact->lastname ,['class' => 'form-control', 'required' => '']); ?>
-              </div>
-
-              <div class="form-group">
-                <label>Email <span class="required">*</span></label>
-                <?php echo Form::email('email', $contact->email ,['class' => 'form-control', 'required' => '']); ?>
-              </div>
-
-              <div class="form-group">
-                <label>Mobile Number <span class="required"></span></label>
-                <?php echo Form::text('mobile_number', $contact->mobile_number ,['class' => 'form-control']); ?>
-              </div>
-
-              <div class="form-group">
-                <label>Work Number <span class="required"></span></label>
-                <?php echo Form::text('work_number', $contact->work_number ,['class' => 'form-control']); ?>
-              </div>
-
-              <div class="form-group">
-                <label>Home Number <span class="required"></span></label>
-                <?php echo Form::text('home_number', $contact->home_number ,['class' => 'form-control']); ?>
-              </div>
-
-              <div class="form-group">
-                <h2 class="page-header">
-                  <i class="fa fa-info-circle"></i> Address
-                  <small class="pull-right"></small>
-                </h2>
-              </div>
-
-              <div class="form-group">
-                <label>Address 1 <span class="required">*</span></label>
-                <?php echo Form::text('address1', $contact->address1 ,['class' => 'form-control', 'required' => '']); ?>
-              </div>
-
-              <div class="form-group">
-                <label>Address 2 <span class="required"></span></label>
-                <?php echo Form::text('address2', $contact->address2 ,['class' => 'form-control']); ?>
-              </div>
-
-              <div class="form-group">
-                <label>City <span class="required"></span></label>
-                <?php echo Form::text('city', $contact->city ,['class' => 'form-control']); ?>
-              </div>
-
-              <div class="form-group">
-                <label>State <span class="required"></span></label>
-                <?php echo Form::text('state', $contact->state ,['class' => 'form-control']); ?>
-              </div>
-
-              <div class="form-group">
-                <label>Zip Code <span class="required">*</span></label>
-                <?php echo Form::text('zip_code', $contact->zip_code ,['class' => 'form-control', 'required' => '']); ?>
-              </div>
-
-              <div class="form-group">
-                <h2 class="page-header">
-                  <i class="fa fa-info-circle"></i> Status
-                  <small class="pull-right"></small>
-                </h2>
-              </div>               
-
-              <div class="form-group">
-                <select name="status" class="form-control">
-                  <option value="0" selected="selected">Active</option>
-                  <option value="1">Suspended</option>
-                </select>                    
-              </div>  
-
-              <div class="form-group">
-                <h2 class="page-header">
-                  <i class="fa fa-info-circle"></i> Stage
-                  <small class="pull-right"></small>
-                </h2>
-              </div>               
-
-              <div class="form-group">
-                <select name="stage_id" class="form-control">
-                  @foreach($stages as $stage)
-                  <option <?php echo $contact->stage_id == $stage->id ? 'selected="selected"' : ''; ?> value="{{ $stage->id }}">{{ $stage->name }}</option>
-                  @endforeach
-                </select>                    
-              </div>                               
-
-              <br />
-              <hr />
               <div id="" class="form-group">
                 <div class="box-body">
                   <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
-                      <li class="active"><a href="#tab_variation_0" data-toggle="tab"><strong>Business Info.</strong></a></li>
-                      <li class=""><a href="#tab_variation_1" data-toggle="tab"><strong>Loan Info.</strong></a></li>
-                      <li class=""><a href="#tab_variation_2" data-toggle="tab"><strong>Broker Info.</strong></a></li>
+                      <li class="active"><a href="#tab_variation_0" data-toggle="tab"><strong>Contact Information</strong></a></li>
+                      <li class=""><a href="#tab_variation_1" data-toggle="tab"><strong>Business Information</strong></a></li>
+                      <li class=""><a href="#tab_variation_2" data-toggle="tab"><strong>Loan Information</strong></a></li>
+                      <li class=""><a href="#tab_variation_3" data-toggle="tab"><strong>Broker Information</strong></a></li>
                     </ul>
 
                     <div class="tab-content">
                       <div class="active tab-pane" id="tab_variation_0">
-                        For Business Information
+                        @include('contact.edit_personal_info')
                       </div>
-
                       <div class="tab-pane" id="tab_variation_1">
-                        For Loan Information
+                        @include('contact.edit_business_info')
                       </div>
 
                       <div class="tab-pane" id="tab_variation_2">
-                        For Broker Information
+                        @include('contact.edit_loan_info')
+                      </div>
+
+                      <div class="tab-pane" id="tab_variation_3">
+                        @include('contact.edit_broker_info')
                       </div>
 
                     </div>
@@ -228,28 +127,92 @@
   var base_url = '<?php echo url("/"); ?>'; 
 
   function load_company_users_dropdown() {
-      $.get(base_url + '/contact/ajax_load_company_users', $('#edit-contact-form').serialize() , function (o) {
+    
+      /*$.get(base_url + '/contact/ajax_load_company_users', $('#add-contact-form').serialize() , function (o) {
         $('#company-users-container').html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
 
         setTimeout(function () {
           $('#company-users-container').html(o);
         }, 250);
-      });    
+      }); */ 
+
+      var company_id = $('#company_id').val();
+      var c_user_id  = $('#c_user_id').val();
+      $('#company-users-container').html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
+      var url = base_url + '/contact/ajax_load_company_users'
+      $.ajax({
+           type: "GET",
+           url: url,               
+           data: {
+              "company_id":company_id,
+              'c_user_id':c_user_id
+              }, 
+           success: function(o)
+           {
+              $('#company-users-container').html(o);
+           }
+      });          
+  }
+
+  function load_stage_status_dropdown() {
+    var stage_id = $('#stage_id').val();
+    $('#stage-status-container').html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
+    var url = base_url + '/workflow/ajax_load_stage_status'
+    $.ajax({
+         type: "GET",
+         url: url,               
+         data: {"stage_id":stage_id}, 
+         success: function(o)
+         {
+            $('#stage-status-container').html(o);
+         }
+    });
   }
 
   $(function () {
+
+    $('.bankruptcy_filed').datepicker({
+      autoclose: true,
+      format: 'yyyy-mm-dd',
+    })    
+
     load_company_users_dropdown();
+    load_stage_status_dropdown();
     $('#company_id').change(function () {
-      $.get(base_url + '/contact/ajax_load_company_users', $('#edit-contact-form').serialize() , function (o) {
+
+      /*$.get(base_url + '/contact/ajax_load_company_users', $('#add-contact-form').serialize() , function (o) {
         $('#company-users-container').html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
 
         setTimeout(function () {
           $('#company-users-container').html(o);
         }, 250);
-      });
-    });     
+      });*/
 
+      var company_id = $('#company_id').val();
+      var c_user_id  = $('#c_user_id').val();
+      $('#company-users-container').html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
+      var url = base_url + '/contact/ajax_load_company_users'
+      $.ajax({
+           type: "GET",
+           url: url,               
+           data: {
+              "company_id":company_id,
+              'c_user_id':c_user_id
+              }, 
+           success: function(o)
+           {
+              $('#company-users-container').html(o);
+           }
+      });   
+
+    });
+
+    $('#stage_id').change(function(){
+      load_stage_status_dropdown();
+    }); 
   });
 
 </script>
 @endsection
+
+

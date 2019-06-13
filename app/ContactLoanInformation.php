@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ContactLoanInformation extends Model
 {
-    //protected $table = 'contact_loan_informations';
+    protected $table = 'contact_loan_informations';
     use SoftDeletes;
 }

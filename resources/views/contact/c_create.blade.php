@@ -86,18 +86,18 @@
 
                     <div class="tab-content">
                       <div class="active tab-pane" id="tab_variation_0">
-                        @include('contact.c_create_personal_info')
+                        @include('contact.create_personal_info')
                       </div>
-                      <div class="active tab-pane" id="tab_variation_1">
-                        For Business Information
+                      <div class="tab-pane" id="tab_variation_1">
+                        @include('contact.create_business_info')
                       </div>
 
                       <div class="tab-pane" id="tab_variation_2">
-                        For Loan Information
+                        @include('contact.create_loan_info')
                       </div>
 
                       <div class="tab-pane" id="tab_variation_3">
-                        For Broker Information
+                        @include('contact.create_broker_info')
                       </div>
 
                     </div>
@@ -125,13 +125,27 @@
   var base_url = '<?php echo url("/"); ?>'; 
 
   function load_company_users_dropdown() {
-      $.get(base_url + '/contact/ajax_load_company_users', $('#add-contact-form').serialize() , function (o) {
+    
+      /*$.get(base_url + '/contact/ajax_load_company_users', $('#add-contact-form').serialize() , function (o) {
         $('#company-users-container').html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
 
         setTimeout(function () {
           $('#company-users-container').html(o);
         }, 250);
-      });    
+      }); */ 
+
+      var company_id = $('#company_id').val();
+      $('#company-users-container').html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
+      var url = base_url + '/contact/ajax_load_company_users'
+      $.ajax({
+           type: "GET",
+           url: url,               
+           data: {"company_id":company_id}, 
+           success: function(o)
+           {
+              $('#company-users-container').html(o);
+           }
+      });          
   }
 
   function load_stage_status_dropdown() {
@@ -150,16 +164,37 @@
   }
 
   $(function () {
+
+    $('.bankruptcy_filed').datepicker({
+      autoclose: true,
+      format: 'yyyy-mm-dd',
+    })    
+
     load_company_users_dropdown();
     load_stage_status_dropdown();
     $('#company_id').change(function () {
-      $.get(base_url + '/contact/ajax_load_company_users', $('#add-contact-form').serialize() , function (o) {
+
+      /*$.get(base_url + '/contact/ajax_load_company_users', $('#add-contact-form').serialize() , function (o) {
         $('#company-users-container').html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
 
         setTimeout(function () {
           $('#company-users-container').html(o);
         }, 250);
-      });
+      });*/
+
+      var company_id = $('#company_id').val();
+      $('#company-users-container').html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
+      var url = base_url + '/contact/ajax_load_company_users'
+      $.ajax({
+           type: "GET",
+           url: url,               
+           data: {"company_id":company_id}, 
+           success: function(o)
+           {
+              $('#company-users-container').html(o);
+           }
+      });   
+
     });
 
     $('#stage_id').change(function(){

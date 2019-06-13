@@ -6,12 +6,16 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use App\Contact;
+use App\ContactBusinessInformation;
+use App\ContactBrokerInformation;
+use App\ContactLoanInformation;
 use App\CompanyUser;
 use App\Companies;
 use App\Workflow;
 use App\Stage;
 
 use UserHelper;
+use GlobalHelper;
 
 use View;
 use Hash;
@@ -111,7 +115,11 @@ class ContactController extends Controller
                     'email'            => 'required|email',
                     'mobile_number'    => 'required',  
                     'address1'         => 'required',   
-                    'zip_code'         => 'required',          
+                    'zip_code'         => 'required',      
+                    'gross_monthly_credit_card_sales' => 'numeric',
+                    'gross_yearly_sales' => 'numeric', 
+                    'loan_amount'        => 'numeric',
+                    'brokerage_fee'      => 'numeric',
                  ]);
             } else {
                 $this->validate($request, [
@@ -122,7 +130,11 @@ class ContactController extends Controller
                     'address1'         => 'required',   
                     'zip_code'         => 'required',  
                     'company_id'       => 'required',
-                    'user_id'          => 'required'           
+                    'user_id'          => 'required',
+                    'gross_monthly_credit_card_sales' => 'numeric',
+                    'gross_yearly_sales' => 'numeric', 
+                    'loan_amount'        => 'numeric',
+                    'brokerage_fee'      => 'numeric',                          
                  ]);                
             }
 
@@ -160,6 +172,57 @@ class ContactController extends Controller
             $contact->save();
 
             if($contact) {
+
+                $contact_business_info = new ContactBusinessInformation;
+
+                if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
+                    $contact_business_info->user_id       = $user_id;
+                    $contact_business_info->company_id    = $company_id;  
+                }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
+                    $contact_business_info->user_id       = $request->input('user_id');
+                    $contact_business_info->company_id    = $request->input('company_id');
+                } 
+
+                $contact_business_info->contact_id          = $contact->id;
+                $contact_business_info->business_name       = $request->input('business_name');
+                $contact_business_info->years_in_business   = $request->input('years_in_business');
+                $contact_business_info->legal_entity_of_business  = $request->input('legal_entity_of_business');
+                $contact_business_info->accept_credit_card_from_customer    = !empty($request->input('accept_credit_card_from_customer')) ? $request->input('accept_credit_card_from_customer') : 'NA';
+                $contact_business_info->gross_monthly_credit_card_sales     = !empty($request->input('gross_monthly_credit_card_sales')) ? $request->input('gross_monthly_credit_card_sales') : 0;
+                $contact_business_info->gross_yearly_sales  = !empty($request->input('gross_yearly_sales')) ? $request->input('gross_yearly_sales') : 0;                
+                $contact_business_info->filed_bankruptcy    = $request->input('filed_bankruptcy');
+                $contact_business_info->bankruptcy_filed    = !empty($request->input('bankruptcy_filed')) ? $request->input('bankruptcy_filed') : '1910-01-01';
+                $contact_business_info->credit_score        = !empty($request->input('credit_score')) ? $request->input('credit_score') : 'NA';
+                $contact_business_info->save(); 
+
+                $contact_loan_info = new ContactLoanInformation;
+                if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
+                    $contact_loan_info->user_id       = $user_id;
+                    $contact_loan_info->company_id    = $company_id;  
+                }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
+                    $contact_loan_info->user_id       = $request->input('user_id');
+                    $contact_loan_info->company_id    = $request->input('company_id');
+                }         
+                
+                $contact_loan_info->contact_id    = $contact->id;
+                $contact_loan_info->loan_amount   = !empty($request->input('loan_amount')) ? $request->input('loan_amount') : 0;
+                $contact_loan_info->save();
+
+                $contact_broker_info = new ContactBrokerInformation;
+                if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
+                    $contact_broker_info->user_id       = $user_id;
+                    $contact_broker_info->company_id    = $company_id;  
+                }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
+                    $contact_broker_info->user_id       = $request->input('user_id');
+                    $contact_broker_info->company_id    = $request->input('company_id');
+                }         
+                
+                $contact_broker_info->contact_id    = $contact->id;  
+                $contact_broker_info->brokerage_fee = !empty($request->input('brokerage_fee')) ? $request->input('brokerage_fee') : 0;   
+                $contact_broker_info->save(); 
+            }
+
+            if($contact) {
                 Session::flash('message', 'You have successfully add contact');
                 Session::flash('alert_class', 'alert-success');
                 return redirect('contact');
@@ -183,17 +246,29 @@ class ContactController extends Controller
         $companies = Companies::all();
         if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
             $contact = Contact::where('id', '=', $id)->first();
+            $contact_business_info = ContactBusinessInformation::where('contact_id', '=', $id)->first();
+            $contact_loan_info     = ContactLoanInformation::where('contact_id', '=', $id)->first();
+            $contact_broker_info   = ContactBrokerInformation::where('contact_id', '=', $id)->first();
             return view('contact.c_edit', [
                 'contact' => $contact,
                 'stages'  => $stages,
-                'companies' => $companies
+                'companies' => $companies,
+                'contact_business_info' => $contact_business_info,
+                'contact_loan_info' => $contact_loan_info,
+                'contact_broker_info' => $contact_broker_info
             ]);   
         }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
             $contact = Contact::where('id', '=', $id)->first();
+            $contact_business_info = ContactBusinessInformation::where('contact_id', '=', $id)->first();
+            $contact_loan_info     = ContactLoanInformation::where('contact_id', '=', $id)->first();
+            $contact_broker_info   = ContactBrokerInformation::where('contact_id', '=', $id)->first();            
             return view('contact.edit', [
                 'contact' => $contact,
                 'stages' => $stages,
-                'companies' => $companies
+                'companies' => $companies,
+                'contact_business_info' => $contact_business_info,
+                'contact_loan_info' => $contact_loan_info,
+                'contact_broker_info' => $contact_broker_info                
             ]);   
         }
     }    
@@ -210,6 +285,10 @@ class ContactController extends Controller
                     'mobile_number'    => 'required',  
                     'address1'         => 'required',   
                     'zip_code'         => 'required',          
+                    'gross_monthly_credit_card_sales' => 'numeric',
+                    'gross_yearly_sales' => 'numeric', 
+                    'loan_amount'        => 'numeric',
+                    'brokerage_fee'      => 'numeric',               
                  ]);
             } else {
                 $this->validate($request, [
@@ -220,7 +299,11 @@ class ContactController extends Controller
                     'address1'         => 'required',   
                     'zip_code'         => 'required',  
                     'company_id'       => 'required',
-                    'user_id'          => 'required'           
+                    'user_id'          => 'required',
+                    'gross_monthly_credit_card_sales' => 'numeric',
+                    'gross_yearly_sales' => 'numeric', 
+                    'loan_amount'        => 'numeric',
+                    'brokerage_fee'      => 'numeric',              
                  ]);                
             }
 
@@ -249,6 +332,55 @@ class ContactController extends Controller
                 $contact->zip_code      = $request->input('zip_code');
                 $contact->status        = $request->input('status');
                 $contact->save();
+
+                if($contact) {
+                    $contact_business_info = ContactBusinessInformation::where('contact_id', '=', $id)->first(); 
+
+                    if($contact_business_info) {
+
+                        if(UserHelper::isAdminUser(Auth::user()->group_id)) {
+                            $contact_business_info->user_id       = $request->input('user_id');
+                            $contact_business_info->company_id    = $request->input('company_id');
+                        } 
+
+                        $contact_business_info->contact_id          = $contact->id;
+                        $contact_business_info->business_name       = $request->input('business_name');
+                        $contact_business_info->years_in_business   = $request->input('years_in_business');
+                        $contact_business_info->legal_entity_of_business  = $request->input('legal_entity_of_business');
+                        $contact_business_info->accept_credit_card_from_customer    = !empty($request->input('accept_credit_card_from_customer')) ? $request->input('accept_credit_card_from_customer') : 'NA';
+                        $contact_business_info->gross_monthly_credit_card_sales     = !empty($request->input('gross_monthly_credit_card_sales')) ? $request->input('gross_monthly_credit_card_sales') : 0;
+                        $contact_business_info->gross_yearly_sales  = !empty($request->input('gross_yearly_sales')) ? $request->input('gross_yearly_sales') : 0;
+                        $contact_business_info->filed_bankruptcy    = $request->input('filed_bankruptcy');
+                        $contact_business_info->bankruptcy_filed    = !empty($request->input('bankruptcy_filed')) ? $request->input('bankruptcy_filed') : '1910-01-01';
+                        $contact_business_info->credit_score        = !empty($request->input('credit_score')) ? $request->input('credit_score') : 'NA';
+                        $contact_business_info->save(); 
+                    }
+
+                    $contact_loan_info = ContactLoanInformation::where('contact_id', '=', $id)->first(); 
+                    if($contact_loan_info) {
+                        if(UserHelper::isAdminUser(Auth::user()->group_id)) {
+                            $contact_loan_info->user_id       = $request->input('user_id');
+                            $contact_loan_info->company_id    = $request->input('company_id');
+                        }         
+                        
+                        $contact_loan_info->contact_id    = $contact->id;
+                        $contact_loan_info->loan_amount   = !empty($request->input('loan_amount')) ? $request->input('loan_amount') : 0;
+                        $contact_loan_info->save();
+                    }
+
+                    $contact_broker_info = ContactBrokerInformation::where('contact_id', '=', $id)->first(); 
+                    if($contact_broker_info) {
+                        if(UserHelper::isAdminUser(Auth::user()->group_id)) {
+                            $contact_broker_info->user_id       = $request->input('user_id');
+                            $contact_broker_info->company_id    = $request->input('company_id');
+                        }         
+                        
+                        $contact_broker_info->contact_id    = $contact->id;  
+                        $contact_broker_info->brokerage_fee = !empty($request->input('brokerage_fee')) ? $request->input('brokerage_fee') : 0;   
+                        $contact_broker_info->save(); 
+                    }
+
+                }
 
                 Session::flash('message', 'Contact has been updated');
                 Session::flash('alert_class', 'alert-success');
@@ -281,8 +413,15 @@ class ContactController extends Controller
 
     public function ajax_load_company_users(Request $request)
     {
+        $c_user_id = 0;
         $company_users = CompanyUser::where('company_id', '=', $request->input('company_id'))->get();
+
         $c_user_id = $request->input('c_user_id');
+        if(!empty($c_user_id)) {
+            $c_user_id = $request->input('c_user_id');
+            $c_user_id = Hashids::decode($c_user_id)[0];
+        }
+
         return view('contact.ajax_load_company_users_dropdown',[
             'company_users' => $company_users,
             'c_user_id'     => $c_user_id
