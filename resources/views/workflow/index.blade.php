@@ -94,6 +94,7 @@
                     <tr>
                       <th style="width: 1%;" >#</th>
                       <th>Category</th>
+                      <th>Stage</th>
                       <th>Status</th>
                       <th style="width:10%;">Color Code</th>
                       <th style="width:10%;">Action</th>
@@ -103,7 +104,14 @@
                             <td>{{ $wc->id }}</td>
                             <td>{{ $wc->workflow_category->name }}</td>
                             <td>{{ $wc->stage->name }}</td>
-                            <td style="background-color: <?= $wc->color_code; ?>;text-align: center;color:#ffffff;">{{ $wc->color_code }}</td>
+                            <td>{{ $wc->status }}</td>
+                            <?php 
+                            	$text_color = "#ffffff";
+                            	if( $wc->color_code == "#ffffff" ){
+                            		$text_color = "#000000";
+                            	}
+                            ?>
+                            <td style="background-color: <?= $wc->color_code; ?>;text-align: center;color:<?= $text_color; ?>;">{{ $wc->color_code }}</td>
                             <td>
                                 <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $wc->id; ?>">
                                     <i class="fa fa-trash"></i> Delete

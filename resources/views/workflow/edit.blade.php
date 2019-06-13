@@ -84,7 +84,7 @@
 
               <div class="form-group">
                 <label>Color Code <span class="required">*</span></label>
-                <?php echo Form::text('color_code', $workflow->color_code ,['class' => 'form-control colorpicker', 'required' => '']); ?>
+                <?php echo Form::text('color_code', $workflow->color_code ,['maxlength' => 7, 'class' => 'form-control colorpicker', 'required' => '']); ?>
               </div>          
             <!-- /.box-body -->
 

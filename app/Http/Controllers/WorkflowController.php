@@ -45,12 +45,14 @@ class WorkflowController extends Controller
 
         if($search_by != '' && $search_field != '') {
             $workflow_query = Workflow::query();
+            $workflow_query->join('stages', 'stages.id', '=', 'workflows.stage_id');
+            $workflow_query->join('workflow_categories', 'workflow_categories.id', '=', 'workflows.workflow_category_id');
 
             if($search_by != '' && $search_field != '') {
             	if( $search_by == 'category_name' ){
-            		$workflow_query = $workflow_query->where('workflow_category.name', 'like', '%' . $search_field . '%');
+            		$workflow_query = $workflow_query->where('workflow_categories.name', 'like', '%' . $search_field . '%');
             	}elseif( $search_by == 'stage_name' ){
-            		$workflow_query = $workflow_query->where('stage.name', 'like', '%' . $search_field . '%');
+            		$workflow_query = $workflow_query->where('stages.name', 'like', '%' . $search_field . '%');
             	}else{
             		$workflow_query = $workflow_query->where('workflow.'.$search_by, 'like', '%' . $search_field . '%');	
             	}
@@ -89,11 +91,18 @@ class WorkflowController extends Controller
                 'color_code' => 'required'
              ]);
 
+            //Validate if starts with # sign
+            $start_char = mb_substr($request->input('color_code'), 0, 1, "UTF-8");
+            $color_code = $request->input('color_code');
+            if( $start_char != '#' ){
+                $color_code = '#' . $color_code;
+            }
+
             $workflow                 = new Workflow;
             $workflow->workflow_category_id    = $request->input('workflow_category_id');
             $workflow->stage_id   = $request->input('stage_id');
             $workflow->status     = $request->input('status');
-            $workflow->color_code = $request->input('color_code');
+            $workflow->color_code = $color_code;
             $workflow->save();
 
             Session::flash('message', 'You have successfully created new workflow');
@@ -136,10 +145,18 @@ class WorkflowController extends Controller
             $id = Hashids::decode($request->input('id'))[0];
             $workflow = Workflow::find($id);
             if($workflow) {
+
+                //Validate if starts with # sign
+                $start_char = mb_substr($request->input('color_code'), 0, 1, "UTF-8");
+                $color_code = $request->input('color_code');
+                if( $start_char != '#' ){
+                    $color_code = '#' . $color_code;
+                }
+            
                 $workflow->workflow_category_id = $request->input('workflow_category_id');
 	            $workflow->stage_id   = $request->input('stage_id');
 	            $workflow->status     = $request->input('status');
-	            $workflow->color_code = $request->input('color_code');
+	            $workflow->color_code = $color_code;
                 $workflow->save();
 
                 Session::flash('message', 'Workflow has been updated');
