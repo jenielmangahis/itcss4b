@@ -32,6 +32,8 @@ Route::get('/', ['as'=>'/','uses'=>'DashboardController@index'])->middleware('au
 
 //User Module
 Route::get('/users', ['as'=>'users','uses'=>'UserController@index'])->middleware('auth');
+Route::get('user/profile', ['as'=>'user/profile','uses'=>'UserController@profile'])->middleware('auth');
+Route::post('user/update_profile', ['as'=>'user/update_profile','uses'=>'UserController@updateProfile'])->middleware('auth');
 Route::get('user/create', ['as'=>'user/create','uses'=>'UserController@create'])->middleware('auth');
 Route::post('user/store', ['as'=>'user/store','uses'=>'UserController@store'])->middleware('auth');
 Route::get('user/edit/{user_id}', ['as'=>'user/edit','uses'=>'UserController@edit'])->middleware('auth');

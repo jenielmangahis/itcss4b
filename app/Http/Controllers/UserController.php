@@ -70,6 +70,62 @@ class UserController extends Controller
         ]); 
     }   
 
+    public function profile() 
+    {
+        $id     = Auth::id();
+        $user   = User::where('id', '=', $id)->first();
+
+        return view('user.profile',['user' => $user]);         
+    }    
+
+    public function updateProfile(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $id = Hashids::decode($request->input('id'))[0];
+            $user = User::find($id);
+
+            if($user) {
+
+                if($request->file()) {
+                    $image = $request->file('profile_image');
+                    $input['imagename'] = md5(date("Y-m-d") . "-" . rand()) . '.' . $image->getClientOriginalExtension();
+                    $destinationPath = public_path('/uploads/users');
+                    $image->move($destinationPath, $input['imagename']);
+                    $profile_image_name = $input['imagename'];  
+                } else {
+                    $profile_image_name = 'no-image.png';
+                }
+
+                $user->firstname     = $request->input('firstname');
+                $user->lastname      = $request->input('lastname');
+                $user->mobile_number = $request->input('mobile_number');
+                $user->nickname      = $request->input('nickname');
+                $user->profile_img = $profile_image_name;      
+
+                if($request->input('password') != '' && $request->input('confirm_password') != '') {
+                    if($request->input('password') == $request->input('confirm_password')) {
+                        $user->password   = Hash::make($request->input('password'));    
+                    } else {
+                        Session::flash('message', 'Password does not match');
+                        Session::flash('alert_class', 'alert-danger');
+                        return redirect('user/profile');                        
+                    }
+                }
+
+                $user->save();
+
+                Session::flash('message', 'Your profile has been updated');
+                Session::flash('alert_class', 'alert-success');
+                return redirect('user/profile');
+            }
+        }
+
+        Session::flash('message', 'Unable to update your profile');
+        Session::flash('alert_class', 'alert-danger');
+        return redirect('profile');
+    }     
+
     public function create()
     {
         $groups = Group::all();

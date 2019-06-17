@@ -27,9 +27,12 @@
 	      	<li class="dropdown user user-menu">
 		        <!-- Menu Toggle Button -->
 		        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-		          <!-- The user image in the navbar-->
-
-		          <img src="{{ asset('/images/user-default-160x160.jpg') }}" class="user-image" alt="User Image"/>
+		          	<!-- The user image in the navbar-->
+	                @if(file_exists(public_path() . "/uploads/users/".Auth::user()->profile_img) && Auth::user()->profile_img != "")
+	                  <img src="{{ asset("/uploads/users/".Auth::user()->profile_img) }}" class="user-image" alt="User Image"/>
+	                @else
+	                  <img src="{{ asset('/images/user-default-160x160.jpg') }}" class="user-image" alt="User Image"/>          
+	                @endif  		          
 		          <!-- hidden-xs hides the username on small devices so only the image appears. -->
 		          <span class="hidden-xs"><?= Auth::user()->username ?></span>
 		        </a>
@@ -58,7 +61,7 @@
 		          <!-- Menu Footer-->
 		          <li class="user-footer">
 		            <div class="pull-right" style="margin-left: 5px;">
-		              <a href="#" class="btn btn-default btn-flat">Profile</a>
+		              <a href="{{ route('user/profile') }}" class="btn btn-default btn-flat">Profile</a>
 		            </div>
 		            <div class="pull-right">
 		            	<!-- <a href="#" class="btn btn-default btn-flat">Sign out</a> -->
