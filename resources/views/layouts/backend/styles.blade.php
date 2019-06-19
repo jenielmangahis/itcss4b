@@ -13,3 +13,6 @@
 
 <!-- Bootstrap Datepicker -->
 <link href="{{ asset('/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css')}}" rel="stylesheet" type="text/css" />
+
+<!-- Custom Style -->
+<link href="{{ asset('/css/custom.css')}}" rel="stylesheet" type="text/css" />

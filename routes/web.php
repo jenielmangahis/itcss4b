@@ -74,6 +74,13 @@ Route::post('contact/destroy', ['as'=>'contact/destroy','uses'=>'ContactControll
 Route::get('contact/ajax_load_company_users', ['as'=>'contact/ajax_load_company_users','uses'=>'ContactController@ajax_load_company_users'])->middleware('auth');
 Route::get('contact/ajax_load_stage_status', ['as'=>'contact/ajax_load_stage_status','uses'=>'ContactController@ajax_load_stage_status'])->middleware('auth');
 
+//Contact Datasource Module
+Route::get('/contact_datasource', ['as'=>'contact_datasource','uses'=>'ContactDatasourceController@index'])->middleware('auth');
+Route::post('contact_datasource/store', ['as'=>'contact_datasource/store','uses'=>'ContactDatasourceController@store'])->middleware('auth');
+Route::get('contact_datasource/ajax_load_stage_status', ['as'=>'contact_datasource/ajax_load_stage_status','uses'=>'ContactDatasourceController@ajax_load_stage_status'])->middleware('auth');
+Route::get('contact_datasource/edit/{id}', ['as'=>'contact_datasource/edit','uses'=>'ContactDatasourceController@edit'])->middleware('auth');
+Route::post('contact_datasource/update', ['as'=>'contact_datasource/update','uses'=>'ContactDatasourceController@update'])->middleware('auth');
+
 //Workflow Categories
 Route::get('/workflow_category', ['as'=>'workflow_category','uses'=>'WorkflowCategoryController@index'])->middleware('auth');
 Route::get('/workflow_category/create', ['as'=>'workflow_category/create','uses'=>'WorkflowCategoryController@create'])->middleware('auth');

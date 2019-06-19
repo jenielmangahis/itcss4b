@@ -19,12 +19,10 @@
       Contacts Management
     </h1>
     
-    <!-- 
     <ol class="breadcrumb">
-      <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-      <li class="active">Here</li>
+      <li class="active"><a href="#"><i class="fa fa-dashboard"></i> Contacts</a></li>
+      <!-- <li class="active">Here</li> -->
     </ol> 
-    -->
 
   </section>
 
@@ -46,11 +44,15 @@
             <div class="col-md-12">
               <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Contacts List</h3>
-                    <div class="pull-right">
+                    <div class="pull-left">
                         <a href="{{route('contact/create')}}" class="btn btn-primary">
                             <i class="fa fa-plus"></i> Create New
                         </a>
+                    </div>                  
+                    <div class="pull-left" style="margin-left: 5px;">
+                      <a href="{{route('contact_datasource')}}" class="btn">
+                          <i class="fa fa-database"></i> Data Source
+                      </a>          
                     </div>
                 </div>
                 <!-- /.box-header -->
