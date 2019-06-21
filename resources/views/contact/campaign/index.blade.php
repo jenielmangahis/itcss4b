@@ -41,15 +41,116 @@
         @endif     
 
         <div class="box box-primary">
-          <div class="box-body">
+          <div class="box-body btn-add-campaign">
             <div class="box-header ">
                 <div class="pull-left">
-                    <a href="{{route('contact/create')}}" class="btn btn-primary">
+                    <a href="javascript:unhide_add_campaign_form();" class="btn btn-primary">
                         <i class="fa fa-plus"></i> Create New
                     </a>
                 </div>
                 </div>
           </div>
+
+          <div class="box-body" id="add-new-container-form" style="display: none;">
+            {{ Form::open(array('url' => 'contact_campaign/store', 'class' => '', 'id' => 'add-contact-datasource-form')) }}
+            <div class="row">
+              <div class="col-md-5">
+                <div class="form-group">
+                  <label>Campaign Title <span class="required">*</span></label>
+                  <?php echo Form::text('title', old('title') ,['class' => 'form-control', 'required' => '']); ?>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="form-group">
+                  <label>Status <span class="required"></span></label>
+                  <select name="status" class="form-control" id="status">
+                    <option value="1">Active</option>
+                    <option value="2">Inactive</option>
+                  </select>                    
+                </div>  
+              </div>              
+            </div>   
+            <!-- /.row --> 
+
+            <div class="row">
+              <div class="col-md-5">
+                <div class="form-group">
+                  <label><i class="fa fa-calendar"></i> Start Date <span class="required"></span></label>
+                  <?php echo Form::text('start_date', old('start_date') ,['class' => 'form-control', 'id' => 'datepicker_start_date']); ?>                 
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="form-group">
+                  <label><i class="fa fa-calendar"></i> End Date <span class="required"></span></label>
+                  <?php echo Form::text('end_date', old('end_date') ,['class' => 'form-control', 'id' => 'datepicker_end_date']); ?>
+                </div>
+              </div>              
+            </div>   
+            <!-- /.row -->            
+
+            <div class="row">
+              <div class="col-md-5">
+                <div class="form-group">
+                  <label>Source <span class="required"></span></label>
+                  <select name="source_id" class="form-control" id="source_id">
+                    <option value="0">-</option>
+                  </select>                    
+                </div>   
+              </div>
+              <div class="col-md-5">
+                <div class="form-group">
+                  <label>Media Type <span class="required"></span></label>
+                  <select name="media_type_id" class="form-control" id="media_type_id">
+                    <option value="0">-</option>
+                    @foreach($media_types as $media_type)
+                      <option value="{{ $media_type->id }}">{{ $media_type->name }}</option>
+                    @endforeach
+                  </select>                    
+                </div>  
+              </div>
+            </div>         
+            <!-- /.row --> 
+
+            <div class="row">
+              <div class="col-md-5">
+                <div class="form-group">
+                  <label>Campaign Cost <span class="required"></span></label>
+                  <?php echo Form::number('campaign_cost', old('campaign_cost') ,['class' => 'form-control', 'step' => 'any']); ?>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="form-group">
+                  <label>Purchase Amount <span class="required"></span></label>
+                  <?php echo Form::number('purchase_amount', old('purchase_amount') ,['class' => 'form-control', 'step' => 'any']); ?>
+                </div>
+              </div>              
+            </div>   
+            <!-- /.row -->              
+
+            <div class="row">
+              <div class="col-md-5">
+                <div class="form-group">
+                  <label>Priority <span class="required"></span></label>
+                  <?php echo Form::number('priority', old('priority') ,['class' => 'form-control']); ?>                 
+                </div>   
+              </div>
+              <div class="col-md-5">
+                <div class="form-group">
+                  
+                </div>
+              </div>
+            </div>        
+            <!-- /.row -->    
+
+            <div class="box-footer">
+              <button type="submit" class="btn btn-success">Add</button>
+              <a class="btn btn-primary" href="javascript:hide_add_campaign_form();">Cancel</a>
+            </div> 
+            {!! Form::close() !!} 
+          </div>
+
+
+
         </div>  
 
         <div class="box box-primary">
@@ -104,18 +205,30 @@
                       <?php $camp->status == 1 ? $status = 'Active' : $active = 'Inactive'; ?>
                       <td>{{ $status }}</td>
                       <td>{{ date("m/d/Y g:i a", strtotime($camp->created_at)) }}</td>
-                      <td>-</td>
+                      @if($camp->company_id > 0 )
+                        <td>{{ $camp->company->name }}</td>
+                      @else
+                        <td>-</td>
+                      @endif
                       <td>{{ $camp->title }}</td>
-                      <td>-</td>
-                      <td>{{ $camp->campaign_cost }}</td>
+                      @if($camp->source_id > 0 )
+                        <td>{{ $camp->source->name }}</td>
+                      @else
+                        <td>-</td>
+                      @endif
+                      <td>{{ number_format($camp->campaign_cost,2) }}</td>
                       <td>{{ $camp->priority }}</td>
-                      <td>-</td>
-                      <td>{{ $camp->purchase_amount }}</td>
+                      @if($camp->media_type_id > 0 )
+                        <td>{{ $camp->media_type->name }}</td>
+                      @else
+                        <td>-</td>
+                      @endif
+                      <td>{{ number_format($camp->purchase_amount,2) }}</td>
                       <td>
                           <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $camp->id; ?>">
                               <i class="fa fa-trash"></i> Delete
                           </a>
-                          <a href="{{route('contact/edit',[Hashids::encode($camp->id)])}}" class="btn btn-xs btn-primary">
+                          <a href="javascript:alert('under contruction')" class="btn btn-xs btn-primary">
                               <i class="fa fa-edit"></i> Edit
                           </a>                                                              
                       </td>
@@ -134,7 +247,7 @@
                             Are you sure you want to delete selected campaign?
                           </div>
                           <div class="modal-footer">
-                            {{ Form::open(array('url' => 'contact/destroy')) }}
+                            {{ Form::open(array('url' => 'contact_campaign/destroy')) }}
                               <?php echo Form::hidden('id', Hashids::encode($camp->id) ,[]); ?>
                               <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                               <button type="submit" class="btn btn-danger">Yes</button>
@@ -164,7 +277,31 @@
 @section('page-footer-scripts')
 <script>
   var base_url = '<?php echo url("/"); ?>'; 
+  function unhide_add_campaign_form() {
+    $("#add-new-container-form").show('250');
+    $('.btn-add-campaign').hide();
+  }
+  function hide_add_campaign_form() {
+    $("#add-new-container-form").hide('250');
+    $('.btn-add-campaign').show();
+  }
 
+  $(function () {
+
+    //Date picker
+    $('#datepicker_start_date').datepicker({
+      format: 'yyyy-mm-dd',
+      autoclose: true
+    })  
+
+    $('#datepicker_end_date').datepicker({
+      format: 'yyyy-mm-dd',
+      autoclose: true
+    })    
+
+  });
+
+ 
 </script>
 @endsection
 

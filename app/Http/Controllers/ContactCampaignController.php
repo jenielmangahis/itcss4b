@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\ContactCampaign;
+use App\MediaType;
+use App\CompanyUser;
 
 use UserHelper;
 use GlobalHelper;
@@ -56,9 +58,78 @@ class ContactCampaignController extends Controller
             $campaigns = ContactCampaign::paginate(15);          
         }
 
+        $media_types    = MediaType::all();
+
         return view('contact.campaign.index',[
         	'campaigns' => $campaigns,
-        	'search_field' => $search_field
+        	'search_field' => $search_field,
+        	'media_types' => $media_types
         ]); 
-    }  
+    } 
+
+    public function store(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $this->validate($request, [
+                'title'            => 'required',      
+                'campaign_cost'    => 'numeric',
+                'purchase_amount'  => 'numeric',
+                
+             ]);        
+
+            $company_id   = 0;
+            $user_id      = Auth::user()->id;
+            $company_user = CompanyUser::where('user_id','=', $user_id)->first();
+            if($company_user) {
+                $company_id  = $company_user->company_id;
+            }          
+
+            $campaign = new ContactCampaign;  
+
+	        $campaign->user_id          = $user_id;
+	        $campaign->company_id       = $company_id;  
+	        $campaign->title            = $request->input('title');
+	        $campaign->status           = $request->input('status');
+	        $campaign->start_date       = $request->input('start_date');
+	        $campaign->end_date         = $request->input('end_date');
+	        $campaign->source_id        = $request->input('source_id');
+	        $campaign->media_type_id    = $request->input('media_type_id');
+            $campaign->campaign_cost    = $request->input('campaign_cost');
+            $campaign->purchase_amount  = $request->input('purchase_amount');
+            $campaign->priority   		= $request->input('priority');
+            $campaign->save();      
+            
+            if($campaign) {
+                Session::flash('message', 'You have successfully add campaign');
+                Session::flash('alert_class', 'alert-success');
+                return redirect('contact_campaign');
+            } else {
+                Session::flash('message', 'Unable to add new campaign');
+                Session::flash('alert_class', 'alert-danger');
+                return redirect('contact_campaign');
+            }
+             	
+        	echo '<pre>';
+        	print_r($request->input());
+        	echo '</pre>';
+        }
+    }
+
+    public function destroy(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $id = $request->input('id');
+            $id = Hashids::decode($id)[0];
+            $c = ContactCampaign::find($id);
+
+            if($c) {   
+                $c->delete();
+                Session::flash('message', "Delete Successful");
+                Session::flash('alert_class', 'alert-success');
+                return redirect('contact_campaign');
+            }
+        }
+    }           
 }

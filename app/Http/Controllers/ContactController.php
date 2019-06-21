@@ -102,8 +102,7 @@ class ContactController extends Controller
             ]);   
         } 
     }      
-
-    
+  
     public function store(Request $request)
     {
         if ($request->isMethod('post'))

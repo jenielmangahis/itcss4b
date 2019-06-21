@@ -83,7 +83,8 @@ Route::post('contact_datasource/update', ['as'=>'contact_datasource/update','use
 
 //Contact Campaigns
 Route::get('/contact_campaign', ['as'=>'contact_campaign','uses'=>'ContactCampaignController@index'])->middleware('auth');
-
+Route::post('contact_campaign/store', ['as'=>'contact_campaign/store','uses'=>'ContactCampaignController@store'])->middleware('auth');
+Route::post('contact_campaign/destroy', ['as'=>'contact_campaign/destroy','uses'=>'ContactCampaignController@destroy'])->middleware('auth');
 
 //Workflow Categories
 Route::get('/workflow_category', ['as'=>'workflow_category','uses'=>'WorkflowCategoryController@index'])->middleware('auth');
