@@ -104,5 +104,13 @@ Route::get('workflow/edit/{stage_id}', ['as'=>'workflow/edit','uses'=>'WorkflowC
 Route::post('workflow/update', ['as'=>'workflow/update','uses'=>'WorkflowController@update'])->middleware('auth');
 Route::post('workflow/destroy', ['as'=>'workflow/destroy','uses'=>'WorkflowController@destroy'])->middleware('auth');
 Route::get('workflow/ajax_load_stage_status', ['as'=>'workflow/ajax_load_stage_status','uses'=>'WorkflowController@ajax_load_stage_status'])->middleware('auth');
+
+//Media Types
+Route::get('/media_type', ['as'=>'media_type','uses'=>'MediaTypeController@index'])->middleware('auth');
+Route::get('/media_type/create', ['as'=>'media_type/create','uses'=>'MediaTypeController@create'])->middleware('auth');
+Route::post('media_type/store', ['as'=>'media_type/store','uses'=>'MediaTypeController@store'])->middleware('auth');
+Route::get('media_type/edit/{workflow_category_id}', ['as'=>'media_type/edit','uses'=>'MediaTypeController@edit'])->middleware('auth');
+Route::post('media_type/update', ['as'=>'media_type/update','uses'=>'MediaTypeController@update'])->middleware('auth');
+Route::post('media_type/destroy', ['as'=>'media_type/destroy','uses'=>'MediaTypeController@destroy'])->middleware('auth');
 //Benchmark
 Route::get('benchmark/test_model', ['as'=>'benchmark/test_model','uses'=>'BenchmarkController@testModel'])->middleware('auth');

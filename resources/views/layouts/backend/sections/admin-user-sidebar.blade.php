@@ -59,6 +59,7 @@
 	      <ul class="treeview-menu">
 	        <li <?php echo Route::current()->getName() == 'workflow_category' ? 'class="active"' : ''; ?>><a href="{{route('workflow_category')}}"><i class="fa fa-circle-o"></i>Workflow Category</a></li>
 	        <li <?php echo Route::current()->getName() == 'stage' ? 'class="active"' : ''; ?>><a href="{{route('stage')}}"><i class="fa fa-circle-o"></i>Stage</a></li>
+	        <li <?php echo Route::current()->getName() == 'media_type' ? 'class="active"' : ''; ?>><a href="{{route('media_type')}}"><i class="fa fa-circle-o"></i>Media Types</a></li>
 	      </ul>
 	    </li>
 
