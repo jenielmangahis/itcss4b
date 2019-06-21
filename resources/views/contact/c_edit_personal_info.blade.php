@@ -93,7 +93,7 @@
       <label>Stage <span class="required"></span></label>
       <select name="stage_id" class="form-control" id="stage_id">
         @foreach($stages as $stage)
-        <option value="{{ $stage->id }}">{{ $stage->name }}</option>
+        <option <?php echo $contact->stage_id == $stage->id ? 'selected="selected"' : ''; ?> value="{{ $stage->id }}">{{ $stage->name }}</option>
         @endforeach
       </select>                    
     </div>   

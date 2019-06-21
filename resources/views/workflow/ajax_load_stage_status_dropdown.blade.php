@@ -5,9 +5,9 @@
     $selected = "";
   ?>
 
-  <select name="user_id" id="user_id" class="form-control">
+  <select name="status" id="status" class="form-control">
     @foreach($workflow as $w)        
-      <option <?php echo $selected; ?> value="{{ $w->id }}">{{ $w->status }}</option>
+      <option <?php echo $w->id == $status ? 'selected="selected"' : ''; ?> value="{{ $w->id }}">{{ $w->status }}</option>
     @endforeach
   </select>   
 @else

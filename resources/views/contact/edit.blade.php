@@ -156,12 +156,13 @@
 
   function load_stage_status_dropdown() {
     var stage_id = $('#stage_id').val();
+    var status = "<?php echo $contact->status; ?>";
     $('#stage-status-container').html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
     var url = base_url + '/workflow/ajax_load_stage_status'
     $.ajax({
          type: "GET",
          url: url,               
-         data: {"stage_id":stage_id}, 
+         data: {"stage_id":stage_id,"status":status}, 
          success: function(o)
          {
             $('#stage-status-container').html(o);
