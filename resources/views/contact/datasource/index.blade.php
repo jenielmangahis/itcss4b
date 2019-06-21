@@ -98,8 +98,10 @@
                 <div class="form-group">
                   <label>Campaign <span class="required"></span></label>
                   <select name="compaign_id" class="form-control" id="compaign_id">
-                    <option value="1">Campaign 01</option>
-                    <option value="2">Campaign 02</option>
+                    <option value="0">-</option>
+                    @foreach($campaign as $camp)
+                      <option value="{{ $camp->id }}">{{ $camp->title }}</option>
+                    @endforeach
                   </select>                    
                 </div>  
               </div>

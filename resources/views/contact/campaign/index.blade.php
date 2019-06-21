@@ -56,7 +56,7 @@
 
           <div class="box-body">
             <div class="row">
-              {{ Form::open(array('url' => 'contact', 'class' => '', 'method' => 'get')) }}
+              {{ Form::open(array('url' => 'contact_campaign', 'class' => '', 'method' => 'get')) }}
 
                 <div class="col-xs-12">
                   <div class="row">
@@ -76,7 +76,7 @@
                       <div class="form-group">
                         <label>&nbsp;</label><br />
                         <button type="submit" class="btn btn-primary">Filter</button>
-                        <a class="btn btn-success" href="{{route('contact')}}">Refresh</a>
+                        <a class="btn btn-success" href="{{route('contact_campaign')}}">Refresh</a>
                       </div>
                       <!-- /.form-group -->
                     </div>
@@ -94,18 +94,16 @@
                 <th>Title</th>
                 <th>Source</th>
                 <th>Cost</th>
-
                 <th>Priority</th>
                 <th>Media</th>
                 <th>Purchase Amount</th>
-
                 <th>Action</th>
               </tr>
               @foreach($campaigns as $camp)
                   <tr>
                       <?php $camp->status == 1 ? $status = 'Active' : $active = 'Inactive'; ?>
                       <td>{{ $status }}</td>
-                      <td>{{ $camp->created_at }}</td>
+                      <td>{{ date("m/d/Y g:i a", strtotime($camp->created_at)) }}</td>
                       <td>-</td>
                       <td>{{ $camp->title }}</td>
                       <td>-</td>
@@ -151,6 +149,10 @@
             </table>
 
           </div>   
+
+          <div style="text-align: center;" class="box-footer clearfix">
+              {{ $campaigns->links() }}
+          </div>          
 
         </div>    
         

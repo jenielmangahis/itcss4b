@@ -10,6 +10,7 @@ use App\Contact;
 use App\Stage;
 use App\Workflow;
 use App\CompanyUser;
+use App\ContactCampaign;
 
 use UserHelper;
 use GlobalHelper;
@@ -46,11 +47,13 @@ class ContactDatasourceController extends Controller
         $stages              = Stage::all();
         $datasource_import   = ContactDatasource::where('type','=', 1)->get();
         $datasource_webform  = ContactDatasource::where('type','=', 2)->get();
+        $campaign            = ContactCampaign::where('status','=', 1)->get();
 
         return view('contact.datasource.index',[
         	'stages' => $stages,
         	'datasource_import' => $datasource_import,
-        	'datasource_webform' => $datasource_webform
+        	'datasource_webform' => $datasource_webform,
+        	'campaign' => $campaign
         ]); 
     }     
 
@@ -117,12 +120,14 @@ class ContactDatasourceController extends Controller
         $datasource_import   = ContactDatasource::where('type','=', 1)->get();
         $datasource_webform  = ContactDatasource::where('type','=', 2)->get();		
         $datasource          = ContactDatasource::find($id);
+        $campaign            = ContactCampaign::where('status','=', 1)->get();
 
         return view('contact.datasource.edit',[
         	'stages' => $stages,
         	'datasource_import' => $datasource_import,
         	'datasource_webform' => $datasource_webform,
-        	'datasource' => $datasource
+        	'datasource' => $datasource,
+        	'campaign' => $campaign
         ]);         
     }
 

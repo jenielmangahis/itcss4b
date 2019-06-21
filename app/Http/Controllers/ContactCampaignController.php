@@ -42,7 +42,19 @@ class ContactCampaignController extends Controller
         $search_by    = $request->input('search_by');
         $search_field = $request->input('search_field');  
 
-        $campaigns = ContactCampaign::all();
+        if($search_by != '' && $search_field != '') {
+            $contact_query = ContactCampaign::query();
+
+            if($search_by != '' && $search_field != '') {
+
+            	$contact_query = $contact_query->where('contact_campaigns.'.$search_by, 'like', '%' . $search_field . '%');
+                
+                $campaigns = $contact_query->paginate(15);
+
+            }            
+        } else {   
+            $campaigns = ContactCampaign::paginate(15);          
+        }
 
         return view('contact.campaign.index',[
         	'campaigns' => $campaigns,
