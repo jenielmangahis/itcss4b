@@ -21,6 +21,7 @@ class UserHelper
                   'users',
                   'contacts',
                   'contact_datasource',
+                  'contact_campaigns',
                   'workflow',
                   'email_templates',
                   'reports',

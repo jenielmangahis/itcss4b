@@ -54,6 +54,11 @@
                           <i class="fa fa-database"></i> Data Source
                       </a>          
                     </div>
+                    <div class="pull-left" style="margin-left: 5px;">
+                      <a href="{{route('contact_campaign')}}" class="btn">
+                          <i class="fa fa-database"></i> Campaigns
+                      </a>          
+                    </div>
                 </div>
                 <!-- /.box-header -->
 
