@@ -52,7 +52,7 @@
           </div>
 
           <div class="box-body" id="add-new-container-form" style="display: none;">
-            {{ Form::open(array('url' => 'contact_campaign/store', 'class' => '', 'id' => 'add-contact-datasource-form')) }}
+            {{ Form::open(array('url' => 'contact_campaign/store', 'class' => '', 'id' => 'add-contact-campaign-form')) }}
             <div class="row">
               <div class="col-md-5">
                 <div class="form-group">
@@ -149,7 +149,15 @@
             {!! Form::close() !!} 
           </div>
 
-
+          <div class="box-body" id="edit-new-container-form" style="display: none;">
+            {{ Form::open(array('url' => 'contact_campaign/update', 'class' => '', 'id' => 'edit-contact-campaign-form')) }}
+            <div id="edit-campaign-container-fields"></div>
+            <div class="box-footer">
+              <button type="submit" class="btn btn-success">Update</button>
+              <a class="btn btn-primary" href="javascript:hide_edit_campaign_form();">Cancel</a>
+            </div>
+            {!! Form::close() !!} 
+          </div>
 
         </div>  
 
@@ -228,7 +236,7 @@
                           <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $camp->id; ?>">
                               <i class="fa fa-trash"></i> Delete
                           </a>
-                          <a href="javascript:alert('under contruction')" class="btn btn-xs btn-primary">
+                          <a href="javascript:show_edit_campaign_form('<?= Hashids::encode($camp->id); ?>');" class="btn btn-xs btn-primary">
                               <i class="fa fa-edit"></i> Edit
                           </a>                                                              
                       </td>
@@ -283,6 +291,30 @@
   }
   function hide_add_campaign_form() {
     $("#add-new-container-form").hide('250');
+    $('.btn-add-campaign').show();
+  }
+
+  function show_edit_campaign_form(id) {
+    $("#edit-new-container-form").show('250');
+    $('.btn-add-campaign').hide();
+
+    $('#edit-campaign-container-fields').html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
+    
+    var url = base_url + '/contact_campaign/ajax_load_edit_fields'
+    $.ajax({
+         type: "GET",
+         url: url,               
+         data: {"id":id}, 
+         success: function(o)
+         {
+            $('#edit-campaign-container-fields').html(o);
+         }
+    });
+
+  }
+
+  function hide_edit_campaign_form() {
+    $("#edit-new-container-form").hide('250');
     $('.btn-add-campaign').show();
   }
 

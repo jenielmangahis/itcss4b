@@ -74,8 +74,7 @@ class ContactCampaignController extends Controller
             $this->validate($request, [
                 'title'            => 'required',      
                 'campaign_cost'    => 'numeric',
-                'purchase_amount'  => 'numeric',
-                
+                'purchase_amount'  => 'numeric',         
              ]);        
 
             $company_id   = 0;
@@ -109,12 +108,57 @@ class ContactCampaignController extends Controller
                 Session::flash('alert_class', 'alert-danger');
                 return redirect('contact_campaign');
             }
-             	
-        	echo '<pre>';
-        	print_r($request->input());
-        	echo '</pre>';
+
         }
-    }
+    }   
+
+    public function ajax_load_edit_fields(Request $request)
+    {      
+        $id               = Hashids::decode($request->input('id'))[0];
+        $contact_campaign = ContactCampaign::where('id', '=', $id)->first();
+        $media_types      = MediaType::all();
+        return view('contact.campaign.ajax_load_edit_fields',[
+        	'contact_campaign' => $contact_campaign,
+        	'media_types' => $media_types
+        ]);
+    }  
+
+    public function update(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $this->validate($request, [
+                'title'            => 'required',      
+                'campaign_cost'    => 'numeric',
+                'purchase_amount'  => 'numeric',    
+             ]);
+
+            $id = Hashids::decode($request->input('id'))[0];
+            $campaign = ContactCampaign::find($id);
+
+            if($campaign) {
+
+		        $campaign->title            = $request->input('title');
+		        $campaign->status           = $request->input('status');
+		        $campaign->start_date       = $request->input('start_date');
+		        $campaign->end_date         = $request->input('end_date');
+		        $campaign->source_id        = $request->input('source_id');
+		        $campaign->media_type_id    = $request->input('media_type_id');
+	            $campaign->campaign_cost    = $request->input('campaign_cost');
+	            $campaign->purchase_amount  = $request->input('purchase_amount');
+	            $campaign->priority   		= $request->input('priority');
+	            $campaign->save();     
+
+                Session::flash('message', 'Campaign has been updated');
+                Session::flash('alert_class', 'alert-success');
+                return redirect('contact_campaign');
+            }
+        }
+
+        Session::flash('message', 'Unable to update Campaign');
+        Session::flash('alert_class', 'alert-danger');
+        return redirect('contact_campaign');
+    } 
 
     public function destroy(Request $request)
     {
