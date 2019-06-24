@@ -117,5 +117,13 @@ Route::post('media_type/store', ['as'=>'media_type/store','uses'=>'MediaTypeCont
 Route::get('media_type/edit/{workflow_category_id}', ['as'=>'media_type/edit','uses'=>'MediaTypeController@edit'])->middleware('auth');
 Route::post('media_type/update', ['as'=>'media_type/update','uses'=>'MediaTypeController@update'])->middleware('auth');
 Route::post('media_type/destroy', ['as'=>'media_type/destroy','uses'=>'MediaTypeController@destroy'])->middleware('auth');
+
+//Sources
+Route::get('/source', ['as'=>'source','uses'=>'SourceController@index'])->middleware('auth');
+Route::get('/source/create', ['as'=>'source/create','uses'=>'SourceController@create'])->middleware('auth');
+Route::post('source/store', ['as'=>'source/store','uses'=>'SourceController@store'])->middleware('auth');
+Route::get('source/edit/{workflow_category_id}', ['as'=>'source/edit','uses'=>'SourceController@edit'])->middleware('auth');
+Route::post('source/update', ['as'=>'source/update','uses'=>'SourceController@update'])->middleware('auth');
+Route::post('source/destroy', ['as'=>'source/destroy','uses'=>'SourceController@destroy'])->middleware('auth');
 //Benchmark
 Route::get('benchmark/test_model', ['as'=>'benchmark/test_model','uses'=>'BenchmarkController@testModel'])->middleware('auth');
