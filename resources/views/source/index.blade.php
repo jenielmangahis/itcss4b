@@ -16,7 +16,7 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      Media Types
+      Sources
     </h1>
     
     <!-- 
@@ -46,9 +46,9 @@
             <div class="col-md-12">
               <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Media Type List</h3>
+                    <h3 class="box-title">Sources List</h3>
                     <div class="pull-right">
-                        <a href="{{route('media_type/create')}}" class="btn btn-primary">
+                        <a href="{{route('source/create')}}" class="btn btn-primary">
                             <i class="fa fa-plus"></i> Create New
                         </a>
                     </div>
@@ -58,7 +58,7 @@
                 <div class="box-body">
 
                   <div class="row">
-                    {{ Form::open(array('url' => 'media_type', 'class' => '', 'method' => 'get')) }}
+                    {{ Form::open(array('url' => 'source', 'class' => '', 'method' => 'get')) }}
 
                       <div class="col-xs-12">
                         <div class="row">
@@ -78,7 +78,7 @@
                             <div class="form-group">
                               <label>&nbsp;</label><br />
                               <button type="submit" class="btn btn-primary">Filter</button>
-                              <a class="btn btn-success" href="{{route('media_type')}}">Refresh</a>
+                              <a class="btn btn-success" href="{{route('source')}}">Refresh</a>
                             </div>
                             <!-- /.form-group -->
                           </div>
@@ -94,21 +94,21 @@
                       <th>Name</th>
                       <th style="width:10%;">Action</th>
                     </tr>
-                    @foreach($media_types as $mt)
+                    @foreach($sources as $sr)
                         <tr>
-                            <td>{{ $mt->id }}</td>
-                            <td>{{ $mt->name }}</td>
+                            <td>{{ $sr->id }}</td>
+                            <td>{{ $sr->name }}</td>
                             <td>
-                                <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $mt->id; ?>">
+                                <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $sr->id; ?>">
                                     <i class="fa fa-trash"></i> Delete
                                 </a>
-                                <a href="{{route('media_type/edit',[Hashids::encode($mt->id)])}}" class="btn btn-xs btn-primary">
+                                <a href="{{route('source/edit',[Hashids::encode($sr->id)])}}" class="btn btn-xs btn-primary">
                                     <i class="fa fa-edit"></i> Edit
                                 </a>                                                              
                             </td>
                         </tr>
 
-                        <div id="modalDelete-<?= $mt->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
+                        <div id="modalDelete-<?= $sr->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
                             <div class="modal-dialog modal-md">
                               <div class="modal-content">
 
@@ -121,8 +121,8 @@
                                   Are you sure you want to delete selected media type?
                                 </div>
                                 <div class="modal-footer">
-                                  {{ Form::open(array('url' => 'media_type/destroy')) }}
-                                    <?php echo Form::hidden('id', Hashids::encode($mt->id) ,[]); ?>
+                                  {{ Form::open(array('url' => 'source/destroy')) }}
+                                    <?php echo Form::hidden('id', Hashids::encode($sr->id) ,[]); ?>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                                     <button type="submit" class="btn btn-danger">Yes</button>
                                   {!! Form::close() !!}
@@ -139,7 +139,7 @@
                 <!-- /.box-body -->
 
                 <div style="text-align: center;" class="box-footer clearfix">
-                    {{ $media_types->links() }}
+                    {{ $sources->links() }}
                 </div>
 
               </div>
