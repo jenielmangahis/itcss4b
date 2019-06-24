@@ -94,6 +94,9 @@
                   <label>Source <span class="required"></span></label>
                   <select name="source_id" class="form-control" id="source_id">
                     <option value="0">-</option>
+                    @foreach($sources as $source)
+                      <option value="{{ $source->id }}">{{ $source->name }}</option>
+                    @endforeach                    
                   </select>                    
                 </div>   
               </div>

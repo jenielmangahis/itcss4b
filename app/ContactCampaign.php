@@ -18,5 +18,10 @@ class ContactCampaign extends Model
     public function media_type()
     {
         return $this->belongsTo('App\MediaType');
-    }         
+    }      
+
+    public function source()
+    {
+        return $this->belongsTo('App\Source');
+    }            
 }

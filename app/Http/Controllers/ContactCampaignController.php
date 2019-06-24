@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\ContactCampaign;
 use App\MediaType;
+use App\Source;
 use App\CompanyUser;
 
 use UserHelper;
@@ -59,11 +60,13 @@ class ContactCampaignController extends Controller
         }
 
         $media_types    = MediaType::all();
+        $sources        = Source::all();
 
         return view('contact.campaign.index',[
         	'campaigns' => $campaigns,
         	'search_field' => $search_field,
-        	'media_types' => $media_types
+        	'media_types' => $media_types,
+        	'sources' => $sources
         ]); 
     } 
 
@@ -117,9 +120,11 @@ class ContactCampaignController extends Controller
         $id               = Hashids::decode($request->input('id'))[0];
         $contact_campaign = ContactCampaign::where('id', '=', $id)->first();
         $media_types      = MediaType::all();
+        $sources        = Source::all();
         return view('contact.campaign.ajax_load_edit_fields',[
         	'contact_campaign' => $contact_campaign,
-        	'media_types' => $media_types
+        	'media_types' => $media_types,
+        	'sources' => $sources
         ]);
     }  
 
