@@ -41,7 +41,7 @@
       <select name="source_id" class="form-control" id="source_id">
         <option value="0">-</option>
         @foreach($sources as $source)
-          <option value="{{ $source->id }}">{{ $source->name }}</option>
+          <option <?php echo $contact_campaign->source_id == $source->id ? 'selected="selected"' : ''; ?> value="{{ $source->id }}">{{ $source->name }}</option>
         @endforeach              
       </select>                    
     </div>   

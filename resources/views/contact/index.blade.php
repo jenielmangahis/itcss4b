@@ -120,9 +120,52 @@
                                 </a>
                                 <a href="{{route('contact/edit',[Hashids::encode($con->id)])}}" class="btn btn-xs btn-primary">
                                     <i class="fa fa-edit"></i> Edit
-                                </a>                                                              
+                                </a> 
+                                <a href="javascript:void(0);" class="btn btn-xs btn-primary" onclick="javascript:_load_stage_status_dropdown('<?php echo $con->id; ?>', )" id="edit-modal-status-<?php echo $con->id; ?>" data-toggle="modal" data-target="#modalEdit-<?= $con->id; ?>">
+                                    <i class="fa fa-edit"></i> Status
+                                </a>                                                            
                             </td>
                         </tr>
+
+                        <div id="modalEdit-<?= $con->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
+                            {{ Form::open(array('url' => 'contact/update_status', 'class' => '', 'id' => 'edit-contact-status-form')) }}
+                              <?php echo Form::hidden('current_status', $con->status ,['id' => 'current_status']); ?>
+                              <div class="modal-dialog modal-md">
+                                <div class="modal-content">
+
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                                    </button>
+                                    <h4 class="modal-title" id="myModalLabel">Edit Status</h4>
+                                  </div>
+                                  <div class="modal-body">
+                                    <div class="row">
+                                      <div class="col-md-5">
+                                        <div class="form-group">
+                                          <label>Stage <span class="required"></span></label>
+                                          <select name="stage_id" onchange="javascript:load_stage_status_dropdown('<?php echo $con->status; ?>','<?php echo $con->id; ?>');" class="form-control" id="stage_id">
+                                            @foreach($stages as $stage)
+                                            <option <?php echo $con->stage_id == $stage->id ? 'selected="selected"' : ''; ?> value="{{ $stage->id }}">{{ $stage->name }}</option>
+                                            @endforeach
+                                          </select>                    
+                                        </div>   
+                                      </div>
+                                      <div class="col-md-5">
+                                        <div class="form-group">
+                                          <div id="stage-status-container-<?php echo $con->id; ?>"></div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="submit" class="btn btn-default">Update</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                  </div>
+
+                                </div>
+                              </div>
+                            {!! Form::close() !!}        
+                        </div>
 
                         <div id="modalDelete-<?= $con->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
                             <div class="modal-dialog modal-md">
@@ -169,3 +212,46 @@
   <!-- /.content -->
 @endsection
 
+@section('page-footer-scripts')
+<script>
+  var base_url = '<?php echo url("/"); ?>';
+
+  function load_stage_status_dropdown(status, id) {
+    var stage_id = $('#stage_id').val();
+    $('#stage-status-container-' + id).html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
+
+    var url = base_url + '/contact/ajax_load_stage_status'
+    $.ajax({
+         type: "GET",
+         url: url,               
+         data: {"stage_id":stage_id,"status":status}, 
+         success: function(o)
+         {
+            $('#stage-status-container-' + id).html(o);
+         }
+    });
+  }  
+
+  function _load_stage_status_dropdown(id) {
+      var stage_id = $('#stage_id').val();
+      var status   = $('#current_status').val();
+
+      /*$('#stage-status-container-' + id).html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
+      var url = base_url + '/contact/ajax_load_stage_status'
+      $.ajax({
+           type: "GET",
+           url: url,               
+           data: {"stage_id":stage_id,"status":status}, 
+           success: function(o)
+           {
+              $('#stage-status-container-' + id).html(o);
+           }
+      });*/
+  }  
+
+  $(function () { 
+ 
+  });
+  
+</script>
+@endsection

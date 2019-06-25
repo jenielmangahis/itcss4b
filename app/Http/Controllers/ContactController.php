@@ -79,9 +79,12 @@ class ContactController extends Controller
             }            
         }
 
+        $stages    = Stage::all();
+
         return view('contact.index',[
         	'contact' => $contact,
-            'search_field' => $search_field
+            'search_field' => $search_field,
+            'stages' => $stages
         ]); 
     } 
 
