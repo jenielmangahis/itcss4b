@@ -73,6 +73,8 @@ Route::post('contact/update', ['as'=>'contact/update','uses'=>'ContactController
 Route::post('contact/destroy', ['as'=>'contact/destroy','uses'=>'ContactController@destroy'])->middleware('auth');
 Route::get('contact/ajax_load_company_users', ['as'=>'contact/ajax_load_company_users','uses'=>'ContactController@ajax_load_company_users'])->middleware('auth');
 Route::get('contact/ajax_load_stage_status', ['as'=>'contact/ajax_load_stage_status','uses'=>'ContactController@ajax_load_stage_status'])->middleware('auth');
+Route::get('contact/ajax_load_update_status', ['as'=>'contact/ajax_load_update_status','uses'=>'ContactController@ajax_load_update_status'])->middleware('auth');
+Route::post('contact/update_status', ['as'=>'contact/update_status','uses'=>'ContactController@update_status'])->middleware('auth');
 
 //Contact Datasource Module
 Route::get('/contact_datasource', ['as'=>'contact_datasource','uses'=>'ContactDatasourceController@index'])->middleware('auth');

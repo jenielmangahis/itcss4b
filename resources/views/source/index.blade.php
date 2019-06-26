@@ -118,7 +118,7 @@
                                   <h4 class="modal-title" id="myModalLabel">Delete</h4>
                                 </div>
                                 <div class="modal-body">
-                                  Are you sure you want to delete selected media type?
+                                  Are you sure you want to delete selected source?
                                 </div>
                                 <div class="modal-footer">
                                   {{ Form::open(array('url' => 'source/destroy')) }}

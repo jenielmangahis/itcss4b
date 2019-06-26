@@ -243,7 +243,7 @@ class ContactController extends Controller
 
     public function edit($id)
     {     
-        $id        = Hashids::decode($id)[0];
+        $id        = Hashids::decode($id)[0]; 
         $stages    = Stage::all();
         $companies = Companies::all();
         if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
@@ -394,6 +394,37 @@ class ContactController extends Controller
         Session::flash('message', 'Unable to update contact');
         Session::flash('alert_class', 'alert-danger');
         return redirect('contact');        
+    }
+
+    public function update_status(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $this->validate($request, [
+                'stage_id' => 'required', 
+                'status'   => 'required'
+            ]);  
+
+            $id      = Hashids::decode($request->input('id'))[0];
+            $contact = Contact::find($id); 
+
+            if($contact) {
+
+                $contact->stage_id = $request->input('stage_id');
+                $contact->status  = $request->input('status');
+                $contact->save();           
+
+                Session::flash('message', 'Contact Status has been updated');
+                Session::flash('alert_class', 'alert-success');
+                return redirect('contact');    
+
+            }       
+
+            Session::flash('message', 'Unable to update contact status');
+            Session::flash('alert_class', 'alert-danger');
+            return redirect('contact');  
+
+        }
     }      
 
     public function destroy(Request $request)
@@ -438,5 +469,26 @@ class ContactController extends Controller
             'workflow' => $workflow,
             'status' => $status
         ]);
-    }     
+    }   
+
+    public function ajax_load_update_status(Request $request)
+    {
+        $id = $request->input('id');
+        $contact = Contact::where('id', '=', $id)->first();
+
+        if($contact) {
+            $workflow = Workflow::where('stage_id', '=', $contact->stage_id)->get();
+            $status   = $contact->status;
+            $stages    = Stage::all();
+
+            return view('contact.ajax_load_update_status',[
+                'contact' => $contact,
+                'workflow' => $workflow,
+                'status' => $status,
+                'stages' => $stages
+            ]);            
+        }
+
+
+    }        
 }

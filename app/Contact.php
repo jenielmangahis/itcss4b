@@ -9,4 +9,9 @@ class Contact extends Model
 {
     protected $table = 'contacts';
     use SoftDeletes;
+
+    public function stage()
+    {
+        return $this->belongsTo('App\Stage');
+    }    
 }
