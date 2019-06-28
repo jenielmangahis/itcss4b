@@ -70,4 +70,90 @@ class EmailTemplateController extends Controller
             'companies' => $companies
         ]);
     }
+
+    public function store(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $this->validate($request, [
+                'name'           => 'required',
+                'user_id'        => 'required',
+                'company_id'     => 'required'    
+             ]);
+            $emailTemplate                 = new EmailTemplate;
+            $emailTemplate->company_id     = $request->input('company_id');
+            $emailTemplate->user_id        = $request->input('user_id');
+            $emailTemplate->name           = $request->input('name');
+            $emailTemplate->content        = $request->input('content');
+            $emailTemplate->save();
+
+            Session::flash('message', 'You have successfully created new email template');
+            Session::flash('alert_class', 'alert-success');
+            return redirect('email_template');
+
+        }else{
+            Session::flash('message', 'Unable to create new email template');
+            Session::flash('alert_class', 'alert-danger');  
+            return redirect('email_template');
+        }
+    }
+
+    public function edit($id)
+    {     
+        $id = Hashids::decode($id)[0];
+        $emailTemplate   = EmailTemplate::where('id', '=', $id)->first();
+        $companies = Companies::all();
+
+        return view('email_template.edit', [
+            'emailTemplate' => $emailTemplate,
+            'companies' => $companies
+        ]);
+    }
+
+    public function update(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $this->validate($request, [
+                'name'           => 'required',
+                'user_id'        => 'required',
+                'company_id'     => 'required'       
+             ]);
+
+            $id = Hashids::decode($request->input('id'))[0];
+            $emailTemplate = EmailTemplate::find($id);
+            if($emailTemplate) {
+                $emailTemplate->company_id     = $request->input('company_id');
+                $emailTemplate->user_id        = $request->input('user_id');
+                $emailTemplate->name           = $request->input('name');
+                $emailTemplate->content        = $request->input('content');
+                $emailTemplate->save();
+
+                Session::flash('message', 'Email Template has been updated');
+                Session::flash('alert_class', 'alert-success');
+                return redirect('email_template');
+            }
+        }
+
+        Session::flash('message', 'Unable to update Email Template');
+        Session::flash('alert_class', 'alert-danger');
+        return redirect('email_template');
+    }
+
+    public function destroy(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $id = $request->input('id');
+            $id = Hashids::decode($id)[0];
+            $emailTemplate = EmailTemplate::find($id);
+
+            if($emailTemplate) {   
+                $emailTemplate->delete();
+                Session::flash('message', "Delete Successful");
+                Session::flash('alert_class', 'alert-success');
+                return redirect('email_template');
+            }
+        }
+    }
 }

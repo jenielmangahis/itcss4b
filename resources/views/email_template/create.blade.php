@@ -79,8 +79,11 @@
               @endif       
               <div class="form-group">
                 <label>Name <span class="required">*</span></label>
-                <?php echo Form::text('name', old('name') ,['class' => 'form-control', 'required' => '']); ?>
-                <?php echo Form::text('content', old('content') ,['class' => 'form-control ckeditor', 'required' => '']); ?>
+                <?php echo Form::text('name', old('name') ,['class' => 'form-control', 'required' => '']); ?>                
+              </div>  
+              <div class="form-group">
+                <label>Content <span class="required">*</span></label>                
+                <?php echo Form::textarea('content', old('content') ,['class' => 'form-control', 'id' => 'ckeditor', 'required' => '']); ?>
               </div>  
             </div>        
             <!-- /.box-body -->
@@ -120,8 +123,8 @@
   }
 
   $(function () {
-
     load_company_users_dropdown();
+    
     $('#company_id').change(function () {
       var company_id = $('#company_id').val();
       var c_user_id = 0;
@@ -140,6 +143,11 @@
            }
       }); 
     });
+
+    // Replace the <textarea id="editor1"> with a CKEditor
+    // instance, using default configuration.
+    CKEDITOR.replace('ckeditor');
+
   });
 
 </script>

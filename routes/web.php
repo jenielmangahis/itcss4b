@@ -135,6 +135,8 @@ Route::get('/email_template', ['as'=>'email_template','uses'=>'EmailTemplateCont
 Route::get('/email_template/create', ['as'=>'email_template/create','uses'=>'EmailTemplateController@create'])->middleware('auth');
 Route::post('email_template/store', ['as'=>'email_template/store','uses'=>'EmailTemplateController@store'])->middleware('auth');
 Route::get('email_template/edit/{email_template_id}', ['as'=>'email_template/edit','uses'=>'EmailTemplateController@edit'])->middleware('auth');
+Route::post('email_template/update', ['as'=>'email_template/update','uses'=>'EmailTemplateController@update'])->middleware('auth');
+Route::post('email_template/destroy', ['as'=>'email_template/destroy','uses'=>'EmailTemplateController@destroy'])->middleware('auth');
 
 //Benchmark
 Route::get('benchmark/test_model', ['as'=>'benchmark/test_model','uses'=>'BenchmarkController@testModel'])->middleware('auth');
