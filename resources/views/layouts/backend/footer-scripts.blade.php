@@ -7,6 +7,7 @@
 <!-- AdminLTE App -->
 <script src="{{ asset ('/bower_components/admin-lte/dist/js/adminlte.min.js') }}"></script>
 <script src="{{ asset ('/bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js') }}"></script>
+<script src="{{ asset ('/bower_components/ckeditor/ckeditor.js') }}"></script>
 <script src="{{ asset ('/js/admin.js') }}"></script>
 
 <!-- Bootstrap Datepicker -->

@@ -31,8 +31,8 @@
 	    	<a href="{{route('contact')}}"><i class="fa fa-phone-square"></i> <span>Contacts </span></a>
 	    </li>
 
-	    <li <?php echo Route::current()->getName() == 'email_templates' ? 'class="active"' : ''; ?>>
-	    	<a href="{{route('companies')}}"><i class="fa fa-mail-reply-all"></i> <span>Email Templates </span></a>
+	    <li <?php echo Route::current()->getName() == 'email_template' ? 'class="active"' : ''; ?>>
+	    	<a href="{{route('email_template')}}"><i class="fa fa-mail-reply-all"></i> <span>Email Templates </span></a>
 	    </li>
 
 	    <li <?php echo Route::current()->getName() == 'workflow' ? 'class="active"' : ''; ?>>

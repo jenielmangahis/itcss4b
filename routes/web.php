@@ -56,7 +56,7 @@ Route::get('group/edit/{group_id}', ['as'=>'group/edit','uses'=>'GroupController
 Route::post('group/update', ['as'=>'group/update','uses'=>'GroupController@update'])->middleware('auth');
 Route::post('group/destroy', ['as'=>'group/destroy','uses'=>'GroupController@destroy'])->middleware('auth');
 
-//Componies Module
+//Companies Module
 Route::get('/companies', ['as'=>'companies','uses'=>'CompaniesController@index'])->middleware('auth');
 Route::get('companies/create', ['as'=>'companies/create','uses'=>'CompaniesController@create'])->middleware('auth');
 Route::post('companies/store', ['as'=>'companies/store','uses'=>'CompaniesController@store'])->middleware('auth');
@@ -129,5 +129,14 @@ Route::post('source/store', ['as'=>'source/store','uses'=>'SourceController@stor
 Route::get('source/edit/{workflow_category_id}', ['as'=>'source/edit','uses'=>'SourceController@edit'])->middleware('auth');
 Route::post('source/update', ['as'=>'source/update','uses'=>'SourceController@update'])->middleware('auth');
 Route::post('source/destroy', ['as'=>'source/destroy','uses'=>'SourceController@destroy'])->middleware('auth');
+
+//Email Templates
+Route::get('/email_template', ['as'=>'email_template','uses'=>'EmailTemplateController@index'])->middleware('auth');
+Route::get('/email_template/create', ['as'=>'email_template/create','uses'=>'EmailTemplateController@create'])->middleware('auth');
+Route::post('email_template/store', ['as'=>'email_template/store','uses'=>'EmailTemplateController@store'])->middleware('auth');
+Route::get('email_template/edit/{email_template_id}', ['as'=>'email_template/edit','uses'=>'EmailTemplateController@edit'])->middleware('auth');
+Route::post('email_template/update', ['as'=>'email_template/update','uses'=>'EmailTemplateController@update'])->middleware('auth');
+Route::post('email_template/destroy', ['as'=>'email_template/destroy','uses'=>'EmailTemplateController@destroy'])->middleware('auth');
+
 //Benchmark
 Route::get('benchmark/test_model', ['as'=>'benchmark/test_model','uses'=>'BenchmarkController@testModel'])->middleware('auth');
