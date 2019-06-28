@@ -40,7 +40,7 @@
             </div>
         @endif    
 
-        {{ Form::open(array('url' => 'contact_datasource/update', 'class' => '', 'id' => 'add-contact-datasource-form')) }}
+        {{ Form::open(array('url' => 'contact_datasource/update', 'class' => '', 'id' => 'add-contact-datasource-form', 'enctype' => 'multipart/form-data')) }}
         <input type="hidden" name="id" value="<?= Hashids::encode($datasource->id); ?>">
         <div class="box box-primary">
 
@@ -76,10 +76,16 @@
 
           <div class="box-body">
             <div class="row">
-              <div class="col-md-10">
+              <div class="col-md-5">
                 <div class="form-group">
                   <label>Source Name <span class="required">*</span></label>
                   <?php echo Form::text('source_name', $datasource->source_name ,['class' => 'form-control', 'required' => '']); ?>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div class="form-group">
+                  <label>Import <span class="required"></span></label>
+                  <input type="file" name="import_file" />
                 </div>
               </div>
             </div>   
@@ -95,6 +101,14 @@
                   </select>                    
                 </div>   
               </div>
+              <div class="col-md-5"> 
+                <div class="form-group">
+                <button type="submit" class="btn btn-success">Import</button>
+                </div>
+              </div>
+            </div>         
+            <!-- /.row --> 
+            <div class="row">
               <div class="col-md-5">
                 <div class="form-group">
                   <label>Campaign <span class="required"></span></label>
@@ -106,8 +120,10 @@
                   </select>                    
                 </div>  
               </div>
+              <div class="col-md-5">  
+              </div>              
             </div>         
-            <!-- /.row --> 
+            <!-- /.row -->             
 
             <div class="row">
               <div class="col-md-5">

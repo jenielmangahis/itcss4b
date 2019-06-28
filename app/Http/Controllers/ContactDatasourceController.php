@@ -14,6 +14,7 @@ use App\ContactCampaign;
 
 use UserHelper;
 use GlobalHelper;
+use Rap2hpoutre\FastExcel\FastExcel;
 
 use View;
 use Hash;
@@ -142,6 +143,26 @@ class ContactDatasourceController extends Controller
                 'source_name'        => 'required',                       
              ]);                
         }
+
+
+        if($request->file()) {
+            $path = $request->file('import_file')->getRealPath();
+
+            if($path) {
+                $users = (new FastExcel)->import($path, function ($line) {
+                    echo '<pre>';
+                    print_r($line);
+                    echo '</pre>';
+                });  
+            }
+
+
+        } else {
+
+        }
+
+        exit;
+
 
         $company_id   = 0;
         $user_id      = Auth::user()->id;
