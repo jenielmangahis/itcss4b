@@ -46,7 +46,7 @@
             <div class="col-md-12">
               <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Sources List</h3>
+                    <h3 class="box-title">Email Template List</h3>
                     <div class="pull-right">
                         <a href="{{route('email_template/create')}}" class="btn btn-primary">
                             <i class="fa fa-plus"></i> Create New
