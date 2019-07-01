@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\EmailTemplate;
 use App\User;
 use App\Companies;
+use App\CompanyUser;
 
 use UserHelper;
 
@@ -52,7 +53,13 @@ class EmailTemplateController extends Controller
                 $email_templates = $email_template_query->paginate(15);
             }            
         } else {
-            $email_templates = EmailTemplate::paginate(15);
+            if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
+                $user_id = Auth::user()->id;    
+                $email_templates = EmailTemplate::where('user_id','=', $user_id)
+                            ->paginate(15); 
+            }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
+                $email_templates = EmailTemplate::paginate(15);  
+            }
         }
         return view('email_template.index',[
         	'email_templates' => $email_templates,
@@ -75,14 +82,30 @@ class EmailTemplateController extends Controller
     {
         if ($request->isMethod('post'))
         {
-            $this->validate($request, [
-                'name'           => 'required',
-                'user_id'        => 'required',
-                'company_id'     => 'required'    
-             ]);
+            
+            if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
+                $this->validate($request, [
+                    'name'           => 'required', 
+                ]);
+
+                $user_id = Auth::user()->id;    
+                $company_user = CompanyUser::where('user_id','=', $user_id)->first();                
+                if($company_user) {
+                    $company_id  = $company_user->company_id;
+                }
+            }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
+                $this->validate($request, [
+                    'name'           => 'required',
+                    'user_id'        => 'required',
+                    'company_id'     => 'required'    
+                ]);
+
+                $company_id = $request->input('company_id');
+                $user_id = $request->input('user_id');
+            }
             $emailTemplate                 = new EmailTemplate;
-            $emailTemplate->company_id     = $request->input('company_id');
-            $emailTemplate->user_id        = $request->input('user_id');
+            $emailTemplate->company_id     = $company_id;
+            $emailTemplate->user_id        = $user_id;
             $emailTemplate->name           = $request->input('name');
             $emailTemplate->content        = $request->input('content');
             $emailTemplate->save();
@@ -114,17 +137,32 @@ class EmailTemplateController extends Controller
     {
         if ($request->isMethod('post'))
         {
-            $this->validate($request, [
-                'name'           => 'required',
-                'user_id'        => 'required',
-                'company_id'     => 'required'       
-             ]);
+            if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
+                $this->validate($request, [
+                    'name'           => 'required', 
+                ]);
+
+                $user_id = Auth::user()->id;    
+                $company_user = CompanyUser::where('user_id','=', $user_id)->first();                
+                if($company_user) {
+                    $company_id  = $company_user->company_id;
+                }
+            }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
+                $this->validate($request, [
+                    'name'           => 'required',
+                    'user_id'        => 'required',
+                    'company_id'     => 'required'    
+                ]);
+
+                $company_id = $request->input('company_id');
+                $user_id = $request->input('user_id');
+            }
 
             $id = Hashids::decode($request->input('id'))[0];
             $emailTemplate = EmailTemplate::find($id);
             if($emailTemplate) {
-                $emailTemplate->company_id     = $request->input('company_id');
-                $emailTemplate->user_id        = $request->input('user_id');
+                $emailTemplate->company_id     = $company_id;
+                $emailTemplate->user_id        = $user_id;
                 $emailTemplate->name           = $request->input('name');
                 $emailTemplate->content        = $request->input('content');
                 $emailTemplate->save();

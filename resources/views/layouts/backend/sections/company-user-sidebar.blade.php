@@ -27,7 +27,7 @@
 	    </li>
 
 	    <li <?php echo Route::current()->getName() == 'companies' ? 'class="active"' : ''; ?>>
-	    	<a href="{{route('companies')}}"><i class="fa fa-mail-reply-all"></i> <span>Email Templates </span></a>
+	    	<a href="{{route('email_template')}}"><i class="fa fa-mail-reply-all"></i> <span>Email Templates </span></a>
 	    </li>
 
 	</ul>
