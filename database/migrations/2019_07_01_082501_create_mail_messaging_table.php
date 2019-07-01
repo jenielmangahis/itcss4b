@@ -22,6 +22,7 @@ class CreateMailMessagingTable extends Migration
             $table->string('cc');
             $table->string('bcc');
             $table->longText('content');
+            $table->integer('status');
             $table->timestamps();
             $table->softDeletes();
         });
