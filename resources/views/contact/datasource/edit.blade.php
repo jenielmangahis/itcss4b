@@ -83,10 +83,12 @@
                 </div>
               </div>
               <div class="col-md-5">
+                @if($datasource->type == 1)
                 <div class="form-group">
                   <label>Import <span class="required"></span></label>
                   <input type="file" name="import_file" />
                 </div>
+                @endif
               </div>
             </div>   
             <!-- /.row -->  
@@ -102,9 +104,13 @@
                 </div>   
               </div>
               <div class="col-md-5"> 
+                @if($datasource->type == 1)
                 <div class="form-group">
                 <button type="submit" class="btn btn-success">Import</button>
+                &nbsp;&nbsp;
+                <a href="{{ url('/files/import/sample-datasoure-contact-import.xlsx') }}">Download Template Here</a>
                 </div>
+                @endif
               </div>
             </div>         
             <!-- /.row --> 
