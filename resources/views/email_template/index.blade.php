@@ -98,7 +98,11 @@
                     @foreach($email_templates as $et)
                         <tr>
                             <td>{{ $et->id }}</td>
-                            <td>{{ $et->user->firstname }} {{ $et->user->lastname }}</td>
+                            @if($et->user)
+                              <td>{{ $et->user->firstname }} {{ $et->user->lastname }}</td>
+                            @else
+                              <td>-</td>
+                            @endif
                             <td>{{ $et->name }}</td>
                             <td>
                                 <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $et->id; ?>">
