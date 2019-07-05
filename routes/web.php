@@ -138,5 +138,10 @@ Route::get('email_template/edit/{email_template_id}', ['as'=>'email_template/edi
 Route::post('email_template/update', ['as'=>'email_template/update','uses'=>'EmailTemplateController@update'])->middleware('auth');
 Route::post('email_template/destroy', ['as'=>'email_template/destroy','uses'=>'EmailTemplateController@destroy'])->middleware('auth');
 
+//Mail Messaging
+Route::get('/mail_messaging', ['as'=>'mail_messaging','uses'=>'MailMessagingController@index'])->middleware('auth');
+Route::get('/mail_messaging/create', ['as'=>'mail_messaging/create','uses'=>'MailMessagingController@create'])->middleware('auth');
+Route::post('mail_messaging/send', ['as'=>'mail_messaging/send','uses'=>'MailMessagingController@send'])->middleware('auth');
+
 //Benchmark
 Route::get('benchmark/test_model', ['as'=>'benchmark/test_model','uses'=>'BenchmarkController@testModel'])->middleware('auth');

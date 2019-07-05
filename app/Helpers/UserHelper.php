@@ -27,13 +27,15 @@ class UserHelper
                   'reports',
                   'settings',
                   'groups',
+                  'mail_messaging'
             );
 
             $roles['company_user'] = array(
                   'dashboard',
                   'users',
                   'contacts',
-                  'email_templates'
+                  'email_templates',
+                  'mail_messaging'
             );
 
             if($group_id == self::ADMIN_USER) {
