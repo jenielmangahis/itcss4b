@@ -90,6 +90,9 @@ Route::post('contact_campaign/destroy', ['as'=>'contact_campaign/destroy','uses'
 Route::get('contact_campaign/ajax_load_edit_fields', ['as'=>'contact_campaign/ajax_load_edit_fields','uses'=>'ContactCampaignController@ajax_load_edit_fields'])->middleware('auth');
 Route::post('contact_campaign/update', ['as'=>'contact_campaign/update','uses'=>'ContactCampaignController@update'])->middleware('auth');
 
+//Contact Dashboard
+Route::get('/contact_dashboard', ['as'=>'contact_dashboard','uses'=>'ContactDashboardController@index'])->middleware('auth');
+
 //Workflow Categories
 Route::get('/workflow_category', ['as'=>'workflow_category','uses'=>'WorkflowCategoryController@index'])->middleware('auth');
 Route::get('/workflow_category/create', ['as'=>'workflow_category/create','uses'=>'WorkflowCategoryController@create'])->middleware('auth');
