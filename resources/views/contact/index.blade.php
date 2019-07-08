@@ -114,7 +114,7 @@
                         ?>
                         <tr>
                             <td>{{ $con->id }}</td>
-                            <td>{{ $con->firstname }} {{$con->lastname }}</td>
+                            <td><a href="{{url('contact_dashboard')}}">{{ $con->firstname }} {{$con->lastname }}</a></td>
                             <td>{{ $con->email }}</td>
                             <td>{{ $con->mobile_number }}</td>
                             <!-- <td>{{ $con->work_number }}</td> -->
