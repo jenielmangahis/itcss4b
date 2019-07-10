@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
+use App\Contact;
+use App\ContactBusinessInformation;
+use App\ContactBrokerInformation;
+use App\ContactLoanInformation;
+use App\Workflow;
 
 use UserHelper;
 use GlobalHelper;
@@ -36,10 +41,22 @@ class ContactDashboardController extends Controller
         });                 
     }
 
-    public function index(Request $request)
+    public function index($id, Request $request)
     {
-        return view('contact.dashboard.index',[
+    	$contact_id = $id;
+        $id = Hashids::decode($id)[0];
+        $contact = Contact::find($id); 
+        $business_info = ContactBusinessInformation::where('contact_id','=', $id)->first();
 
+        if($contact) {
+        	$workflow_status = Workflow::where('id', '=', $contact->status)->first();
+        }
+
+        return view('contact.dashboard.index',[
+        	'contact_id' => $contact_id,
+        	'contact' => $contact,
+        	'business_info' => $business_info,
+        	'workflow_status' => $workflow_status,
         ]); 
     }     
 }

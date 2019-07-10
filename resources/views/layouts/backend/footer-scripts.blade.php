@@ -12,3 +12,6 @@
 
 <!-- Bootstrap Datepicker -->
 <script src="{{ asset ('/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+
+<!-- Select2 -->
+<script src="{{ asset ("/bower_components/select2/dist/js/select2.full.min.js") }}"></script>

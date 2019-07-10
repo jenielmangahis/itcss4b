@@ -51,8 +51,8 @@
                     <input class="form-control" type="text" value="" name="search_field" placeholder="Search" style="">                             
                   </div>
                   <div class="pull-left" style="margin-left: 5px;">
-                    <a href="{{route('contact_campaign')}}" class="btn">
-                        <i class="fa fa-database"></i> Edit Contact
+                    <a target="_blank" href="{{route('contact/edit',[$contact_id])}}" class="btn">
+                        <i class="fa fa-pencil"></i> Edit Contact
                     </a>          
                   </div>
               </div>
@@ -68,23 +68,26 @@
           <div class="box box-primary">
 
             <div class="box-body">
-              <strong><i class="fa fa-book margin-r-5"></i> Contact Title</strong>
+              <strong><i class="fa fa-book margin-r-5"></i> {{ $business_info->business_name }}</strong>
 
               <p class="text-muted">
-                Descriptions Here..
+                Status: <strong>{{ $contact->stage->name }} - {{ !empty($workflow_status->status) ? $workflow_status->status : '' }}</strong>
               </p>
 
               <hr>
 
               <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                  <b>Details</b> <p class="pull-right">dfdf</p>
+                  <b>Customer ID: </b> <p class="pull-right">CORE-{{ $contact->id }}</p>
                 </li>
                 <li class="list-group-item">
-                  <b>Details</b> <a class="pull-right">dfd</a>
+                  <b>Created At:</b> <a class="pull-right">{{ date("F j, Y", strtotime($contact->created_at)) }}</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Details</b> <a class="pull-right">dsfd</a>
+                  <b>Modified At:</b> <a class="pull-right">{{ date("F j, Y", strtotime($contact->updated_at)) }}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Assigned To:</b> <a class="pull-right">{{ $contact->company->name }} - {{$contact->user->firstname}}</a> 
                 </li>
               </ul>              
 

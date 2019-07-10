@@ -91,7 +91,7 @@ Route::get('contact_campaign/ajax_load_edit_fields', ['as'=>'contact_campaign/aj
 Route::post('contact_campaign/update', ['as'=>'contact_campaign/update','uses'=>'ContactCampaignController@update'])->middleware('auth');
 
 //Contact Dashboard
-Route::get('/contact_dashboard', ['as'=>'contact_dashboard','uses'=>'ContactDashboardController@index'])->middleware('auth');
+Route::get('/contact_dashboard/{id}', ['as'=>'contact_dashboard','uses'=>'ContactDashboardController@index'])->middleware('auth');
 
 //Workflow Categories
 Route::get('/workflow_category', ['as'=>'workflow_category','uses'=>'WorkflowCategoryController@index'])->middleware('auth');

@@ -60,11 +60,16 @@
                           
               <div class="form-group">
                 <label>To <span class="required"></span></label>
-                <select name="recipient" class="form-control" id="recipient">
+                <!-- <select name="recipient" class="form-control" id="recipient">
                   @foreach($contacts as $c)
                   <option value="{{ $c->id }}">{{ $c->email }}</option>
                   @endforeach
-                </select>                    
+                </select>  -->   
+                <select class="select_recipient form-control" name="recipient[]" multiple="multiple">
+                  @foreach($contacts as $c)
+                    <option value="{{ $c->id }}">{{ $c->email }}</option>
+                  @endforeach
+                </select>                                 
               </div> 
               <div class="form-group">
                 <label>Subject <span class="required"></span></label>
@@ -86,5 +91,16 @@
 
     </section>
   <!-- /.content -->
+@endsection
+
+@section('page-footer-scripts')
+<script>
+  $(function () {   
+    var base_url = '<?php echo url('/'); ?>';
+    
+    $('.select_recipient').select2();
+
+  });
+</script>
 @endsection
 

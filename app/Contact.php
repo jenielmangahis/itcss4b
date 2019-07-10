@@ -14,4 +14,14 @@ class Contact extends Model
     {
         return $this->belongsTo('App\Stage');
     }    
+
+    public function company()
+    {
+    	return $this->belongsTo('App\Companies');
+    }
+
+    public function user()
+    {
+    	return $this->belongsTo('App\User');
+    }    
 }
