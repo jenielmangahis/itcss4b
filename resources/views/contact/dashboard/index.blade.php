@@ -73,23 +73,47 @@
               <p class="text-muted">
                 Status: <strong>{{ $contact->stage->name }} - {{ !empty($workflow_status->status) ? $workflow_status->status : '' }}</strong>
               </p>
-
+              <a href="#"><span class="badge badge-primary"><i class="fa fa-pencil"></i> Update Status</span></a>
               <hr>
 
-              <ul class="list-group list-group-unbordered">
+              <p><strong>Assigned User</strong></p>
+              <ul class="list-group list-group-unbordered" style="padding-left: 7px !important;">
                 <li class="list-group-item">
-                  <b>Customer ID: </b> <p class="pull-right">CORE-{{ $contact->id }}</p>
+                  @if(isset($contact->user->firstname) && isset($contact->user->lastname))
+                    <p>{{ $contact->user->firstname }} {{ $contact->user->lastname }}</p>
+                  @endif
+                </li>
+              </ul>       
+
+              <p><strong>Contact Information</strong></p>
+              <ul class="list-group list-group-unbordered" style="padding-left: 7px !important;">
+                <li class="list-group-item">
+                  @if(isset($contact->firstname) && isset($contact->lastname))
+                    <b>Name: </b><p>{{ $contact->user->firstname }} {{ $contact->user->lastname }}</p>
+                  @endif
                 </li>
                 <li class="list-group-item">
-                  <b>Created At:</b> <a class="pull-right">{{ date("F j, Y", strtotime($contact->created_at)) }}</a>
+                  <b>Email:</b> <p>{{ $contact->user->email }}</p>
                 </li>
                 <li class="list-group-item">
-                  <b>Modified At:</b> <a class="pull-right">{{ date("F j, Y", strtotime($contact->updated_at)) }}</a>
+                  <b>Work Number:</b> <p>{{ $contact->work_number }}</p>
                 </li>
                 <li class="list-group-item">
-                  <b>Assigned To:</b> <a class="pull-right">{{ $contact->company->name }} - {{$contact->user->firstname}}</a> 
+                  <b>Mobile Number:</b> <p>{{ $contact->mobile_number }}</p>
                 </li>
-              </ul>              
+                <li class="list-group-item">
+                  <b>Address:</b> <p>{{ $contact->address1 }}</p>
+                </li>
+                <li class="list-group-item">
+                  <b>City:</b> <p>{{ $contact->city }}</p>
+                </li>
+                <li class="list-group-item">
+                  <b>State:</b> <p>{{ $contact->state }}</p>
+                </li>
+                <li class="list-group-item">
+                  <b>Zip:</b> <p>{{ $contact->zip_code }}</p>
+                </li>
+              </ul>        
 
             </div>
 
@@ -99,7 +123,7 @@
 
           <div class="col-md-9">
 
-            <div class="nav-tabs-custom">
+            <div class="nav-tabs-custom contact-dashboard">
               <ul class="nav nav-tabs">
                 <li class="active"><a href="#tab_history" data-toggle="tab">History</a></li>
                 <li class=""><a href="#tab_advances" data-toggle="tab">Advances</a></li>
@@ -144,7 +168,7 @@
                   <p>Tab Docs</p>
                 </div>
                 <div class="tab-pane" id="tab_events">
-                  <p>Tab Events</p>
+                  @include('contact.dashboard.tab-sections.tab_events')
                 </div>
                 <div class="tab-pane" id="tab_tasks">
                   <p>Tab Tasks</p>
@@ -157,9 +181,10 @@
                 </div>
                 <!-- /.tab-pane -->
               </div>
-              <div class="box-footer">
+
+              <!-- <div class="box-footer">
                <p>FOOTER</p>
-              </div>              
+              </div>   -->            
 
               <!-- /.tab-content -->
             </div>
@@ -168,5 +193,51 @@
 
     </section>
   <!-- /.content -->
+@endsection
+
+
+
+@section('page-footer-scripts')
+<script>
+  var base_url = '<?php echo url("/"); ?>';
+
+  /*
+   * Tabs stay on selected active tab when refreshing - start
+  */
+  if (location.hash) {
+    $('a[href=\'' + location.hash + '\']').tab('show');
+  }
+  var activeTab = localStorage.getItem('activeTab');
+  if (activeTab) {
+    $('a[href="' + activeTab + '"]').tab('show');
+  }
+
+  $('body').on('click', 'a[data-toggle=\'tab\']', function (e) {
+    e.preventDefault()
+    var tab_name = this.getAttribute('href')
+    if (history.pushState) {
+      history.pushState(null, null, tab_name)
+    }
+    else {
+      location.hash = tab_name
+    }
+    localStorage.setItem('activeTab', tab_name)
+
+    $(this).tab('show');
+    return false;
+  });
+  $(window).on('popstate', function () {
+    var anchor = location.hash ||
+      $('a[data-toggle=\'tab\']').first().attr('href');
+    $('a[href=\'' + anchor + '\']').tab('show');
+  }); 
+  /*
+   * Tabs stay on selected active tab when refreshing - start
+  */
+
+   
+
+  
+</script>
 @endsection
 

@@ -125,6 +125,14 @@ Route::get('media_type/edit/{workflow_category_id}', ['as'=>'media_type/edit','u
 Route::post('media_type/update', ['as'=>'media_type/update','uses'=>'MediaTypeController@update'])->middleware('auth');
 Route::post('media_type/destroy', ['as'=>'media_type/destroy','uses'=>'MediaTypeController@destroy'])->middleware('auth');
 
+//Event Types
+Route::get('/event_type', ['as'=>'event_type','uses'=>'EventTypeController@index'])->middleware('auth');
+Route::get('/event_type/create', ['as'=>'event_type/create','uses'=>'EventTypeController@create'])->middleware('auth');
+Route::post('event_type/store', ['as'=>'event_type/store','uses'=>'EventTypeController@store'])->middleware('auth');
+Route::get('event_type/edit/{workflow_category_id}', ['as'=>'event_type/edit','uses'=>'EventTypeController@edit'])->middleware('auth');
+Route::post('event_type/update', ['as'=>'event_type/update','uses'=>'EventTypeController@update'])->middleware('auth');
+Route::post('event_type/destroy', ['as'=>'event_type/destroy','uses'=>'EventTypeController@destroy'])->middleware('auth');
+
 //Sources
 Route::get('/source', ['as'=>'source','uses'=>'SourceController@index'])->middleware('auth');
 Route::get('/source/create', ['as'=>'source/create','uses'=>'SourceController@create'])->middleware('auth');

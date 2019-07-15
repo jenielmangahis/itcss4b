@@ -10,6 +10,7 @@ use App\ContactBusinessInformation;
 use App\ContactBrokerInformation;
 use App\ContactLoanInformation;
 use App\Workflow;
+use App\ContactEvent;
 
 use UserHelper;
 use GlobalHelper;
@@ -47,6 +48,7 @@ class ContactDashboardController extends Controller
         $id = Hashids::decode($id)[0];
         $contact = Contact::find($id); 
         $business_info = ContactBusinessInformation::where('contact_id','=', $id)->first();
+        $contact_events = ContactEvent::all();
 
         if($contact) {
         	$workflow_status = Workflow::where('id', '=', $contact->status)->first();
@@ -57,6 +59,7 @@ class ContactDashboardController extends Controller
         	'contact' => $contact,
         	'business_info' => $business_info,
         	'workflow_status' => $workflow_status,
+        	'contact_events' => $contact_events
         ]); 
     }     
 }
