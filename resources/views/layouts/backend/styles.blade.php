@@ -8,6 +8,8 @@
 
 <!-- Bootstrap Datepicker -->
 <link href="{{ asset('/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css')}}" rel="stylesheet" type="text/css" />
+<!-- Bootstrap time Picker -->
+<link href="{{ asset('/bower_components/admin-lte/plugins/timepicker/bootstrap-timepicker.min.css')}}" rel="stylesheet" type="text/css" />
 
 <!-- Select2 -->
 <link href="{{ asset("/bower_components/select2/dist/css/select2.min.css") }}" rel="stylesheet" type="text/css" />

@@ -11,6 +11,8 @@ use App\ContactBrokerInformation;
 use App\ContactLoanInformation;
 use App\Workflow;
 use App\ContactEvent;
+use App\CompanyUser;
+use App\EventType;
 
 use UserHelper;
 use GlobalHelper;
@@ -54,12 +56,17 @@ class ContactDashboardController extends Controller
         	$workflow_status = Workflow::where('id', '=', $contact->status)->first();
         }
 
+        $company_users = CompanyUser::where('company_id', '=', $contact->company_id)->get();
+        $event_types   = EventType::all();
+
         return view('contact.dashboard.index',[
         	'contact_id' => $contact_id,
         	'contact' => $contact,
         	'business_info' => $business_info,
         	'workflow_status' => $workflow_status,
-        	'contact_events' => $contact_events
+        	'contact_events' => $contact_events,
+        	'company_users' => $company_users,
+        	'event_types' => $event_types
         ]); 
     }     
 }

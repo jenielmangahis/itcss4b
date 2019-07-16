@@ -4,3 +4,7 @@
 	padding-bottom: 5px;
 	font-weight: bold;
 }
+
+.contact-dashboard .tab-content .calendar-events-header {
+	margin-bottom: 10px;
+}
