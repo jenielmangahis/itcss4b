@@ -70,6 +70,32 @@
                     <option value="{{ $c->id }}">{{ $c->email }}</option>
                   @endforeach
                 </select>                                 
+              </div>
+              <div class="form-group">
+                <label>BCC <span class="required"></span></label>
+                <!-- <select name="recipient" class="form-control" id="recipient">
+                  @foreach($contacts as $c)
+                  <option value="{{ $c->id }}">{{ $c->email }}</option>
+                  @endforeach
+                </select>  -->   
+                <select class="select_recipient form-control" name="bcc[]" multiple="multiple">
+                  @foreach($contacts as $c)
+                    <option value="{{ $c->id }}">{{ $c->email }}</option>
+                  @endforeach
+                </select>                                 
+              </div>
+              <div class="form-group">
+                <label>CC <span class="required"></span></label>
+                <!-- <select name="recipient" class="form-control" id="recipient">
+                  @foreach($contacts as $c)
+                  <option value="{{ $c->id }}">{{ $c->email }}</option>
+                  @endforeach
+                </select>  -->   
+                <select class="select_recipient form-control" name="cc[]" multiple="multiple">
+                  @foreach($contacts as $c)
+                    <option value="{{ $c->id }}">{{ $c->email }}</option>
+                  @endforeach
+                </select>                                 
               </div> 
               <div class="form-group">
                 <label>Subject <span class="required"></span></label>

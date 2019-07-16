@@ -61,8 +61,8 @@ class MailMessagingController extends Controller
 
     public function create()
     {
-    	$contacts    = Contact::all();
-
+    	$user_id  = Auth::user()->id;
+    	$contacts = Contact::where('user_id','=', $user_id)->get();
         return view('mail_messaging.create', [
             'contacts' => $contacts
         ]);
