@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 use App\User;
 use App\Companies;
@@ -12,6 +13,11 @@ use App\Contact;
 use App\ContactCustomField;
 use App\EmailTemplate;
 use App\Group;
+
+/*
+ * Note: below 'MailNotification' class is located in 'app/Mail' folder
+*/
+use App\Mail\MailNotification;
 
 use Session;
 use Route;
@@ -72,5 +78,42 @@ class BenchmarkController extends Controller
         $ins->name    = 'this is only a test';
         $ins->save();
 
+    }
+
+    function testMail() {
+        echo '<h3>THIS IS A TEST EMAIL</h3><hr />';
+
+        /*
+            NOTE :
+                - This uses laravel mailable, please check references below
+                    - https://laravel.com/docs/5.8/mail
+                    - https://www.tutsmake.com/send-email-in-laravel-mailable-example/
+                - make sure you setup your smtp on your .env file in root folder, please check screenshot: http://prntscr.com/ogq794
+                    - I use mailtrap to test it on your local pc : https://mailtrap.io
+                - make sure to clear cache after you setup the correct smtp on .env file
+                - to clear cache in laravel, run this code on your laravel root file
+                    - php artisan config:cache
+                    - php artisan config:clear
+                    - php artisan cache:clear
+        */
+
+        $enable_email = true;
+        if($enable_email) {
+
+            $name    = 'Bryann Revina';
+            $email   = 'bryann.revina@gmail.com';
+            $subject = 'This is a test laravel email';
+            $message = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry';
+
+            Mail::to('jeniel.mangahis@gmail.com')
+                ->send(new MailNotification($name, $email, $subject, $message)); // 'MailNotification' class is located on app/Mail folder
+
+            /*Mail::to($request->user())
+                ->cc($moreUsers)
+                ->bcc($evenMoreUsers)
+                ->later($when, new OrderShipped($order));*/                    
+
+
+        }
     }
 }

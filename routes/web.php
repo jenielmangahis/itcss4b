@@ -93,6 +93,9 @@ Route::post('contact_campaign/update', ['as'=>'contact_campaign/update','uses'=>
 //Contact Dashboard
 Route::get('/contact_dashboard/{id}', ['as'=>'contact_dashboard','uses'=>'ContactDashboardController@index'])->middleware('auth');
 
+//Contact Event
+Route::post('contact_event/store', ['as'=>'contact_event/store','uses'=>'ContactEventController@store'])->middleware('auth');
+
 //Workflow Categories
 Route::get('/workflow_category', ['as'=>'workflow_category','uses'=>'WorkflowCategoryController@index'])->middleware('auth');
 Route::get('/workflow_category/create', ['as'=>'workflow_category/create','uses'=>'WorkflowCategoryController@create'])->middleware('auth');
@@ -156,3 +159,4 @@ Route::post('mail_messaging/send', ['as'=>'mail_messaging/send','uses'=>'MailMes
 
 //Benchmark
 Route::get('benchmark/test_model', ['as'=>'benchmark/test_model','uses'=>'BenchmarkController@testModel'])->middleware('auth');
+Route::get('benchmark/test_email', ['as'=>'benchmark/test_email','uses'=>'BenchmarkController@testMail'])->middleware('auth');

@@ -66,22 +66,23 @@
   </tr>
   @foreach($contact_events as $event)
     <tr>
-        <td>{{$event->title}}</td>
-        <td>{{ $event->event_date }}</td>
-        <td>{{ $event->user->firstname }} {{ $event->user->lastname }}</td>
-        <td>-</td>
-        <td>{{ $event->user->title }}</td>
-        <td>{{ $event->user->description }}</td>
-        <td>
-           -                                                            
-        </td>
+      <td>{{ $event->id }}</td>
+      <td>{{ $event->title }}</td>
+      <td>{{ $event->event_date }} {{ $event->event_time }}</td>
+      <td>{{ $event->user->firstname }} {{ $event->user->lastname }}</td>
+      
+      <td>{{ $event->type }}</td>
+      <td>{{ $event->description }}</td>
+      <td>
+         -                                                            
+      </td>
     </tr>  
   @endforeach
 </table>
 
 
 <div id="modalAddEvent" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
-    {{ Form::open(array('url' => '', 'class' => '', 'id' => 'add-event-form')) }}
+    {{ Form::open(array('url' => 'contact_event/store', 'class' => '', 'id' => 'add-event-form')) }}
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
 
