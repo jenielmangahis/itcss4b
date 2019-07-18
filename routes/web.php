@@ -95,6 +95,8 @@ Route::get('/contact_dashboard/{id}', ['as'=>'contact_dashboard','uses'=>'Contac
 
 //Contact Event
 Route::post('contact_event/store', ['as'=>'contact_event/store','uses'=>'ContactEventController@store'])->middleware('auth');
+Route::post('contact_event/destroy', ['as'=>'contact_event/destroy','uses'=>'ContactEventController@destroy'])->middleware('auth');
+Route::post('contact_event/update', ['as'=>'contact_event/update','uses'=>'ContactEventController@update'])->middleware('auth');
 
 //Workflow Categories
 Route::get('/workflow_category', ['as'=>'workflow_category','uses'=>'WorkflowCategoryController@index'])->middleware('auth');
