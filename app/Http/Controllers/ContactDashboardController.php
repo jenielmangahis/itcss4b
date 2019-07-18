@@ -50,7 +50,26 @@ class ContactDashboardController extends Controller
         $id = Hashids::decode($id)[0];
         $contact = Contact::find($id); 
         $business_info = ContactBusinessInformation::where('contact_id','=', $id)->first();
-        $contact_events = ContactEvent::all();
+
+        /*
+         * For contact event - start
+        */
+        //$contact_events = ContactEvent::all();
+        $search_by_event    = $request->input('search_by');
+        $search_field_event = $request->input('search_field');  
+        if($search_by_event != '' && $search_field_event != '') {
+            $contact_event_query = ContactEvent::query();
+
+            if($search_by_event != '' && $search_field_event != '') {
+                $contact_event_query = $contact_event_query->where('contact_events.'.$search_by_event, 'like', '%' . $search_field_event . '%');
+                $contact_events = $contact_event_query->paginate(10);
+            }            
+        } else {
+            $contact_events = ContactEvent::paginate(10);
+        }        
+        /*
+         * For contact event - end 
+        */
 
         if($contact) {
         	$workflow_status = Workflow::where('id', '=', $contact->status)->first();
@@ -59,6 +78,16 @@ class ContactDashboardController extends Controller
         $company_users = CompanyUser::where('company_id', '=', $contact->company_id)->get();
         $event_types   = EventType::all();
 
+        $upcoming_events = "";
+
+        $event_start = date("Y-m-d", strtotime(date('Y-m-d') . ' +1 day'));
+        $event_end   = date("Y-m-d", strtotime($event_start . ' +3 day'));
+
+        $upcoming_events = ContactEvent::where('event_date', '>=', $event_start)
+                     ->where('event_date', '<=', $event_end)->get();
+
+        $todays_events = ContactEvent::where('event_date', '=', date("Y-m-d"))->get();
+
         return view('contact.dashboard.index',[
         	'contact_id' => $contact_id,
         	'contact' => $contact,
@@ -66,7 +95,10 @@ class ContactDashboardController extends Controller
         	'workflow_status' => $workflow_status,
         	'contact_events' => $contact_events,
         	'company_users' => $company_users,
-        	'event_types' => $event_types
+        	'event_types' => $event_types,
+            'search_field_event' => $search_field_event,
+            'upcoming_events' => $upcoming_events,
+            'todays_events' => $todays_events
         ]); 
     }     
 }

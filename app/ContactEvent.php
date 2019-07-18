@@ -14,4 +14,9 @@ class ContactEvent extends Model
     {
         return $this->belongsTo('App\User');
     }    
+
+    public function event_type()
+    {
+        return $this->belongsTo('App\EventType');
+    }    
 }
