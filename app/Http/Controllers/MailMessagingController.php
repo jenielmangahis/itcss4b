@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\MailMessaging;
 use App\Contact;
+use App\EmailTemplate;
 
 use UserHelper;
 
@@ -63,12 +64,14 @@ class MailMessagingController extends Controller
     {
     	$user_id  = Auth::user()->id;
     	$contacts = Contact::where('user_id','=', $user_id)->get();
+        $emailTemplates = EmailTemplate::where('user_id', '=', $user_id)->get();
         return view('mail_messaging.create', [
-            'contacts' => $contacts
+            'contacts' => $contacts,
+            'emailTemplates' => $emailTemplates
         ]);
     }
 
-    public function send()
+    public function send(Request $request)
     {
     	if ($request->isMethod('post'))
         {
@@ -77,6 +80,27 @@ class MailMessagingController extends Controller
                 'subject'			  => 'required',
                 'content'			  => 'required'   
              ]);
+
+            $enable_email = true;
+            if($enable_email) {
+                echo "<pre>";
+                print_r($request->input('recipient'));
+                exit;
+                $name    = 'Bryann Revina';
+                $email   = 'bryann.revina@gmail.com';
+                $subject = 'This is a test laravel email';
+                $message = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry';
+
+                Mail::to('jeniel.mangahis@gmail.com')
+                    ->send(new MailNotification($name, $email, $subject, $message)); // 'MailNotification' class is located on app/Mail folder
+
+                /*Mail::to($request->user())
+                    ->cc($moreUsers)
+                    ->bcc($evenMoreUsers)
+                    ->later($when, new OrderShipped($order));*/                    
+
+
+            }
 
             Session::flash('message', 'Email Sent');
             Session::flash('alert_class', 'alert-success');

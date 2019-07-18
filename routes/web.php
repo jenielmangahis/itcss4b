@@ -151,6 +151,7 @@ Route::post('email_template/store', ['as'=>'email_template/store','uses'=>'Email
 Route::get('email_template/edit/{email_template_id}', ['as'=>'email_template/edit','uses'=>'EmailTemplateController@edit'])->middleware('auth');
 Route::post('email_template/update', ['as'=>'email_template/update','uses'=>'EmailTemplateController@update'])->middleware('auth');
 Route::post('email_template/destroy', ['as'=>'email_template/destroy','uses'=>'EmailTemplateController@destroy'])->middleware('auth');
+Route::get('email_template/ajax_load_email_template_content', ['as'=>'email_template/ajax_load_email_template_content','uses'=>'EmailTemplateController@ajax_load_email_template_content'])->middleware('auth');
 
 //Mail Messaging
 Route::get('/mail_messaging', ['as'=>'mail_messaging','uses'=>'MailMessagingController@index'])->middleware('auth');

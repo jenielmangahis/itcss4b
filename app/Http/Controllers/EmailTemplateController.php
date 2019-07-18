@@ -194,4 +194,12 @@ class EmailTemplateController extends Controller
             }
         }
     }
+
+    public function ajax_load_email_template_content(Request $request)
+    {
+        $emailTemplate = EmailTemplate::where('id', '=', $request->input('email_template_id'))->first();
+        return view('email_template.ajax_load_email_template_content',[
+            'emailTemplate' => $emailTemplate
+        ]);
+    }
 }
