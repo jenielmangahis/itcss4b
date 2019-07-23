@@ -58,7 +58,7 @@
                 <div class="box-body">
 
                   <div class="row">
-                    {{ Form::open(array('url' => 'media_type', 'class' => '', 'method' => 'get')) }}
+                    {{ Form::open(array('url' => 'mail_messaging', 'class' => '', 'method' => 'get')) }}
 
                       <div class="col-xs-12">
                         <div class="row">

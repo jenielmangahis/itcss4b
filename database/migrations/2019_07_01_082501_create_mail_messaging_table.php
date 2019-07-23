@@ -18,7 +18,7 @@ class CreateMailMessagingTable extends Migration
             $table->integer('user_id');
             $table->string('recipient');
             $table->string('subject');
-            $table->date('date');
+            $table->timestamps('date');
             $table->string('cc');
             $table->string('bcc');
             $table->longText('content');
