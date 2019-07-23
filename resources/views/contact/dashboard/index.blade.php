@@ -196,7 +196,7 @@
                       <p>Tab Calls Here</p>
                     </div>
                     <div class="tab-pane" id="tab_emails">
-                      <p>Tab Emails Here</p>
+                      @include('contact.dashboard.tab-sections.tab_mail_activity')
                     </div>
                     <div class="tab-pane" id="tab_notes">
                       <p>Tab Notes</p>

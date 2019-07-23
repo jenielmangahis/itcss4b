@@ -85,35 +85,43 @@ class MailMessagingController extends Controller
             if($enable_email) {            
                 $cc  = '';
                 $bcc = '';
-                $recipients = implode(",", $request->input('recipient'));
+                $recipients = array();
                 if( !empty($request->input('bcc')) ){
                     $bcc = implode(",", $request->input('bcc'));
                 }
                 if( !empty($request->input('cc')) ){
                     $cc = implode(",", $request->input('cc'));
                 }
-
-                $user_id       = Auth::user()->id;
-                $mailMessaging = new MailMessaging;
-                $mailMessaging->user_id = $user_id;
-                $mailMessaging->recipient = $recipients;
-                $mailMessaging->date = date("Y-m-d H:i:s");
-                $mailMessaging->status = 1;
-                $mailMessaging->subject = $request->input('content');
-                $mailMessaging->cc = $cc;
-                $mailMessaging->bcc = $bcc;
-                $mailMessaging->content = $request->input('content');
-                $mailMessaging->save();
+                echo "<pre>";
+                foreach( $request->input('recipient') as $key => $value ){
+                    $contact = Contact::where('id', '=', $value)->first();
+                    if( $contact ){
+                        $recipients[$contact->email] = $contact->email;
+                        
+                        $user_id       = Auth::user()->id;
+                        $mailMessaging = new MailMessaging;
+                        $mailMessaging->contact_id = $contact->id;
+                        $mailMessaging->user_id = $user_id;
+                        $mailMessaging->recipient = $contact->email;
+                        $mailMessaging->date = date("Y-m-d H:i:s");
+                        $mailMessaging->status = 1;
+                        $mailMessaging->subject = $request->input('content');
+                        $mailMessaging->cc = $cc;
+                        $mailMessaging->bcc = $bcc;
+                        $mailMessaging->content = $request->input('content');
+                        $mailMessaging->save();
+                    }
+                }
                 $name    = '';
                 //$name    = 'Bryann Revina';
                 $email   = 'bryann.revina@gmail.com';
                 $subject = 'This is a test laravel email';
                 $message = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry';
 
-                Mail::to('jeniel.mangahis@gmail.com')
+               /* Mail::to('jeniel.mangahis@gmail.com')
                     ->cc($cc)
                     ->bcc($bcc)
-                    ->send(new MailNotification($name, $recipients, $request->input('subject'), $request->input('content'))); // 'MailNotification' class is located on app/Mail folder
+                    ->send(new MailNotification($name, $recipients, $request->input('subject'), $request->input('content')));*/ // 'MailNotification' class is located on app/Mail folder
                 
                 /*Mail::to($request->user())
                     ->cc($moreUsers)

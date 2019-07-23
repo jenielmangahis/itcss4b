@@ -67,7 +67,7 @@
                 </select>  -->   
                 <select class="select_recipient form-control" name="recipient[]" multiple="multiple">
                   @foreach($contacts as $c)
-                    <option value="{{ $c->email }}">{{ $c->email }}</option>
+                    <option value="{{ $c->id }}">{{ $c->email }}</option>
                   @endforeach
                 </select>                                 
               </div>

@@ -16,6 +16,7 @@ class CreateMailMessagingTable extends Migration
         Schema::create('mail_messaging', function (Blueprint $table) {
             $table->bigIncrements('id');            
             $table->integer('user_id');
+            $table->integer('contact_id');
             $table->string('recipient');
             $table->string('subject');
             $table->timestamps('date');

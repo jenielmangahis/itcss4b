@@ -13,6 +13,7 @@ use App\Workflow;
 use App\ContactEvent;
 use App\CompanyUser;
 use App\EventType;
+use App\MailMessaging;
 
 use UserHelper;
 use GlobalHelper;
@@ -50,6 +51,10 @@ class ContactDashboardController extends Controller
         $id = Hashids::decode($id)[0];
         $contact = Contact::find($id); 
         $business_info = ContactBusinessInformation::where('contact_id','=', $id)->first();
+
+        $mail_messaging_query = MailMessaging::query();
+        $mail_messaging_query = $mail_messaging_query->where('mail_messaging.contact_id',$id);
+        $mail_messaging = $mail_messaging_query->paginate(20);
 
         /*
          * For contact event - start
@@ -98,7 +103,8 @@ class ContactDashboardController extends Controller
         	'event_types' => $event_types,
             'search_field_event' => $search_field_event,
             'upcoming_events' => $upcoming_events,
-            'todays_events' => $todays_events
+            'todays_events' => $todays_events,
+            'mail_messaging' => $mail_messaging,
         ]); 
     }     
 }
