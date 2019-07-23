@@ -5,9 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+
 use App\MailMessaging;
 use App\Contact;
 use App\EmailTemplate;
+
+/*
+ * Note: below are class file the use for sending email. File is located in 'app/Mail' folder
+*/
+use App\Mail\MailContact;
 
 use UserHelper;
 
@@ -81,8 +88,14 @@ class MailMessagingController extends Controller
                 'content'			  => 'required'   
              ]);
 
+            /*echo '<pre>';
+            print_r($request->input());
+            echo '</pre>';
+            exit;*/
+
             $enable_email = true;
-            if($enable_email) {            
+            if($enable_email) {         
+
                 $cc  = '';
                 $bcc = '';
                 $recipients = array();
@@ -94,41 +107,51 @@ class MailMessagingController extends Controller
                 }
                 foreach( $request->input('recipient') as $key => $value ){
                     $contact = Contact::where('id', '=', $value)->first();
-                    if( $contact ){
+                    if( $contact ) {
                         $date = date("Y-m-d H:i:s");
                         $recipients[$contact->email] = $contact->email;
                         $user_id       = Auth::user()->id;
                         $mailMessaging = new MailMessaging;
                         $mailMessaging->contact_id = $contact->id;
-                        $mailMessaging->user_id = $user_id;
-                        $mailMessaging->recipient = $contact->email;
-                        $mailMessaging->date = $date;
+                        $mailMessaging->user_id    = $user_id;
+                        $mailMessaging->recipient  = $contact->email;
+                        $mailMessaging->date       = $date;
                         $mailMessaging->date_last_opened = $date;
-                        $mailMessaging->status = 1;
-                        $mailMessaging->subject = $request->input('subject');
-                        $mailMessaging->cc = $cc;
-                        $mailMessaging->bcc = $bcc;
-                        $mailMessaging->content = $request->input('content');
+                        $mailMessaging->status     = 1;
+                        $mailMessaging->subject    = $request->input('subject');
+                        $mailMessaging->cc         = $cc;
+                        $mailMessaging->bcc        = $bcc;
+                        $mailMessaging->content    = $request->input('content');
+                        $mailMessaging->sender     = "NA";
                         $mailMessaging->save();
                     }
                 }
-                $name    = '';
-                //$name    = 'Bryann Revina';
-                $email   = 'bryann.revina@gmail.com';
-                $subject = 'This is a test laravel email';
-                $message = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry';
 
-               /* Mail::to('jeniel.mangahis@gmail.com')
-                    ->cc($cc)
-                    ->bcc($bcc)
-                    ->send(new MailNotification($name, $recipients, $request->input('subject'), $request->input('content')));*/ // 'MailNotification' class is located on app/Mail folder
+                    /*Mail::to('jeniel.mangahis@gmail.com')
+                        ->cc($cc)
+                        ->bcc($bcc)
+                        ->send(new MailNotification($name, $recipients, $request->input('subject'), $request->input('content'))); */
+                        // 'MailNotification' class is located on app/Mail folder      
                 
-                /*Mail::to($request->user())
-                    ->cc($moreUsers)
-                    ->bcc($evenMoreUsers)
-                    ->later($when, new OrderShipped($order));*/                    
+                    /*$from_email = 'coreCMS@gmail.com';
+                    $to      = $contact->email;
+                    $name    = $contact->firstname . " " . $contact->lastname;
+                    $subject = $request->input('subject');
+                    $message = $request->input('content');*/
 
+                    $from_email = 'coreCMS@gmail.com';
+                    $to      = array('bryann.revina@gmail.com','jeniel@test.com');
+                    $cc      = array('marvin@test.com');
+                    $bcc     = array('lily@test.com');
+                    $name    = 'Bryann Revina';
+                    $subject = 'for test only';
+                    $message = 'this is my message';
 
+                    Mail::to($to)
+                        ->cc($cc)
+                        ->bcc($bcc)
+                        ->send(new MailContact($name, $from_email, $subject, $message)); 
+     
             }
 
             Session::flash('message', 'Email Sent');
