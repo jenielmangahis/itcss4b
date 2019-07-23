@@ -159,6 +159,7 @@ Route::get('email_template/ajax_load_email_template_content', ['as'=>'email_temp
 Route::get('/mail_messaging', ['as'=>'mail_messaging','uses'=>'MailMessagingController@index'])->middleware('auth');
 Route::get('/mail_messaging/create', ['as'=>'mail_messaging/create','uses'=>'MailMessagingController@create'])->middleware('auth');
 Route::post('mail_messaging/send', ['as'=>'mail_messaging/send','uses'=>'MailMessagingController@send'])->middleware('auth');
+Route::get('mail_messaging/ajax_update_last_opened', ['as'=>'mail_messaging/ajax_update_last_opened','uses'=>'MailMessagingController@ajax_update_last_opened'])->middleware('auth');
 
 //Benchmark
 Route::get('benchmark/test_model', ['as'=>'benchmark/test_model','uses'=>'BenchmarkController@testModel'])->middleware('auth');

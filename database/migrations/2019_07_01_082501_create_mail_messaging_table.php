@@ -20,6 +20,7 @@ class CreateMailMessagingTable extends Migration
             $table->string('recipient');
             $table->string('subject');
             $table->timestamps('date');
+            $table->timestamps('date_last_opened');
             $table->string('cc');
             $table->string('bcc');
             $table->longText('content');

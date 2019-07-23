@@ -99,7 +99,7 @@
               </div> 
               <div class="form-group">
                 <label>Subject <span class="required"></span></label>
-                <?php echo Form::text('subject', old('subject') ,['class' => 'form-control']); ?>
+                <?php echo Form::text('subject', '' ,['class' => 'form-control']); ?>
               </div>
               <div class="form-group">
                 <label>Email Templates</label>

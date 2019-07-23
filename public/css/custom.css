@@ -8,3 +8,28 @@
 .contact-dashboard .tab-content .calendar-events-header {
 	margin-bottom: 10px;
 }
+
+.list-mail-messaging{
+	list-style: none;
+	padding: 0px;
+}
+
+.list-mail-messaging li{
+	margin: 5px;
+}
+
+.list-mail-messaging li h3{
+	font-size: 20px;
+	margin-bottom: 0px;
+}
+
+.list-mail-messaging li .email-content{
+	margin-top: 10px;
+	margin-bottom: 10px;
+	background-color: #d2d6de;
+	padding: 10px;
+}
+
+.list-mail-messaging li hr{	
+	border: 1px solid #3c8dbc;
+}

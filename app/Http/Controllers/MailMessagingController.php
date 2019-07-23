@@ -92,20 +92,20 @@ class MailMessagingController extends Controller
                 if( !empty($request->input('cc')) ){
                     $cc = implode(",", $request->input('cc'));
                 }
-                echo "<pre>";
                 foreach( $request->input('recipient') as $key => $value ){
                     $contact = Contact::where('id', '=', $value)->first();
                     if( $contact ){
+                        $date = date("Y-m-d H:i:s");
                         $recipients[$contact->email] = $contact->email;
-                        
                         $user_id       = Auth::user()->id;
                         $mailMessaging = new MailMessaging;
                         $mailMessaging->contact_id = $contact->id;
                         $mailMessaging->user_id = $user_id;
                         $mailMessaging->recipient = $contact->email;
-                        $mailMessaging->date = date("Y-m-d H:i:s");
+                        $mailMessaging->date = $date;
+                        $mailMessaging->date_last_opened = $date;
                         $mailMessaging->status = 1;
-                        $mailMessaging->subject = $request->input('content');
+                        $mailMessaging->subject = $request->input('subject');
                         $mailMessaging->cc = $cc;
                         $mailMessaging->bcc = $bcc;
                         $mailMessaging->content = $request->input('content');
@@ -140,5 +140,17 @@ class MailMessagingController extends Controller
             Session::flash('alert_class', 'alert-danger');  
             return redirect('mail_messaging');
         }
+    }
+
+    public function ajax_update_last_opened(Request $request)
+    {
+        $date_last_opened = date("Y-m-d H:i:s");
+        $mailMessaging = MailMessaging::where('id', '=', $request->input('mail_messaging_id'))->first();
+        $mailMessaging->date_last_opened = $date_last_opened;
+        $mailMessaging->save();
+
+        $json_data = ['date_last_opened' => $date_last_opened];
+        echo json_encode($json_data);
+        exit;
     }
 }
