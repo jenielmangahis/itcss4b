@@ -21,35 +21,3 @@
   </li>
 @endforeach
 
-@section('page-footer-scripts')
-<script>
-  $(function(){
-    var base_url = '<?php echo url('/'); ?>';
-    $(".mail-messaging-show-content").click(function(){
-      var data_value = $(this).attr("data-value");
-      $(".email-content-container-" + data_value).removeClass("hidden");   
-      var url = base_url + '/mail_messaging/ajax_update_last_opened';
-      $.ajax({
-           type: "GET",
-           url: url,
-           dataType: 'json',               
-           data: {
-              "mail_messaging_id":data_value
-              }, 
-           success: function(o)
-           {
-              $(".date-last-opened-container-" + data_value).html("<small>Updating...</small>");
-              $(".date-last-opened-container-" + data_value).html(o.date_last_opened);
-           }
-      });
-
-    });
-
-    $(".mail-messaging-hide-content").click(function(){
-      var data_value = $(this).attr("data-value");
-      $(".email-content-container-" + data_value).addClass("hidden");      
-    });
-  });
-</script>
-@endsection
-

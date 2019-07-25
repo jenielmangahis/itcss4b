@@ -65,17 +65,18 @@ class ContactController extends Controller
                         $contact_query = $contact_query->where('user_id', '=', Auth::user()->id);
                     }
                 }
-                
-                $contact = $contact_query->paginate(15);
+
+                $contact = $contact_query = $contact_query->orderBy('created_at', 'desc')->paginate(15);
             }            
         } else {
             
             if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
                 $user_id = Auth::user()->id;
                 $contact = Contact::where('user_id','=', $user_id)
+                            ->orderBy('created_at', 'desc')
                             ->paginate(15); 
             }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
-                $contact = Contact::paginate(15);  
+                $contact = Contact::orderBy('created_at', 'desc')->paginate(15);  
             }            
         }
 

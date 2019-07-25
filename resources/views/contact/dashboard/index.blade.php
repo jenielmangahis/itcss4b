@@ -142,7 +142,7 @@
                         </tr>
                         <tr>
                           <td>Address:</td>
-                          <td><div class="pull-right">{{ $contact->address1 }}</div></td>
+                          <td><div style="text-align: right;" class="pull-right">{{ $contact->address1 }}</div></td>
                         </tr>
                         <tr>
                           <td>City</td>
@@ -193,7 +193,7 @@
                       <p>Tab Advances Here</p>
                     </div>
                     <div class="tab-pane" id="tab_calls">
-                      <p>Tab Calls Here</p>
+                      @include('contact.dashboard.tab-sections.tab_calls')
                     </div>
                     <div class="tab-pane" id="tab_emails">
                       @include('contact.dashboard.tab-sections.tab_mail_activity')
@@ -239,8 +239,6 @@
   <!-- /.content -->
 @endsection
 
-
-
 @section('page-footer-scripts')
 <script>
   var base_url = '<?php echo url("/"); ?>';
@@ -280,6 +278,7 @@
   */
 
   $(function () {
+    
     $('.event_date').datepicker({
       autoclose: true,
       format: 'yyyy-mm-dd',
@@ -288,6 +287,31 @@
     $('.timepicker').timepicker({
       showInputs: false
     })
+
+    $(".mail-messaging-show-content").click(function(){
+      var data_value = $(this).attr("data-value");
+      $(".email-content-container-" + data_value).removeClass("hidden");   
+      var url = base_url + '/mail_messaging/ajax_update_last_opened';
+      $.ajax({
+           type: "GET",
+           url: url,
+           dataType: 'json',               
+           data: {
+              "mail_messaging_id":data_value
+              }, 
+           success: function(o)
+           {
+              $(".date-last-opened-container-" + data_value).html("<small>Updating...</small>");
+              $(".date-last-opened-container-" + data_value).html(o.date_last_opened);
+           }
+      });
+
+    });
+
+    $(".mail-messaging-hide-content").click(function(){
+      var data_value = $(this).attr("data-value");
+      $(".email-content-container-" + data_value).addClass("hidden");      
+    });    
         
   });
 
