@@ -14,6 +14,7 @@ use App\ContactEvent;
 use App\CompanyUser;
 use App\EventType;
 use App\MailMessaging;
+use App\EmailTemplate;
 
 use UserHelper;
 use GlobalHelper;
@@ -52,10 +53,6 @@ class ContactDashboardController extends Controller
         $contact = Contact::find($id); 
         $business_info = ContactBusinessInformation::where('contact_id','=', $id)->first();
 
-        $mail_messaging_query = MailMessaging::query();
-        $mail_messaging_query = $mail_messaging_query->where('mail_messaging.contact_id',$id);
-        $mail_messaging = $mail_messaging_query->paginate(20);
-
         /*
          * For contact event - start
         */
@@ -93,15 +90,42 @@ class ContactDashboardController extends Controller
 
         $todays_events = ContactEvent::where('event_date', '=', date("Y-m-d"))->get();
 
+        $user_id  = Auth::user()->id;
+
+        /*
+         * For emails - start
+        */
+
+        $search_by_mail    = $request->input('search_by_mail');
+        $search_field_mail = $request->input('search_field_mail');  
+        if($search_by_mail != '' && $search_field_mail != '') {
+            $mail_messaging_query = MailMessaging::query();
+            $mail_messaging_query = $mail_messaging_query->where('mail_messaging.'.$search_by_mail, 'like', '%' . $search_field_mail . '%');
+            $mail_messaging_query = $mail_messaging_query->where('mail_messaging.contact_id',$id);
+            $mail_messaging = $mail_messaging_query->paginate(15);
+        } else {
+            $mail_messaging_query = MailMessaging::query();
+            $mail_messaging_query = $mail_messaging_query->where('mail_messaging.contact_id',$id);
+            $mail_messaging = $mail_messaging_query->paginate(20);
+        }
+
+        $emailTemplates = EmailTemplate::where('user_id', '=', $user_id)->get();
+        $contacts = Contact::where('user_id','=', $user_id)->get();
+        /*
+         * For emails event - end 
+        */
         return view('contact.dashboard.index',[
         	'contact_id' => $contact_id,
         	'contact' => $contact,
+            'contacts' => $contacts,
+            'emailTemplates' => $emailTemplates,
         	'business_info' => $business_info,
         	'workflow_status' => $workflow_status,
         	'contact_events' => $contact_events,
         	'company_users' => $company_users,
         	'event_types' => $event_types,
             'search_field_event' => $search_field_event,
+            'search_field_mail' => $search_field_mail,
             'upcoming_events' => $upcoming_events,
             'todays_events' => $todays_events,
             'mail_messaging' => $mail_messaging,

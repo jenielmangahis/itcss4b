@@ -122,7 +122,7 @@ class MailMessagingController extends Controller
                         $mailMessaging->cc         = $cc;
                         $mailMessaging->bcc        = $bcc;
                         $mailMessaging->content    = $request->input('content');
-                        $mailMessaging->sender     = "NA";
+                        //$mailMessaging->sender     = "NA";
                         $mailMessaging->save();
                     }
                 }
@@ -144,10 +144,10 @@ class MailMessagingController extends Controller
                     $cc      = array('marvin@test.com');
                     $bcc     = array('lily@test.com');
                     $name    = 'Bryann Revina';
-                    $subject = 'for test only';
-                    $message = 'this is my message';
+                    $subject = $request->input('subject');
+                    $message = $request->input('content');
 
-                    Mail::to($to)
+                    Mail::to($recipients)
                         ->cc($cc)
                         ->bcc($bcc)
                         ->send(new MailContact($name, $from_email, $subject, $message)); 
@@ -156,12 +156,12 @@ class MailMessagingController extends Controller
 
             Session::flash('message', 'Email Sent');
             Session::flash('alert_class', 'alert-success');
-            return redirect('mail_messaging');
+            return redirect()->back();
 
         }else{
             Session::flash('message', 'Unable to send email');
             Session::flash('alert_class', 'alert-danger');  
-            return redirect('mail_messaging');
+            return redirect()->back();
         }
     }
 
