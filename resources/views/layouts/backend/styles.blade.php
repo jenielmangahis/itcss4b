@@ -20,5 +20,8 @@
       apply the skin class to the body tag so the changes take effect. -->
 <link href="{{ asset('/bower_components/admin-lte/dist/css/skins/skin-blue.min.css')}}" rel="stylesheet" type="text/css" />
 
+<!-- Add pignose datepicker css here -->
+<link href="{{ asset('/bower_components/pg-calendar/css/pignose.calendar.min.css')}}" rel="stylesheet" type="text/css" />
+
 <!-- Custom Style -->
 <link href="{{ asset('/css/custom.css')}}" rel="stylesheet" type="text/css" />

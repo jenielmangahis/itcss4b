@@ -196,7 +196,7 @@
 
                   <div id="modalCallTracker" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
                       {{ Form::open(array('url' => '', 'class' => '', 'id' => 'call-log-activity-form')) }}
-                        <div class="modal-dialog modal-lg" style="">
+                        <div class="modal-dialog modal-lg" style="width: 980px !important;">
                           <div class="modal-content">
 
                             <div class="modal-header">
@@ -207,7 +207,7 @@
                             <div class="modal-body">
 
                               <div class="row">
-                              <section class="col-lg-6 connectedSortable ui-sortable">
+                              <section class="col-lg-4 connectedSortable ui-sortable">
                                 <div class="row">
 
                                   <div class="col-xs-3">
@@ -296,7 +296,7 @@
                                 </div>                    
                               </section>
 
-                              <section class="col-lg-6 connectedSortable ui-sortable">
+                              <section class="col-lg-8 connectedSortable ui-sortable">
                                 <div class="nav-tabs-custom contact-dashboard">
                                   <ul class="nav nav-tabs">
                                     <li class="active"><a href="#tab_activity_history" data-toggle="tab">Activity History</a></li>
@@ -333,7 +333,55 @@
                                     </div>
                                     
                                     <div class="tab-pane" id="tab_followup_call">
-                                      <p>Tab History here</p>       
+                                      <div class="row">
+                                        <section class="col-lg-7 connectedSortable ui-sortable" style="text-align: center;">
+                                          <label for="inputNoteAboutThisCall">When</label>
+                                          <div class="when-calendar"></div>
+                                        </section>
+                                        <section class="col-lg-5 connectedSortable ui-sortable">
+                                          <div class="row">
+                                            <div class="col-xs-12">
+                                              <div class="form-group">
+                                                <label for="inputNoteAboutThisCall">Assigned to: </label>
+                                                <select name="user_id" id="user_id" class="form-control">
+                                                  <option value="">Opened</option>
+                                                  <option value="">Completed</option>
+                                                  <option value="">Cancelled</option>
+                                                  <option value="">Dispatched</option>
+                                                </select>                                                  
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="row">
+                                            <div class="col-xs-12">
+                                              <div class="form-group">
+                                                <label for="inputNoteAboutThisCall">Event Type </label>
+                                                <select name="user_id" id="user_id" class="form-control">
+                                                  <option value="">Opened</option>
+                                                  <option value="">Completed</option>
+                                                  <option value="">Cancelled</option>
+                                                  <option value="">Dispatched</option>
+                                                </select>                                                  
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="row">
+                                            <div class="col-xs-12">
+                                              <div class="form-group">
+                                                <label for="inputNoteAboutThisCall">Time: </label>
+                                                <input type="text" name="" class="form-control" value="">                                                 
+                                              </div>
+                                            </div>
+                                          </div>                                          
+                                          <div class="row">
+                                            <div class="col-xs-12">
+                                              <div class="form-group">
+                                                <textarea rows="4" cols="50" class="form-control" id="description" name="description" required=""></textarea>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </section>                                          
+                                      </div>
                                     </div>
                                   </div>                                 
                                 </div>
@@ -389,6 +437,11 @@
   }  
 
   $(function () { 
+
+    $('.when-calendar').pignoseCalendar({
+      theme: 'blue' 
+    });    
+
   });
   
 </script>
