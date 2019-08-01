@@ -39,6 +39,17 @@
               {{ Session::get('message') }}
             </div>
         @endif    
+
+        @if ($errors->any())
+          <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times</button>
+            <ul>
+              @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          </div><!--/.alert.alert-danger-->
+        @endif {{-- end of @if ($errors->any()) @if ($errors->any()) --}}        
         
         <div class="row">
             <div class="col-md-12">
@@ -194,9 +205,10 @@
                       {!! Form::close() !!}        
                   </div>
 
-                  <div id="modalCallTracker" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
-                      {{ Form::open(array('url' => '', 'class' => '', 'id' => 'call-log-activity-form')) }}
-                        <div class="modal-dialog modal-lg" style="width: 980px !important;">
+                  <div id="modalCallTracker" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">                     
+                      {{ Form::open(array('url' => 'contact_call_tracker/store', 'class' => '', 'id' => 'call-log-activity-form')) }}
+                        <input type="hidden" value="{{ $con->id }}" name="contact_id" id="contact_id">
+                        <div class="modal-dialog modal-lg" style="width: 1000px !important;">
                           <div class="modal-content">
 
                             <div class="modal-header">
@@ -207,30 +219,32 @@
                             <div class="modal-body">
 
                               <div class="row">
-                              <section class="col-lg-4 connectedSortable ui-sortable">
+                              <section class="col-lg-5 connectedSortable ui-sortable">
+                                {{ Form::open(array('url' => 'contact_call_tracker/store', 'class' => '', 'id' => 'add-call-tracker')) }}
                                 <div class="row">
 
                                   <div class="col-xs-3">
                                     <div class="form-group">
-                                      <label for="inputEventType">Call Type</label>
-                                      <select name="event_type_id" id="event_type_id" class="form-control">
-                                        <option value="">Outgoing</option>
-                                        <option value="">Incoming</option>
+                                      <label for="inputcalltype">Type</label>
+                                      <select name="call_type" id="call_type" class="form-control">
+                                        <option value="outgoing">Outgoing</option>
+                                        <option value="incoming">Incoming</option>
                                       </select>  
                                     </div>                
                                   </div>
                                   <div class="col-xs-4">
                                     <div class="form-group">
                                       <label for="inputAssignedUser">Call Result</label>
-                                      <select name="event_type_id" id="event_type_id" class="form-control">
-                                        <option value="">Already in Program</option>
-                                        <option value="">Connected</option>
-                                        <option value="">Disconnected</option>
-                                        <option value="">Do Not Contact</option>
-                                        <option value="">Hang Up</option>
-                                        <option value="">Left Message</option>
-                                        <option value="">No Answer</option>
-                                        <option value="">Wrong Number</option>
+                                      <select name="call_result" id="call_result" class="form-control">
+                                        <option value="Already in Program">Already in Program</option>
+                                        <option value="Busy">Busy</option>
+                                        <option value="Connected">Connected</option>
+                                        <option value="Disconnected">Disconnected</option>
+                                        <option value="Do Not Contact">Do Not Contact</option>
+                                        <option value="Hang Up">Hang Up</option>
+                                        <option value="Left Message">Left Message</option>
+                                        <option value="No Answer">No Answer</option>
+                                        <option value="Wrong Number">Wrong Number</option>
                                       </select>                   
                                     </div>                
                                   </div>
@@ -238,14 +252,14 @@
                                   <div class="col-xs-2">
                                     <div class="form-group">
                                       <label for="inputTime">Time</label>
-                                      <input type="text" class="form-control timepicker" id="event_time" name="event_time" placeholder="">
+                                      <input type="text" class="form-control" id="call_minutes" name="call_minutes" placeholder="Call Minutes" title="Call Minutes" required="">
                                     </div>                
                                   </div>
 
                                   <div class="col-xs-2">
                                     <div class="form-group">
                                       <label for="inputTime">&nbsp;</label>
-                                      <input type="text" class="form-control timepicker" id="event_time" name="event_time" placeholder="">
+                                      <input type="text" class="form-control" id="call_seconds" name="call_seconds" placeholder="Call Seconds" title="Call Seconds" required="">
                                     </div>                
                                   </div>
 
@@ -255,7 +269,7 @@
                                   <div class="col-xs-12">
                                     <div class="form-group">
                                       <label for="inputNoteAboutThisCall">Notes about this call</label>
-                                      <textarea rows="4" cols="50" class="form-control" id="description" name="description" required=""></textarea>
+                                      <textarea rows="4" cols="50" class="form-control" id="notes" name="notes" required=""></textarea>
                                     </div>
                                   </div>
                                 </div>
@@ -264,22 +278,22 @@
 
                                 <div class="row">
 
-                                  <div class="col-xs-5">
+                                  <div class="col-xs-6">
                                     <div class="form-group">
                                       <select name="event_type_id" id="event_type_id" class="form-control">
-                                        <option value="">Follow up Client</option>
-                                        <option value="">Setup a Meeting</option>
-                                        <option value="">+Add Another One</option>
+                                        @foreach($event_types as $event_type)
+                                          <option value="{{ $event_type->id }}">{{ $event_type->name }}</option>
+                                        @endforeach
                                       </select>  
                                     </div>                
                                   </div>
-                                  <div class="col-xs-3">
+                                  <div class="col-xs-5">
                                     <div class="form-group">
-                                      <select name="user_id" id="user_id" class="form-control">
-                                        <option value="">Opened</option>
-                                        <option value="">Completed</option>
-                                        <option value="">Cancelled</option>
-                                        <option value="">Dispatched</option>
+                                      <select name="call_update_status" id="call_update_status" class="form-control">
+                                        <option value="Opened">Opened</option>
+                                        <option value="Completed">Completed</option>
+                                        <option value="Cancelled">Cancelled</option>
+                                        <option value="Dispatched">Dispatched</option>
                                       </select>                   
                                     </div>                
                                   </div>
@@ -289,14 +303,34 @@
                                 <div class="row">
                                   <div class="col-xs-12">
                                     <div class="form-group">
-                                      <button type="submit" class="btn btn-default" disabled>Add</button>
+                                      <button type="submit" class="btn btn-default">Add</button>
                                       <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button> 
                                     </div>  
                                   </div>                               
-                                </div>                    
+                                </div>    
+                                {!! Form::close() !!}                     
                               </section>
 
-                              <section class="col-lg-8 connectedSortable ui-sortable">
+                              <section class="col-lg-7 connectedSortable ui-sortable">
+
+                              @if(Session::has('message'))
+                                  <div class="alert {{ Session::get('alert_class') }}">
+                                    <button type="button" class="close" data-dismiss="alert">&times</button>
+                                    {{ Session::get('message') }}
+                                  </div>
+                              @endif    
+
+                              @if ($errors->any())
+                                <div class="alert alert-danger">
+                                  <button type="button" class="close" data-dismiss="alert">&times</button>
+                                  <ul>
+                                    @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                    @endforeach
+                                  </ul>
+                                </div><!--/.alert.alert-danger-->
+                              @endif {{-- end of @if ($errors->any()) @if ($errors->any()) --}}  
+
                                 <div class="nav-tabs-custom contact-dashboard">
                                   <ul class="nav nav-tabs">
                                     <li class="active"><a href="#tab_activity_history" data-toggle="tab">Activity History</a></li>
@@ -313,17 +347,18 @@
                                           <th>Call Type</th>
                                           <th style="width:10%;">Action</th>
                                         </tr>
+                                          @foreach($call_log_activity_history as $ah_key => $ah)
                                           <tr>
                                             <td>01</td>
-                                            <td>Jeniel Mangahis on Julay 01, 2019</td>
-                                            <td>Out Going</td>
+                                            <td>{{ $ah->contact->firstname }} {{ $ah->contact->lastname }} on <?php echo date('Y-m-d', strtotime($ah->created_at)) ?></td>
+                                            <td>{{ $ah->call_type }}</td>
                                             <td>
                                               <a href="javascript:void(0);" class="btn btn-xs btn-primary" id="" data-toggle="modal" data-target="#modalEditEvent">
                                                   <i class="fa fa-edit"></i>
                                               </a>                                                     
                                             </td>
                                           </tr>  
-
+                                          @endforeach
                                       </table>
 
                                       <div style="text-align: center;" class="box-footer clearfix">
@@ -333,6 +368,7 @@
                                     </div>
                                     
                                     <div class="tab-pane" id="tab_followup_call">
+                                      {{ Form::open(array('url' => 'contact_call_tracker/store_followup', 'class' => '', 'id' => 'call-log-followup-form')) }}
                                       <div class="row">
                                         <section class="col-lg-7 connectedSortable ui-sortable" style="text-align: center;">
                                           <label for="inputNoteAboutThisCall">When</label>
@@ -382,6 +418,7 @@
                                           </div>
                                         </section>                                          
                                       </div>
+                                      {!! Form::close() !!}        
                                     </div>
                                   </div>                                 
                                 </div>
@@ -437,7 +474,9 @@
   }  
 
   $(function () { 
-
+    <?php if(Session::get('calltrackermodal') == 'yes') { ?>
+      $('#modalCallTracker').modal('show'); 
+    <?php } ?>
     $('.when-calendar').pignoseCalendar({
       theme: 'blue' 
     });    

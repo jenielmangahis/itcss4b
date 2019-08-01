@@ -98,6 +98,8 @@ Route::post('contact_event/store', ['as'=>'contact_event/store','uses'=>'Contact
 Route::post('contact_event/destroy', ['as'=>'contact_event/destroy','uses'=>'ContactEventController@destroy'])->middleware('auth');
 Route::post('contact_event/update', ['as'=>'contact_event/update','uses'=>'ContactEventController@update'])->middleware('auth');
 
+Route::post('contact_call_tracker/store', ['as'=>'contact_call_tracker/store','uses'=>'CallTrackerController@store'])->middleware('auth');
+
 //Workflow Categories
 Route::get('/workflow_category', ['as'=>'workflow_category','uses'=>'WorkflowCategoryController@index'])->middleware('auth');
 Route::get('/workflow_category/create', ['as'=>'workflow_category/create','uses'=>'WorkflowCategoryController@create'])->middleware('auth');

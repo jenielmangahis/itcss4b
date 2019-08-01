@@ -287,6 +287,53 @@
     $('.timepicker').timepicker({
       showInputs: false
     })
+
+    $(".mail-messaging-show-content").click(function(){
+      var data_value = $(this).attr("data-value");
+      $(".email-content-container-" + data_value).removeClass("hidden");   
+      var url = base_url + '/mail_messaging/ajax_update_last_opened';
+      $.ajax({
+           type: "GET",
+           url: url,
+           dataType: 'json',               
+           data: {
+              "mail_messaging_id":data_value
+              }, 
+           success: function(o)
+           {
+              $(".date-last-opened-container-" + data_value).html("<small>Updating...</small>");
+              $(".date-last-opened-container-" + data_value).html(o.date_last_opened);
+           }
+      });
+
+    });
+
+    $(".mail-messaging-hide-content").click(function(){
+      var data_value = $(this).attr("data-value");
+      $(".email-content-container-" + data_value).addClass("hidden");      
+    });    
+
+    $(".email-template").change(function(){
+      var email_template_id = $(this).val();
+      $('.editor-container').html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
+      var url = base_url + '/email_template/ajax_load_email_template_content';
+      $.ajax({
+           type: "GET",
+           url: url,               
+           data: {
+              "email_template_id":email_template_id
+              }, 
+           success: function(o)
+           {
+              $('.editor-container').html(o);
+           }
+      });
+    });
+    
+    $('.select_recipient').select2();
+    // Replace the <textarea id="editor1"> with a CKEditor
+    // instance, using default configuration.
+    CKEDITOR.replace('ckeditor');    
         
   });
 

@@ -131,10 +131,18 @@
       </div>
     {!! Form::close() !!}        
 </div>
-@section('page-footer-scripts')
+
 <script>
-  $(function () {   
-    var base_url = '<?php echo url('/'); ?>';
+
+  /*
+   * NOTE: 
+   *    - I transfer the javascript to the main files which is the index.php on contact -> dashboard
+   *    - The script must be on the main file, not on the include files kasi isa mag conflict sa ibang script function
+   *    - Hindi pwede ma doble yung section page-footer-scripts
+  */
+
+  /*$(function () {   
+    var base_url = '<?php //echo url('/'); ?>';
     $(".mail-messaging-show-content").click(function(){
       var data_value = $(this).attr("data-value");
       $(".email-content-container-" + data_value).removeClass("hidden");   
@@ -177,11 +185,10 @@
       });
     });
     $('.select_recipient').select2();
-    // Replace the <textarea id="editor1"> with a CKEditor
-    // instance, using default configuration.
+
     CKEDITOR.replace('ckeditor');
 
-  });
+  });*/
 </script>
-@endsection
+
 

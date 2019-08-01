@@ -33,3 +33,7 @@
 .list-mail-messaging li hr{	
 	border: 1px solid #3c8dbc;
 }
+
+.when-calendar .pignose-calendar {
+	width: 100% !important;
+}

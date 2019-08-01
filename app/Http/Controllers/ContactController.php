@@ -9,10 +9,12 @@ use App\Contact;
 use App\ContactBusinessInformation;
 use App\ContactBrokerInformation;
 use App\ContactLoanInformation;
+use App\ContactCallTracker;
 use App\CompanyUser;
 use App\Companies;
 use App\Workflow;
 use App\Stage;
+use App\EventType;
 
 use UserHelper;
 use GlobalHelper;
@@ -81,11 +83,15 @@ class ContactController extends Controller
         }
 
         $stages    = Stage::all();
+        $event_types = EventType::all();
+        $call_log_activity_history = ContactCallTracker::all();
 
         return view('contact.index',[
         	'contact' => $contact,
             'search_field' => $search_field,
-            'stages' => $stages
+            'stages' => $stages,
+            'event_types' => $event_types,
+            'call_log_activity_history' => $call_log_activity_history
         ]); 
     } 
 
