@@ -85,13 +85,15 @@ class ContactController extends Controller
         $stages    = Stage::all();
         $event_types = EventType::all();
         $call_log_activity_history = ContactCallTracker::all();
+        $event_types   = EventType::all();
 
         return view('contact.index',[
         	'contact' => $contact,
             'search_field' => $search_field,
             'stages' => $stages,
             'event_types' => $event_types,
-            'call_log_activity_history' => $call_log_activity_history
+            'call_log_activity_history' => $call_log_activity_history,
+            'event_types' => $event_types
         ]); 
     } 
 

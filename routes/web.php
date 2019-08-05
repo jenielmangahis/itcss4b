@@ -99,6 +99,9 @@ Route::post('contact_event/destroy', ['as'=>'contact_event/destroy','uses'=>'Con
 Route::post('contact_event/update', ['as'=>'contact_event/update','uses'=>'ContactEventController@update'])->middleware('auth');
 
 Route::post('contact_call_tracker/store', ['as'=>'contact_call_tracker/store','uses'=>'CallTrackerController@store'])->middleware('auth');
+Route::get('contact_call_tracker/ajax_loadactivity_history_tab_list', ['as'=>'contact_call_tracker/ajax_loadactivity_history_tab_list','uses'=>'CallTrackerController@ajax_loadactivity_history_tab_list'])->middleware('auth');
+Route::get('contact_call_tracker/ajax_followup_call_user_dropdown', ['as'=>'contact_call_tracker/ajax_followup_call_user_dropdown','uses'=>'CallTrackerController@ajax_followup_call_user_dropdown'])->middleware('auth');
+Route::post('contact_call_tracker/store_followup', ['as'=>'contact_call_tracker/store_followup','uses'=>'CallTrackerController@store_followup'])->middleware('auth');
 
 //Workflow Categories
 Route::get('/workflow_category', ['as'=>'workflow_category','uses'=>'WorkflowCategoryController@index'])->middleware('auth');

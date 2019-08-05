@@ -134,7 +134,7 @@
                             <td>{{ $con->user->firstname}} {{ $con->user->lastname }}</td>
                             <td><a href="{{url('contact_dashboard/'.Hashids::encode($con->id))}}">{{ $con->firstname }} {{$con->lastname }}</a></td>
                             <td>
-                              <a href="javascript:void(0);" class="btn" id="" data-toggle="modal" data-target="#modalCallTracker">
+                              <a href="javascript:void(0);" class="btn" id="" onclick="javascript:load_activity_history_tab_list('<?php echo  Hashids::encode($con->id); ?>');" data-toggle="modal" data-target="#modalCallTracker">
                                  {{ $con->mobile_number }}
                               </a>                                
                             </td>
@@ -207,7 +207,7 @@
 
                   <div id="modalCallTracker" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">                     
                       {{ Form::open(array('url' => 'contact_call_tracker/store', 'class' => '', 'id' => 'call-log-activity-form')) }}
-                        <input type="hidden" value="{{ $con->id }}" name="contact_id" id="contact_id">
+                        <input type="hidden" value="" name="contact_id" id="contact_id" class="contact_id_add_modal">
                         <div class="modal-dialog modal-lg" style="width: 1000px !important;">
                           <div class="modal-content">
 
@@ -340,26 +340,7 @@
                                   <div class="tab-content">
                                     <div class="active tab-pane" id="tab_activity_history">
 
-                                      <table class="table table-bordered table-hover">
-                                        <tr>
-                                          <th style="width: 1%;" >#</th>
-                                          <th>Calls</th>
-                                          <th>Call Type</th>
-                                          <th style="width:10%;">Action</th>
-                                        </tr>
-                                          @foreach($call_log_activity_history as $ah_key => $ah)
-                                          <tr>
-                                            <td>01</td>
-                                            <td>{{ $ah->contact->firstname }} {{ $ah->contact->lastname }} on <?php echo date('Y-m-d', strtotime($ah->created_at)) ?></td>
-                                            <td>{{ $ah->call_type }}</td>
-                                            <td>
-                                              <a href="javascript:void(0);" class="btn btn-xs btn-primary" id="" data-toggle="modal" data-target="#modalEditEvent">
-                                                  <i class="fa fa-edit"></i>
-                                              </a>                                                     
-                                            </td>
-                                          </tr>  
-                                          @endforeach
-                                      </table>
+                                      <div id="activity-history-tab-list-container"></div>
 
                                       <div style="text-align: center;" class="box-footer clearfix">
 
@@ -369,6 +350,8 @@
                                     
                                     <div class="tab-pane" id="tab_followup_call">
                                       {{ Form::open(array('url' => 'contact_call_tracker/store_followup', 'class' => '', 'id' => 'call-log-followup-form')) }}
+                                      <input type="hidden" name="event_date" id="event_date" class="event_date" value="">
+                                      <input type="hidden" name="contact_id" id="contact_id" class="contact_id" value="">
                                       <div class="row">
                                         <section class="col-lg-7 connectedSortable ui-sortable" style="text-align: center;">
                                           <label for="inputNoteAboutThisCall">When</label>
@@ -379,12 +362,7 @@
                                             <div class="col-xs-12">
                                               <div class="form-group">
                                                 <label for="inputNoteAboutThisCall">Assigned to: </label>
-                                                <select name="user_id" id="user_id" class="form-control">
-                                                  <option value="">Opened</option>
-                                                  <option value="">Completed</option>
-                                                  <option value="">Cancelled</option>
-                                                  <option value="">Dispatched</option>
-                                                </select>                                                  
+                                                <div id="user-assigned-to-container" class="user-assigned-to-container"></div>                                                 
                                               </div>
                                             </div>
                                           </div>
@@ -392,11 +370,16 @@
                                             <div class="col-xs-12">
                                               <div class="form-group">
                                                 <label for="inputNoteAboutThisCall">Event Type </label>
-                                                <select name="user_id" id="user_id" class="form-control">
-                                                  <option value="">Opened</option>
-                                                  <option value="">Completed</option>
-                                                  <option value="">Cancelled</option>
-                                                  <option value="">Dispatched</option>
+                                                <select name="event_type_id" id="event_type_id" class="form-control">
+                                                  @if( !empty($event_types->toArray()) )
+                                                    @foreach($event_types as $et)   
+                                                      <option value="{{ $et->id }}">{{ $et->name }}</option>
+                                                    @endforeach
+                                                  @else
+                                                    <select name="event_type_id" id="event_type_id" class="form-control">
+                                                      <option value="">No event type available</option>
+                                                    </select>
+                                                  @endif
                                                 </select>                                                  
                                               </div>
                                             </div>
@@ -405,7 +388,7 @@
                                             <div class="col-xs-12">
                                               <div class="form-group">
                                                 <label for="inputNoteAboutThisCall">Time: </label>
-                                                <input type="text" name="" class="form-control" value="">                                                 
+                                                <input type="text" name="event_time" id="event_time" class="form-control timepicker" value="">                                                 
                                               </div>
                                             </div>
                                           </div>                                          
@@ -416,6 +399,14 @@
                                               </div>
                                             </div>
                                           </div>
+                                          <div class="row">
+                                            <div class="col-xs-12">
+                                              <div class="form-group">
+                                                <button type="submit" class="btn btn-default">Save Call</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>                                                                                           
+                                              </div>
+                                            </div>
+                                          </div>                                           
                                         </section>                                          
                                       </div>
                                       {!! Form::close() !!}        
@@ -455,6 +446,13 @@
   <!-- /.content -->
 @endsection
 
+<?php 
+  $call_track_modal = 'no';
+  if ($errors->any()) {
+    $call_track_modal = 'yes';
+  }
+?>
+
 @section('page-footer-scripts')
 <script>
   var base_url = '<?php echo url("/"); ?>';
@@ -473,13 +471,55 @@
     });
   }  
 
+  function load_assigned_to_users(id) {
+    $('#user-assigned-to-container').html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
+    var url = base_url + '/contact_call_tracker/ajax_followup_call_user_dropdown'
+    $.ajax({
+         type: "GET",
+         url: url,               
+         data: {"id":id}, 
+         success: function(o)
+         {
+            $('#user-assigned-to-container').html(o);
+         }
+    });    
+  }
+
+  function load_activity_history_tab_list(id) {
+    load_assigned_to_users(id);
+    $('#activity-history-tab-list-container').html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
+    $('.contact_id_add_modal').val(id);
+    $('.contact_id').val(id);
+    var url = base_url + '/contact_call_tracker/ajax_loadactivity_history_tab_list'
+    $.ajax({
+         type: "GET",
+         url: url,               
+         data: {"id":id}, 
+         success: function(o)
+         {
+            $('#activity-history-tab-list-container').html(o);
+         }
+    });  
+  }
   $(function () { 
     <?php if(Session::get('calltrackermodal') == 'yes') { ?>
+      load_activity_history_tab_list('<?php echo Session::get('calltrackercontactid'); ?>'); 
       $('#modalCallTracker').modal('show'); 
+    <?php }elseif($call_track_modal == 'yes') { ?>
+      load_activity_history_tab_list('<?php echo Session::get('calltrackercontactid'); ?>'); 
+      $('#modalCallTracker').modal('show');
     <?php } ?>
+
     $('.when-calendar').pignoseCalendar({
-      theme: 'blue' 
-    });    
+      theme: 'blue',
+      select: function(date) {
+        $('#event_date').val(date[0]);
+      }
+    }); 
+
+    $('.timepicker').timepicker({
+      showInputs: false
+    })       
 
   });
   
