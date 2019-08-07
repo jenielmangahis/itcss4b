@@ -117,7 +117,50 @@ class CallTrackerController extends Controller
             Session::flash('alert_class', 'alert-danger');  
             return redirect()->back();
         }
-    }    
+    } 
+
+    public function update(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $this->validate($request, [
+                'call_type'          => 'required',
+                'call_result'      	 => 'required',
+                'event_type_id'      => 'required',
+                'call_update_status' => 'required',
+                'call_minutes' 		 => 'required|numeric',
+                'call_seconds' 		 => 'required|numeric',
+             ]);
+
+            $id = Hashids::decode($request->input('id'))[0];
+            $call_log = ContactCallTracker::find($id);    
+
+            if($call_log) {
+
+	            //$call_log->user_id     	= $user_id;
+	            //$call_log->contact_id  	= $contact_id;
+
+	            $call_log->call_type     = $request->input('call_type');
+	            $call_log->call_result   = $request->input('call_result');
+	            $call_log->call_minutes  = $request->input('call_minutes');
+	            $call_log->call_seconds  = $request->input('call_seconds');
+	            $call_log->notes         = $request->input('notes');
+	            $call_log->event_type_id = $request->input('event_type_id');   
+	            $call_log->call_update_status = $request->input('call_update_status');
+	            $call_log->save();
+
+	            Session::flash('message', 'You have successfully update call log activity');
+	            Session::flash('alert_class', 'alert-success');
+	            return redirect()->back();	            
+
+            } else {
+	            Session::flash('message', 'Unable to update call log activity');
+	            Session::flash('alert_class', 'alert-danger');  
+	            return redirect()->back();            	
+            }
+        }
+
+    }       
 
     public function store_followup(Request $request) 
     {

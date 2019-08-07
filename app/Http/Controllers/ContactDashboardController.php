@@ -9,6 +9,7 @@ use App\Contact;
 use App\ContactBusinessInformation;
 use App\ContactBrokerInformation;
 use App\ContactLoanInformation;
+use App\ContactCallTracker;
 use App\Workflow;
 use App\ContactEvent;
 use App\CompanyUser;
@@ -64,10 +65,12 @@ class ContactDashboardController extends Controller
 
             if($search_by_event != '' && $search_field_event != '') {
                 $contact_event_query = $contact_event_query->where('contact_events.'.$search_by_event, 'like', '%' . $search_field_event . '%');
+                $contact_event_query = $contact_event_query->where('contact_id','=', $contact->id);
                 $contact_events = $contact_event_query->paginate(10);
             }            
         } else {
-            $contact_events = ContactEvent::paginate(10);
+            //$contact_events = ContactEvent::paginate(10);
+            $contact_events = ContactEvent::where('contact_id','=', $contact->id)->paginate(10);
         }        
         /*
          * For contact event - end 
@@ -86,11 +89,14 @@ class ContactDashboardController extends Controller
         $event_end   = date("Y-m-d", strtotime($event_start . ' +3 day'));
 
         $upcoming_events = ContactEvent::where('event_date', '>=', $event_start)
+                     ->where('contact_id','=', $contact->id)
                      ->where('event_date', '<=', $event_end)->get();
 
-        $todays_events = ContactEvent::where('event_date', '=', date("Y-m-d"))->get();
+        $todays_events = ContactEvent::where('event_date', '=', date("Y-m-d"))->where('contact_id','=', $contact->id)->get();
 
         $user_id  = Auth::user()->id;
+
+        $call_log_activity_history = ContactCallTracker::where('contact_id','=',$contact->id)->paginate(10);
 
         /*
          * For emails - start
@@ -129,6 +135,7 @@ class ContactDashboardController extends Controller
             'upcoming_events' => $upcoming_events,
             'todays_events' => $todays_events,
             'mail_messaging' => $mail_messaging,
+            'call_log_activity_history' => $call_log_activity_history
         ]); 
     }     
 }

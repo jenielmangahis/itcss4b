@@ -227,8 +227,8 @@
                                     <div class="form-group">
                                       <label for="inputcalltype">Type</label>
                                       <select name="call_type" id="call_type" class="form-control">
-                                        <option value="outgoing">Outgoing</option>
-                                        <option value="incoming">Incoming</option>
+                                        <option value="Outgoing">Outgoing</option>
+                                        <option value="Incoming">Incoming</option>
                                       </select>  
                                     </div>                
                                   </div>
