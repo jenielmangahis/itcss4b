@@ -199,7 +199,7 @@
                       @include('contact.dashboard.tab-sections.tab_mail_activity')
                     </div>
                     <div class="tab-pane" id="tab_notes">
-                      <p>Tab Notes</p>
+                      @include('contact.dashboard.tab-sections.tab_notes')
                     </div>
                     <div class="tab-pane" id="tab_emarketing">
                       <p>Tab Email Marketing</p>
@@ -334,7 +334,7 @@
     // Replace the <textarea id="editor1"> with a CKEditor
     // instance, using default configuration.
     CKEDITOR.replace('ckeditor');    
-        
+    CKEDITOR.replace('note_content');   
   });
 
 </script>

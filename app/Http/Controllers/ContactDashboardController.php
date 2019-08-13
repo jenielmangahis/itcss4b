@@ -16,6 +16,7 @@ use App\CompanyUser;
 use App\EventType;
 use App\MailMessaging;
 use App\EmailTemplate;
+use App\ContactNote;
 
 use UserHelper;
 use GlobalHelper;
@@ -120,6 +121,19 @@ class ContactDashboardController extends Controller
         /*
          * For emails event - end 
         */
+
+        /*
+         * Contact Note
+        */
+            $contact_notes_query = ContactNote::query();
+            if($contact) {
+                $contact_notes_query = $contact_notes_query->where('contact_id','=', $contact->id);
+            }
+            $contact_notes = $contact_notes_query->paginate(10);
+        /*
+         * Contact Note - end
+        */
+
         return view('contact.dashboard.index',[
         	'contact_id' => $contact_id,
         	'contact' => $contact,
@@ -135,7 +149,8 @@ class ContactDashboardController extends Controller
             'upcoming_events' => $upcoming_events,
             'todays_events' => $todays_events,
             'mail_messaging' => $mail_messaging,
-            'call_log_activity_history' => $call_log_activity_history
+            'call_log_activity_history' => $call_log_activity_history,
+            'contact_notes' => $contact_notes
         ]); 
     }     
 }
