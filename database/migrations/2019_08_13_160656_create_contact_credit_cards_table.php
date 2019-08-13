@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateContactBankAccounts extends Migration
+class CreateContactCreditCardsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,22 +13,24 @@ class CreateContactBankAccounts extends Migration
      */
     public function up()
     {
-        Schema::create('contact_bank_accounts', function (Blueprint $table) {
+        Schema::create('contact_credit_cards', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('contact_id')->default(0);
-            $table->string('routing_number')->nullable();
-            $table->string('bank_name')->nullable();
-            $table->string('account_number')->nullable();
-            $table->string('account_type')->nullable();
+            $table->string('debit_credit')->nullable();
+            $table->string('card_type')->nullable();
+            $table->string('card_issuer')->nullable();
+            $table->string('name_on_card')->nullable();
+            $table->string('card_number')->nullable();
+            $table->integer('expiration_date_month')->default(0);
+            $table->integer('expiration_date_year')->default(0);
             $table->string('address')->nullable();
+            $table->string('address2')->nullable();
             $table->string('city')->nullable();
             $table->string('state')->nullable();
             $table->string('zip')->nullable();
-            $table->string('name_on_account')->nullable();
-            $table->string('phone')->nullable();
-            $table->tinyInteger('is_check_paying_client')->default(0)->comment('1=yes,0=no');
             $table->timestamps();
             $table->softDeletes();
+
         });
     }
 
@@ -39,6 +41,6 @@ class CreateContactBankAccounts extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contact_bank_accounts');
+        Schema::dropIfExists('contact_credit_cards');
     }
 }

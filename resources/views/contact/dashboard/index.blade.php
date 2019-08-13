@@ -13,6 +13,25 @@
 @endsection
 
 @section('main')
+<style>
+  .nav-tabs li{
+    background-color:#3c8dbc !important;
+    min-width: 8%;
+    /*width: 9%;*/
+    margin-right: 2px !important;    
+    font-size: 13px;
+  }
+  .nav-tabs li a{
+    padding: 10px 10px;
+    color: #ffffff !important;
+  }
+  .nav-tabs li.active{
+    background-color: #222D32 !important;
+  }
+  .nav-tabs li.active a{
+    color:#3c8dbc !important;
+  }
+</style>
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
@@ -165,22 +184,22 @@
               <section class="col-lg-9 connectedSortable ui-sortable">
                 <div class="nav-tabs-custom contact-dashboard">
                   <ul class="nav nav-tabs">
-                    <li class="active"><a href="#tab_history" data-toggle="tab">History</a></li>
-                    <li class=""><a href="#tab_advances" data-toggle="tab">Advances</a></li>
-                    <li class=""><a href="#tab_calls" data-toggle="tab">Calls</a></li>
-                    <li class=""><a href="#tab_emails" data-toggle="tab">Emails</a></li>
-                    <li class=""><a href="#tab_notes" data-toggle="tab">Notes</a></li>
-                    <li class=""><a href="#tab_emarketing" data-toggle="tab">E-Marketing</a></li>
-                    <li class=""><a href="#tab_docs" data-toggle="tab">Docs</a></li>
-                    <li class=""><a href="#tab_events" data-toggle="tab">Events</a></li>
+                    <li class="active"><a href="#tab_history" data-toggle="tab"><i class="fa fa-history"></i> History</a></li>
+                    <li class=""><a href="#tab_advances" data-toggle="tab"><i class="fa fa-dollar"></i> Advances</a></li>
+                    <li class=""><a href="#tab_calls" data-toggle="tab"><i class="fa fa-phone"></i> Calls</a></li>
+                    <li class=""><a href="#tab_emails" data-toggle="tab"><i class="fa fa-envelope-open"></i> Emails</a></li>
+                    <li class=""><a href="#tab_notes" data-toggle="tab"><i class="fa fa-list"></i> Notes</a></li>
+                    <li class=""><a href="#tab_emarketing" data-toggle="tab"><i class="fa fa-address-card-o"></i> E-Marketing</a></li>
+                    <li class=""><a href="#tab_docs" data-toggle="tab"><i class="fa fa-file"></i> Docs</a></li>
+                    <li class=""><a href="#tab_events" data-toggle="tab"><i class="fa fa-calendar"></i> Events</a></li>
+                    <li class=""><a href="#tab_bank_accounts" data-toggle="tab"><i class="fa fa-bank"></i> Bank Account</a></li>
+                    <li class=""><a href="#tab_credit_card" data-toggle="tab"><i class="fa fa-credit-card"></i> Credit Card</a></li>
                     <li class="dropdown">
                       <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         Others <span class="caret"></span>
                       </a>
                       <ul class="dropdown-menu">
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_tasks" data-toggle="tab">Tasks</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_credit_card" data-toggle="tab">Credit Card</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_bank_accounts" data-toggle="tab">Bank Accounts</a></li>
                       </ul>
                     </li>                
                   </ul>
@@ -214,10 +233,10 @@
                       <p>Tab Tasks</p>
                     </div>
                     <div class="tab-pane" id="tab_credit_card">
-                      <p>Tab Credit Card</p>
+                      @include('contact.dashboard.tab-sections.tab_credit_cards')
                     </div>
                     <div class="tab-pane" id="tab_bank_accounts">
-                      <p>Tab Bank Accounts</p>
+                      @include('contact.dashboard.tab-sections.tab_bank_accounts')
                     </div>
                     <!-- /.tab-pane -->
                   </div>

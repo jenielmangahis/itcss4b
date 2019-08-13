@@ -161,6 +161,12 @@ Route::post('email_template/update', ['as'=>'email_template/update','uses'=>'Ema
 Route::post('email_template/destroy', ['as'=>'email_template/destroy','uses'=>'EmailTemplateController@destroy'])->middleware('auth');
 Route::get('email_template/ajax_load_email_template_content', ['as'=>'email_template/ajax_load_email_template_content','uses'=>'EmailTemplateController@ajax_load_email_template_content'])->middleware('auth');
 
+//Contact Bank Account
+Route::post('contact_bank_account/update', ['as'=>'contact_bank_account/update','uses'=>'ContactBankAccountController@update'])->middleware('auth');
+
+//Contact Credit Card
+Route::post('contact_credit_card/update', ['as'=>'contact_credit_card/update','uses'=>'ContactCreditCardController@update'])->middleware('auth');
+
 //Mail Messaging
 Route::get('/mail_messaging', ['as'=>'mail_messaging','uses'=>'MailMessagingController@index'])->middleware('auth');
 Route::get('/mail_messaging/create', ['as'=>'mail_messaging/create','uses'=>'MailMessagingController@create'])->middleware('auth');

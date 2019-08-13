@@ -16,6 +16,8 @@ use App\CompanyUser;
 use App\EventType;
 use App\MailMessaging;
 use App\EmailTemplate;
+use App\ContactBankAccount;
+use App\ContactCreditCard;
 
 use UserHelper;
 use GlobalHelper;
@@ -118,11 +120,99 @@ class ContactDashboardController extends Controller
         $emailTemplates = EmailTemplate::where('user_id', '=', $user_id)->get();
         $contacts = Contact::where('user_id','=', $user_id)->get();
         /*
-         * For emails event - end 
+         * For emails - end 
         */
+
+        /*
+         * For bank account - start
+        */
+        $bankAccounts = new ContactBankAccount();
+        $bankAccountAccountTypes = $bankAccounts->optionsAccountTypes();
+        $bank_account_id = 0;
+
+        $contactBankAccount = ContactBankAccount::where('contact_id','=', $id)->first();
+        if( $contactBankAccount ){
+            $bank_account_id = $contactBankAccount->id;            
+            $data_bank_account = [
+                'routing_number'          => $contactBankAccount->routing_number,
+                'is_check_paying_client' => $contactBankAccount->is_check_paying_client,
+                'account_number'         => $contactBankAccount->account_number,
+                'account_type'      => $contactBankAccount->account_type,
+                'name_on_account' => $contactBankAccount->name_on_account,
+                'bank_name'          => $contactBankAccount->bank_name,
+                'address'        => $contactBankAccount->address,
+                'city'       => $contactBankAccount->city,
+                'state'          => $contactBankAccount->state,
+                'zip' => $contactBankAccount->zip
+            ];
+        }else{
+            $data_bank_account = [
+                'routing_number'          => '',
+                'account_number'         => '',
+                'is_check_paying_client' => 0,
+                'account_type'      => '',
+                'name_on_account' => '',
+                'bank_name'          => '',
+                'address'        => '',
+                'city'       => '',
+                'state'          => '',
+                'zip' => ''
+            ];
+        }
+        /*
+         * For bank account - end 
+        */
+        $creditCards = new ContactCreditCard();
+        $creditCardDebitCredit = $creditCards->optionsDebitCredit();
+        $creditCardCardTypes   = $creditCards->optionsCardTypes();
+        $contact_credit_card_id = 0;
+
+        $contactCreditCard = ContactCreditCard::where('contact_id','=', $id)->first();
+        if( $contactCreditCard ){
+            $contact_credit_card_id = $contactCreditCard->id;
+            $data_contact_credit_card = [
+                'debit_credit' => $contactCreditCard->debit_credit,
+                'card_type' => $contactCreditCard->card_type,
+                'card_issuer' => $contactCreditCard->card_issuer,
+                'name_on_card' => $contactCreditCard->name_on_card,
+                'card_number' => $contactCreditCard->card_number,
+                'expiration_date_month' => $contactCreditCard->expiration_date_month,
+                'expiration_date_year' => $contactCreditCard->expiration_date_year,
+                'address' => $contactCreditCard->address,
+                'address2' => $contactCreditCard->address2,
+                'city' => $contactCreditCard->city,
+                'state' => $contactCreditCard->state,
+                'zip' => $contactCreditCard->zip,
+            ];
+        }else{
+            $data_contact_credit_card = [
+                'debit_credit' => '',
+                'card_type' => '',
+                'card_issuer' => '',
+                'name_on_card' => '',
+                'card_number' => '',
+                'expiration_date_month' => '',
+                'expiration_date_year' => '',
+                'address' => '',
+                'address2' => '',
+                'city' => '',
+                'state' => '',
+                'zip' => '',
+            ];
+        }
+        /*
+         * For credit card - start
+        */
+
+        /*
+         * For credit card - end 
+        */
+
+        
         return view('contact.dashboard.index',[
-        	'contact_id' => $contact_id,
-        	'contact' => $contact,
+        	'contact_id' => $contact_id,            
+        	'contact' => $contact,            
+            'bankAccountAccountTypes' => $bankAccountAccountTypes,
             'contacts' => $contacts,
             'emailTemplates' => $emailTemplates,
         	'business_info' => $business_info,
@@ -135,7 +225,13 @@ class ContactDashboardController extends Controller
             'upcoming_events' => $upcoming_events,
             'todays_events' => $todays_events,
             'mail_messaging' => $mail_messaging,
-            'call_log_activity_history' => $call_log_activity_history
+            'call_log_activity_history' => $call_log_activity_history,
+            'data_bank_account' => $data_bank_account,
+            'data_contact_credit_card' => $data_contact_credit_card,
+            'bank_account_id' => $bank_account_id,
+            'creditCardDebitCredit' => $creditCardDebitCredit,
+            'creditCardCardTypes' => $creditCardCardTypes,
+            'contact_credit_card_id' => $contact_credit_card_id
         ]); 
     }     
 }
