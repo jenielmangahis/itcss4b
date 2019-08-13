@@ -78,42 +78,52 @@
         <h4 class="modal-title" id="myModalLabel">Send Email</h4>
       </div>
             <div class="modal-body">
-        <div class="form-group multi-select">
-          <label>To <span class="required"></span></label><br />
-          <select class="select_recipient form-control" name="recipient[]" multiple="multiple">
-                    @foreach($contacts as $c)
-                      <option value="{{ $c->id }}">{{ $c->email }}</option>
-                    @endforeach
-                  </select>                                
-        </div>
-        <div class="form-group multi-select">
-          <label>BCC <span class="required"></span></label><br />
-          <select class="select_recipient form-control" name="bcc[]" multiple="multiple">
-            @foreach($contacts as $c)
-              <option value="{{ $c->email }}">{{ $c->email }}</option>
-            @endforeach
-          </select>                                 
-        </div>
-        <div class="form-group multi-select">
-          <label>CC <span class="required"></span></label><br />
-          <select class="select_recipient form-control" name="cc[]" multiple="multiple">
-            @foreach($contacts as $c)
-              <option value="{{ $c->email }}">{{ $c->email }}</option>
-            @endforeach
-          </select>                                 
-        </div> 
-        <div class="form-group">
-          <label>Subject <span class="required"></span></label>
-          <?php echo Form::text('subject', old('subject') ,['class' => 'form-control']); ?>
+        <div class="form-group multi-select row">
+          <label class="col-sm-2 col-form-label">To <span class="required"></span></label>
+          <div class="col-sm-10">
+            <select class="select_recipient form-control" name="recipient[]" multiple="multiple">
+              @foreach($contacts as $c)
+                <option value="{{ $c->id }}">{{ $c->email }}</option>
+              @endforeach
+            </select>                                
           </div>
-          <div class="form-group">
-          <label>Email Templates</label>
-          <select class="form-control email-template" name="">
-              <option value="0">- Blank -</option>
-            @foreach($emailTemplates as $et)
-              <option value="{{ $et->id }}">{{ $et->name }}</option>
-            @endforeach
-          </select>                                 
+        </div>
+        <div class="form-group multi-select row">
+          <label class="col-sm-2 col-form-label">BCC <span class="required"></span></label>
+          <div class="col-sm-10">
+            <select class="select_recipient form-control" name="bcc[]" multiple="multiple">
+              @foreach($contacts as $c)
+                <option value="{{ $c->email }}">{{ $c->email }}</option>
+              @endforeach
+            </select>                                 
+          </div>
+        </div>
+        <div class="form-group multi-select row">
+          <label class="col-sm-2 col-form-label">CC <span class="required"></span></label>
+          <div class="col-sm-10">
+            <select class="select_recipient form-control" name="cc[]" multiple="multiple">
+              @foreach($contacts as $c)
+                <option value="{{ $c->email }}">{{ $c->email }}</option>
+              @endforeach
+            </select>                                 
+          </div>
+        </div> 
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Subject <span class="required"></span></label>
+          <div class="col-sm-10">
+            <?php echo Form::text('subject', old('subject') ,['class' => 'form-control']); ?>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Email Templates</label>
+          <div class="col-sm-10">
+            <select class="form-control email-template" name="">
+                <option value="0">- Blank -</option>
+              @foreach($emailTemplates as $et)
+                <option value="{{ $et->id }}">{{ $et->name }}</option>
+              @endforeach
+            </select>                                 
+          </div>
         </div>
         <div class="form-group">
           <label>Message <span class="required">*</span></label>
