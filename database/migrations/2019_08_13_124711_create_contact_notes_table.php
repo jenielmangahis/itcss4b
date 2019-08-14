@@ -15,13 +15,13 @@ class CreateContactNotesTable extends Migration
     {
         Schema::create('contact_notes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('user_id');
+            $table->integer('user_id')->default(0);
             $table->integer('contact_id');
             $table->integer('note_type_id');
             $table->string('note_title');
             $table->longText('note_content');   
             $table->integer('notify_user_id'); 
-            $table->string('cc_emails');        
+            $table->string('cc_emails')->nullable();        
             $table->timestamps();
             $table->softDeletes();
         });

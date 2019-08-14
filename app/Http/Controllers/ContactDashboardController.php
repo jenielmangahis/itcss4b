@@ -14,6 +14,7 @@ use App\Workflow;
 use App\ContactEvent;
 use App\CompanyUser;
 use App\EventType;
+use App\NoteType;
 use App\MailMessaging;
 use App\EmailTemplate;
 use App\ContactNote;
@@ -85,6 +86,7 @@ class ContactDashboardController extends Controller
 
         $company_users = CompanyUser::where('company_id', '=', $contact->company_id)->get();
         $event_types   = EventType::all();
+        $note_types   = NoteType::all();
 
         $upcoming_events = "";
 
@@ -131,7 +133,7 @@ class ContactDashboardController extends Controller
             if($contact) {
                 $contact_notes_query = $contact_notes_query->where('contact_id','=', $contact->id);
             }
-            $contact_notes = $contact_notes_query->paginate(10);
+            $contact_notes = $contact_notes_query->orderBy('created_at', 'desc')->paginate(10);
         /*
          * Contact Note - end
         */
@@ -226,6 +228,7 @@ class ContactDashboardController extends Controller
         	'contact_events' => $contact_events,
         	'company_users' => $company_users,
         	'event_types' => $event_types,
+            'note_types' => $note_types,
             'search_field_event' => $search_field_event,
             'search_field_mail' => $search_field_mail,
             'upcoming_events' => $upcoming_events,

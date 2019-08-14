@@ -47,7 +47,7 @@
 	    	$multi_tab_settings = '';
 	    	if(Route::current()->getName() == 'stage' || Route::current()->getName() == 'workflow_category' 
 	    		|| Route::current()->getName() == 'media_type' || Route::current()->getName() == 'event_type'
-	    		|| Route::current()->getName() == 'source'
+	    		|| Route::current()->getName() == 'source' || Route::current()->getName() == 'note_type'
 	    	) {
 	    		$multi_tab_settings = 'active';
 	    	}
@@ -64,6 +64,7 @@
 	        <li <?php echo Route::current()->getName() == 'stage' ? 'class="active"' : ''; ?>><a href="{{route('stage')}}"><i class="fa fa-circle-o"></i>Stage</a></li>
 	        <li <?php echo Route::current()->getName() == 'media_type' ? 'class="active"' : ''; ?>><a href="{{route('media_type')}}"><i class="fa fa-circle-o"></i>Media Types</a></li>
 	        <li <?php echo Route::current()->getName() == 'event_type' ? 'class="active"' : ''; ?>><a href="{{route('event_type')}}"><i class="fa fa-circle-o"></i>Event Types</a></li>
+	        <li <?php echo Route::current()->getName() == 'note_type' ? 'class="active"' : ''; ?>><a href="{{route('note_type')}}"><i class="fa fa-circle-o"></i>Note Types</a></li>
 	        <li <?php echo Route::current()->getName() == 'source' ? 'class="active"' : ''; ?>><a href="{{route('source')}}"><i class="fa fa-circle-o"></i>Sources</a></li>
 	      </ul>
 	    </li>

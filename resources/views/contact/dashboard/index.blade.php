@@ -200,6 +200,8 @@
                       </a>
                       <ul class="dropdown-menu">
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_tasks" data-toggle="tab">Tasks</a></li>
+                       <!--  <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_bank_accounts" data-toggle="tab">Bank Account</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_credit_card" data-toggle="tab">Credit Card</a></li> -->
                       </ul>
                     </li>                
                   </ul>
@@ -355,6 +357,7 @@
     CKEDITOR.replace('ckeditor');    
     CKEDITOR.replace('note_content');   
   });
+
 
 </script>
 @endsection

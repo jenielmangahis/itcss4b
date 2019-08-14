@@ -98,6 +98,10 @@ Route::post('contact_event/store', ['as'=>'contact_event/store','uses'=>'Contact
 Route::post('contact_event/destroy', ['as'=>'contact_event/destroy','uses'=>'ContactEventController@destroy'])->middleware('auth');
 Route::post('contact_event/update', ['as'=>'contact_event/update','uses'=>'ContactEventController@update'])->middleware('auth');
 
+//Contact Note
+Route::post('contact_note/store', ['as'=>'contact_note/store','uses'=>'ContactNoteController@store'])->middleware('auth');
+Route::post('contact_note/destroy', ['as'=>'contact_note/destroy','uses'=>'ContactNoteController@destroy'])->middleware('auth');
+
 Route::post('contact_call_tracker/store', ['as'=>'contact_call_tracker/store','uses'=>'CallTrackerController@store'])->middleware('auth');
 Route::get('contact_call_tracker/ajax_loadactivity_history_tab_list', ['as'=>'contact_call_tracker/ajax_loadactivity_history_tab_list','uses'=>'CallTrackerController@ajax_loadactivity_history_tab_list'])->middleware('auth');
 Route::get('contact_call_tracker/ajax_followup_call_user_dropdown', ['as'=>'contact_call_tracker/ajax_followup_call_user_dropdown','uses'=>'CallTrackerController@ajax_followup_call_user_dropdown'])->middleware('auth');
@@ -135,6 +139,14 @@ Route::post('media_type/store', ['as'=>'media_type/store','uses'=>'MediaTypeCont
 Route::get('media_type/edit/{workflow_category_id}', ['as'=>'media_type/edit','uses'=>'MediaTypeController@edit'])->middleware('auth');
 Route::post('media_type/update', ['as'=>'media_type/update','uses'=>'MediaTypeController@update'])->middleware('auth');
 Route::post('media_type/destroy', ['as'=>'media_type/destroy','uses'=>'MediaTypeController@destroy'])->middleware('auth');
+
+//Note Types
+Route::get('/note_type', ['as'=>'note_type','uses'=>'NoteTypeController@index'])->middleware('auth');
+Route::get('/note_type/create', ['as'=>'note_type/create','uses'=>'NoteTypeController@create'])->middleware('auth');
+Route::post('note_type/store', ['as'=>'note_type/store','uses'=>'NoteTypeController@store'])->middleware('auth');
+Route::get('note_type/edit/{note_type_id}', ['as'=>'note_type/edit','uses'=>'NoteTypeController@edit'])->middleware('auth');
+Route::post('note_type/update', ['as'=>'note_type/update','uses'=>'NoteTypeController@update'])->middleware('auth');
+Route::post('note_type/destroy', ['as'=>'note_type/destroy','uses'=>'NoteTypeController@destroy'])->middleware('auth');
 
 //Event Types
 Route::get('/event_type', ['as'=>'event_type','uses'=>'EventTypeController@index'])->middleware('auth');
