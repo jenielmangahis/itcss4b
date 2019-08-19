@@ -5,10 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\ContactNote;
+use App\Contact;
+use App\User;
 
 use UserHelper;
 use GlobalHelper;
+
+use App\Mail\ContactNoteNotification;
 
 use View;
 use Hash;
@@ -44,8 +49,16 @@ class ContactNoteController extends Controller
             $this->validate($request, [
                 'note_title'      => 'required',
                 'note_content'    => 'required',
-                'cc_emails'       => 'email',
+                //'cc_emails'       => 'email',
              ]);
+
+            
+            $cc_emails           = "";
+            $cc_emails_serialize = "";
+            if(!empty($request->input('cc_emails'))) {
+            	$cc_emails = json_decode($request->input('cc_emails'));
+            	$cc_emails_serialize = serialize($cc_emails);
+            }
 
             $contact_id = $request->input('contact_id');
             $contact_id = Hashids::decode($contact_id)[0];
@@ -56,8 +69,51 @@ class ContactNoteController extends Controller
             $contact_note->note_title   = $request->input('note_title');
             $contact_note->note_content = $request->input('note_content');
             $contact_note->notify_user_id = $request->input('notify_user_id');
-            $contact_note->cc_emails      = $request->input('cc_emails');
+            $contact_note->cc_emails      = $cc_emails_serialize;
             $contact_note->save();
+
+            /*
+			 * Send notification
+            */
+
+            $is_enable_email = true;
+            if($is_enable_email) {
+
+	            $notify_user_id = $request->input('notify_user_id');
+	            $notify_user = User::find($notify_user_id);
+	            if($notify_user) {
+
+	            	$contact_name = "";
+		            $contact      = Contact::find($contact_id);
+		            if($contact) {
+		            	$contact_name = $contact->firstname . " " . $contact->lastname;
+		            }
+
+		            $name    = Auth::user()->firstname . " " . Auth::user()->lastname;
+		            $to_email   = $notify_user->email;
+		            $from_email = 'admin@coreCRM.coms';
+		            $subject = 'Contact Note Notification';
+
+		            if($contact_name != "") {
+		            	$message = 'This is to notify you that <strong>' . $name . '</strong> add a new note to contact: ' . $contact_name;  
+		            } else { $message = 'This is to notify you that <strong>' . $name . '</strong> add a new note'; }
+
+		            if( !empty($cc_emails) ) {
+			            Mail::to($to_email)
+			            	->cc($cc_emails)
+			                ->send(new ContactNoteNotification($name, $to_email, $from_email, $subject, $message)); 
+		            } else {
+			            Mail::to($to_email)
+			                ->send(new ContactNoteNotification($name, $to_email, $from_email, $subject, $message)); 		            	
+		            }
+
+	            }       
+
+            }
+
+            /*
+			 * Send notification - end
+            */
 
             Session::flash('message', 'You have successfully created note');
             Session::flash('alert_class', 'alert-success');

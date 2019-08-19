@@ -18,6 +18,7 @@ use App\Group;
  * Note: below 'MailNotification' class is located in 'app/Mail' folder
 */
 use App\Mail\MailNotification;
+use App\Mail\ContactNoteNotification;
 
 use Session;
 use Route;
@@ -102,11 +103,17 @@ class BenchmarkController extends Controller
 
             $name    = 'Bryann Revina';
             $email   = 'bryann.revina@gmail.com';
-            $subject = 'This is a test laravel email';
-            $message = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry';
+            $from_email = 'admin@coreCRM.coms';
+            $subject = 'Contact Note Notification';
+            $message = 'This is to notify you that ' . $name . ' add a new note.';
+
+            /*Mail::to('jeniel.mangahis@gmail.com')
+                ->send(new MailNotification($name, $email, $subject, $message)); */
 
             Mail::to('jeniel.mangahis@gmail.com')
-                ->send(new MailNotification($name, $email, $subject, $message)); // 'MailNotification' class is located on app/Mail folder
+                ->send(new ContactNoteNotification($name, $email, $from_email, $subject, $message)); 
+
+            // 'MailNotification' class is located on app/Mail folder
 
             /*Mail::to($request->user())
                 ->cc($moreUsers)

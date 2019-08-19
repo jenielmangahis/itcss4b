@@ -192,16 +192,16 @@
                     <li class=""><a href="#tab_emarketing" data-toggle="tab"><i class="fa fa-address-card-o"></i> E-Marketing</a></li>
                     <li class=""><a href="#tab_docs" data-toggle="tab"><i class="fa fa-file"></i> Docs</a></li>
                     <li class=""><a href="#tab_events" data-toggle="tab"><i class="fa fa-calendar"></i> Events</a></li>
-                    <li class=""><a href="#tab_bank_accounts" data-toggle="tab"><i class="fa fa-bank"></i> Bank Account</a></li>
-                    <li class=""><a href="#tab_credit_card" data-toggle="tab"><i class="fa fa-credit-card"></i> Credit Card</a></li>
+                    <!-- <li class=""><a href="#tab_bank_accounts" data-toggle="tab"><i class="fa fa-bank"></i> Bank Account</a></li>
+                    <li class=""><a href="#tab_credit_card" data-toggle="tab"><i class="fa fa-credit-card"></i> Credit Card</a></li> -->
                     <li class="dropdown">
                       <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         Others <span class="caret"></span>
                       </a>
                       <ul class="dropdown-menu">
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_tasks" data-toggle="tab">Tasks</a></li>
-                       <!--  <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_bank_accounts" data-toggle="tab">Bank Account</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_credit_card" data-toggle="tab">Credit Card</a></li> -->
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_bank_accounts" data-toggle="tab">Bank Account</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_credit_card" data-toggle="tab">Credit Card</a></li>
                       </ul>
                     </li>                
                   </ul>
@@ -356,6 +356,9 @@
     // instance, using default configuration.
     CKEDITOR.replace('ckeditor');    
     CKEDITOR.replace('note_content');   
+
+    $('#cc_emails').multiple_emails({position: "bottom"});
+    
   });
 
 

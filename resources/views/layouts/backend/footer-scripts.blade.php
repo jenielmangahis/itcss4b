@@ -20,3 +20,6 @@
 
 <!-- Select2 -->
 <script src="{{ asset ("/bower_components/select2/dist/js/select2.full.min.js") }}"></script>
+
+<!-- multiple email textfield -->
+<script src="{{ asset ("/bower_components/email-eddress-multiple/multiple-emails.js") }}"></script>

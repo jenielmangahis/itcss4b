@@ -25,3 +25,6 @@
 
 <!-- Custom Style -->
 <link href="{{ asset('/css/custom.css')}}" rel="stylesheet" type="text/css" />
+
+<!-- multiple email textfield -->
+<link href="{{ asset('/bower_components/email-eddress-multiple/multiple-emails.css')}}" rel="stylesheet" type="text/css" />
