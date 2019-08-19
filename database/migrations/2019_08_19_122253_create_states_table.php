@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddCheckPayingClientToContactBankAccountsTable extends Migration
+class CreateStatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AddCheckPayingClientToContactBankAccountsTable extends Migration
      */
     public function up()
     {
-        Schema::table('contact_bank_accounts', function (Blueprint $table) {
-            $table->tinyInteger('is_check_paying_client')->default(0)->comment('1=yes,0=no');            
+        Schema::create('states', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -25,8 +28,6 @@ class AddCheckPayingClientToContactBankAccountsTable extends Migration
      */
     public function down()
     {
-        Schema::table('contact_bank_accounts', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('states');
     }
 }

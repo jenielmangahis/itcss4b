@@ -9,6 +9,11 @@ class ContactBankAccount extends Model
 {
     use SoftDeletes;
 
+    public function state()
+    {
+        return $this->belongsTo('App\State');
+    }  
+
     public function optionsAccountTypes()
     {
     	$options = [

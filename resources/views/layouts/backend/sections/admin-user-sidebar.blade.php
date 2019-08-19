@@ -66,6 +66,7 @@
 	        <li <?php echo Route::current()->getName() == 'event_type' ? 'class="active"' : ''; ?>><a href="{{route('event_type')}}"><i class="fa fa-circle-o"></i>Event Types</a></li>
 	        <li <?php echo Route::current()->getName() == 'note_type' ? 'class="active"' : ''; ?>><a href="{{route('note_type')}}"><i class="fa fa-circle-o"></i>Note Types</a></li>
 	        <li <?php echo Route::current()->getName() == 'source' ? 'class="active"' : ''; ?>><a href="{{route('source')}}"><i class="fa fa-circle-o"></i>Sources</a></li>
+	        <li <?php echo Route::current()->getName() == 'state' ? 'class="active"' : ''; ?>><a href="{{route('state')}}"><i class="fa fa-circle-o"></i>States</a></li>
 	      </ul>
 	    </li>
 

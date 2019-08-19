@@ -74,7 +74,11 @@
     <div class="form-group row">
       <label class="col-sm-2 col-form-label">State <span class="required">*</span></label>
       <div class="col-sm-10">
-        <?php echo Form::text('state', $data_bank_account['state'] ,['class' => 'form-control', 'required' => '']); ?>
+        <select class="form-control" name="state_id">
+          @foreach($states as $st)
+            <option <?= $data_bank_account['state_id'] == $st->id ? 'selected="selected"' : '';  ?> value="{{ $st->id }}">{{ $st->name }}</option>
+          @endforeach
+        </select>  
       </div>
     </div>
 

@@ -31,6 +31,13 @@
   .nav-tabs li.active a{
     color:#3c8dbc !important;
   }
+  .dropdown ul.dropdown-menu li a:hover{
+    background-color: #3c8dbc !important;
+    color: #ffffff !important;
+  }
+  .dropdown ul.dropdown-menu li a{
+    color: #ffffff !important;
+  }
 </style>
   <!-- Content Header (Page header) -->
   <section class="content-header">

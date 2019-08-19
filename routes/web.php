@@ -140,6 +140,14 @@ Route::get('media_type/edit/{workflow_category_id}', ['as'=>'media_type/edit','u
 Route::post('media_type/update', ['as'=>'media_type/update','uses'=>'MediaTypeController@update'])->middleware('auth');
 Route::post('media_type/destroy', ['as'=>'media_type/destroy','uses'=>'MediaTypeController@destroy'])->middleware('auth');
 
+//States
+Route::get('/state', ['as'=>'state','uses'=>'StateController@index'])->middleware('auth');
+Route::get('/state/create', ['as'=>'state/create','uses'=>'StateController@create'])->middleware('auth');
+Route::post('state/store', ['as'=>'state/store','uses'=>'StateController@store'])->middleware('auth');
+Route::get('state/edit/{workflow_category_id}', ['as'=>'state/edit','uses'=>'StateController@edit'])->middleware('auth');
+Route::post('state/update', ['as'=>'state/update','uses'=>'StateController@update'])->middleware('auth');
+Route::post('state/destroy', ['as'=>'state/destroy','uses'=>'StateController@destroy'])->middleware('auth');
+
 //Note Types
 Route::get('/note_type', ['as'=>'note_type','uses'=>'NoteTypeController@index'])->middleware('auth');
 Route::get('/note_type/create', ['as'=>'note_type/create','uses'=>'NoteTypeController@create'])->middleware('auth');

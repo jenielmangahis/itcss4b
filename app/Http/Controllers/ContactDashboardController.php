@@ -20,6 +20,7 @@ use App\EmailTemplate;
 use App\ContactNote;
 use App\ContactBankAccount;
 use App\ContactCreditCard;
+use App\State;
 
 use UserHelper;
 use GlobalHelper;
@@ -137,7 +138,7 @@ class ContactDashboardController extends Controller
         /*
          * Contact Note - end
         */
-
+        $states   = State::all();
         /*
          * For bank account - start
         */
@@ -157,7 +158,7 @@ class ContactDashboardController extends Controller
                 'bank_name'          => $contactBankAccount->bank_name,
                 'address'        => $contactBankAccount->address,
                 'city'       => $contactBankAccount->city,
-                'state'          => $contactBankAccount->state,
+                'state_id'          => $contactBankAccount->state_id,
                 'zip' => $contactBankAccount->zip
             ];
         }else{
@@ -170,7 +171,7 @@ class ContactDashboardController extends Controller
                 'bank_name'          => '',
                 'address'        => '',
                 'city'       => '',
-                'state'          => '',
+                'state_id'          => '',
                 'zip' => ''
             ];
         }
@@ -197,7 +198,7 @@ class ContactDashboardController extends Controller
                 'address' => $contactCreditCard->address,
                 'address2' => $contactCreditCard->address2,
                 'city' => $contactCreditCard->city,
-                'state' => $contactCreditCard->state,
+                'state_id' => $contactCreditCard->state_id,
                 'zip' => $contactCreditCard->zip,
             ];
         }else{
@@ -212,7 +213,7 @@ class ContactDashboardController extends Controller
                 'address' => '',
                 'address2' => '',
                 'city' => '',
-                'state' => '',
+                'state_id' => '',
                 'zip' => '',
             ];
         }
@@ -241,7 +242,8 @@ class ContactDashboardController extends Controller
             'bank_account_id' => $bank_account_id,
             'creditCardDebitCredit' => $creditCardDebitCredit,
             'creditCardCardTypes' => $creditCardCardTypes,
-            'contact_credit_card_id' => $contact_credit_card_id
+            'contact_credit_card_id' => $contact_credit_card_id,
+            'states' => $states
         ]); 
     }     
 }

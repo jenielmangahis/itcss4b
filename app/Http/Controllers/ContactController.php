@@ -15,6 +15,7 @@ use App\Companies;
 use App\Workflow;
 use App\Stage;
 use App\EventType;
+use App\EmailTemplate;
 
 use UserHelper;
 use GlobalHelper;
@@ -87,13 +88,18 @@ class ContactController extends Controller
         $call_log_activity_history = ContactCallTracker::all();
         $event_types   = EventType::all();
 
+        $emailTemplates = EmailTemplate::where('user_id', '=', $user_id)->get();
+        $contacts = Contact::where('user_id','=', $user_id)->get();
+
         return view('contact.index',[
         	'contact' => $contact,
             'search_field' => $search_field,
             'stages' => $stages,
             'event_types' => $event_types,
             'call_log_activity_history' => $call_log_activity_history,
-            'event_types' => $event_types
+            'event_types' => $event_types,
+            'emailTemplates' => $emailTemplates,
+            'contacts' => $contacts
         ]); 
     } 
 
