@@ -20,6 +20,7 @@ use App\EmailTemplate;
 use App\ContactNote;
 use App\ContactBankAccount;
 use App\ContactCreditCard;
+use App\ContactTask;
 
 use UserHelper;
 use GlobalHelper;
@@ -139,11 +140,39 @@ class ContactDashboardController extends Controller
         */
 
         /*
-         * For bank account - start
+         * Contact Task - Start
+        */
+        $search_by_task    = $request->input('search_by');
+        $search_task_field = $request->input('search_task_field');  
+        if($search_by_task != '' && $search_task_field != '') {
+            $contact_task_query = ContactTask::query();
+
+            if($search_by_task != '' && $search_task_field != '') {
+                $contact_task_query = $contact_task_query->where('contact_tasks.'.$search_by_task, 'like', '%' . $search_task_field . '%');
+                $contact_task_query = $contact_task_query->where('contact_id','=', $contact->id);
+                $contact_tasks = $contact_task_query->paginate(10);
+            }            
+        } else {
+
+            $contact_task_query = ContactTask::query();
+            if($contact) {
+                $contact_task_query = $contact_task_query->where('contact_id','=', $contact->id);
+            }
+            $contact_tasks = $contact_task_query->orderBy('created_at', 'desc')->paginate(10);                      
+        }
+        /*
+         * Contact Task - End
+        */        
+
+        /*
+         * For bank account - Start
         */
         $bankAccounts = new ContactBankAccount();
         $bankAccountAccountTypes = $bankAccounts->optionsAccountTypes();
         $bank_account_id = 0;
+        /*
+         * For bank account - end
+        */        
 
         $contactBankAccount = ContactBankAccount::where('contact_id','=', $id)->first();
         if( $contactBankAccount ){
@@ -231,6 +260,7 @@ class ContactDashboardController extends Controller
             'note_types' => $note_types,
             'search_field_event' => $search_field_event,
             'search_field_mail' => $search_field_mail,
+            'search_task_field' => $search_task_field,
             'upcoming_events' => $upcoming_events,
             'todays_events' => $todays_events,
             'mail_messaging' => $mail_messaging,
@@ -241,7 +271,8 @@ class ContactDashboardController extends Controller
             'bank_account_id' => $bank_account_id,
             'creditCardDebitCredit' => $creditCardDebitCredit,
             'creditCardCardTypes' => $creditCardCardTypes,
-            'contact_credit_card_id' => $contact_credit_card_id
+            'contact_credit_card_id' => $contact_credit_card_id,
+            'contact_tasks' => $contact_tasks
         ]); 
     }     
 }

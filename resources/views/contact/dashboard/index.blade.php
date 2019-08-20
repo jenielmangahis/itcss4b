@@ -182,7 +182,7 @@
               </section>
 
               <section class="col-lg-9 connectedSortable ui-sortable">
-                <div class="nav-tabs-custom contact-dashboard">
+                <div class="nav-tabs-custom contact-dashboard contact-dashboard-tabs">
                   <ul class="nav nav-tabs">
                     <li class="active"><a href="#tab_history" data-toggle="tab"><i class="fa fa-history"></i> History</a></li>
                     <li class=""><a href="#tab_advances" data-toggle="tab"><i class="fa fa-dollar"></i> Advances</a></li>
@@ -232,7 +232,7 @@
                       @include('contact.dashboard.tab-sections.tab_events')
                     </div>
                     <div class="tab-pane" id="tab_tasks">
-                      <p>Tab Tasks</p>
+                      @include('contact.dashboard.tab-sections.tab_tasks')
                     </div>
                     <div class="tab-pane" id="tab_credit_card">
                       @include('contact.dashboard.tab-sections.tab_credit_cards')
@@ -298,12 +298,20 @@
    * Tabs stay on selected active tab when refreshing - start
   */
 
+  var attribute_task_note = $(this).attr("attribute-task-note");
+
   $(function () {
+
     
     $('.event_date').datepicker({
       autoclose: true,
       format: 'yyyy-mm-dd',
     }) 
+
+    $('.due_date').datepicker({
+      autoclose: true,
+      format: 'yyyy-mm-dd',
+    })     
 
     $('.timepicker').timepicker({
       showInputs: false
@@ -356,6 +364,11 @@
     // instance, using default configuration.
     CKEDITOR.replace('ckeditor');    
     CKEDITOR.replace('note_content');   
+    CKEDITOR.replace('task_notes'); 
+
+    <?php foreach($contact_tasks as $task) { ?>
+      CKEDITOR.replace('task_notes-<?php echo $task->id; ?>');   
+    <?php } ?>
 
     $('#cc_emails').multiple_emails({position: "bottom"});
     

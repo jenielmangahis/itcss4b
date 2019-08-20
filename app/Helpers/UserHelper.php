@@ -68,5 +68,6 @@ class UserHelper
 
             return $return;
       }
+   
 }
 ?>

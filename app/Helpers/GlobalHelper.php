@@ -265,5 +265,18 @@ class GlobalHelper
 
             return $numbers;
       }
+
+      public static function computeDaysBetweenDates($start_date = null, $end_date = null) {
+            if($start_date == null) {
+                  $start_date = date('Y-m-d');
+            }
+
+            $date_1 = strtotime($start_date);
+            $date_2 = strtotime($end_date);
+            $diff = $date_1 - $date_2;
+
+            //return round($diff / 86400);
+            return $days_between = ceil(abs($date_2 - $date_1) / 86400);
+      }
 }
 ?>

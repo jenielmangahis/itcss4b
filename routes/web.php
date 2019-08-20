@@ -102,6 +102,12 @@ Route::post('contact_event/update', ['as'=>'contact_event/update','uses'=>'Conta
 Route::post('contact_note/store', ['as'=>'contact_note/store','uses'=>'ContactNoteController@store'])->middleware('auth');
 Route::post('contact_note/destroy', ['as'=>'contact_note/destroy','uses'=>'ContactNoteController@destroy'])->middleware('auth');
 
+//Contact Task
+Route::post('contact_task/store', ['as'=>'contact_task/store','uses'=>'ContactTaskController@store'])->middleware('auth');
+Route::post('contact_task/destroy', ['as'=>'contact_task/destroy','uses'=>'ContactTaskController@destroy'])->middleware('auth');
+Route::post('contact_task/update', ['as'=>'contact_task/update','uses'=>'ContactTaskController@update'])->middleware('auth');
+
+//Call Tracker
 Route::post('contact_call_tracker/store', ['as'=>'contact_call_tracker/store','uses'=>'CallTrackerController@store'])->middleware('auth');
 Route::get('contact_call_tracker/ajax_loadactivity_history_tab_list', ['as'=>'contact_call_tracker/ajax_loadactivity_history_tab_list','uses'=>'CallTrackerController@ajax_loadactivity_history_tab_list'])->middleware('auth');
 Route::get('contact_call_tracker/ajax_followup_call_user_dropdown', ['as'=>'contact_call_tracker/ajax_followup_call_user_dropdown','uses'=>'CallTrackerController@ajax_followup_call_user_dropdown'])->middleware('auth');
