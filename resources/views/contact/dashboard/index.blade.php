@@ -233,7 +233,7 @@
                       <p>Tab Email Marketing</p>
                     </div>
                     <div class="tab-pane" id="tab_docs">
-                      <p>Tab Docs</p>
+                      @include('contact.dashboard.tab-sections.tab_docs')
                     </div>
                     <div class="tab-pane" id="tab_events">
                       @include('contact.dashboard.tab-sections.tab_events')

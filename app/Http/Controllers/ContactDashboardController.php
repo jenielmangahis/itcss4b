@@ -21,6 +21,7 @@ use App\ContactNote;
 use App\ContactBankAccount;
 use App\ContactCreditCard;
 use App\State;
+use App\ContactDocs;
 
 use UserHelper;
 use GlobalHelper;
@@ -175,10 +176,10 @@ class ContactDashboardController extends Controller
                 'zip' => ''
             ];
         }
-        /*
-         * For bank account - end 
-        */
 
+        /*
+         * For credit card - start
+        */
         $creditCards = new ContactCreditCard();
         $creditCardDebitCredit = $creditCards->optionsDebitCredit();
         $creditCardCardTypes   = $creditCards->optionsCardTypes();
@@ -218,6 +219,35 @@ class ContactDashboardController extends Controller
             ];
         }
 
+        /*
+         * Credit Card - end
+        */
+
+        /*
+         * For docs - start
+        */  
+        $search_by_documents    = $request->input('search_by_documents');
+        $search_field_documents = $request->input('search_field_documents');  
+        if($search_by_documents != '' && $search_field_documents != '') {
+            $contact_docs_query = ContactDocs::query();
+
+            if($search_by_documents != '' && $search_field_documents != '') {
+                $contact_docs_query = $contact_docs_query->where('contact_docs.'.$search_by_documents, 'like', '%' . $search_field_documents . '%');
+                $contact_docs_query = $contact_docs_query->where('contact_id','=', $contact->id);
+                $contactDocs = $contact_docs_query->paginate(10);
+            }            
+        } else {
+            //$contact_events = ContactEvent::paginate(10);
+            $contactDocs = ContactDocs::where('user_id', '=', $user_id)->get();
+        }
+
+        $contactDoc = new ContactDocs();
+        $documentTypes = $contactDoc->documentTypes();
+
+        /*
+         * Docs - end
+        */
+
         return view('contact.dashboard.index',[
         	'contact_id' => $contact_id,            
         	'contact' => $contact,            
@@ -243,7 +273,10 @@ class ContactDashboardController extends Controller
             'creditCardDebitCredit' => $creditCardDebitCredit,
             'creditCardCardTypes' => $creditCardCardTypes,
             'contact_credit_card_id' => $contact_credit_card_id,
-            'states' => $states
+            'states' => $states,
+            'documentTypes' => $documentTypes,
+            'contactDocs' => $contactDocs,
+            'search_field_documents' => $search_field_documents
         ]); 
     }     
 }

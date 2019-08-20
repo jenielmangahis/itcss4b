@@ -193,6 +193,11 @@ Route::get('/mail_messaging/create', ['as'=>'mail_messaging/create','uses'=>'Mai
 Route::post('mail_messaging/send', ['as'=>'mail_messaging/send','uses'=>'MailMessagingController@send'])->middleware('auth');
 Route::get('mail_messaging/ajax_update_last_opened', ['as'=>'mail_messaging/ajax_update_last_opened','uses'=>'MailMessagingController@ajax_update_last_opened'])->middleware('auth');
 
+//Contact Docs
+Route::get('/contact_docs/create', ['as'=>'contact_docs/create','uses'=>'ContactDocsController@create'])->middleware('auth');
+Route::post('contact_docs/store', ['as'=>'contact_docs/store','uses'=>'ContactDocsController@store'])->middleware('auth');
+Route::post('contact_docs/destroy', ['as'=>'contact_docs/destroy','uses'=>'ContactDocsController@destroy'])->middleware('auth');
+
 //Benchmark
 Route::get('benchmark/test_model', ['as'=>'benchmark/test_model','uses'=>'BenchmarkController@testModel'])->middleware('auth');
 Route::get('benchmark/test_email', ['as'=>'benchmark/test_email','uses'=>'BenchmarkController@testMail'])->middleware('auth');

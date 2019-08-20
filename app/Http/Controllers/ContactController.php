@@ -51,7 +51,7 @@ class ContactController extends Controller
     {
         $search_by    = $request->input('search_by');
         $search_field = $request->input('search_field');  
-
+        $user_id = Auth::user()->id;
         if($search_by != '' && $search_field != '') {
             $contact_query = Contact::query();
 
@@ -73,8 +73,7 @@ class ContactController extends Controller
             }            
         } else {
             
-            if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
-                $user_id = Auth::user()->id;
+            if(UserHelper::isCompanyUser(Auth::user()->group_id)) {                
                 $contact = Contact::where('user_id','=', $user_id)
                             ->orderBy('created_at', 'desc')
                             ->paginate(15); 
