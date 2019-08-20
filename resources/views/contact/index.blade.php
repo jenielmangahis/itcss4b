@@ -13,6 +13,11 @@
 @endsection
 
 @section('main')
+<style>
+.multi-select .select2{
+  width: 100% !important;
+}
+</style>
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
@@ -138,7 +143,11 @@
                                  {{ $con->mobile_number }}
                               </a>                                
                             </td>
-                            <td>{{ $con->email }}</td>
+                            <td>
+                              <a href="javascript:void(0);" data-key="{{ $con->email }}" data-id="{{ $con->id }}" class="btn btn-quick-send-modal" id="" data-toggle="modal" data-target="#modalSendEmail">
+                                {{ $con->email }}
+                              </a>
+                            </td>
                             <td>{{  !empty($con->stage->name) ? $con->stage->name : '-' }}</td>
                             <td>{{ !empty($workflow_status->status) ? $workflow_status->status : '-' }}</td>
                             <td>{{ isset($con->data_source) ? $con->data_source : 'Form Fill' }}</td>
@@ -443,6 +452,80 @@
         <!-- /.row -->
 
     </section>
+
+    <div id="modalSendEmail" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
+        {{ Form::open(array('url' => 'mail_messaging/send', 'class' => '', 'id' => 'send-email-form')) }}
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">Send Email</h4>
+          </div>
+                <div class="modal-body">
+            <div class="form-group multi-select row">
+              <label class="col-sm-2 col-form-label">To <span class="required"></span></label>
+              <div class="col-sm-10">
+                <select class="select_recipient_to form-control" name="recipient[]" multiple="multiple">
+                  @foreach($contacts as $c)
+                    <option value="{{ $c->id }}">{{ $c->email }}</option>
+                  @endforeach
+                </select>                                
+              </div>
+            </div>
+            <div class="form-group multi-select row">
+              <label class="col-sm-2 col-form-label">BCC <span class="required"></span></label>
+              <div class="col-sm-10">
+                <select class="select_recipient form-control" name="bcc[]" multiple="multiple">
+                  @foreach($contacts as $c)
+                    <option value="{{ $c->email }}">{{ $c->email }}</option>
+                  @endforeach
+                </select>                                 
+              </div>
+            </div>
+            <div class="form-group multi-select row">
+              <label class="col-sm-2 col-form-label">CC <span class="required"></span></label>
+              <div class="col-sm-10">
+                <select class="select_recipient form-control" name="cc[]" multiple="multiple">
+                  @foreach($contacts as $c)
+                    <option value="{{ $c->email }}">{{ $c->email }}</option>
+                  @endforeach
+                </select>                                 
+              </div>
+            </div> 
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Subject <span class="required"></span></label>
+              <div class="col-sm-10">
+                <?php echo Form::text('subject', old('subject') ,['class' => 'form-control']); ?>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label">Email Templates</label>
+              <div class="col-sm-10">
+                <select class="form-control email-template" name="">
+                    <option value="0">- Blank -</option>
+                  @foreach($emailTemplates as $et)
+                    <option value="{{ $et->id }}">{{ $et->name }}</option>
+                  @endforeach
+                </select>                                 
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Message <span class="required">*</span></label>
+              <div class="editor-container">
+                <?php echo Form::textarea('content', old('content') ,['id' => 'ckeditor', 'class' => 'form-control', 'required' => '']); ?>
+              </div>
+            </div>
+                </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-default">Send</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              </div>
+
+            </div>
+          </div>
+        {!! Form::close() !!}        
+    </div>
   <!-- /.content -->
 @endsection
 
@@ -502,6 +585,33 @@
     });  
   }
   $(function () { 
+    $('.select_recipient').select2();
+    $('.select_recipient_to').select2();
+
+    $(".btn-quick-send-modal").click(function(){
+      var email_selected = $(this).attr("data-key");
+      var contact_id = $(this).attr("data-id");
+      $(".select_recipient_to").select2("val", contact_id);
+      //$('.select_recipient_to').select2('data', {id: 11, text: 'test@test.com'});      
+    }); 
+
+    $(".email-template").change(function(){
+      var email_template_id = $(this).val();
+      $('.editor-container').html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
+      var url = base_url + '/email_template/ajax_load_email_template_content';
+      $.ajax({
+           type: "GET",
+           url: url,               
+           data: {
+              "email_template_id":email_template_id
+              }, 
+           success: function(o)
+           {
+              $('.editor-container').html(o);
+           }
+      });
+    });
+
     <?php if(Session::get('calltrackermodal') == 'yes') { ?>
       load_activity_history_tab_list('<?php echo Session::get('calltrackercontactid'); ?>'); 
       $('#modalCallTracker').modal('show'); 

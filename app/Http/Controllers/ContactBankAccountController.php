@@ -31,7 +31,7 @@ class ContactBankAccountController extends Controller
                 'bank_name' 		 => 'required',
                 'address' 		 => 'required',
                 'city' 		 => 'required',
-                'state' 		 => 'required',
+                'state_id' 		 => 'required',
                 'zip' => 'required'
              ]);
 
@@ -52,7 +52,7 @@ class ContactBankAccountController extends Controller
         		$bankAccount->address = $request->input('address');
         		$bankAccount->city = $request->input('city');
         		$bankAccount->zip = $request->input('zip');
-        		$bankAccount->state = $request->input('state');
+        		$bankAccount->state_id = $request->input('state_id');
         		$bankAccount->is_check_paying_client = $is_check_paying_client;
         		$bankAccount->save();
 
@@ -70,7 +70,7 @@ class ContactBankAccountController extends Controller
             		$bankAccount->address = $request->input('address');
             		$bankAccount->city = $request->input('city');
             		$bankAccount->zip = $request->input('zip');
-            		$bankAccount->state = $request->input('state');
+            		$bankAccount->state_id = $request->input('state_id');
             		$bankAccount->is_check_paying_client = $is_check_paying_client;
             		$bankAccount->save();
 

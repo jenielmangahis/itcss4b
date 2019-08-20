@@ -9,6 +9,11 @@ class ContactCreditCard extends Model
 {
     use SoftDeletes;
 
+    public function state()
+    {
+        return $this->belongsTo('App\State');
+    }  
+
     public function optionsCardTypes()
     {
     	$options = [

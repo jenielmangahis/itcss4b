@@ -34,7 +34,7 @@ class ContactCreditCardController extends Controller
                 'address' => 'required',
                 'address2' => 'required',
                 'city' => 'required',
-                'state' => 'required',
+                'state_id' => 'required',
                 'zip' => 'required'
              ]);
 
@@ -55,7 +55,7 @@ class ContactCreditCardController extends Controller
         		$credtCard->address2 = $request->input('address2');
         		$credtCard->city = $request->input('city');
         		$credtCard->zip = $request->input('zip');
-        		$credtCard->state = $request->input('state');
+        		$credtCard->state_id = $request->input('state_id');
         		$credtCard->save();
 
         		Session::flash('message', 'You have successfully update bank account');
@@ -75,7 +75,7 @@ class ContactCreditCardController extends Controller
 	        		$credtCard->address2 = $request->input('address2');
 	        		$credtCard->city = $request->input('city');
 	        		$credtCard->zip = $request->input('zip');
-	        		$credtCard->state = $request->input('state');
+	        		$credtCard->state_id = $request->input('state_id');
             		$credtCard->save();
 
             		Session::flash('message', 'You have successfully update credit card');

@@ -146,6 +146,14 @@ Route::get('media_type/edit/{workflow_category_id}', ['as'=>'media_type/edit','u
 Route::post('media_type/update', ['as'=>'media_type/update','uses'=>'MediaTypeController@update'])->middleware('auth');
 Route::post('media_type/destroy', ['as'=>'media_type/destroy','uses'=>'MediaTypeController@destroy'])->middleware('auth');
 
+//States
+Route::get('/state', ['as'=>'state','uses'=>'StateController@index'])->middleware('auth');
+Route::get('/state/create', ['as'=>'state/create','uses'=>'StateController@create'])->middleware('auth');
+Route::post('state/store', ['as'=>'state/store','uses'=>'StateController@store'])->middleware('auth');
+Route::get('state/edit/{workflow_category_id}', ['as'=>'state/edit','uses'=>'StateController@edit'])->middleware('auth');
+Route::post('state/update', ['as'=>'state/update','uses'=>'StateController@update'])->middleware('auth');
+Route::post('state/destroy', ['as'=>'state/destroy','uses'=>'StateController@destroy'])->middleware('auth');
+
 //Note Types
 Route::get('/note_type', ['as'=>'note_type','uses'=>'NoteTypeController@index'])->middleware('auth');
 Route::get('/note_type/create', ['as'=>'note_type/create','uses'=>'NoteTypeController@create'])->middleware('auth');
@@ -190,6 +198,11 @@ Route::get('/mail_messaging', ['as'=>'mail_messaging','uses'=>'MailMessagingCont
 Route::get('/mail_messaging/create', ['as'=>'mail_messaging/create','uses'=>'MailMessagingController@create'])->middleware('auth');
 Route::post('mail_messaging/send', ['as'=>'mail_messaging/send','uses'=>'MailMessagingController@send'])->middleware('auth');
 Route::get('mail_messaging/ajax_update_last_opened', ['as'=>'mail_messaging/ajax_update_last_opened','uses'=>'MailMessagingController@ajax_update_last_opened'])->middleware('auth');
+
+//Contact Docs
+Route::get('/contact_docs/create', ['as'=>'contact_docs/create','uses'=>'ContactDocsController@create'])->middleware('auth');
+Route::post('contact_docs/store', ['as'=>'contact_docs/store','uses'=>'ContactDocsController@store'])->middleware('auth');
+Route::post('contact_docs/destroy', ['as'=>'contact_docs/destroy','uses'=>'ContactDocsController@destroy'])->middleware('auth');
 
 //Benchmark
 Route::get('benchmark/test_model', ['as'=>'benchmark/test_model','uses'=>'BenchmarkController@testModel'])->middleware('auth');
