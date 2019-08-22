@@ -1,5 +1,8 @@
 <?php
 use App\User;
+use App\ContactTask;
+
+use Illuminate\Support\Facades\DB;
 
 namespace App\Helpers;
 
@@ -67,7 +70,7 @@ class UserHelper
             }
 
             return $return;
-      }
+      }   
    
 }
 ?>

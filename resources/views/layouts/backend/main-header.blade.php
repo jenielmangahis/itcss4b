@@ -23,6 +23,7 @@
 	    <ul class="nav navbar-nav">
 
 	      	{{-- @include('layouts.backend.header-notification') --}}
+	      	@include('layouts.backend.header-notification')
 	      	<!-- User Account Menu -->
 	      	<li class="dropdown user user-menu">
 		        <!-- Menu Toggle Button -->

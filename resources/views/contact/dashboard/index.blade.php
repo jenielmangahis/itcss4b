@@ -296,6 +296,7 @@
     $(this).tab('show');
     return false;
   });
+  
   $(window).on('popstate', function () {
     var anchor = location.hash ||
       $('a[data-toggle=\'tab\']').first().attr('href');

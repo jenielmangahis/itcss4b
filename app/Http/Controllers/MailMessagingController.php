@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use App\MailMessaging;
 use App\Contact;
 use App\EmailTemplate;
+use App\ContactTask;
 
 /*
  * Note: below are class file the use for sending email. File is located in 'app/Mail' folder
@@ -40,6 +41,12 @@ class MailMessagingController extends Controller
                 Session::flash('alert_class', 'alert-danger');                
                 return redirect('dashboard');
             }    
+
+            $pending_task_count = ContactTask::where('assigned_user_id','=', $user_id)->where('status','=', 'pending')->count();
+            $pending_task       = ContactTask::where('assigned_user_id','=', $user_id)->where('status','=', 'pending')->get();
+
+            View::share ( 'pending_task_count', $pending_task_count );   
+            View::share ( 'pending_task', $pending_task);               
 
             return $next($request);     
         });           

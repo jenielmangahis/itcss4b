@@ -56,8 +56,11 @@
   </tr>
   @foreach($contact_tasks as $task)
     <?php 
-      $assigned_user_id = unserialize($task->assigned_user);
-      $assigned_user = App\User::find($assigned_user_id);
+      $assigned_user = "";
+      if(!empty($task->assigned_user) || $task->assigned_user != 0) {
+        $assigned_user_id = unserialize($task->assigned_user);
+        $assigned_user = App\User::find($assigned_user_id);
+      }
     ?>
     <tr>
       <td>{{ $task->id }}</td>
@@ -153,8 +156,11 @@
                           @foreach($company_users as $company_user)   
 
                             <?php 
-                              $assigned_user_id = unserialize($task->assigned_user);
-                              $assigned_user = App\User::find($assigned_user_id);
+                              $assigned_user_id = 0;
+                              if(!empty($task->assigned_user) || $task->assigned_user != 0) {
+                                $assigned_user_id = unserialize($task->assigned_user);
+                                $assigned_user = App\User::find($assigned_user_id);
+                              }
                             ?>
 
                             <option <?php echo $assigned_user_id == $company_user->user_id ? 'selected="selected"' : ''; ?> value="{{ $company_user->user_id }}">{{ $company_user->user->firstname }} {{ $company_user->user->lastname }}</option>

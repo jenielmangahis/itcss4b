@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use App\Companies;
+use App\ContactTask;
 
 use UserHelper;
 
@@ -31,6 +32,12 @@ class CompaniesController extends Controller
                 Session::flash('alert_class', 'alert-danger');                
                 return redirect('dashboard');
             }    
+
+            $pending_task_count = ContactTask::where('assigned_user_id','=', $user_id)->where('status','=', 'pending')->count();
+            $pending_task       = ContactTask::where('assigned_user_id','=', $user_id)->where('status','=', 'pending')->get();
+
+            View::share ( 'pending_task_count', $pending_task_count );   
+            View::share ( 'pending_task', $pending_task);               
 
             return $next($request);     
         });              

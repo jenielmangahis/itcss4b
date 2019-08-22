@@ -278,5 +278,10 @@ class GlobalHelper
             //return round($diff / 86400);
             return $days_between = ceil(abs($date_2 - $date_1) / 86400);
       }
+
+      public static function enable_mail_function() {
+            $return = true;
+            return $return;
+      }
 }
 ?>

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\ContactBankAccount;
+use App\ContactTask;
 
 use UserHelper;
 use GlobalHelper;

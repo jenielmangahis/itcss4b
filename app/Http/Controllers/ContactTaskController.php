@@ -13,6 +13,8 @@ use App\User;
 use UserHelper;
 use GlobalHelper;
 
+use App\Mail\TaskNotification;
+
 use View;
 use Hash;
 use Hashids;
@@ -34,7 +36,13 @@ class ContactTaskController extends Controller
                 Session::flash('message', 'You have no permission to access the '. $module . ' page.');
                 Session::flash('alert_class', 'alert-danger');                
                 return redirect('dashboard');
-            }    
+            }   
+
+            $pending_task_count = ContactTask::where('assigned_user_id','=', $user_id)->where('status','=', 'pending')->count();
+            $pending_task       = ContactTask::where('assigned_user_id','=', $user_id)->where('status','=', 'pending')->get();
+
+            View::share ( 'pending_task_count', $pending_task_count );   
+            View::share ( 'pending_task', $pending_task);   
 
             return $next($request);     
         });                 
@@ -68,8 +76,29 @@ class ContactTaskController extends Controller
             /*
 			 * Send notification
             */
-            $is_enable_email = true;
-            if($is_enable_email) {}
+            $is_enable_email = GlobalHelper::enable_mail_function();
+            if($is_enable_email) {        	
+
+	            if(is_array($request->input('assigned_user'))) {
+	            	//To do: for multiple assiged user in the future
+	            } else {
+	            	$user_id = $request->input('assigned_user');
+	            	$a_user = User::find($user_id);
+	            	if ($a_user->count()) { 
+
+			            $name    	= Auth::user()->firstname . " " . Auth::user()->lastname;
+			            $to_email   = $a_user->email;
+			            $from_email = 'admin@coreCRM.coms';
+			            $subject 	= 'New Task Notification';
+			            $message 	= "You have new task assigned to you, due date is on " . date("F j, Y", strtotime($contact_task->due_date)) . "."; 
+			            $message    .= "<br />Task No.: " . $contact_task->id;   
+
+			            Mail::to($to_email)
+			                ->send(new TaskNotification($name, $to_email, $from_email, $subject, $message)); 
+	            	}
+	            }   
+	            	
+            }
             /*
 			 * Send notification - end
             */
