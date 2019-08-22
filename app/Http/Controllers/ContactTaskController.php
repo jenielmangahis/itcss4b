@@ -66,6 +66,7 @@ class ContactTaskController extends Controller
             $contact_task               = new ContactTask;
             $contact_task->user_id       = $user_id; //This is for created by
             $contact_task->contact_id    = $contact_id;
+            $contact_task->assigned_user_id = $request->input('assigned_user');
             $contact_task->assigned_user = $assigned_user;
             $contact_task->title         = $request->input('title');
             $contact_task->notes         = $request->input('notes');
@@ -129,6 +130,7 @@ class ContactTaskController extends Controller
 			$assigned_user = serialize($request->input('assigned_user'));            
 
             if($contact_task) {
+            	$contact_task->assigned_user_id = $request->input('assigned_user');
 	            $contact_task->assigned_user = $assigned_user;
 	            $contact_task->title         = $request->input('title');
 	            $contact_task->notes         = $request->input('notes');
