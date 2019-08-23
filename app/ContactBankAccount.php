@@ -12,6 +12,11 @@ class ContactBankAccount extends Model
     public function state()
     {
         return $this->belongsTo('App\State');
+    } 
+
+    public function contact()
+    {
+        return $this->belongsTo('App\Contact');
     }  
 
     public function optionsAccountTypes()

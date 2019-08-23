@@ -95,7 +95,12 @@ class ContactController extends Controller
         $event_types   = EventType::all();
 
         $emailTemplates = EmailTemplate::where('user_id', '=', $user_id)->get();
-        $contacts = Contact::where('user_id','=', $user_id)->get();
+        if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
+            $contacts = Contact::where('user_id','=', $user_id)->get();
+        }else{
+            $contacts = Contact::all();
+        }
+        
 
         return view('contact.index',[
         	'contact' => $contact,

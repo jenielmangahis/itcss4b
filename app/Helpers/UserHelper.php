@@ -30,7 +30,8 @@ class UserHelper
                   'reports',
                   'settings',
                   'groups',
-                  'mail_messaging'
+                  'mail_messaging',
+                  'contact_docs'
             );
 
             $roles['company_user'] = array(
@@ -38,7 +39,8 @@ class UserHelper
                   'users',
                   'contacts',
                   'email_templates',
-                  'mail_messaging'
+                  'mail_messaging',
+                  'contact_docs'
             );
 
             if($group_id == self::ADMIN_USER) {
