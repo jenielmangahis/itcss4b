@@ -80,16 +80,19 @@
       <td>{{ $task->due_date }}</td>
       <td><?php echo GlobalHelper::computeDaysBetweenDates(date('Y-m-d'), $task->due_date); ?></td>
       <td>
-        <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $task->id; ?>">
+        <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDeleteTask-<?= $task->id; ?>">
             <i class="fa fa-trash"></i>
         </a>
         <a href="javascript:void(0);" class="btn btn-xs btn-primary" id="" data-toggle="modal" data-target="#modalEditTask-<?= $task->id; ?>">
             <i class="fa fa-edit"></i>
+        </a> 
+        <a href="javascript:void(0);" class="btn btn-xs btn-primary" id="" data-toggle="modal" data-target="#modalViewTask-<?= $task->id; ?>">
+            <i class="fa fa-window-maximize"></i>
         </a>                                                     
       </td>
     </tr>  
 
-    <div id="modalDelete-<?= $task->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
+    <div id="modalDeleteTask-<?= $task->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
         <div class="modal-dialog modal-md">
           <div class="modal-content">
 
@@ -177,10 +180,10 @@
                     <div class="form-group">
                       <label for="inputStatusr">Status</label>
                       <select name="status" id="status" class="form-control">
-                        <option value="pending">Pending</option>
-                        <option value="in_progress">In progress</option>
-                        <option value="closed">Closed</option>
-                        <option value="completed">Completed</option>
+                        <option <?php echo $task->status == 'pending' ? 'selected="selected"' : ''; ?> value="pending">Pending</option>
+                        <option <?php echo $task->status == 'in_progress' ? 'selected="selected"' : ''; ?> value="in_progress">In progress</option>
+                        <option <?php echo $task->status == 'closed' ? 'selected="selected"' : ''; ?> value="closed">Closed</option>
+                        <option <?php echo $task->status == 'completed' ? 'selected="selected"' : ''; ?> value="completed">Completed</option>
                       </select>                   
                     </div>                
                   </div>                  
@@ -195,7 +198,75 @@
             </div>
           </div>
         {!! Form::close() !!}        
-    </div>    
+    </div>  
+
+    <div id="modalViewTask-<?= $task->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
+          <input type="hidden" name="id" value="<?= Hashids::encode($task->id); ?>">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">View Details</h4>
+              </div>
+              <div class="modal-body">
+
+                <div class="form-group">
+                  <label for="inputLocation">Contact: </label>
+                  {{ $contact->firstname }} {{ $contact->lastname }}
+                </div>   
+
+                <div class="form-group">
+                  <label for="inputTitle">Title</label>
+                  <p>{{$task->title}}</p>
+                </div> 
+
+                <div class="form-group">
+                  <label for="inputDescription">Notes</label>
+                  <?php echo $task->notes; ?>
+                </div>    
+
+                <div class="row">
+                  <div class="col-xs-4">
+                    <div class="form-group">
+                      <label for="inputDate">Due Date</label>
+                      <p><?php echo date("F j, Y, g:i a", strtotime($task->due_date)); ?></p>
+                    </div>                
+                  </div>
+                  <div class="col-xs-4">
+                    <div class="form-group">
+                      <label for="inputAssignedUser">Assigned User</label>
+                        @if( !empty($company_users->toArray()) )
+                          @foreach($company_users as $company_user)   
+
+                            <?php 
+                              $assigned_user_id = 0;
+                              if(!empty($task->assigned_user) || $task->assigned_user != 0) {
+                                $assigned_user_id = unserialize($task->assigned_user);
+                                $assigned_user = App\User::find($assigned_user_id);
+                              }
+                            ?>
+
+                            <p>{{ $company_user->user->firstname }} {{ $company_user->user->lastname }}</p>
+                          @endforeach
+                        @else
+                          <p>No company users available</p>
+                        @endif                  
+                    </div>                
+                  </div>
+                  <div class="col-xs-4">
+                    <div class="form-group">
+                      <label for="inputStatusr">Status</label>
+                      <p>{{ $task->status }}</p>                
+                    </div>                
+                  </div>                  
+                </div>
+              </div>
+
+            </div>
+          </div>     
+    </div>        
 
   @endforeach
 </table>

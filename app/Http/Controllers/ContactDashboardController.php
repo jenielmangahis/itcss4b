@@ -146,6 +146,7 @@ class ContactDashboardController extends Controller
          * Contact Note - end
         */
         $states   = State::all();
+
         /*
          * Contact Task - Start
         */
@@ -157,6 +158,9 @@ class ContactDashboardController extends Controller
             if($search_by_task != '' && $search_task_field != '') {
                 $contact_task_query = $contact_task_query->where('contact_tasks.'.$search_by_task, 'like', '%' . $search_task_field . '%');
                 $contact_task_query = $contact_task_query->where('contact_id','=', $contact->id);
+                if(UserHelper::isCompanyUser(Auth::user()->group_id)) { 
+                     $contact_task_query = $contact_task_query->where('user_id','=', $user_id)->orWhere('assigned_user_id','=', $user_id);
+                }                
                 $contact_tasks = $contact_task_query->paginate(10);
             }            
         } else {
@@ -165,6 +169,11 @@ class ContactDashboardController extends Controller
             if($contact) {
                 $contact_task_query = $contact_task_query->where('contact_id','=', $contact->id);
             }
+
+            if(UserHelper::isCompanyUser(Auth::user()->group_id)) { 
+                 $contact_task_query = $contact_task_query->where('user_id','=', $user_id)->orWhere('assigned_user_id','=', $user_id);
+            }
+
             $contact_tasks = $contact_task_query->orderBy('created_at', 'desc')->paginate(10);                      
         }
         /*
