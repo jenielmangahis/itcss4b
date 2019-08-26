@@ -11,12 +11,13 @@ use App\ContactTask;
 
 use UserHelper;
 use GlobalHelper;
-
+use Image;
 use View;
 use Hash;
 use Hashids;
 
 use Session;
+
 
 
 class ContactDocsController extends Controller
@@ -28,7 +29,7 @@ class ContactDocsController extends Controller
 
             $user_id  = Auth::user()->id;
             $group_id = Auth::user()->group_id;
-            $module   = 'settings';
+            $module   = 'contact_docs';
             $with_permission = UserHelper::checkUserRole($group_id, $module); 
             if(!$with_permission) {
                 Session::flash('message', 'You have no permission to access the '. $module . ' page.');
@@ -51,19 +52,28 @@ class ContactDocsController extends Controller
         if ($request->isMethod('post'))
         {
             $this->validate($request, [
-                'document_title'           => 'required',
+                //'document_title'           => 'required',
                 'filename' => 'required',
                 'document_type' => 'required',
                 'description' => 'required'
              ]);
 
-            $user_id = Auth::user()->id;
+            if($request->file('filename')) {
+                $doc_file        = $request->file('filename');
+                $original_filename = $doc_file->getClientOriginalName();
+                $doc_filename      = md5(date("Y-m-d") . "-" . rand()) . '.' . $doc_file->getClientOriginalExtension();
+                $destinationPath   = public_path('/uploads/contact_docs');
+                $doc_file->move($destinationPath, $doc_filename);
+                $location          = $destinationPath . "/" . $doc_filename;
+            }
 
+            $user_id = Auth::user()->id;
+            $contact_id      = Hashids::decode($request->input('contact_id'))[0];                 
             $contactDoc              	= new ContactDocs;
             $contactDoc->user_id        = $user_id;
-            $contactDoc->filename       = $request->input('name');
-            $contactDoc->contact_id     = $request->input('contact_id');
-            $contactDoc->document_title = $request->input('document_title');
+            $contactDoc->contact_id     = $contact_id;
+            $contactDoc->filename       = $doc_filename;
+            $contactDoc->document_title = $original_filename;
             $contactDoc->document_type  = $request->input('document_type');
             $contactDoc->description    = $request->input('description');
             $contactDoc->save();
@@ -75,5 +85,22 @@ class ContactDocsController extends Controller
             Session::flash('alert_class', 'alert-danger');              
         }
         return redirect()->back();	  
+    }
+
+    public function destroy(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $id = $request->input('id');
+            $id = Hashids::decode($id)[0];
+            $contact_doc = ContactDocs::find($id);
+
+            if($contact_doc) {   
+                $contact_doc->delete();
+                Session::flash('message', "Delete Successful");
+                Session::flash('alert_class', 'alert-success');                
+            }
+        }
+        return redirect()->back();    
     }
 }
