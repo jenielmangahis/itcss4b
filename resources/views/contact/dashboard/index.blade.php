@@ -215,7 +215,7 @@
                 
                   <div class="tab-content">
                     <div class="active tab-pane" id="tab_history">
-                      <p>Tab History here</p>       
+                      @include('contact.dashboard.tab-sections.tab_history')  
                     </div>
                     <div class="tab-pane" id="tab_advances">
                       <p>Tab Advances Here</p>
