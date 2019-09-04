@@ -23,6 +23,8 @@ use App\ContactCreditCard;
 use App\ContactTask;
 use App\State;
 use App\ContactDocs;
+use App\ContactHistory;
+
 use UserHelper;
 use GlobalHelper;
 
@@ -178,7 +180,18 @@ class ContactDashboardController extends Controller
         }
         /*
          * Contact Task - End
-        */        
+        */       
+
+        /*
+         * Contact History - Start
+        */ 
+
+        $contact_history_query = ContactHistory::query(); 
+        $contact_history = $contact_history_query->orderBy('created_at', 'desc')->paginate(20);   
+
+        /*
+         * Contact History - End
+        */ 
 
         /*
          * For bank account - Start
@@ -321,7 +334,8 @@ class ContactDashboardController extends Controller
             'states' => $states,
             'documentTypes' => $documentTypes,
             'contactDocs' => $contactDocs,
-            'search_field_documents' => $search_field_documents
+            'search_field_documents' => $search_field_documents,
+            'contact_history' => $contact_history
         ]); 
     }     
 }

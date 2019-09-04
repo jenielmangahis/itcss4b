@@ -52,7 +52,7 @@
 
 <div class="row">
   {{ Form::open(array('url' => 'contact_dashboard/'.$contact_id, 'class' => '', 'method' => 'get')) }}
-
+    <input type="hidden" value="{{$contact_id}}" name="contact_id" id="contact_id">
     <div class="col-xs-12">
       <div class="row">
         <div class="col-md-6">
@@ -136,6 +136,7 @@
     <div id="modalEditEvent-<?= $event->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
         {{ Form::open(array('url' => 'contact_event/update', 'class' => '', 'id' => 'edit-event-form')) }}
           <input type="hidden" name="id" value="<?= Hashids::encode($event->id); ?>">
+          <input type="hidden" value="{{$contact_id}}" name="contact_id" id="contact_id">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
 
@@ -227,6 +228,7 @@
 
 <div id="modalAddEvent" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
     {{ Form::open(array('url' => 'contact_event/store', 'class' => '', 'id' => 'add-event-form')) }}
+    <input type="hidden" value="{{$contact_id}}" name="contact_id" id="contact_id">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
 

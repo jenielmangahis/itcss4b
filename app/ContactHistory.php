@@ -9,4 +9,10 @@ class ContactHistory extends Model
 {
     protected $table = 'contact_history';
     use SoftDeletes;
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }  
+        
 }

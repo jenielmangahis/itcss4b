@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\ContactEvent;
 use App\EventType;
 use App\ContactTask;
+use App\ContactHistory;
 
 use UserHelper;
 use GlobalHelper;
@@ -56,15 +57,29 @@ class ContactEventController extends Controller
                 'description'     => 'required',
              ]);
 
+            $contact_id = Hashids::decode($request->input('contact_id'))[0];
+
             $contact_event              = new ContactEvent;
             $contact_event->title       = $request->input('title');
             $contact_event->event_date  = $request->input('event_date');
             $contact_event->event_time  = date( "H:i:s",strtotime($request->input('event_time')));
             $contact_event->event_type_id = $request->input('event_type_id');
+            $contact_event->contact_id    = $contact_id;
             $contact_event->user_id       = $request->input('user_id');
             $contact_event->location      = $request->input('location');
             $contact_event->description   = $request->input('description');
             $contact_event->save();
+
+            if($contact_event) {
+                $contact_id = Hashids::decode($request->input('contact_id'))[0];
+                $ch = new ContactHistory;
+                $ch->user_id       = $request->input('user_id');
+                $ch->contact_id    = $contact_id;
+                $ch->company_id    = 0;
+                $ch->title         = "Add New Event";
+                $ch->module        = "Events";
+                $ch->save();
+            }
 
             Session::flash('message', 'You have successfully created new event');
             Session::flash('alert_class', 'alert-success');
@@ -99,6 +114,18 @@ class ContactEventController extends Controller
 	            $contact_event->location      = $request->input('location');
 	            $contact_event->description   = $request->input('description');
                 $contact_event->save();
+
+                if($contact_event) {
+                    $contact_id = Hashids::decode($request->input('contact_id'))[0];
+                    $ch = new ContactHistory;
+                    $ch->user_id       = $request->input('user_id');
+                    $ch->contact_id    = $contact_id;
+                    $ch->company_id    = 0;
+                    $ch->title         = "Update Event";
+                    $ch->module        = "Events";
+                    $ch->save();
+                }
+
 
                 Session::flash('message', 'Event has been updated');
                 Session::flash('alert_class', 'alert-success');

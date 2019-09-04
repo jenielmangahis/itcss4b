@@ -114,6 +114,9 @@ Route::get('contact_call_tracker/ajax_followup_call_user_dropdown', ['as'=>'cont
 Route::post('contact_call_tracker/store_followup', ['as'=>'contact_call_tracker/store_followup','uses'=>'CallTrackerController@store_followup'])->middleware('auth');
 Route::post('contact_call_tracker/update', ['as'=>'contact_call_tracker/update','uses'=>'CallTrackerController@update'])->middleware('auth');
 
+//Contact History
+Route::post('contact_history/destroy', ['as'=>'contact_history/destroy','uses'=>'ContactHistoryController@destroy'])->middleware('auth');
+
 //Workflow Categories
 Route::get('/workflow_category', ['as'=>'workflow_category','uses'=>'WorkflowCategoryController@index'])->middleware('auth');
 Route::get('/workflow_category/create', ['as'=>'workflow_category/create','uses'=>'WorkflowCategoryController@create'])->middleware('auth');
@@ -129,6 +132,7 @@ Route::post('stage/store', ['as'=>'stage/store','uses'=>'StageController@store']
 Route::get('stage/edit/{stage_id}', ['as'=>'stage/edit','uses'=>'StageController@edit'])->middleware('auth');
 Route::post('stage/update', ['as'=>'stage/update','uses'=>'StageController@update'])->middleware('auth');
 Route::post('stage/destroy', ['as'=>'stage/destroy','uses'=>'StageController@destroy'])->middleware('auth');
+
 //Workflow
 Route::get('/workflow', ['as'=>'workflow','uses'=>'WorkflowController@index'])->middleware('auth');
 Route::get('/workflow/create', ['as'=>'workflow/create','uses'=>'WorkflowController@create'])->middleware('auth');
