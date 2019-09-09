@@ -131,7 +131,12 @@ class ContactDashboardController extends Controller
         }
 
         $emailTemplates = EmailTemplate::where('user_id', '=', $user_id)->get();
-        $contacts = Contact::where('user_id','=', $user_id)->get();
+        if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
+            $contacts = Contact::where('user_id','=', $user_id)->get();
+        }else{
+            $contacts = Contact::all();
+        }
+                
         /*
          * For emails - end 
         */
