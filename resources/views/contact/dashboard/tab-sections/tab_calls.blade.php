@@ -64,6 +64,7 @@
 
       <div id="modalEditEvent-<?php echo $calls->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
           {{ Form::open(array('url' => 'contact_call_tracker/update', 'class' => '', 'id' => 'add-call-log-form')) }}
+            <input type="hidden" id="" name="contact_id" value="<?php echo $contact_id; ?>">
             <input type="hidden" id="" name="id" value="<?php echo Hashids::encode($calls->id) ?>">
             <div class="modal-dialog modal-lg" style="width: 600px !important;">
               <div class="modal-content">

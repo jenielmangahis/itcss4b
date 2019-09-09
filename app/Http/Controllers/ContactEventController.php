@@ -70,16 +70,20 @@ class ContactEventController extends Controller
             $contact_event->description   = $request->input('description');
             $contact_event->save();
 
+            //Adding history - Start
             if($contact_event) {
+                $user_id    = Auth::user()->id;
                 $contact_id = Hashids::decode($request->input('contact_id'))[0];
                 $ch = new ContactHistory;
-                $ch->user_id       = $request->input('user_id');
+                $ch->user_id       = $user_id;
                 $ch->contact_id    = $contact_id;
                 $ch->company_id    = 0;
                 $ch->title         = "Add New Event";
+                $ch->description   = "Assigned to User Id: " . $request->input('user_id');
                 $ch->module        = "Events";
                 $ch->save();
             }
+            //Adding history - End
 
             Session::flash('message', 'You have successfully created new event');
             Session::flash('alert_class', 'alert-success');
@@ -115,17 +119,20 @@ class ContactEventController extends Controller
 	            $contact_event->description   = $request->input('description');
                 $contact_event->save();
 
+                //Add History - Start
                 if($contact_event) {
+                    $user_id    = Auth::user()->id;
                     $contact_id = Hashids::decode($request->input('contact_id'))[0];
                     $ch = new ContactHistory;
-                    $ch->user_id       = $request->input('user_id');
+                    $ch->user_id       = $user_id;
                     $ch->contact_id    = $contact_id;
                     $ch->company_id    = 0;
                     $ch->title         = "Update Event";
+                    $ch->description   = "Assigned to User Id: " . $request->input('user_id');
                     $ch->module        = "Events";
                     $ch->save();
                 }
-
+                //Add History - End
 
                 Session::flash('message', 'Event has been updated');
                 Session::flash('alert_class', 'alert-success');
@@ -147,7 +154,22 @@ class ContactEventController extends Controller
             $event = ContactEvent::find($id);
 
             if($event) {   
+                $contact_id = $event->contact_id;
+                $event_id   = $id;
                 $event->delete();
+
+                //Add History - Start
+                $user_id    = Auth::user()->id;
+                $ch = new ContactHistory;
+                $ch->user_id       = $user_id;
+                $ch->contact_id    = $contact_id;
+                $ch->company_id    = 0;
+                $ch->title         = "Delete Event";
+                $ch->description   = "Event Id: " . $event_id;
+                $ch->module        = "Events";
+                $ch->save();
+                //Add History - End
+
                 Session::flash('message', "Event Delete Successful");
                 Session::flash('alert_class', 'alert-success');
                 return redirect()->back();

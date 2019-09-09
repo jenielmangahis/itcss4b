@@ -100,7 +100,7 @@
       <td>{{ $event->event_type->name }}</td>
       <td>{{ $event->description }}</td>
       <td>
-        <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $event->id; ?>">
+        <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDeleteEvent-<?= $event->id; ?>">
             <i class="fa fa-trash"></i>
         </a>
         <a href="javascript:void(0);" class="btn btn-xs btn-primary" id="" data-toggle="modal" data-target="#modalEditEvent-<?= $event->id; ?>">
@@ -109,7 +109,7 @@
       </td>
     </tr>  
 
-    <div id="modalDelete-<?= $event->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
+    <div id="modalDeleteEvent-<?= $event->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
         <div class="modal-dialog modal-md">
           <div class="modal-content">
 

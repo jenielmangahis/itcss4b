@@ -11,6 +11,7 @@ use App\CompanyUser;
 use App\ContactEvent;
 use App\Contact;
 use App\ContactTask;
+use App\ContactHistory;
 
 use UserHelper;
 use GlobalHelper;
@@ -98,7 +99,7 @@ class CallTrackerController extends Controller
 	            $contact_id = Hashids::decode($contact_id)[0]; 
             }
 
-            $user_id      = Auth::user()->id;
+            $user_id = Auth::user()->id;
 
             $call_tracker              	= new ContactCallTracker;
             $call_tracker->user_id     	= $user_id;
@@ -111,6 +112,20 @@ class CallTrackerController extends Controller
             $call_tracker->event_type_id = $request->input('event_type_id');   
             $call_tracker->call_update_status = $request->input('call_update_status');
             $call_tracker->save();
+
+            //Adding history - Start
+            if($call_tracker) {
+                $user_id    = Auth::user()->id;
+                $ch = new ContactHistory;
+                $ch->user_id       = $user_id;
+                $ch->contact_id    = $contact_id;
+                $ch->company_id    = 0;
+                $ch->title         = "Add New Call Log";
+                $ch->description   = "Call Tracker Id: " . $call_tracker->id;
+                $ch->module        = "Calls";
+                $ch->save();
+            }
+            //Adding history - End            
 
             Session::flash('calltrackermodal', 'yes');
             Session::flash('calltrackercontactid', $hash_contact_id);
@@ -144,6 +159,8 @@ class CallTrackerController extends Controller
 
             if($call_log) {
 
+                $contact_id = Hashids::decode($request->input('contact_id'))[0];
+
 	            //$call_log->user_id     	= $user_id;
 	            //$call_log->contact_id  	= $contact_id;
 
@@ -155,6 +172,20 @@ class CallTrackerController extends Controller
 	            $call_log->event_type_id = $request->input('event_type_id');   
 	            $call_log->call_update_status = $request->input('call_update_status');
 	            $call_log->save();
+
+                //Adding history - Start
+                if($call_log) {
+                    $user_id    = Auth::user()->id;
+                    $ch         = new ContactHistory;
+                    $ch->user_id       = $user_id;
+                    $ch->contact_id    = $contact_id;
+                    $ch->company_id    = 0;
+                    $ch->title         = "Update Call Log";
+                    $ch->description   = "Call Tracker Id: " . $call_log->id;
+                    $ch->module        = "Calls";
+                    $ch->save();
+                }
+                //Adding history - End                   
 
 	            Session::flash('message', 'You have successfully update call log activity');
 	            Session::flash('alert_class', 'alert-success');
