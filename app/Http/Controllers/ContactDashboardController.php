@@ -192,7 +192,11 @@ class ContactDashboardController extends Controller
         */ 
 
         $contact_history_query = ContactHistory::query(); 
-        $contact_history = $contact_history_query->orderBy('created_at', 'desc')->paginate(20);   
+        
+        if($contact) {
+            $contact_history_query = $contact_history_query->where('contact_id','=', $contact->id); 
+        }         
+        $contact_history = $contact_history_query->orderBy('created_at', 'desc')->paginate(20);  
 
         /*
          * Contact History - End

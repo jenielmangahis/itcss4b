@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\ContactDocs;
 use App\ContactTask;
+use App\ContactHistory;
 
 use UserHelper;
 use GlobalHelper;
@@ -79,6 +80,21 @@ class ContactDocsController extends Controller
             $contactDoc->description    = $request->input('description');
             $contactDoc->save();
 
+            //Adding history - Start
+            if($contactDoc) {
+                $user_id    = Auth::user()->id;
+                $contact_id = Hashids::decode($request->input('contact_id'))[0];
+                $ch = new ContactHistory;
+                $ch->user_id       = $user_id;
+                $ch->contact_id    = $contact_id;
+                $ch->company_id    = 0;
+                $ch->title         = "Add New Document";
+                $ch->description   = "Document File Name: " . $original_filename;
+                $ch->module        = "Docs";
+                $ch->save();
+            }
+            //Adding history - End            
+
             Session::flash('message', 'You have successfully uploaded new document');
             Session::flash('alert_class', 'alert-success');
         }else{
@@ -96,8 +112,23 @@ class ContactDocsController extends Controller
             $id = Hashids::decode($id)[0];
             $contact_doc = ContactDocs::find($id);
 
-            if($contact_doc) {   
+            if($contact_doc) {  
+                $user_id    = $contact_doc->user_id;
+                $contact_id = $contact_doc->contact_id;
+                $original_filename = $contact_doc->document_title;
                 $contact_doc->delete();
+
+                //Adding history - Start
+                $ch = new ContactHistory;
+                $ch->user_id       = $user_id;
+                $ch->contact_id    = $contact_id;
+                $ch->company_id    = 0;
+                $ch->title         = "Delete Document";
+                $ch->description   = "Document File Name: " . $original_filename;
+                $ch->module        = "Docs";
+                $ch->save();
+                //Adding history - End      
+
                 Session::flash('message', "Delete Successful");
                 Session::flash('alert_class', 'alert-success');                
             }

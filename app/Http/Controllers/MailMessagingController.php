@@ -11,6 +11,7 @@ use App\MailMessaging;
 use App\Contact;
 use App\EmailTemplate;
 use App\ContactTask;
+use App\ContactHistory;
 
 /*
  * Note: below are class file the use for sending email. File is located in 'app/Mail' folder
@@ -95,11 +96,6 @@ class MailMessagingController extends Controller
                 'content'			  => 'required'   
              ]);
 
-            /*echo '<pre>';
-            print_r($request->input());
-            echo '</pre>';
-            exit;*/
-
             $enable_email = true;
             if($enable_email) {         
 
@@ -129,7 +125,7 @@ class MailMessagingController extends Controller
                         $mailMessaging->cc         = $cc;
                         $mailMessaging->bcc        = $bcc;
                         $mailMessaging->content    = $request->input('content');
-                        //$mailMessaging->sender     = "NA";
+                        $mailMessaging->sender     = "NA";
                         $mailMessaging->save();
                     }
                 }
@@ -158,6 +154,21 @@ class MailMessagingController extends Controller
                         ->cc($cc)
                         ->bcc($bcc)
                         ->send(new MailContact($name, $from_email, $subject, $message)); 
+
+                    //Adding history - Start
+                    if($mailMessaging) {
+                        $user_id    = Auth::user()->id;
+                        $contact_id = Hashids::decode($request->input('contact_id'))[0];
+                        $ch = new ContactHistory;
+                        $ch->user_id       = $user_id;
+                        $ch->contact_id    = $contact_id;
+                        $ch->company_id    = 0;
+                        $ch->title         = "Send Email";
+                        //$ch->description   = "";
+                        $ch->module        = "Emails";
+                        $ch->save();
+                    }
+                    //Adding history - End                        
      
             }
 

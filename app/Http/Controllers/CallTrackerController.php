@@ -235,6 +235,20 @@ class CallTrackerController extends Controller
             $contact_event->description   = $request->input('description');
             $contact_event->save();
 
+            //Adding history - Start
+            if($contact_event) {
+                $user_id    = Auth::user()->id;
+                $ch         = new ContactHistory;
+                $ch->user_id       = $user_id;
+                $ch->contact_id    = $contact_id;
+                $ch->company_id    = 0;
+                $ch->title         = "Followup Call";
+                $ch->description   = "Followup Contact Event Id: " . $contact_event->id;
+                $ch->module        = "Calls";
+                $ch->save();
+            }
+            //Adding history - End              
+
             Session::flash('calltrackermodal', 'yes');
             Session::flash('calltrackercontactid', $hash_contact_id);
             Session::flash('message', 'You have successfully add followup call');

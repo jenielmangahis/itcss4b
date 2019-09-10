@@ -36,7 +36,7 @@
           
           <div class="timeline-footer">
             <!-- <a class="btn btn-primary btn-xs">Read more</a> -->
-            <a href="javascript:void(0);" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalDelete-<?= $contact_note->id; ?>">
+            <a href="javascript:void(0);" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalDeleteNote-<?= $contact_note->id; ?>">
                 Delete
             </a>            
           </div>
@@ -44,7 +44,7 @@
       </li>
       <!-- END timeline item -->
 
-      <div id="modalDelete-<?= $contact_note->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
+      <div id="modalDeleteNote-<?= $contact_note->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
           <div class="modal-dialog modal-md">
             <div class="modal-content">
 

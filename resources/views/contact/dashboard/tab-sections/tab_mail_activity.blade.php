@@ -18,7 +18,6 @@
 </div>
 <div class="row">
   {{ Form::open(array('url' => 'contact_dashboard/'.$contact_id, 'class' => '', 'method' => 'get')) }}
-
     <div class="col-xs-12">
       <div class="row">
         <div class="col-md-6">
@@ -70,6 +69,7 @@
 
 <div id="modalSendEmail" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
     {{ Form::open(array('url' => 'mail_messaging/send', 'class' => '', 'id' => 'send-email-form')) }}
+    <input type="hidden" value="{{$contact_id}}" name="contact_id" id="contact_id">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
       <div class="modal-header">

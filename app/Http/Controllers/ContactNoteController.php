@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Mail;
 use App\ContactNote;
 use App\Contact;
 use App\ContactTask;
+use App\ContactHistory;
 use App\User;
 
 use UserHelper;
@@ -122,6 +123,21 @@ class ContactNoteController extends Controller
 			 * Send notification - end
             */
 
+            //Adding history - Start
+            if($contact_note) {
+                $user_id    = Auth::user()->id;
+                $contact_id = Hashids::decode($request->input('contact_id'))[0];
+                $ch = new ContactHistory;
+                $ch->user_id       = $user_id;
+                $ch->contact_id    = $contact_id;
+                $ch->company_id    = 0;
+                $ch->title         = "Add New Note";
+                $ch->description   = "Note Title: " . $request->input('note_title') . ", Note ID: " . $contact_note->id;
+                $ch->module        = "Notes";
+                $ch->save();
+            }
+            //Adding history - End            
+
             Session::flash('message', 'You have successfully created note');
             Session::flash('alert_class', 'alert-success');
             return redirect()->back();
@@ -142,7 +158,24 @@ class ContactNoteController extends Controller
             $note = ContactNote::find($id);
 
             if($note) {   
+                $contact_id = $note->contact_id;
+                $note_id    = $note->id;
                 $note->delete();
+
+                //Adding history - Start
+                if($note) {
+                    $user_id    = Auth::user()->id;
+                    $ch = new ContactHistory;
+                    $ch->user_id       = $user_id;
+                    $ch->contact_id    = $contact_id;
+                    $ch->company_id    = 0;
+                    $ch->title         = "Delete Note";
+                    $ch->description   = "Note ID: " . $note_id;
+                    $ch->module        = "Notes";
+                    $ch->save();
+                }
+                //Adding history - End    
+
                 Session::flash('message', "Note Delete Successful");
                 Session::flash('alert_class', 'alert-success');
                 return redirect()->back();
