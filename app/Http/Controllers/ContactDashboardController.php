@@ -122,11 +122,11 @@ class ContactDashboardController extends Controller
         if($search_by_mail != '' && $search_field_mail != '') {
             $mail_messaging_query = MailMessaging::query();
             $mail_messaging_query = $mail_messaging_query->where('mail_messaging.'.$search_by_mail, 'like', '%' . $search_field_mail . '%');
-            $mail_messaging_query = $mail_messaging_query->where('mail_messaging.contact_id',$id);
-            $mail_messaging = $mail_messaging_query->paginate(15);
+            $mail_messaging_query = $mail_messaging_query->where('mail_messaging.contact_id','=', $contact->id);
+            $mail_messaging = $mail_messaging_query->paginate(20);
         } else {
             $mail_messaging_query = MailMessaging::query();
-            $mail_messaging_query = $mail_messaging_query->where('mail_messaging.contact_id',$id);
+            $mail_messaging_query = $mail_messaging_query->where('mail_messaging.contact_id','=', $contact->id);
             $mail_messaging = $mail_messaging_query->paginate(20);
         }
 

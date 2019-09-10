@@ -45,27 +45,54 @@
     </div>                      
   {!! Form::close() !!}         
 </div>
-<ul class="list-mail-messaging">
-@foreach($mail_messaging as $e)
-  <li>
-    <div class="col-md-1"><img src="{{asset('images/email.png')}}" style="height: 80px;"></div>
-    <div class="col-md-11">
-      <a href="javascript:void(0);" class="mail-messaging-show-content" data-value="<?= $e->id; ?>"><h3>{{ $e->date }} - {{ $e->user->firstname}} {{ $e->user->lastname }}</h3></a>
-      <span class="pull-right">Opened : <span class="date-last-opened-container-<?= $e->id; ?>">{{ $e->date_last_opened }}</span></span>
-      <small>Subject : {{ $e->subject }}</small><br />
-      <small>To : {{ $e->recipient }}</small>
-      <div class="email-content-container-<?= $e->id ?> hidden">
-        <div class="email-content">
-          {!! $e->content !!}
-          <br />
-          <a class="btn btn-info pull-right mail-messaging-hide-content" data-value="<?= $e->id; ?>" href="javascript:void(0);">Hide</a>
-          <div class="clearfix"></div>
+
+<ul class="timeline timeline-inverse">
+
+  @if(!$mail_messaging->isEmpty())
+
+    @foreach($mail_messaging as $mm)
+      <!-- timeline item -->
+      <li>
+        <i class="fa fa-envelope bg-blue"></i>
+
+        <div class="timeline-item">
+          <span class="time"><i class="fa fa-clock-o"></i> {{ date("F j, Y, g:i a", strtotime($mm->date)) }} </span>
+          <h3 class="timeline-header">
+            <a href="javascript:void(0);">{{ $mm->user->firstname}} {{ $mm->user->lastname }} Sent an email</a> <br />
+            <strong>cc:</strong> <?php echo !empty($mm->cc) ? $mm->cc : 'NA'; ?> <strong>bcc:</strong> <?php echo !empty($mm->bcc) ? $mm->bcc : 'NA'; ?>  <br />
+            <strong>Subject:</strong> {{$mm->subject}}
+            
+          </h3> 
+
+          <div class="timeline-body" style="overflow: auto; min-height: 40px; max-height: 120px;">
+              <?php echo $mm->content; ?>
+          </div>
+          
+          <div class="timeline-footer">
+            <!-- <a class="btn btn-primary btn-xs">Read more</a> -->           
+          </div>
         </div>
-      </div>
-  </div>
-    <hr />
-  </li>
-@endforeach
+      </li>
+      <!-- END timeline item -->
+
+    @endforeach
+
+    <li>
+      <i class="fa fa-clock-o bg-gray"></i>
+    </li>
+
+  @else
+    <li>
+      <i class="fa fa-file-text bg-blue"></i>
+      <div class="timeline-item"><h3 class="timeline-header"><strong>Note is empty</strong></h3></div>  
+    </li>
+  @endif
+
+</ul>
+
+<div style="text-align: center;" class="box-footer clearfix">
+    {{ $mail_messaging->links() }}
+</div>
 
 <div id="modalSendEmail" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
     {{ Form::open(array('url' => 'mail_messaging/send', 'class' => '', 'id' => 'send-email-form')) }}
@@ -89,16 +116,6 @@
           </div>
         </div>
         <div class="form-group multi-select row">
-          <label class="col-sm-2 col-form-label">BCC <span class="required"></span></label>
-          <div class="col-sm-10">
-            <select class="select_recipient form-control" name="bcc[]" multiple="multiple">
-              @foreach($contacts as $c)
-                <option value="{{ $c->email }}">{{ $c->email }}</option>
-              @endforeach
-            </select>                                 
-          </div>
-        </div>
-        <div class="form-group multi-select row">
           <label class="col-sm-2 col-form-label">CC <span class="required"></span></label>
           <div class="col-sm-10">
             <select class="select_recipient form-control" name="cc[]" multiple="multiple">
@@ -108,6 +125,16 @@
             </select>                                 
           </div>
         </div> 
+        <div class="form-group multi-select row">
+          <label class="col-sm-2 col-form-label">BCC <span class="required"></span></label>
+          <div class="col-sm-10">
+            <select class="select_recipient form-control" name="bcc[]" multiple="multiple">
+              @foreach($contacts as $c)
+                <option value="{{ $c->email }}">{{ $c->email }}</option>
+              @endforeach
+            </select>                                 
+          </div>
+        </div>        
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Subject <span class="required"></span></label>
           <div class="col-sm-10">
@@ -200,5 +227,3 @@
 
   });*/
 </script>
-
-

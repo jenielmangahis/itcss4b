@@ -16,9 +16,8 @@ class MailContact extends Mailable
      *
      * @return void
      */
-    public function __construct($name, $from_email, $subject, $message)
+    public function __construct($from_email, $subject, $message)
     {
-        $this->name    = $name;
         $this->from_email   = $from_email;
         $this->subject = $subject;
         $this->message = $message;
@@ -35,7 +34,6 @@ class MailContact extends Mailable
         return $this->from($this->from_email)
                     ->markdown('emails.mail_contact') // mail_cotact.blade.php file is located in 'resources/views/emails' folder
                         ->with([
-                            'name'    => $this->name,
                             'subject' => $this->subject,
                             'message' => $this->message
                         ]);          

@@ -96,6 +96,9 @@ class MailMessagingController extends Controller
                 'content'			  => 'required'   
              ]);
 
+            $send_cc = array();
+            $send_bcc = array();
+
             $enable_email = true;
             if($enable_email) {         
 
@@ -108,14 +111,19 @@ class MailMessagingController extends Controller
                 if( !empty($request->input('cc')) ){
                     $cc = implode(",", $request->input('cc'));
                 }
-                foreach( $request->input('recipient') as $key => $value ){
+
+                $contact_id = Hashids::decode($request->input('contact_id'))[0];
+
+                foreach( $request->input('recipient') as $key => $value ) {
                     $contact = Contact::where('id', '=', $value)->first();
+
                     if( $contact ) {
                         $date = date("Y-m-d H:i:s");
                         $recipients[$contact->email] = $contact->email;
                         $user_id       = Auth::user()->id;
+
                         $mailMessaging = new MailMessaging;
-                        $mailMessaging->contact_id = $contact->id;
+                        $mailMessaging->contact_id = $contact_id;
                         $mailMessaging->user_id    = $user_id;
                         $mailMessaging->recipient  = $contact->email;
                         $mailMessaging->date       = $date;
@@ -130,45 +138,44 @@ class MailMessagingController extends Controller
                     }
                 }
 
-                    /*Mail::to('jeniel.mangahis@gmail.com')
-                        ->cc($cc)
-                        ->bcc($bcc)
-                        ->send(new MailNotification($name, $recipients, $request->input('subject'), $request->input('content'))); */
-                        // 'MailNotification' class is located on app/Mail folder      
-                
-                    /*$from_email = 'coreCMS@gmail.com';
-                    $to      = $contact->email;
-                    $name    = $contact->firstname . " " . $contact->lastname;
-                    $subject = $request->input('subject');
-                    $message = $request->input('content');*/
+                $from_email   = 'noreply@corecms.com';
+                $send_cc      = $request->input('cc');
+                $send_bcc     = $request->input('bcc');
+                $subject      = $request->input('subject');
+                $message      = $request->input('content');
 
-                    $from_email = 'coreCMS@gmail.com';
-                    $to      = array('bryann.revina@gmail.com','jeniel@test.com');
-                    $cc      = array('marvin@test.com');
-                    $bcc     = array('lily@test.com');
-                    $name    = 'Bryann Revina';
-                    $subject = $request->input('subject');
-                    $message = $request->input('content');
-
+                if(empty($send_cc) && empty($send_bcc)) {
                     Mail::to($recipients)
-                        ->cc($cc)
-                        ->bcc($bcc)
-                        ->send(new MailContact($name, $from_email, $subject, $message)); 
+                        ->send(new MailContact($from_email, $subject, $message)); 
+                }elseif(empty($send_cc) && empty($send_bcc)) {
+                    Mail::to($recipients)
+                        ->cc($send_cc)
+                        ->bcc($send_bcc)
+                        ->send(new MailContact($from_email, $subject, $message));                        
+                }elseif(!empty($send_cc) && empty($send_bcc)) {
+                    Mail::to($recipients)
+                        ->cc($send_cc)
+                        ->send(new MailContact($from_email, $subject, $message));    
+                }elseif(empty($send_cc) && !empty($send_bcc)) {
+                    Mail::to($recipients)
+                        ->bcc($send_bcc)
+                        ->send(new MailContact($from_email, $subject, $message));                            
+                }
 
-                    //Adding history - Start
-                    if($mailMessaging) {
-                        $user_id    = Auth::user()->id;
-                        $contact_id = Hashids::decode($request->input('contact_id'))[0];
-                        $ch = new ContactHistory;
-                        $ch->user_id       = $user_id;
-                        $ch->contact_id    = $contact_id;
-                        $ch->company_id    = 0;
-                        $ch->title         = "Send Email";
-                        //$ch->description   = "";
-                        $ch->module        = "Emails";
-                        $ch->save();
-                    }
-                    //Adding history - End                        
+                //Adding history - Start
+                if($mailMessaging) {
+                    $user_id    = Auth::user()->id;
+                    $contact_id = Hashids::decode($request->input('contact_id'))[0];
+                    $ch = new ContactHistory;
+                    $ch->user_id       = $user_id;
+                    $ch->contact_id    = $contact_id;
+                    $ch->company_id    = 0;
+                    $ch->title         = "Send Email";
+                    //$ch->description   = "";
+                    $ch->module        = "Emails";
+                    $ch->save();
+                }
+                //Adding history - End                        
      
             }
 
