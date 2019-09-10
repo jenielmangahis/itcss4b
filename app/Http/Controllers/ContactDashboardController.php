@@ -299,7 +299,7 @@ class ContactDashboardController extends Controller
             }            
         } else {
             //$contact_events = ContactEvent::paginate(10);
-            $contactDocs = ContactDocs::where('user_id', '=', $user_id)->get();
+            $contactDocs = ContactDocs::where('contact_id', '=', $contact->id)->get();
         }
 
         $contactDoc = new ContactDocs();
