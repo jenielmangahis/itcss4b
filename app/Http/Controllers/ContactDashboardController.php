@@ -185,7 +185,15 @@ class ContactDashboardController extends Controller
         }
         /*
          * Contact Task - End
-        */       
+        */  
+
+        /*
+         * Contact Advance - Start
+        */         
+            $contact_advances = array();
+        /*
+         * Contact Advance - End
+        */             
 
         /*
          * Contact History - Start
@@ -344,7 +352,8 @@ class ContactDashboardController extends Controller
             'documentTypes' => $documentTypes,
             'contactDocs' => $contactDocs,
             'search_field_documents' => $search_field_documents,
-            'contact_history' => $contact_history
+            'contact_history' => $contact_history,
+            'contact_advances' => $contact_advances
         ]); 
     }     
 }
