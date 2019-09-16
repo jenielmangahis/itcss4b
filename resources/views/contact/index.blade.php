@@ -136,7 +136,11 @@
                             <td>{{ $con->id }}</td>
                             <td>{{ date("F j, Y", strtotime($con->created_at)) }}</td>
                             <!-- <td>-</td> -->
-                            <td>{{ $con->user->firstname}} {{ $con->user->lastname }}</td>
+                            @if(isset($con->user->firstname) && isset($con->user->lastname))
+                              <td>{{ $con->user->firstname}} {{ $con->user->lastname }}</td>
+                            @else
+                              <td>-</td>
+                            @endif
                             <td><a href="{{url('contact_dashboard/'.Hashids::encode($con->id))}}">{{ $con->firstname }} {{$con->lastname }}</a></td>
                             <td>
                               <a href="javascript:void(0);" class="btn" id="" onclick="javascript:load_activity_history_tab_list('<?php echo  Hashids::encode($con->id); ?>');" data-toggle="modal" data-target="#modalCallTracker">
