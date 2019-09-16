@@ -96,7 +96,12 @@
       <td>{{ $event->id }}</td>
       <td>{{ $event->title }}</td>
       <td>{{ date("F j, Y", strtotime($event->event_date)) }} {{ date("g:i a", strtotime($event->event_time)) }}</td>
-      <td>{{ $event->user->firstname }} {{ $event->user->lastname }}</td>
+      @if(isset($event->user->firstname) && isset($event->user->lastname))
+        <td>{{ $event->user->firstname }} {{ $event->user->lastname }}</td>
+      @else
+        <td>-</td>
+      @endif
+      
       <td>{{ $event->event_type->name }}</td>
       <td>{{ $event->description }}</td>
       <td>
@@ -186,7 +191,12 @@
                       <select name="user_id" id="user_id" class="form-control">
                         @if( !empty($company_users->toArray()) )
                           @foreach($company_users as $company_user)   
-                            <option <?php echo $company_user->user_id == $event->user_id ? 'selected="selected"' : ''; ?> value="{{ $company_user->user_id }}">{{ $company_user->user->firstname }} {{ $company_user->user->lastname }}</option>
+                            @if(isset($company_user->user->firstname) && isset($company_user->user->lastname))
+                              <option <?php echo $company_user->user_id == $event->user_id ? 'selected="selected"' : ''; ?> value="{{ $company_user->user_id }}">{{ $company_user->user->firstname }} {{ $company_user->user->lastname }}</option>
+                            @else
+                              <option <?php echo $company_user->user_id == $event->user_id ? 'selected="selected"' : ''; ?> value="{{ $company_user->user_id }}">-</option>
+                            @endif
+                            
                           @endforeach
                         @else
                           <select name="user_id" id="user_id" class="form-control">
@@ -278,7 +288,11 @@
                   <select name="user_id" id="user_id" class="form-control">
                     @if( !empty($company_users->toArray()) )
                       @foreach($company_users as $company_user)   
-                        <option value="{{ $company_user->user_id }}">{{ $company_user->user->firstname }} {{ $company_user->user->lastname }}</option>
+                        @if(isset($company_user->user->firstname) && isset($company_user->user->lastname))
+                          <option value="{{ $company_user->user_id }}">{{ $company_user->user->firstname }} {{ $company_user->user->lastname }}</option>
+                        @else
+                          <option value="{{ $company_user->user_id }}">-</option>
+                        @endif
                       @endforeach
                     @else
                       <select name="user_id" id="user_id" class="form-control">

@@ -165,8 +165,11 @@
                                 $assigned_user = App\User::find($assigned_user_id);
                               }
                             ?>
+                            @if(isset($company_user->user->firstname) && isset($company_user->user->lastname))
+                              <option <?php echo $assigned_user_id == $company_user->user_id ? 'selected="selected"' : ''; ?> value="{{ $company_user->user_id }}">{{ $company_user->user->firstname }} {{ $company_user->user->lastname }}</option>
+                            @else
 
-                            <option <?php echo $assigned_user_id == $company_user->user_id ? 'selected="selected"' : ''; ?> value="{{ $company_user->user_id }}">{{ $company_user->user->firstname }} {{ $company_user->user->lastname }}</option>
+                            @endif
                           @endforeach
                         @else
                           <select name="assigned_user" id="assigned_user" class="form-control">
@@ -247,8 +250,11 @@
                                 $assigned_user = App\User::find($assigned_user_id);
                               }
                             ?>
-
-                            <p>{{ $company_user->user->firstname }} {{ $company_user->user->lastname }}</p>
+                            @if(isset($company_user->user->firstname) && isset($company_user->user->lastname))
+                              <p>{{ $company_user->user->firstname }} {{ $company_user->user->lastname }}</p>
+                            @else
+                              <p>-</p>
+                            @endif
                           @endforeach
                         @else
                           <p>No company users available</p>
@@ -315,8 +321,12 @@
                   <label for="inputAssignedUser">Assigned User</label>
                   <select name="assigned_user" id="assigned_user" class="form-control">
                     @if( !empty($company_users->toArray()) )
-                      @foreach($company_users as $company_user)   
-                        <option value="{{ $company_user->user_id }}">{{ $company_user->user->firstname }} {{ $company_user->user->lastname }}</option>
+                      @foreach($company_users as $company_user)  
+                        @if(isset($company_user->user->firstname) && isset($company_user->user->lastname)) 
+                          <option value="{{ $company_user->user_id }}">{{ $company_user->user->firstname }} {{ $company_user->user->lastname }}</option>
+                        @else
+                          <option value="">-</option>
+                        @endif
                       @endforeach
                     @else
                       <select name="assigned_user" id="assigned_user" class="form-control">

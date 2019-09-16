@@ -122,7 +122,12 @@
                   <select name="notify_user_id" id="notify_user_id" class="form-control">
                     @if( !empty($company_users->toArray()) )
                       @foreach($company_users as $company_user)   
-                        <option value="{{ $company_user->user_id }}">{{ $company_user->user->firstname }} {{ $company_user->user->lastname }}</option>
+                        @if(isset($company_user->user->firstname) && isset($company_user->user->lastname))
+                          <option value="{{ $company_user->user_id }}">{{ $company_user->user->firstname }} {{ $company_user->user->lastname }}</option>
+                        @else
+                          <option value="">-</option>
+                        @endif
+                        
                       @endforeach
                     @else
                       <select name="notify_user_id" id="notify_user_id" class="form-control">

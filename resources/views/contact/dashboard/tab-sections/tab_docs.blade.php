@@ -54,7 +54,11 @@
     <tr>
       <td>{{ $doc->document_title }}</td>
       <td>{{ $doc->created_at }}</td>
-      <td>{{ $doc->user->firstname }} {{ $doc->user->lastname }}</td>
+      @if(isset($doc->user->firstname) && isset($doc->user->lastname))
+        <td>{{ $doc->user->firstname }} {{ $doc->user->lastname }}</td>
+      @else
+        <td>-</td>
+      @endif
       <td>  
         <a href="javascript:void(0);" class="btn btn-xs btn-primary" id="" data-toggle="modal" data-target="#modalViewDoc-<?php echo $doc->id; ?>">
             <i class="fa fa-search-plus"></i>
