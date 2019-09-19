@@ -24,6 +24,7 @@ class UserHelper
                   'users',
                   'contacts',
                   'contact_datasource',
+                  'lenders',
                   'contact_campaigns',
                   'workflow',
                   'email_templates',
@@ -38,6 +39,7 @@ class UserHelper
                   'dashboard',
                   'users',
                   'contacts',
+                  'lenders',
                   'email_templates',
                   'mail_messaging',
                   'contact_docs'

@@ -83,6 +83,11 @@ Route::get('contact_datasource/ajax_load_stage_status', ['as'=>'contact_datasour
 Route::get('contact_datasource/edit/{id}', ['as'=>'contact_datasource/edit','uses'=>'ContactDatasourceController@edit'])->middleware('auth');
 Route::post('contact_datasource/update', ['as'=>'contact_datasource/update','uses'=>'ContactDatasourceController@update'])->middleware('auth');
 
+//Lenders Module
+Route::get('/lender', ['as'=>'lender','uses'=>'LenderController@index'])->middleware('auth');
+Route::post('lender/store', ['as'=>'lender/store','uses'=>'LenderController@store'])->middleware('auth');
+Route::post('lender/destroy', ['as'=>'lender/destroy','uses'=>'LenderController@destroy'])->middleware('auth');
+
 //Contact Campaigns
 Route::get('/contact_campaign', ['as'=>'contact_campaign','uses'=>'ContactCampaignController@index'])->middleware('auth');
 Route::post('contact_campaign/store', ['as'=>'contact_campaign/store','uses'=>'ContactCampaignController@store'])->middleware('auth');

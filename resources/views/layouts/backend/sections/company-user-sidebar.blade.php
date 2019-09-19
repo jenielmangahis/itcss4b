@@ -25,6 +25,11 @@
 	    <li <?php echo Route::current()->getName() == 'companies' ? 'class="active"' : ''; ?>>
 	    	<a href="{{route('contact')}}"><i class="fa fa-phone-square"></i> <span>Contacts </span></a>
 	    </li>
+
+	    <li <?php echo Route::current()->getName() == 'lender' ? 'class="active"' : ''; ?>>
+	    	<a href="{{route('lender')}}"><i class="fa fa-money"></i> <span>Lenders </span></a>
+	    </li>
+
 	    <li <?php echo Route::current()->getName() == 'companies' ? 'class="active"' : ''; ?>>
 	    	<a href="{{route('mail_messaging')}}"><i class="fa fa-envelope-open"></i> <span>Mail Messaging </span></a>
 	    </li>
