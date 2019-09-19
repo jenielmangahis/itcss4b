@@ -101,8 +101,9 @@
                           <div class="col-md-6">
                             <div class="form-group">
                               <label>&nbsp;</label><br />
-                              <button type="submit" class="btn btn-primary">Filter</button>
+                              <button type="submit" class="btn btn-primary">Filter</button>                              
                               <a class="btn btn-success" href="{{route('contact')}}">Refresh</a>
+                              <a class="btn btn-success" href="{{route('contact/search_mail_records')}}">Search Mail Records</a>
                             </div>
                             <!-- /.form-group -->
                           </div>
@@ -117,24 +118,30 @@
                       <th >#</th>
 
                       <th>Created</th>
-                      <!-- <th>Business Name</th> -->
+                      <th>Business Name</th>
                       <th>Assigned To</th>
-
-                      <th>Name</th>
-                      <th>Mobile Number</th>
+                      <th>Full Name</th>
+                      <th>Home Phone</th>
                       <th>Email</th>
                       <th>Stage</th>
                       <th>Status</th>
                       <th>Data Source</th>
-                      <th>Action</th>
+                      <th>Actions</th>
                     </tr>
                     @foreach($contact as $con)
                         <?php 
                           $workflow_status = App\Workflow::where('id', '=', $con->status)->first();
+                          $business_info   = App\ContactBusinessInformation::where('contact_id', '=', $con->id)->first();
+
+                          $business_name   = '';
+                          if( $business_info ){
+                            $business_name = $business_info->business_name;
+                          }
                         ?>
                         <tr>
-                            <td>{{ $con->id }}</td>
+                            <td>{{ $con->id }}</td>                            
                             <td>{{ date("F j, Y", strtotime($con->created_at)) }}</td>
+                            <td><?= $business_name; ?></td>
                             <!-- <td>-</td> -->
                             @if(isset($con->user->firstname) && isset($con->user->lastname))
                               <td>{{ $con->user->firstname}} {{ $con->user->lastname }}</td>

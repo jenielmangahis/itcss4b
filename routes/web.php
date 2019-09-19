@@ -75,6 +75,7 @@ Route::get('contact/ajax_load_company_users', ['as'=>'contact/ajax_load_company_
 Route::get('contact/ajax_load_stage_status', ['as'=>'contact/ajax_load_stage_status','uses'=>'ContactController@ajax_load_stage_status'])->middleware('auth');
 Route::get('contact/ajax_load_update_status', ['as'=>'contact/ajax_load_update_status','uses'=>'ContactController@ajax_load_update_status'])->middleware('auth');
 Route::post('contact/update_status', ['as'=>'contact/update_status','uses'=>'ContactController@update_status'])->middleware('auth');
+Route::get('/contact/search_mail_records', ['as'=>'contact/search_mail_records','uses'=>'ContactController@search_mail_records'])->middleware('auth');
 
 //Contact Datasource Module
 Route::get('/contact_datasource', ['as'=>'contact_datasource','uses'=>'ContactDatasourceController@index'])->middleware('auth');

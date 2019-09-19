@@ -17,6 +17,8 @@ use App\Workflow;
 use App\Stage;
 use App\EventType;
 use App\EmailTemplate;
+use App\MailMessaging;
+
 
 use UserHelper;
 use GlobalHelper;
@@ -513,7 +515,67 @@ class ContactController extends Controller
                 'stages' => $stages
             ]);            
         }
+    }    
 
+    public function search_mail_records(Request $request)
+    {
+        $search_by    = $request->input('search_by');
+        $search_field = $request->input('search_field');  
+        $user_id = Auth::user()->id;
+        if($search_by != '' && $search_field != '') {
+            $mail_messaging_query = MailMessaging::query();
 
-    }        
+            if($search_by != '' && $search_field != '') {
+
+                if( $search_by == 'all' ){
+                    $mail_messaging_query = $mail_messaging_query->where('mail_messaging.subject', 'like', '%' . $search_field . '%')->orWhere('mail_messaging.content', 'like', '%' . $search_field . '%');
+                    if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
+                        $mail_messaging_query = $mail_messaging_query->where('user_id', '=', Auth::user()->id);
+                    }                      
+                }elseif( $search_by == 'campaign_name' ){
+                    $mail_messaging_query = $mail_messaging_query->where('mail_messaging.subject', 'like', '%' . $search_field . '%');
+                    if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
+                        $mail_messaging_query = $mail_messaging_query->where('user_id', '=', Auth::user()->id);
+                    } 
+                }else{
+                    if(UserHelper::isCompanyUser(Auth::user()->group_id)) {                
+                        $mail_messaging = MailMessaging::where('user_id','=', $user_id)
+                                    ->orderBy('created_at', 'desc')
+                                    ->paginate(15); 
+                    }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
+                        $mail_messaging = MailMessaging::orderBy('created_at', 'desc')->paginate(15);  
+                    }
+                }
+
+                $mail_messaging = $mail_messaging_query = $mail_messaging_query->orderBy('created_at', 'desc')->paginate(15);
+            }            
+        } else {
+            
+            if(UserHelper::isCompanyUser(Auth::user()->group_id)) {                
+                $mail_messaging = MailMessaging::where('user_id','=', $user_id)
+                            ->orderBy('created_at', 'desc')
+                            ->paginate(15); 
+            }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
+                $mail_messaging = MailMessaging::orderBy('created_at', 'desc')->paginate(15);  
+            }            
+        }
+
+        $stages    = Stage::all();
+        $event_types = EventType::all();
+        $call_log_activity_history = ContactCallTracker::all();
+        $event_types   = EventType::all();
+
+        $emailTemplates = EmailTemplate::where('user_id', '=', $user_id)->get();
+        if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
+            $contacts = Contact::where('user_id','=', $user_id)->get();
+        }else{
+            $contacts = Contact::all();
+        }
+        
+
+        return view('contact.search_mail_records',[
+            'mail_messaging' => $mail_messaging,
+            'search_field' => $search_field
+        ]); 
+    }    
 }
