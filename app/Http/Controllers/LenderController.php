@@ -101,11 +101,98 @@ class LenderController extends Controller
             return redirect('lender');
 
         }else{
-            Session::flash('message', 'Unable to create new event type');
+            Session::flash('message', 'Unable to create new lender');
             Session::flash('alert_class', 'alert-danger');  
             return redirect('lender');
         }
-    }   
+    }  
+
+    
+    public function store_lender_contact(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $this->validate($request, [
+                'name'    => 'required',
+                'email'   => 'required',
+
+             ]);
+
+            $contact_lender         = new LenderContact;
+            $contact_lender->name   = $request->input('name');
+            $contact_lender->email  = $request->input('email');
+            $contact_lender->save();
+
+            Session::flash('message', 'You have successfully created new Contact lender');
+            Session::flash('alert_class', 'alert-success');
+            return redirect()->back();
+
+        }else{
+            Session::flash('message', 'Unable to create Contact lender');
+            Session::flash('alert_class', 'alert-danger');  
+            return redirect()->back();
+        }
+    }      
+
+    public function update(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $this->validate($request, [
+                'company_name' => 'required',
+                'street'   => 'required',
+                'zip_code' => 'required',
+                'email'    => 'required'
+             ]);
+
+        }
+
+        $id = Hashids::decode($request->input('id'))[0];
+        $lender = Lender::find($id); 
+
+        if($lender) {        
+
+            $lender->company_name   = $request->input('company_name');
+            $lender->street         = $request->input('street');
+            $lender->city           = $request->input('city');
+            $lender->state          = $request->input('state');
+            $lender->zip_code       = $request->input('zip_code');
+            $lender->phone          = $request->input('phone');
+            $lender->email          = $request->input('email');
+            $lender->url_site       = $request->input('url_site');
+            $lender->notes          = $request->input('notes');
+            $lender->save();
+
+            Session::flash('message', 'You have successfully updated lender');
+            Session::flash('alert_class', 'alert-success');
+            return redirect('lender');            
+
+        }
+
+        Session::flash('message', 'Unable to update lender');
+        Session::flash('alert_class', 'alert-danger');  
+        return redirect('lender');        
+    }     
+
+    public function view($id)
+    {
+        $id = Hashids::decode($id)[0];
+        $lender = Lender::find($id); 
+        $lender_contacts = LenderContact::all();
+
+        if($lender) {
+	        return view('lender.view',[
+	            'lender' => $lender,
+	            'lender_contacts' => $lender_contacts
+	        ]); 
+
+        } else {
+	        Session::flash('message', 'Unable to get lender');
+	        Session::flash('alert_class', 'alert-danger');  
+	        return redirect('lender');          	
+        }   
+              	
+    }    
 
     public function destroy(Request $request)
     {
@@ -122,5 +209,22 @@ class LenderController extends Controller
                 return redirect('lender');
             }
         }
-    }        
+    }   
+
+    public function lender_contact_destroy(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $id = $request->input('lender_contact_id');
+            $id = Hashids::decode($id)[0];
+            $lender_contact = LenderContact::find($id);
+
+            if($lender_contact) {   
+                $lender_contact->delete();
+                Session::flash('message', "Delete Lender Contact Successful");
+                Session::flash('alert_class', 'alert-success');
+                return redirect()->back();
+            }
+        }
+    }     
 }

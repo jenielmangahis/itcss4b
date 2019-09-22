@@ -87,7 +87,11 @@ Route::post('contact_datasource/update', ['as'=>'contact_datasource/update','use
 //Lenders Module
 Route::get('/lender', ['as'=>'lender','uses'=>'LenderController@index'])->middleware('auth');
 Route::post('lender/store', ['as'=>'lender/store','uses'=>'LenderController@store'])->middleware('auth');
+Route::post('lender/store_lender_contact', ['as'=>'lender/store_lender_contact','uses'=>'LenderController@store_lender_contact'])->middleware('auth');
+Route::post('lender/lender_contact_destroy', ['as'=>'lender/lender_contact_destroy','uses'=>'LenderController@lender_contact_destroy'])->middleware('auth');
 Route::post('lender/destroy', ['as'=>'lender/destroy','uses'=>'LenderController@destroy'])->middleware('auth');
+Route::post('lender/update', ['as'=>'lender/update','uses'=>'LenderController@update'])->middleware('auth');
+Route::get('lender/view/{lender_id}', ['as'=>'lender/view','uses'=>'LenderController@view'])->middleware('auth');
 
 //Contact Campaigns
 Route::get('/contact_campaign', ['as'=>'contact_campaign','uses'=>'ContactCampaignController@index'])->middleware('auth');

@@ -34,7 +34,6 @@
         <!--------------------------
           | Your Page Content Here |
           -------------------------->
-
         <div class="row">
           <div class="col-xs-7">
             <div class="box box-danger">
@@ -135,8 +134,8 @@
                     </tr>
                     @foreach($lenders as $lender)
                         <tr>
-                            <td>-</td>
-                            <td>{{$lender->company_name}}</td>
+                            <td>{{$lender->id}}</td>
+                            <td><a href="{{url('lender/view/'.Hashids::encode($lender->id))}}" class="btn btn-xs btn-success">{{$lender->company_name}}</a></td>
                             <td>{{$lender->street}}</td>
                             <td>{{$lender->city}}</td>
                             <td>{{$lender->state}}</td>
@@ -148,11 +147,11 @@
                             <td>-</td>
                             <td>
                                 <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $lender->id; ?>" >
-                                    <i class="fa fa-trash"></i> Delete
+                                    <i class="fa fa-trash"></i>
                                 </a>
-                                <a href="{{route('contact/edit',[Hashids::encode($lender->id)])}}" class="btn btn-xs btn-primary">
-                                    <i class="fa fa-edit"></i> Edit
-                                </a>                                                           
+                                <a href="javascript:void(0);" class="btn btn-xs btn-primary" id="" data-toggle="modal" data-target="#modalEditLender-<?php echo $lender->id;?>">
+                                    <i class="fa fa-edit"></i>
+                                </a>                                                            
                             </td>
                         </tr>
 
@@ -179,6 +178,83 @@
                               </div>
                             </div>
                         </div>   
+
+                        <div id="modalEditLender-<?php echo $lender->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
+                            {{ Form::open(array('url' => 'lender/update', 'class' => '', 'id' => 'edit-lender-form')) }}
+                              <input type="hidden" name="id" value="<?php echo Hashids::encode($lender->id); ?>">
+                              <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                                    </button>
+                                    <h4 class="modal-title" id="myModalLabel">Edit Lender</h4>
+                                  </div>
+                                  <div class="modal-body">
+                                    <div class="form-group">
+                                      <label for="inputTitle">Company Name</label>
+                                      <input type="text" class="form-control" id="company_name" name="company_name" value="{{$lender->company_name}}" placeholder="" required="">
+                                    </div>
+                                    <div class="form-group">
+                                    <label><strong>Lender Address</strong></label>
+                                    </div>
+                                    <div class="form-group">
+                                      <input type="text" class="form-control" id="street" name="street" value="<?php echo $lender->street; ?>" placeholder="Street" required="">
+                                    </div>
+
+                                    <div class="row">
+                                      <div class="col-xs-4">
+                                        <div class="form-group">
+                                          <input type="text" class="form-control" id="city" name="city" value="<?php echo $lender->city; ?>" placeholder="City">
+                                        </div>                
+                                      </div>
+                                      <div class="col-xs-4">
+                                        <div class="form-group">
+                                          <input type="text" class="form-control" id="state" name="state" value="<?php echo $lender->state; ?>" placeholder="State">
+                                        </div>                
+                                      </div>
+                                      <div class="col-xs-4">
+                                        <div class="form-group">
+                                          <input type="text" class="form-control" id="zip_code" name="zip_code" value="<?php echo $lender->zip_code; ?>" placeholder="Zip Code" required="">  
+                                        </div>                
+                                      </div>
+                                    </div>
+
+                                    <div class="row">
+                                      <div class="col-xs-4">
+                                        <div class="form-group">
+                                          <label for="inputPhone">Phone</label>
+                                          <input type="text" class="form-control" id="phone" name="phone" value="<?php echo $lender->phone; ?>" placeholder="" required="">
+                                        </div>                
+                                      </div>
+                                      <div class="col-xs-4">
+                                        <div class="form-group">
+                                          <label for="inputEmail">Email</label>
+                                          <input type="email" class="form-control" id="email" name="email" value="<?php echo $lender->email; ?>" placeholder="" required="">
+                                        </div>                
+                                      </div>
+                                      <div class="col-xs-4">
+                                        <div class="form-group">
+                                          <label for="inputUrl">Url</label>
+                                          <input type="text" class="form-control" id="url_site" name="url_site" value="<?php echo $lender->url_site; ?>" placeholder="">  
+                                        </div>                
+                                      </div>
+                                    </div>              
+
+                                    <div class="form-group">
+                                      <label for="inputDescription">Notes</label>
+                                      <textarea rows="4" cols="50" class="form-control" id="notes" name="notes" required=""><?php echo $lender->notes; ?></textarea>
+                                    </div>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="submit" class="btn btn-default">Update</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                  </div>
+
+                                </div>
+                              </div>
+                            {!! Form::close() !!}        
+                        </div>                        
 
                     @endforeach
                   </table>                  
@@ -273,7 +349,7 @@
           </div>
         </div>
       {!! Form::close() !!}        
-  </div>
+  </div>  
 
   <!-- /.content -->
 @endsection
