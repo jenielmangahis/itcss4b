@@ -3,7 +3,7 @@
     <div class="pull-left calendar-events-title">Advances</div>
     <div class="pull-right">
         <a href="javascript:void(0);" class="btn btn-primary" id="" data-toggle="modal" data-target="#modalAddAdvance">
-            <i class="fa fa-plus"></i> News Advance
+            <i class="fa fa-plus"></i> New Advance
         </a>          
         <a href="javascript:location.reload();" class="btn btn-primary">
             <i class="fa fa-refresh"></i>
@@ -52,7 +52,6 @@
     <th>Advance Date</th>
     <th>Amount</th>
     <th>Payback</th>
-
     <th>Balance</th>
     <th>Rate</th>
     <th>Period</th>
@@ -66,9 +65,9 @@
   @foreach($contact_advances as $advance)
     
     <tr>
-      <td>--</td>
-      <td>--</td>
-      <td>--</td>
+      <td>{{$advance->id}}</td>
+      <td>{{$advance->loan_id}}</td>
+      <td>{{$advance->contract_date}}</td>
       <td>--</td>
       <td>--</td>
       <td>--</td>
@@ -117,7 +116,7 @@
 </table>
 
 <div style="text-align: center;" class="box-footer clearfix">
-    {{-- $contact_advances->links() --}}
+    $contact_advances->links()
 </div>
 
 <div id="modalAddAdvance" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">

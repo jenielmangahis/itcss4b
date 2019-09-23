@@ -24,6 +24,7 @@ use App\ContactTask;
 use App\State;
 use App\ContactDocs;
 use App\ContactHistory;
+use App\ContactAdvance;
 
 use UserHelper;
 use GlobalHelper;
@@ -191,6 +192,7 @@ class ContactDashboardController extends Controller
          * Contact Advance - Start
         */         
             $contact_advances = array();
+            $contact_advances = ContactAdvance::paginate(10);
         /*
          * Contact Advance - End
         */             
