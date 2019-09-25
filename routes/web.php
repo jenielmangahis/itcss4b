@@ -39,6 +39,9 @@ Route::post('user/store', ['as'=>'user/store','uses'=>'UserController@store'])->
 Route::get('user/edit/{user_id}', ['as'=>'user/edit','uses'=>'UserController@edit'])->middleware('auth');
 Route::post('user/update', ['as'=>'user/update','uses'=>'UserController@update'])->middleware('auth');
 Route::post('user/destroy', ['as'=>'user/destroy','uses'=>'UserController@destroy'])->middleware('auth');
+Route::post('user/activate', ['as'=>'user/activate','uses'=>'UserController@activate'])->middleware('auth');
+Route::post('user/deactivate', ['as'=>'user/deactivate','uses'=>'UserController@deactivate'])->middleware('auth');
+Route::post('user/send_login_link', ['as'=>'user/send_login_link','uses'=>'UserController@send_login_link'])->middleware('auth');
 
 //Company Users Module
 Route::get('/company_users', ['as'=>'company_users','uses'=>'CompanyUserController@index'])->middleware('auth');
@@ -220,6 +223,9 @@ Route::get('mail_messaging/ajax_update_last_opened', ['as'=>'mail_messaging/ajax
 Route::get('/contact_docs/create', ['as'=>'contact_docs/create','uses'=>'ContactDocsController@create'])->middleware('auth');
 Route::post('contact_docs/store', ['as'=>'contact_docs/store','uses'=>'ContactDocsController@store'])->middleware('auth');
 Route::post('contact_docs/destroy', ['as'=>'contact_docs/destroy','uses'=>'ContactDocsController@destroy'])->middleware('auth');
+
+//Contact User
+Route::post('/contact_user/store', ['as'=>'contact_user/store','uses'=>'ContactUserController@store'])->middleware('auth');
 
 //Benchmark
 Route::get('benchmark/test_model', ['as'=>'benchmark/test_model','uses'=>'BenchmarkController@testModel'])->middleware('auth');

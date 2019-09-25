@@ -75,6 +75,17 @@ class UserHelper
 
             return $return;
       }   
+
+      public static function customerGroupId()
+      {
+            return 3;
+      }
+
+      public static function clientLoginURL()
+      {
+            $url = "http://localhost/coreCMS/public/client_login";
+            return $url;
+      }
    
 }
 ?>

@@ -25,6 +25,8 @@ use App\State;
 use App\ContactDocs;
 use App\ContactHistory;
 use App\ContactAdvance;
+use App\ContactUser;
+use App\User;
 
 use UserHelper;
 use GlobalHelper;
@@ -323,6 +325,20 @@ class ContactDashboardController extends Controller
          * Docs - end
         */
 
+        /*
+         * Contact User - start
+        */
+            $contactUser = ContactUser::where('contact_id','=', $id)->first();
+            $has_client_portal = false;
+            $userContactInfo   = array();
+            if( $contactUser ){
+                $has_client_portal = true;
+                $userContactInfo = User::where('id', '=', $contactUser->user_id)->first();
+            }
+        /*
+         * Contact User - end
+        */
+
         return view('contact.dashboard.index',[
         	'contact_id' => $contact_id,            
         	'contact' => $contact,            
@@ -355,7 +371,9 @@ class ContactDashboardController extends Controller
             'contactDocs' => $contactDocs,
             'search_field_documents' => $search_field_documents,
             'contact_history' => $contact_history,
-            'contact_advances' => $contact_advances
+            'contact_advances' => $contact_advances,
+            'userContactInfo' => $userContactInfo,
+            'has_client_portal' => $has_client_portal
         ]); 
     }     
 }
