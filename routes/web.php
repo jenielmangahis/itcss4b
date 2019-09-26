@@ -86,6 +86,11 @@ Route::post('contact_datasource/update', ['as'=>'contact_datasource/update','use
 
 //Contact Advances
 Route::post('contact_advance/store', ['as'=>'contact_advance/store','uses'=>'ContactAdvanceController@store'])->middleware('auth');
+Route::post('contact_advance/update', ['as'=>'contact_advance/update','uses'=>'ContactAdvanceController@update'])->middleware('auth');
+Route::get('contact_advance/ajax_load_payback_payment_computation', ['as'=>'contact_advance/ajax_load_payback_payment_computation','uses'=>'ContactAdvanceController@ajax_load_payback_payment_computation'])->middleware('auth');
+Route::get('contact_advance/ajax_load_payback_payment_computation_edit', ['as'=>'contact_advance/ajax_load_payback_payment_computation_edit','uses'=>'ContactAdvanceController@ajax_load_payback_payment_computation'])->middleware('auth');
+Route::post('contact_advance/destroy', ['as'=>'contact_advance/destroy','uses'=>'ContactAdvanceController@destroy'])->middleware('auth');
+
 
 //Lenders Module
 Route::get('/lender', ['as'=>'lender','uses'=>'LenderController@index'])->middleware('auth');

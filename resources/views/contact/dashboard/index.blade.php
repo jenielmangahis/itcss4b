@@ -310,7 +310,6 @@
   var attribute_task_note = $(this).attr("attribute-task-note");
 
   $(function () {
-
     
     $('.event_date').datepicker({
       autoclose: true,
@@ -382,6 +381,26 @@
     $('#cc_emails').multiple_emails({position: "bottom"});
     
   });
+
+  function compute_payback_and_payment() {
+    $.get(base_url + '/contact_advance/ajax_load_payback_payment_computation', $('#add-advance-form').serialize(), function (o) {
+      $('#payback-payment-container').html('<br><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br>');
+
+      setTimeout(function () {
+        $('#payback-payment-container').html(o);
+      }, 250);
+    });    
+  }
+
+  function compute_payback_payment(id) {
+    $.get(base_url + '/contact_advance/ajax_load_payback_payment_computation_edit', $('#edit-advance-form-' + id).serialize(), function (o) {
+      $('#payback-payment-container-edit-' + id).html('<br><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br>');
+
+      setTimeout(function () {
+        $('#payback-payment-container-edit-' + id).html(o);
+      }, 250);
+    });    
+  }
 </script>
 
 @endsection

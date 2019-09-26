@@ -191,8 +191,23 @@ class ContactDashboardController extends Controller
         /*
          * Contact Advance - Start
         */         
+            $search_by_advance       = $request->input('search_by');
+            $search_advance_field = $request->input('search_advance_field');
             $contact_advances = array();
-            $contact_advances = ContactAdvance::paginate(10);
+
+            if($search_by_advance != '' && $search_advance_field != '') {
+                $contact_advance_query = ContactAdvance::query();
+                $contact_advance_query = $contact_advance_query->where($search_by_advance, 'like', '%' . $search_advance_field . '%');
+                $contact_advance_query = $contact_advance_query->where('contact_id','=', $contact->id);               
+                $contact_advances = $contact_advance_query->paginate(10);
+            } else {
+                $contact_advance_query = ContactAdvance::query();
+                if($contact) {
+                    $contact_advance_query = $contact_advance_query->where('contact_id','=', $contact->id);
+                }                
+                $contact_advances = $contact_advance_query->paginate(10);
+            }
+            
         /*
          * Contact Advance - End
         */             
@@ -355,7 +370,9 @@ class ContactDashboardController extends Controller
             'contactDocs' => $contactDocs,
             'search_field_documents' => $search_field_documents,
             'contact_history' => $contact_history,
-            'contact_advances' => $contact_advances
+            'contact_advances' => $contact_advances,
+            'search_advance_field' => $search_advance_field,
+            'search_by_advance' => $search_by_advance
         ]); 
     }     
 }
