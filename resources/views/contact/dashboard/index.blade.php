@@ -38,6 +38,12 @@
   .dropdown ul.dropdown-menu li a{
     color: #ffffff !important;
   }
+  .btn-contact-dashboard{
+    width: 100%;
+    margin-bottom: 2px;
+    font-size: 12px;
+    padding: 4px;
+  }
 </style>
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -183,9 +189,192 @@
                           <td><div class="pull-right">{{ $contact->zip_code }}</div></td>
                         </tr>
                       </tbody>
-                    </table>     
-                    
-                  </div>                     
+                    </table> 
+                  </div>     
+
+                  <div class="box box-primary">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Customer Portal</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td align="center">
+                            <?php if( !$has_client_portal ){ ?>
+                              <a href="javascript:void(0);" class="btn btn-info" data-toggle="modal" data-target="#modalCreateLogin"><i class="fa fa-user"></i> Create Customer Login</a>
+                              <div id="modalCreateLogin" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
+                                {{ Form::open(array('url' => 'contact_user/store', 'class' => '', 'id' => 'edit-contact-status-form')) }}
+                                  <input type="hidden" name="contact_id" value="<?= $contact_id ?>">
+                                  <div class="modal-dialog modal-md">
+                                    <div class="modal-content">
+
+                                      <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                                        </button>
+                                        <h4 class="modal-title" id="myModalLabel">Create Customer Login</h4>
+                                      </div>
+                                      <div class="modal-body">
+                                        
+                                        <div class="form-group row">
+                                          <label class="col-sm-3 col-form-label">Username <span class="required"></span></label>
+                                          <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="" name="contact_username" placeholder="" title="Username" required="">
+                                          </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                          <label class="col-sm-3 col-form-label">Password <span class="required"></span></label>
+                                          <div class="col-sm-9">
+                                            <input type="password" class="form-control" id="" name="contact_password" title="Password" required="">
+                                          </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                          <label class="col-sm-3 col-form-label">Retype Password <span class="required"></span></label>
+                                          <div class="col-sm-9">
+                                            <input type="password" class="form-control" id="" name="contact_repassword" placeholder="" title="" required="">
+                                          </div>
+                                        </div>
+
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="submit" class="btn btn-default">Save</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                      </div>
+
+                                    </div>
+                                  </div>
+                                {!! Form::close() !!}        
+                            </div>
+                            <?php }else{ ?>
+                              <div class="row">
+                                
+                                <div class="col-md-8">
+                                  <table class="table">
+                                    <tr>
+                                      <td style="width: 30%;">Username</td>
+                                      <td><input type="text" value="<?= $userContactInfo->username; ?>" class="form-control" readonly="readonly" disabled="disabled" /></td>
+                                    </tr>
+                                    <tr>
+                                      <td>Password</td>
+                                      <td><input type="password" value="Password" readonly="readonly" class="form-control" disabled="disabled"></td>
+                                    </tr>
+                                  </table>
+                                </div>
+
+                                <div class="col-md-4">
+                                  <?php if( $userContactInfo->is_active == 0 ){ ?>
+                                    <a href="javascript:void(0);" class="btn btn-danger btn-contact-dashboard" data-toggle="modal" data-target="#modalDeactivate"><i class="fa fa-close"></i> Deactivate</a>
+                                  <?php }else{ ?>
+                                    <a href="javascript:void(0);" class="btn btn-info btn-contact-dashboard" data-toggle="modal" data-target="#modalActivate"><i class="fa fa-check"></i> Activate</a>
+                                  <?php } ?>
+
+                                  <div id="modalActivate" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
+                                    <div class="modal-dialog modal-md">
+                                      <div class="modal-content">
+
+                                        <div class="modal-header">
+                                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                                          </button>
+                                          <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                          Are you sure you want to activate client login?
+                                        </div>
+                                        <div class="modal-footer">
+                                          {{ Form::open(array('url' => 'user/activate')) }}
+                                            <?php echo Form::hidden('user_id', Hashids::encode($userContactInfo->id) ,[]); ?>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                                            <button type="submit" class="btn btn-danger">Yes</button>
+                                          {!! Form::close() !!}
+                                        </div>
+
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div id="modalDeactivate" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
+                                    <div class="modal-dialog modal-md">
+                                      <div class="modal-content">
+
+                                        <div class="modal-header">
+                                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                                          </button>
+                                          <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                          Are you sure you want to deactivate client login?
+                                        </div>
+                                        <div class="modal-footer">
+                                          {{ Form::open(array('url' => 'user/deactivate')) }}
+                                            <?php echo Form::hidden('user_id', Hashids::encode($userContactInfo->id) ,[]); ?>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                                            <button type="submit" class="btn btn-danger">Yes</button>
+                                          {!! Form::close() !!}
+                                        </div>
+
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <a class="btn btn-info btn-contact-dashboard"><i class="fa fa-envelope-open"></i> Login Link</a>
+                                  <a class="btn btn-warning btn-contact-dashboard"><i class="fa fa-lock"></i> Reset Password</a>
+
+                                  <div id="modalDeactivate" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
+                                    <div class="modal-dialog modal-md">
+                                      <div class="modal-content">
+
+                                        <div class="modal-header">
+                                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                                          </button>
+                                          <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                          An email of login link will be sent to user email. Would you like to continue?
+                                        </div>
+                                        <div class="modal-footer">
+                                          {{ Form::open(array('url' => 'user/send_login_link')) }}
+                                            <?php echo Form::hidden('user_id', Hashids::encode($userContactInfo->id) ,[]); ?>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                                            <button type="submit" class="btn btn-danger">Yes</button>
+                                          {!! Form::close() !!}
+                                        </div>
+
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <table class="table">
+                                  <tr>
+                                    <td>Welcome Email Sent</td>
+                                    <td><?= date("F j, Y, g:i a", strtotime($userContactInfo->created_at)); ?></td>
+                                  </tr>
+                                  <tr>
+                                    <td>Last Login</td>
+                                    <td>
+                                      <?php 
+                                        if( $userContactInfo->last_login != null || $userContactInfo->last_login != '0000-00-00 00:00:00' ){
+                                          echo "---";
+                                        }else{
+                                          echo date("F j, Y, g:i a", strtotime($userContactInfo->last_login));
+                                        }
+                                      ?>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </div>
+
+                            <?php } ?>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>    
+                  </div>
+
+
               </section>
 
               <section class="col-lg-9 connectedSortable ui-sortable">

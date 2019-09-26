@@ -114,7 +114,65 @@
                             @else
                               <td>-</td>
                             @endif
-                            <td>{{ $ms->subject}} {{ $ms->subject }}</td>
+                            <td>
+                              <a href="javascript:void(0);" data-toggle="modal" data-target="#modalEmailContent-<?= $ms->id; ?>" >{{ $ms->subject }}</a>
+                              <div id="modalEmailContent-<?= $ms->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
+                                  
+                                    <div class="modal-dialog modal-md">
+                                      <div class="modal-content">
+
+                                        <div class="modal-header">
+                                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                                          </button>
+                                          <h4 class="modal-title" id="myModalLabel">Email Details</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                          
+                                          <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">Subject <span class="required"></span></label>
+                                            <div class="col-sm-10">
+                                              <?php echo Form::text('subject', $ms->subject ,['readonly' => 'readonly', 'disabled' => 'disabled', 'class' => 'form-control']); ?>
+                                            </div>
+                                          </div>
+
+                                          <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">To <span class="required"></span></label>
+                                            <div class="col-sm-10">
+                                              <?php echo Form::text('recipient', $ms->recipient ,['readonly' => 'readonly', 'disabled' => 'disabled', 'class' => 'form-control']); ?>
+                                            </div>
+                                          </div>
+
+                                          <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">BCC <span class="required"></span></label>
+                                            <div class="col-sm-10">
+                                              <?php echo Form::text('bcc', $ms->bcc ,['readonly' => 'readonly', 'disabled' => 'disabled', 'class' => 'form-control']); ?>
+                                            </div>
+                                          </div>
+
+                                          <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">CC <span class="required"></span></label>
+                                            <div class="col-sm-10">
+                                              <?php echo Form::text('cc', $ms->cc ,['readonly' => 'readonly', 'disabled' => 'disabled', 'class' => 'form-control']); ?>
+                                            </div>
+                                          </div>
+
+                                          <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">Message <span class="required"></span></label>
+                                            <br />
+                                            <div class="col-sm-10">
+                                              <?= $ms->content; ?>
+                                            </div>
+                                          </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+
+                                      </div>
+                                    </div>     
+                              </div>
+                            </td>
                             <td><label class="label label-info">Categorized</label></td>
                             <td>-</td>
                         </tr>
@@ -134,4 +192,13 @@
         <!-- /.row -->
     </section>
   <!-- /.content -->
+@endsection
+
+@section('page-footer-scripts')
+<script>
+var base_url = '<?php echo url("/"); ?>';
+$(function(){
+  CKEDITOR.replace('ckeditor');
+});
+</script>
 @endsection

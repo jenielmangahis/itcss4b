@@ -286,6 +286,44 @@ class UserController extends Controller
         }else{
             return true;
         }
-    }        
+    }
+
+    public function activate(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $id = $request->input('user_id');
+            $id = Hashids::decode($id)[0];
+            $u = User::find($id);
+
+            if($u) {   
+                $u->is_active = 0;
+                $u->save();
+                Session::flash('message', "Update Successful");
+                Session::flash('alert_class', 'alert-success');
+            }
+        }
+
+        return redirect()->back();  
+    }  
+
+    public function deactivate(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $id = $request->input('user_id');
+            $id = Hashids::decode($id)[0];
+            $u = User::find($id);
+
+            if($u) {   
+                $u->is_active = 1;
+                $u->save();
+                Session::flash('message', "Update Successful");
+                Session::flash('alert_class', 'alert-success');
+            }
+        }
+
+        return redirect()->back();  
+    }     
 
 }

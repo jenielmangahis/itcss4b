@@ -642,6 +642,8 @@
       showInputs: false
     })       
 
+    CKEDITOR.replace('ckeditor');
+    
   });
   
 </script>

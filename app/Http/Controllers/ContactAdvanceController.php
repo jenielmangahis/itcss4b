@@ -94,7 +94,6 @@ class ContactAdvanceController extends Controller
             Session::flash('alert_class', 'alert-danger');  
             return redirect()->back();			
 		}
-
     } 
 
     public function update(Request $request)
