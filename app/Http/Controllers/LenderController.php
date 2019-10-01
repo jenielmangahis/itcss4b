@@ -9,6 +9,7 @@ use App\ContactTask;
 
 use App\Lender;
 use App\LenderContact;
+use App\ContactAdvance;
 
 use UserHelper;
 use GlobalHelper;
@@ -176,14 +177,27 @@ class LenderController extends Controller
 
     public function view($id)
     {
+        $advances_count         = 0; 
+        $advances_total_amount  = 0;
+        $advances_total_payback = 0;
+
         $id = Hashids::decode($id)[0];
         $lender = Lender::find($id); 
         $lender_contacts = LenderContact::all();
 
         if($lender) {
+            $advances = ContactAdvance::where('lender_id','=', $lender->id)->paginate(10);
+            $advances_count = ContactAdvance::where('lender_id','=', $lender->id)->count();
+            $advances_total_amount  = ContactAdvance::where('lender_id','=', $lender->id)->sum('amount');
+            $advances_total_payback = ContactAdvance::where('lender_id','=', $lender->id)->sum('payback');
+
 	        return view('lender.view',[
 	            'lender' => $lender,
-	            'lender_contacts' => $lender_contacts
+	            'lender_contacts' => $lender_contacts,
+                'advances' => $advances,
+                'advances_count' => $advances_count,
+                'advances_total_amount' => $advances_total_amount,
+                'advances_total_payback' => $advances_total_payback
 	        ]); 
 
         } else {

@@ -84,22 +84,27 @@
 
                     <tr>
                       <td><strong>Total Advances:</strong></td>
-                      <td><div class="pull-right">0</div></td>
+                      <td><div class="pull-right">{{ $advances_count }}</div></td>
                     </tr>
 
                     <tr>
                       <td><strong>Total Advance Amount:</strong></td>
-                      <td><div class="pull-right">0.00</div></td>
+                      <td><div class="pull-right">{{ number_format($advances_total_amount, 2) }}</div></td>
                     </tr>
 
                     <tr>
                       <td><strong>Payback Total:</strong></td>
-                      <td><div class="pull-right">0.00</div></td>
+                      <td><div class="pull-right">{{ number_format($advances_total_payback,2) }}</div></td>
                     </tr>
-
+                    <?php 
+                      if($advances_total_amount > 0 && $advances_count > 0) {
+                        $total_advance_size = $advances_total_amount / $advances_count; 
+                      } else { $total_advance_size = 0; }
+                      
+                    ?>
                     <tr>
                       <td><strong>Average Advance Size:</strong></td>
-                      <td><div class="pull-right">0.00</div></td>
+                      <td><div class="pull-right">{{ number_format($total_advance_size,2) }}</div></td>
                     </tr>
                   </tbody>
                 </table>    
@@ -215,24 +220,26 @@
                   <th>Type</th>
                   <th>Status</th>
                 </tr>
-
-                <tr>
-                  <td>---</td>
-                  <td>---</td>
-                  <td>---</td>
-                  <td>---</td>
-                  <td>---</td>
-                  <td>---</td>
-                  <td>---</td>
-                  <td>---</td>
-                  <td>---</td>
-                  <td>---</td>
-                  <td>---</td>
-                  <td>---</td>
-                </tr>    
-
+                @foreach($advances as $advance)
+                  <tr>
+                    <td>{{ $advance->loan_id }}</td>
+                    <td>{{ $advance->contract_date }}</td>
+                    <td>{{ $advance->contract_number }}</td>
+                    <td>{{ $advance->advance_date }}</td>
+                    <td>{{ number_format($advance->amount,2) }}</td>
+                    <td>{{ number_format($advance->payback,2) }}</td>
+                    <td>{{ number_format($advance->balance,2) }}</td>
+                    <td>{{ $advance->factor_rate }}%</td>
+                    <td>{{ ucfirst($advance->period_type) }}</td>
+                    <td>{{ number_format($advance->payment,2) }}</td>
+                    <td>{{ ucfirst($advance->advance_type) }}</td>
+                    <td>{{ $advance->status }}</td>
+                  </tr>    
+                @endforeach
               </table>         
-
+              <div style="text-align: center;" class="box-footer clearfix">
+                  {{ $advances->links() }}
+              </div>
             </div>
 
           </section>
