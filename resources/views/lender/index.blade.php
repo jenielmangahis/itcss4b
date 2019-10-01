@@ -123,10 +123,7 @@
                     <tr>
                       <th >#</th>
                       <th>Company</th>
-                      <th>Street</th>
-                      <th>City</th>
-                      <th>State</th>
-                      <th>Zip</th>
+                      <th>Address</th>
                       <th>Phone</th>
                       <th>Email</th>
                       <th>Url</th>
@@ -135,18 +132,28 @@
                       <th>Action</th>
                     </tr>
                     @foreach($lenders as $lender)
+                        <?php 
+                          $adv_count = 0;
+                          $total_funded = 0;
+                          $cont_adv = App\ContactAdvance::where('lender_id','=', $lender->id)->count();
+                          if(!empty($cont_adv)) {
+                            $adv_count = $cont_adv;
+                          }
+                          
+                          $advances_total_amount  = App\ContactAdvance::where('lender_id','=', $lender->id)->sum('amount');
+                          if(!empty($advances_total_amount) && $advances_total_amount > 0) {
+                            $total_funded = $advances_total_amount;
+                          }              
+                        ?>                    
                         <tr>
                             <td>{{$lender->id}}</td>
                             <td><a href="{{url('lender/view/'.Hashids::encode($lender->id))}}" class="btn btn-xs btn-success">{{$lender->company_name}}</a></td>
-                            <td>{{$lender->street}}</td>
-                            <td>{{$lender->city}}</td>
-                            <td>{{$lender->state}}</td>
-                            <td>{{$lender->zip_code}}</td>
+                            <td>{{$lender->street}}, {{$lender->city}}, {{$lender->state}}, {{$lender->zip_code}}</td>
                             <td>{{$lender->phone}}</td>
                             <td>{{$lender->email}}</td>
                             <td>{{$lender->url_site}}</td>
-                            <td>-</td>
-                            <td>-</td>
+                            <td>{{ $adv_count }}</td>
+                            <td>{{ number_format($total_funded,2) }}</td>
                             <td>
                                 <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $lender->id; ?>" >
                                     <i class="fa fa-trash"></i>
