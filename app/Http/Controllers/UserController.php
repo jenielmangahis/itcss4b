@@ -324,6 +324,71 @@ class UserController extends Controller
         }
 
         return redirect()->back();  
+    }
+
+    public function send_login_link(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $id = $request->input('user_id');
+            $id = Hashids::decode($id)[0];
+            $u  = User::find($id);
+
+            if($u) {   
+                //Send email notification
+                $from_email   = 'noreply@corecms.com';
+                $subject      = 'CoreCMS : Login Link';
+                $recipients[$contact->email] = $contact->email;
+                $login_url    = UserHelper::clientLoginURL();
+                
+                $message = "<p><a href='" . $login_url . "'>Click to login</a></p><br /><p>Thank you</p>";
+
+                Mail::to($recipients)
+                        ->send(new MailContact($from_email, $subject, $message)); 
+
+                Session::flash('message', 'An email was sent to user.');
+                Session::flash('alert_class', 'alert-success');
+            }
+        }
+
+        return redirect()->back();  
+    }
+
+    public function reset_password(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $id = $request->input('user_id');
+            $id = Hashids::decode($id)[0];
+            $u  = User::find($id);
+
+            if($u) {   
+                //Save reset code
+                $reset_code    = UserHelper::generateRandomString(5, $u->id);
+                $u->reset_code = $reset_code;
+                $u->save();
+
+                //Send email notification
+                $from_email   = 'noreply@corecms.com';
+                $subject      = 'CoreCMS : Reset Password';
+                $recipients[$contact->email] = $contact->email;
+                $reset_url    = UserHelper::resetPasswordURL();                
+                
+                $reset_url    .= "?code=" . $reset_code;
+                
+                $message = "<p>Hi,</p>";
+                $message .= "<p>Click <a href='" . $reset_url . "'>here</a> to reset your password</p>";
+                $message .= "<br /><p>Thank you</p>";
+
+                Mail::to($recipients)
+                        ->send(new MailContact($from_email, $subject, $message)); 
+
+                Session::flash('message', 'An email was sent to user.');
+                Session::flash('alert_class', 'alert-success');
+            }
+        }
+
+        return redirect()->back();  
     }     
 
 }

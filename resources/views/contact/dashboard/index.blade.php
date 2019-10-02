@@ -318,10 +318,9 @@
                                       </div>
                                     </div>
                                   </div>
-                                  <a class="btn btn-info btn-contact-dashboard"><i class="fa fa-envelope-open"></i> Login Link</a>
-                                  <a class="btn btn-warning btn-contact-dashboard"><i class="fa fa-lock"></i> Reset Password</a>
 
-                                  <div id="modalDeactivate" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
+                                  <a href="javascript:void(0);" class="btn btn-info btn-contact-dashboard" data-toggle="modal" data-target="#modalLoginLink"><i class="fa fa-envelope-open"></i> Login Link</a>
+                                  <div id="modalLoginLink" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
                                     <div class="modal-dialog modal-md">
                                       <div class="modal-content">
 
@@ -331,10 +330,36 @@
                                           <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
                                         </div>
                                         <div class="modal-body">
-                                          An email of login link will be sent to user email. Would you like to continue?
+                                          Proceed with sending user login link?
                                         </div>
                                         <div class="modal-footer">
                                           {{ Form::open(array('url' => 'user/send_login_link')) }}
+                                            <?php echo Form::hidden('user_id', Hashids::encode($userContactInfo->id) ,[]); ?>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                                            <button type="submit" class="btn btn-info">Yes</button>
+                                          {!! Form::close() !!}
+                                        </div>
+
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <a href="javascript:void(0);" class="btn btn-warning btn-contact-dashboard" data-toggle="modal" data-target="#modalResetPassword"><i class="fa fa-lock"></i> Reset Password</a>
+
+                                  <div id="modalResetPassword" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
+                                    <div class="modal-dialog modal-md">
+                                      <div class="modal-content">
+
+                                        <div class="modal-header">
+                                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                                          </button>
+                                          <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                          An email with reset password link will be sent to user. Would you like to continue?
+                                        </div>
+                                        <div class="modal-footer">
+                                          {{ Form::open(array('url' => 'user/reset_password')) }}
                                             <?php echo Form::hidden('user_id', Hashids::encode($userContactInfo->id) ,[]); ?>
                                             <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                                             <button type="submit" class="btn btn-danger">Yes</button>
