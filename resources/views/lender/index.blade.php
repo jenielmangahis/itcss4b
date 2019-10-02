@@ -455,6 +455,7 @@
     // Get context with jQuery - using jQuery's .get() method.
     var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
     var pieChart       = new Chart(pieChartCanvas)
+    
     var PieData        = [
       {
         value    : 700,
