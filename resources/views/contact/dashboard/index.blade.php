@@ -593,6 +593,22 @@
     <?php } ?>
 
     $('#cc_emails').multiple_emails({position: "bottom"});
+
+    $( ".advance_amount" ).change(function() {
+      compute_payback_and_payment();
+    });
+
+    $( ".remit" ).change(function() {
+      compute_payback_and_payment();
+    });
+
+    $( ".payment_period" ).change(function() {
+      compute_payback_and_payment();
+    });
+
+    $('.factor_rate').on('input',function(e){
+      compute_payback_and_payment();
+    });      
     
   });
 

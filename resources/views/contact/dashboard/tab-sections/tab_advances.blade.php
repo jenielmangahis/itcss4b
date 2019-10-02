@@ -118,8 +118,8 @@
 
     <div id="modalEditAdvance-<?= $advance->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
         {{ Form::open(array('url' => 'contact_advance/update', 'class' => 'edit-advance-form-' . $advance->id, 'id' => 'edit-advance-form-'. $advance->id)) }}
-          <input type="hidden" name="advance_id" id="advance_id" value="{{ Hashids::encode($advance->id) }}">
-          <input type="hidden" name="contact_id" id="contact_id" value="{{ $contact_id }}">
+          <input type="hidden" name="advance_id" id="advance_id" class="advance_id" value="{{ Hashids::encode($advance->id) }}">
+          <input type="hidden" name="contact_id" id="contact_id" class="contact_id" value="{{ $contact_id }}">
           <div class="modal-dialog modal-lg" style="width: 600px !important;">
             <div class="modal-content">
 
@@ -157,7 +157,7 @@
 
                 <div class="form-group">
                   <label for="inputAdvanceAmount">Advance Amount</label>
-                  <input type="number" step="0.01" class="form-control" id="advance_amount" name="advance_amount" value="{{$advance->amount}}" placeholder="Enter Amount" required="">
+                  <input type="number" step="0.01" class="form-control advance_amount_edit" id="advance_amount" name="advance_amount" value="{{$advance->amount}}" placeholder="Enter Amount" required="">
                 </div>                   
 
                 <div class="row">
@@ -261,14 +261,14 @@
 
             <div class="form-group">
               <label for="inputAdvanceAmount">Advance Amount</label>
-              <input type="number" step="0.01" class="form-control" id="advance_amount" name="advance_amount" value="{{old('advance_amount')}}" placeholder="Enter Amount" required="">
+              <input type="number" step="0.01" class="form-control advance_amount" id="advance_amount" name="advance_amount" value="{{old('advance_amount')}}" placeholder="Enter Amount" required="">
             </div>                   
 
             <div class="row">
               <div class="col-xs-6">
                 <div class="form-group">
                   <label for="inputPaymentPeriod">Payment Period</label>
-                  <input type="number" class="form-control" id="payment_period" name="payment_period" value="{{old('payment_period')}}" placeholder="" required="">
+                  <input type="number" class="form-control payment_period" id="payment_period" name="payment_period" value="{{old('payment_period')}}" placeholder="" required="">
                 </div>                
               </div>
               <div class="col-xs-6">
@@ -286,11 +286,11 @@
             <div class="row">
               <div class="col-xs-6">
                 <label for="inputPaymentPeriod">Remit</label>
-                <input  type="number" step="0.01" class="form-control" id="remit" name="remit" value="{{old('remit')}}" placeholder="%" required="">
+                <input  type="number" step="0.01" class="form-control remit" id="remit" name="remit" value="{{old('remit')}}" placeholder="%" required="">
               </div>
               <div class="col-xs-6">
                 <label for="inputPaymentPeriod">Factor Rate</label>
-                <input  type="number" step="0.01" class="form-control" id="factor_rate" name="factor_rate" value="{{old('factor_rate')}}" placeholder="%" required="">
+                <input  type="number" step="0.01" class="form-control factor_rate" id="factor_rate" name="factor_rate" value="{{old('factor_rate')}}" placeholder="%" required="">
               </div>
             </div>     
 
