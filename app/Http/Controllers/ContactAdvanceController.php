@@ -61,7 +61,7 @@ class ContactAdvanceController extends Controller
             $factor_rate    = $request->input('factor_rate');
             $payment_period = $request->input('payment_period');
 
-            $payback_amount = $advance_amount * ($factor_rate / 100);
+            $payback_amount = $advance_amount * $factor_rate;
             $payment        = $payback_amount / $payment_period;
 
             $loan_id         = GlobalHelper::generate_order_number(rand(0,9999));
@@ -118,7 +118,7 @@ class ContactAdvanceController extends Controller
                 $factor_rate    = $request->input('factor_rate');
                 $payment_period = $request->input('payment_period');
 
-                $payback_amount = $advance_amount * ($factor_rate / 100);
+                $payback_amount = $advance_amount * $factor_rate;
                 $payment        = $payback_amount / $payment_period;
 
                 $contact_advance->amount          = $advance_amount;
@@ -154,7 +154,8 @@ class ContactAdvanceController extends Controller
         $payment        = 0;
 
         if(isset($advance_amount) && isset($factor_rate) & isset($payment_period)) {
-	        $payback_amount = $advance_amount * ($factor_rate / 100);
+	        //$payback_amount = $advance_amount * ($factor_rate / 100);
+            $payback_amount = $advance_amount * $factor_rate;
 	        $payment        = $payback_amount / $payment_period;
         }
 
@@ -174,7 +175,8 @@ class ContactAdvanceController extends Controller
         $payment        = 0;
 
         if(isset($advance_amount) && isset($factor_rate) & isset($payment_period)) {
-            $payback_amount = $advance_amount * ($factor_rate / 100);
+            //$payback_amount = $advance_amount * ($factor_rate / 100);
+            $payback_amount = $advance_amount * $factor_rate;
             $payment        = $payback_amount / $payment_period;
         }
 
