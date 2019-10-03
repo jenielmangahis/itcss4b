@@ -356,39 +356,57 @@ class UserController extends Controller
 
     public function reset_password(Request $request)
     {
+
+        $reset_code = $request->input('reset_code');        
+        $user       = User::where('reset_code', "=", $reset_code)->first();
+        $is_code_valid = false;
+
+        if($user && $reset_code != '') {           
+            $is_code_valid = true;
+        }else{
+            Session::flash('message', 'Invalid reset code.');
+            Session::flash('alert_class', 'alert-danger'); 
+        }
+
+        return view('user.reset_password', [
+            'is_code_valid' => $is_code_valid,
+            'user' => $user
+        ]); 
+    } 
+
+    public function change_password(Request $request)
+    {
         if ($request->isMethod('post'))
         {
+            $new_password = $request->input('password');
+            $repassword   = $request->input('repassword');
             $id = $request->input('user_id');
             $id = Hashids::decode($id)[0];
             $u  = User::find($id);
 
-            if($u) {   
-                //Save reset code
-                $reset_code    = UserHelper::generateRandomString(5, $u->id);
-                $u->reset_code = $reset_code;
-                $u->save();
+            if($u) {
+                if( $new_password == $repassword ){
+                    $u->password   = Hash::make($new_password);
+                    $u->reset_code = '';
+                    $u->save();
 
-                //Send email notification
-                $from_email   = 'noreply@corecms.com';
-                $subject      = 'CoreCMS : Reset Password';
-                $recipients[$contact->email] = $contact->email;
-                $reset_url    = UserHelper::resetPasswordURL();                
-                
-                $reset_url    .= "?code=" . $reset_code;
-                
-                $message = "<p>Hi,</p>";
-                $message .= "<p>Click <a href='" . $reset_url . "'>here</a> to reset your password</p>";
-                $message .= "<br /><p>Thank you</p>";
+                    Session::flash('message', 'Your password has been changed.');
+                    Session::flash('alert_class', 'alert-success');
 
-                Mail::to($recipients)
-                        ->send(new MailContact($from_email, $subject, $message)); 
-
-                Session::flash('message', 'An email was sent to user.');
-                Session::flash('alert_class', 'alert-success');
+                     return redirect('login');
+                }else{
+                    Session::flash('message', 'Password does not match.');
+                    Session::flash('alert_class', 'alert-danger');                  
+                    return redirect()->back();     
+                }                
+            }else{
+                Session::flash('message', 'User not found.');
+                Session::flash('alert_class', 'alert-danger');                  
+                return redirect()->back();  
             }
-        }
-
-        return redirect()->back();  
-    }     
+        }else{
+            return redirect()->back();  
+        }        
+    }    
 
 }

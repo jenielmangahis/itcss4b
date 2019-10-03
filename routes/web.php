@@ -43,7 +43,8 @@ Route::post('user/activate', ['as'=>'user/activate','uses'=>'UserController@acti
 Route::post('user/deactivate', ['as'=>'user/deactivate','uses'=>'UserController@deactivate'])->middleware('auth');
 Route::post('user/send_login_link', ['as'=>'user/send_login_link','uses'=>'UserController@send_login_link'])->middleware('auth');
 Route::post('client_login', ['as'=>'user/client_login','uses'=>'UserController@client_login'])->middleware('auth');
-Route::post('user/reset_password', ['as'=>'user/reset_password','uses'=>'UserController@reset_password'])->middleware('auth');
+Route::get('/reset_password', ['as'=>'user/reset_password','uses'=>'UserController@reset_password']);
+Route::post('/change_password', ['as'=>'user/change_password','uses'=>'UserController@change_password']);
 
 //Company Users Module
 Route::get('/company_users', ['as'=>'company_users','uses'=>'CompanyUserController@index'])->middleware('auth');
