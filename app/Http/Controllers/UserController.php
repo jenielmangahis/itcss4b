@@ -25,7 +25,8 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');  
+        //$this->middleware('auth');  
+        $this->middleware(['auth'], ['except' => ['reset_password']]);
         $this->middleware(function ($request, $next) {
 
             $user_id  = Auth::user()->id;
