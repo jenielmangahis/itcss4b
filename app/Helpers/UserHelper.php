@@ -92,13 +92,13 @@ class UserHelper
 
       public static function clientLoginURL()
       {
-            $url = "http://localhost/coreCMS/public/client_login";
+            $url = url("/") . "/login";
             return $url;
       }
 
       public static function resetPasswordURL()
       {
-            $url = "http://localhost/coreCMS/public/reset_password";
+            $url = url("/") . "/reset_password";
             return $url;
       }
 

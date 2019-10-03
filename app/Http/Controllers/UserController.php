@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+
 use App\User;
 use App\Group;
 use App\ContactTask;
+
+use App\Mail\MailContact;
 
 use UserHelper;
 
@@ -338,7 +342,7 @@ class UserController extends Controller
                 //Send email notification
                 $from_email   = 'noreply@corecms.com';
                 $subject      = 'CoreCMS : Login Link';
-                $recipients[$contact->email] = $contact->email;
+                $recipients[$u->email] = $u->email;
                 $login_url    = UserHelper::clientLoginURL();
                 
                 $message = "<p><a href='" . $login_url . "'>Click to login</a></p><br /><p>Thank you</p>";
