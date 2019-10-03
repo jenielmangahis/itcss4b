@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Auth;
 
@@ -47,5 +51,10 @@ class LoginController extends Controller
     {
         Auth::logout();
         return redirect('/login');
-    }          
+    }  
+
+    function authenticated(Request $request, $user) {
+        $user->last_login = Carbon::now()->toDateTimeString();
+        $user->save();
+    }        
 }

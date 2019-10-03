@@ -25,7 +25,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');       
+        $this->middleware('auth');  
         $this->middleware(function ($request, $next) {
 
             $user_id  = Auth::user()->id;
@@ -349,6 +349,37 @@ class UserController extends Controller
 
                 Mail::to($recipients)
                         ->send(new MailContact($from_email, $subject, $message)); 
+
+                Session::flash('message', 'An email was sent to user.');
+                Session::flash('alert_class', 'alert-success');
+            }
+        }
+
+        return redirect()->back();  
+    }
+
+    public function send_reset_password(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $id = $request->input('user_id');
+            $id = Hashids::decode($id)[0];
+            $u  = User::find($id);
+
+            if($u) {  
+                $reset_code = UserHelper::generateRandomString(8, $u->id);
+                $u->reset_code = $reset_code;
+                $u->save(); 
+                //Send email notification
+                $from_email   = 'noreply@corecms.com';
+                $subject      = 'CoreCMS : Reset Password';
+                $recipients[$u->email] = $u->email;
+                $reset_password = UserHelper::resetPasswordURL() . "?reset_code=" . $reset_code;
+                
+                $message = "<p><a href='" . $reset_password . "'>Click here to reset password</a></p><br /><p>Thank you</p>";
+
+                /*Mail::to($recipients)
+                        ->send(new MailContact($from_email, $subject, $message)); */
 
                 Session::flash('message', 'An email was sent to user.');
                 Session::flash('alert_class', 'alert-success');
