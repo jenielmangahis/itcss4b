@@ -379,8 +379,8 @@ class UserController extends Controller
                 
                 $message = "<p><a href='" . $reset_password . "'>Click here to reset password</a></p><br /><p>Thank you</p>";
 
-                /*Mail::to($recipients)
-                        ->send(new MailContact($from_email, $subject, $message)); */
+                Mail::to($recipients)
+                        ->send(new MailContact($from_email, $subject, $message)); 
 
                 Session::flash('message', 'An email was sent to user.');
                 Session::flash('alert_class', 'alert-success');
