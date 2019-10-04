@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+
 use App\User;
 use App\Group;
 use App\ContactTask;
+
+use App\Mail\MailContact;
 
 use UserHelper;
 
@@ -21,7 +25,8 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');       
+        //$this->middleware('auth');  
+        $this->middleware(['auth'], ['except' => ['reset_password']]);
         $this->middleware(function ($request, $next) {
 
             $user_id  = Auth::user()->id;
@@ -338,7 +343,7 @@ class UserController extends Controller
                 //Send email notification
                 $from_email   = 'noreply@corecms.com';
                 $subject      = 'CoreCMS : Login Link';
-                $recipients[$contact->email] = $contact->email;
+                $recipients[$u->email] = $u->email;
                 $login_url    = UserHelper::clientLoginURL();
                 
                 $message = "<p><a href='" . $login_url . "'>Click to login</a></p><br /><p>Thank you</p>";
@@ -354,7 +359,7 @@ class UserController extends Controller
         return redirect()->back();  
     }
 
-    public function reset_password(Request $request)
+    public function send_reset_password(Request $request)
     {
         if ($request->isMethod('post'))
         {
@@ -362,26 +367,20 @@ class UserController extends Controller
             $id = Hashids::decode($id)[0];
             $u  = User::find($id);
 
-            if($u) {   
-                //Save reset code
-                $reset_code    = UserHelper::generateRandomString(5, $u->id);
+            if($u) {  
+                $reset_code = UserHelper::generateRandomString(8, $u->id);
                 $u->reset_code = $reset_code;
-                $u->save();
-
+                $u->save(); 
                 //Send email notification
                 $from_email   = 'noreply@corecms.com';
                 $subject      = 'CoreCMS : Reset Password';
-                $recipients[$contact->email] = $contact->email;
-                $reset_url    = UserHelper::resetPasswordURL();                
+                $recipients[$u->email] = $u->email;
+                $reset_password = UserHelper::resetPasswordURL() . "?reset_code=" . $reset_code;
                 
-                $reset_url    .= "?code=" . $reset_code;
-                
-                $message = "<p>Hi,</p>";
-                $message .= "<p>Click <a href='" . $reset_url . "'>here</a> to reset your password</p>";
-                $message .= "<br /><p>Thank you</p>";
+                $message = "<p><a href='" . $reset_password . "'>Click here to reset password</a></p><br /><p>Thank you</p>";
 
-                Mail::to($recipients)
-                        ->send(new MailContact($from_email, $subject, $message)); 
+                /*Mail::to($recipients)
+                        ->send(new MailContact($from_email, $subject, $message)); */
 
                 Session::flash('message', 'An email was sent to user.');
                 Session::flash('alert_class', 'alert-success');
@@ -389,6 +388,61 @@ class UserController extends Controller
         }
 
         return redirect()->back();  
-    }     
+    }
+
+    public function reset_password(Request $request)
+    {
+
+        $reset_code = $request->input('reset_code');        
+        $user       = User::where('reset_code', "=", $reset_code)->first();
+        $is_code_valid = false;
+
+        if($user && $reset_code != '') {           
+            $is_code_valid = true;
+        }else{
+            Session::flash('message', 'Invalid reset code.');
+            Session::flash('alert_class', 'alert-danger'); 
+        }
+
+        return view('user.reset_password', [
+            'is_code_valid' => $is_code_valid,
+            'user' => $user
+        ]); 
+    } 
+
+    public function change_password(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $new_password = $request->input('password');
+            $repassword   = $request->input('repassword');
+            $id = $request->input('user_id');
+            $id = Hashids::decode($id)[0];
+            $u  = User::find($id);
+
+            if($u) {
+                if( $new_password == $repassword ){
+                    $u->password   = Hash::make($new_password);
+                    $u->reset_code = '';
+                    $u->save();
+
+                    Session::flash('message', 'Your password has been changed.');
+                    Session::flash('alert_class', 'alert-success');
+
+                     return redirect('login');
+                }else{
+                    Session::flash('message', 'Password does not match.');
+                    Session::flash('alert_class', 'alert-danger');                  
+                    return redirect()->back();     
+                }                
+            }else{
+                Session::flash('message', 'User not found.');
+                Session::flash('alert_class', 'alert-danger');                  
+                return redirect()->back();  
+            }
+        }else{
+            return redirect()->back();  
+        }        
+    }    
 
 }

@@ -10,6 +10,7 @@ class UserHelper
 {
       const ADMIN_USER   = 1;
       const COMPANY_USER = 2;
+      const CUSTOMER_USER = 3;
       const USER_ACTIVE    = 0;
       const USER_SUSPENDED = 1;
 
@@ -45,6 +46,10 @@ class UserHelper
                   'contact_docs'
             );
 
+            $roles['customer_user'] = array(
+                  'dashboard'
+            );
+
             if($group_id == self::ADMIN_USER) {
                   if (!in_array($module, $roles['admin_user'], TRUE)) { 
                         $with_permission = FALSE;
@@ -53,6 +58,10 @@ class UserHelper
                   if (!in_array($module, $roles['company_user'], TRUE)) { 
                         $with_permission = FALSE;          
                   } 
+            }elseif($group_id == self::CUSTOMER_USER) {
+                  if (!in_array($module, $roles['customer_user'], TRUE)) { 
+                        $with_permission = FALSE;          
+                  }
             }
 
             return $with_permission;
@@ -83,13 +92,13 @@ class UserHelper
 
       public static function clientLoginURL()
       {
-            $url = "http://localhost/coreCMS/public/client_login";
+            $url = url("/") . "/login";
             return $url;
       }
 
       public static function resetPasswordURL()
       {
-            $url = "http://localhost/coreCMS/public/reset_password";
+            $url = url("/") . "/reset_password";
             return $url;
       }
 

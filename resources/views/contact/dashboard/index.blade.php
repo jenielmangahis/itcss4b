@@ -375,16 +375,16 @@
                                 <table class="table">
                                   <tr>
                                     <td>Welcome Email Sent</td>
-                                    <td><?= date("F j, Y, g:i a", strtotime($userContactInfo->created_at)); ?></td>
+                                    <td><?= date("F j, Y g:i a", strtotime($userContactInfo->created_at)); ?></td>
                                   </tr>
                                   <tr>
                                     <td>Last Login</td>
                                     <td>
                                       <?php 
-                                        if( $userContactInfo->last_login != null || $userContactInfo->last_login != '0000-00-00 00:00:00' ){
+                                        if( $userContactInfo->last_login == null || $userContactInfo->last_login == '0000-00-00 00:00:00' ){
                                           echo "---";
                                         }else{
-                                          echo date("F j, Y, g:i a", strtotime($userContactInfo->last_login));
+                                          echo date("F j, Y g:i a", strtotime($userContactInfo->last_login));
                                         }
                                       ?>
                                     </td>
