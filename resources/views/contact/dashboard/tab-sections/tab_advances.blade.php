@@ -157,7 +157,7 @@
 
                 <div class="form-group">
                   <label for="inputAdvanceAmount">Advance Amount</label>
-                  <input type="number" step="0.01" class="form-control advance_amount_edit" id="advance_amount" name="advance_amount" value="{{$advance->amount}}" placeholder="Enter Amount" required="">
+                  <input type="number" step="0.01" class="form-control" id="advance_amount" name="advance_amount" value="{{$advance->amount}}" placeholder="Enter Amount" required="">
                 </div>                   
 
                 <div class="row">
