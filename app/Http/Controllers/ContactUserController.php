@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Mail;
 use App\User;
 use App\Contact;
 use App\ContactUser;
+use App\Mail\MailContact;
 
 use UserHelper;
 

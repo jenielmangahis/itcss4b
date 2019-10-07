@@ -26,7 +26,7 @@ class UserController extends Controller
     public function __construct()
     {
         //$this->middleware('auth');  
-        $this->middleware(['auth'], ['except' => ['reset_password']]);
+        //$this->middleware(['auth'], ['except' => ['reset_password']]);
         $this->middleware(function ($request, $next) {
 
             $user_id  = Auth::user()->id;
@@ -46,7 +46,7 @@ class UserController extends Controller
             View::share ( 'pending_task', $pending_task);                  
 
             return $next($request);     
-        });           
+        }, ['except' => ['reset_password']]);           
     }
 
     public function index(Request $request)
@@ -379,8 +379,8 @@ class UserController extends Controller
                 
                 $message = "<p><a href='" . $reset_password . "'>Click here to reset password</a></p><br /><p>Thank you</p>";
 
-                /*Mail::to($recipients)
-                        ->send(new MailContact($from_email, $subject, $message)); */
+                Mail::to($recipients)
+                        ->send(new MailContact($from_email, $subject, $message)); 
 
                 Session::flash('message', 'An email was sent to user.');
                 Session::flash('alert_class', 'alert-success');
