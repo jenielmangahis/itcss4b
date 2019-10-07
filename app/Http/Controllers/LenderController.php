@@ -14,6 +14,8 @@ use App\ContactAdvance;
 use UserHelper;
 use GlobalHelper;
 
+use DB;
+
 use View;
 use Hash;
 use Hashids;
@@ -207,6 +209,85 @@ class LenderController extends Controller
         }   
               	
     }    
+
+    public function ajax_load_pie_chart_data(Request $request)
+    {    
+        $lender_funded_amount   = 0;
+        $funded_percentage      = 0;
+        $all_lender_funded_total_amount = 0;
+
+        $pie_data   = array();
+        $pie_colors = array('#f56954','#00a65a','#f39c12','#00c0ef','#3c8dbc','#d2d6de'); 
+
+        $lenders = Lender::all(); 
+        $all_lender_funded_total_amount  = ContactAdvance::where('amount','>', 0)->where('lender_id','!=',0)->sum('amount');
+        if(!$lenders->isEmpty()) {
+            foreach($lenders as $lender) {
+                $pie_color_id = array_rand($pie_colors);
+
+                $lender_funded_amount = ContactAdvance::where('lender_id','=', $lender->id)->sum('amount');
+
+                $funded_percentage = ($lender_funded_amount / $all_lender_funded_total_amount) * 100;
+
+                $pie_data[$lender->id]['value']     = number_format($funded_percentage,2);
+                $pie_data[$lender->id]['color']     = $pie_colors[$pie_color_id];
+                $pie_data[$lender->id]['highlight'] = $pie_colors[$pie_color_id];
+                $pie_data[$lender->id]['label']     = $lender->company_name;
+            }
+        } else {
+            $pie_data[1]['value'] = 1;
+            $pie_data[1]['color'] = '#00a65a';
+            $pie_data[1]['highlight'] = '#00a65a';
+            $pie_data[1]['label'] = 'No Lender Recors!';  
+        }
+
+        return json_encode($pie_data);      
+    }
+
+    public function ajax_load_area_chart_data(Request $request)
+    {
+        $area_data = array();
+        $area_dumb_data = array();
+
+        $advances_records = ContactAdvance::select('amount','created_at', DB::raw('MONTH(created_at) month') )
+                                ->where('amount','>',0)->where('lender_id','!=',0)->get();                      
+
+        if(!$advances_records->isEmpty()) {
+            foreach($advances_records->toArray() as $adv_rec) {
+                $area_dumb_data[$adv_rec['month']][] = $adv_rec;
+            }
+        }
+
+        $date_array = array(
+                            1 => 'Jan',
+                            2 => 'Feb',
+                            3 => 'Mar',
+                            4 => 'Apr',
+                            5 => 'May',
+                            6 => 'Jun',
+                            7 => 'Jul',
+                            8 => 'Aug',
+                            9 => 'Sept',
+                            10 => 'Oct',
+                            11 => 'Nov',
+                            12 => 'Dec',
+                        );
+
+        foreach($area_dumb_data as $add_key => $add) {
+            $area_data['months'][] = $date_array[$add_key];
+
+            $total_adv_amount = 0;
+            foreach($add as $ad) {
+                $total_adv_amount += $ad['amount'];
+                $area_data['amounts'][$add_key] = $total_adv_amount;
+            }
+        }
+
+        /*$area_data['months'] = array('January', 'February', 'March');
+        $area_data['amounts'] = array(3600, 15000, 6500);*/
+
+        return json_encode($area_data);    
+    }
 
     public function destroy(Request $request)
     {

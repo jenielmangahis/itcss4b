@@ -107,6 +107,8 @@ Route::post('lender/lender_contact_destroy', ['as'=>'lender/lender_contact_destr
 Route::post('lender/destroy', ['as'=>'lender/destroy','uses'=>'LenderController@destroy'])->middleware('auth');
 Route::post('lender/update', ['as'=>'lender/update','uses'=>'LenderController@update'])->middleware('auth');
 Route::get('lender/view/{lender_id}', ['as'=>'lender/view','uses'=>'LenderController@view'])->middleware('auth');
+Route::get('lender/ajax_load_pie_chart_data', ['as'=>'lender/ajax_load_pie_chart_data','uses'=>'LenderController@ajax_load_pie_chart_data'])->middleware('auth');
+Route::get('lender/ajax_load_area_chart_data', ['as'=>'lender/ajax_load_area_chart_data','uses'=>'LenderController@ajax_load_area_chart_data'])->middleware('auth');
 
 //Contact Campaigns
 Route::get('/contact_campaign', ['as'=>'contact_campaign','uses'=>'ContactCampaignController@index'])->middleware('auth');
