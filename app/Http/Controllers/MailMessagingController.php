@@ -133,7 +133,7 @@ class MailMessagingController extends Controller
                         $mailMessaging->cc         = $cc;
                         $mailMessaging->bcc        = $bcc;
                         $mailMessaging->content    = $request->input('content');
-                        $mailMessaging->sender     = "NA";
+                        //$mailMessaging->sender     = "NA";
                         $mailMessaging->save();
                     }
                 }

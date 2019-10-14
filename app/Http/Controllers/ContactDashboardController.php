@@ -390,7 +390,8 @@ class ContactDashboardController extends Controller
             'search_advance_field' => $search_advance_field,
             'search_by_advance' => $search_by_advance,
             'userContactInfo' => $userContactInfo,
-            'has_client_portal' => $has_client_portal
+            'has_client_portal' => $has_client_portal,
+            'group_id' => Auth::user()->group_id
 
         ]); 
     }     

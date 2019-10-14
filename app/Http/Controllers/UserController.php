@@ -25,7 +25,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        //$this->middleware('auth');  
+        $this->middleware('auth');  
         //$this->middleware(['auth'], ['except' => ['reset_password']]);
         $this->middleware(function ($request, $next) {
 
@@ -46,7 +46,7 @@ class UserController extends Controller
             View::share ( 'pending_task', $pending_task);                  
 
             return $next($request);     
-        }, ['except' => ['reset_password']]);           
+        });           
     }
 
     public function index(Request $request)
@@ -389,60 +389,4 @@ class UserController extends Controller
 
         return redirect()->back();  
     }
-
-    public function reset_password(Request $request)
-    {
-
-        $reset_code = $request->input('reset_code');        
-        $user       = User::where('reset_code', "=", $reset_code)->first();
-        $is_code_valid = false;
-
-        if($user && $reset_code != '') {           
-            $is_code_valid = true;
-        }else{
-            Session::flash('message', 'Invalid reset code.');
-            Session::flash('alert_class', 'alert-danger'); 
-        }
-
-        return view('user.reset_password', [
-            'is_code_valid' => $is_code_valid,
-            'user' => $user
-        ]); 
-    } 
-
-    public function change_password(Request $request)
-    {
-        if ($request->isMethod('post'))
-        {
-            $new_password = $request->input('password');
-            $repassword   = $request->input('repassword');
-            $id = $request->input('user_id');
-            $id = Hashids::decode($id)[0];
-            $u  = User::find($id);
-
-            if($u) {
-                if( $new_password == $repassword ){
-                    $u->password   = Hash::make($new_password);
-                    $u->reset_code = '';
-                    $u->save();
-
-                    Session::flash('message', 'Your password has been changed.');
-                    Session::flash('alert_class', 'alert-success');
-
-                     return redirect('login');
-                }else{
-                    Session::flash('message', 'Password does not match.');
-                    Session::flash('alert_class', 'alert-danger');                  
-                    return redirect()->back();     
-                }                
-            }else{
-                Session::flash('message', 'User not found.');
-                Session::flash('alert_class', 'alert-danger');                  
-                return redirect()->back();  
-            }
-        }else{
-            return redirect()->back();  
-        }        
-    }    
-
 }

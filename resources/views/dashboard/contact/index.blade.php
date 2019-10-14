@@ -48,13 +48,12 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      Contacts : Dashboard
+      Client Information
     </h1>
     
     
     <ol class="breadcrumb">
-      <li><a href="{{route('contact')}}"><i class="fa fa-dashboard"></i> Contacts</a></li>
-      <li class="active">Dashboard</li>
+      <li><a href="{{route('dashboard')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
     </ol> 
    
 
@@ -86,61 +85,17 @@
         @endif          
         
         <div class="box">
-
-          <div class="box-header with-border">                
-            <div class="pull-left" style="margin-left: 5px;">
-              <input class="form-control" type="text" value="" name="search_field" placeholder="Search" style="">                             
-            </div>
-            <div class="pull-left" style="margin-left: 5px;">
-              <a target="_blank" href="{{route('contact/edit',[$contact_id])}}" class="btn">
-                  <i class="fa fa-pencil"></i> Edit Contact
-              </a>          
-            </div>
-
-            <div class="pull-right">
-              <a href="{{route('contact')}}" class="btn btn-primary">Back</a>
-            </div>              
-          </div>               
-
           <div class="box-body">
             <div class="row">
               <section class="col-lg-3 connectedSortable ui-sortable">
 
                   <div class="box box-primary">
                     <div class="box-body box-profile">
-                      <h3 class="profile-username text-center">{{ $business_info->business_name }}</h3>
+                      <h3 class="profile-username text-left">Business Name <br /> <span style="font-size: 16px;">{{ $business_info->business_name }}</span></h3>
                     </div>
-
-                    <table class="table">
-                      <tbody>
-                        <tr>
-                          <td>Status</td>
-                          <td><div class="pull-right"><a href="javascript:void(0);">{{ $contact->stage->name }} - {{ !empty($workflow_status->status) ? $workflow_status->status : '' }}</a></div></td>
-                        </tr>
-                        <tr>
-                          <td colspan="2" style="text-align: center;"><a href="#"><span class="badge badge-primary"><i class="fa fa-pencil"></i> Update Status</span></a></td>
-                        </tr>
-                      </tbody>
-                    </table>   
-                  </div>
-
-                  <div class="box box-primary">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th>Assigned User</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><div class="pull-left">
-                            @if(isset($contact->user->firstname) && isset($contact->user->lastname))
-                              {{ $contact->user->firstname }} {{ $contact->user->lastname }}
-                            @endif
-                          </div></td>
-                        </tr>
-                      </tbody>
-                    </table>    
+                    <div class="box-body box-profile">
+                      <h3 class="profile-username text-left">Business Loans <br /> <span style="font-size: 16px;">{{ $contact->stage->name }} - {{ !empty($workflow_status->status) ? $workflow_status->status : '' }}</span></h3>
+                    </div>
                   </div>
 
                   <div class="box box-primary">
@@ -265,85 +220,6 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                  <?php if( $userContactInfo->is_active == 0 ){ ?>
-                                    <a href="javascript:void(0);" class="btn btn-danger btn-contact-dashboard" data-toggle="modal" data-target="#modalDeactivate"><i class="fa fa-close"></i> Deactivate</a>
-                                  <?php }else{ ?>
-                                    <a href="javascript:void(0);" class="btn btn-info btn-contact-dashboard" data-toggle="modal" data-target="#modalActivate"><i class="fa fa-check"></i> Activate</a>
-                                  <?php } ?>
-
-                                  <div id="modalActivate" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
-                                    <div class="modal-dialog modal-md">
-                                      <div class="modal-content">
-
-                                        <div class="modal-header">
-                                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-                                          </button>
-                                          <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                          Are you sure you want to activate client login?
-                                        </div>
-                                        <div class="modal-footer">
-                                          {{ Form::open(array('url' => 'user/activate')) }}
-                                            <?php echo Form::hidden('user_id', Hashids::encode($userContactInfo->id) ,[]); ?>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                                            <button type="submit" class="btn btn-danger">Yes</button>
-                                          {!! Form::close() !!}
-                                        </div>
-
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  <div id="modalDeactivate" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
-                                    <div class="modal-dialog modal-md">
-                                      <div class="modal-content">
-
-                                        <div class="modal-header">
-                                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-                                          </button>
-                                          <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                          Are you sure you want to deactivate client login?
-                                        </div>
-                                        <div class="modal-footer">
-                                          {{ Form::open(array('url' => 'user/deactivate')) }}
-                                            <?php echo Form::hidden('user_id', Hashids::encode($userContactInfo->id) ,[]); ?>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                                            <button type="submit" class="btn btn-danger">Yes</button>
-                                          {!! Form::close() !!}
-                                        </div>
-
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  <a href="javascript:void(0);" class="btn btn-info btn-contact-dashboard" data-toggle="modal" data-target="#modalLoginLink"><i class="fa fa-envelope-open"></i> Login Link</a>
-                                  <div id="modalLoginLink" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
-                                    <div class="modal-dialog modal-md">
-                                      <div class="modal-content">
-
-                                        <div class="modal-header">
-                                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-                                          </button>
-                                          <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                          Proceed with sending user login link?
-                                        </div>
-                                        <div class="modal-footer">
-                                          {{ Form::open(array('url' => 'user/send_login_link')) }}
-                                            <?php echo Form::hidden('user_id', Hashids::encode($userContactInfo->id) ,[]); ?>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                                            <button type="submit" class="btn btn-info">Yes</button>
-                                          {!! Form::close() !!}
-                                        </div>
-
-                                      </div>
-                                    </div>
-                                  </div>
-
                                   <a href="javascript:void(0);" class="btn btn-warning btn-contact-dashboard" data-toggle="modal" data-target="#modalResetPassword"><i class="fa fa-lock"></i> Reset Password</a>
 
                                   <div id="modalResetPassword" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
@@ -405,61 +281,32 @@
               <section class="col-lg-9 connectedSortable ui-sortable">
                 <div class="nav-tabs-custom contact-dashboard contact-dashboard-tabs">
                   <ul class="nav nav-tabs">
-                    <li class="active"><a href="#tab_history" data-toggle="tab"><i class="fa fa-history"></i> History</a></li>
-                    <li class=""><a href="#tab_advances" data-toggle="tab"><i class="fa fa-dollar"></i> Advances</a></li>
-                    <li class=""><a href="#tab_calls" data-toggle="tab"><i class="fa fa-phone"></i> Calls</a></li>
-                    <li class=""><a href="#tab_emails" data-toggle="tab"><i class="fa fa-envelope-open"></i> Emails</a></li>
-                    <li class=""><a href="#tab_notes" data-toggle="tab"><i class="fa fa-list"></i> Notes</a></li>
-                    <li class=""><a href="#tab_emarketing" data-toggle="tab"><i class="fa fa-address-card-o"></i> E-Marketing</a></li>
+                    <li class="active"><a href="#tab_history" data-toggle="tab"><i class="fa fa-history"></i> Dashboard</a></li>
                     <li class=""><a href="#tab_docs" data-toggle="tab"><i class="fa fa-file"></i> Docs</a></li>
-                    <li class=""><a href="#tab_events" data-toggle="tab"><i class="fa fa-calendar"></i> Events</a></li>
-                    <!-- <li class=""><a href="#tab_bank_accounts" data-toggle="tab"><i class="fa fa-bank"></i> Bank Account</a></li>
-                    <li class=""><a href="#tab_credit_card" data-toggle="tab"><i class="fa fa-credit-card"></i> Credit Card</a></li> -->
-                    <li class="dropdown">
-                      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        Others <span class="caret"></span>
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_tasks" data-toggle="tab">Tasks</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_bank_accounts" data-toggle="tab">Bank Account</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_credit_card" data-toggle="tab">Credit Card</a></li>
-                      </ul>
-                    </li>                
+                    <li class=""><a href="#tab_notes" data-toggle="tab"><i class="fa fa-list"></i> Notes</a></li>
+                    <li class=""><a href="#tab_tasks" data-toggle="tab"><i class="fa fa-list"></i> Tasks</a></li>
+                    <li class=""><a href="#tab_emails" data-toggle="tab"><i class="fa fa-envelope-open"></i> Emails</a></li>
+                    <li class=""><a href="#tab_advances" data-toggle="tab"><i class="fa fa-dollar"></i> Advances</a></li>
                   </ul>
                 
                   <div class="tab-content">
                     <div class="active tab-pane" id="tab_history">
                       @include('contact.dashboard.tab-sections.tab_history')  
                     </div>
-                    <div class="tab-pane" id="tab_advances">
-                      @include('contact.dashboard.tab-sections.tab_advances')
-                    </div>
-                    <div class="tab-pane" id="tab_calls">
-                      @include('contact.dashboard.tab-sections.tab_calls')
-                    </div>
-                    <div class="tab-pane" id="tab_emails">
-                      @include('contact.dashboard.tab-sections.tab_mail_activity')
+                    <div class="tab-pane" id="tab_docs">
+                      @include('contact.dashboard.tab-sections.tab_docs')
                     </div>
                     <div class="tab-pane" id="tab_notes">
                       @include('contact.dashboard.tab-sections.tab_notes')
                     </div>
-                    <div class="tab-pane" id="tab_emarketing">
-                      <p>Tab Email Marketing</p>
-                    </div>
-                    <div class="tab-pane" id="tab_docs">
-                      @include('contact.dashboard.tab-sections.tab_docs')
-                    </div>
-                    <div class="tab-pane" id="tab_events">
-                      @include('contact.dashboard.tab-sections.tab_events')
-                    </div>
                     <div class="tab-pane" id="tab_tasks">
                       @include('contact.dashboard.tab-sections.tab_tasks')
                     </div>
-                    <div class="tab-pane" id="tab_credit_card">
-                      @include('contact.dashboard.tab-sections.tab_credit_cards')
+                    <div class="tab-pane" id="tab_emails">
+                      @include('contact.dashboard.tab-sections.tab_mail_activity')
                     </div>
-                    <div class="tab-pane" id="tab_bank_accounts">
-                      @include('contact.dashboard.tab-sections.tab_bank_accounts')
+                    <div class="tab-pane" id="tab_advances">
+                      @include('contact.dashboard.tab-sections.tab_advances')
                     </div>
 
                     <!-- /.tab-pane -->
