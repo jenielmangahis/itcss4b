@@ -86,9 +86,12 @@
         <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDeleteAdvance-<?= $advance->id; ?>">
             <i class="fa fa-trash"></i>
         </a>
-        <a href="javascript:void(0);" class="btn btn-xs btn-primary" id="" data-toggle="modal" data-target="#modalEditAdvance-<?= $advance->id; ?>">
+        <!-- <a href="javascript:void(0);" class="btn btn-xs btn-primary" id="" data-toggle="modal" data-target="#modalEditAdvance-<?= $advance->id; ?>">
             <i class="fa fa-edit"></i>
-        </a>                                                    
+        </a>  -->          
+        <a href="{{url('advance_application/'.Hashids::encode($advance->id))}}" class="btn btn-xs btn-primary">
+            <i class="fa fa-edit"></i>
+        </a>                                          
       </td>
     </tr>  
 
