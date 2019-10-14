@@ -148,7 +148,7 @@
 </table>
 
 <div style="text-align: center;" class="box-footer clearfix">
-    {{ $call_log_activity_history->links() }}
+    {{ $contactDocs->links() }}
 </div>
 
 <div style="text-align: center;" class="box-footer clearfix">
