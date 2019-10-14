@@ -47,7 +47,13 @@ class UserHelper
             );
 
             $roles['customer_user'] = array(
-                  'dashboard'
+                  'dashboard',
+                  'contact_docs',
+                  'contact_notes',
+                  'contact_task',
+                  'contacts',
+                  'contact_advance',
+                  'mail_messaging'
             );
 
             if($group_id == self::ADMIN_USER) {

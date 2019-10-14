@@ -8,7 +8,7 @@
 @endsection
 
 @section('meta-dynamic')
-  <title>Login</title>  
+  <title>Reset Password</title>  
   <meta name="description" content="Login">    
 @endsection
 

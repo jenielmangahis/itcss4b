@@ -17,7 +17,12 @@
   </div>
 </div>
 <div class="row">
-  {{ Form::open(array('url' => 'contact_dashboard/'.$contact_id, 'class' => '', 'method' => 'get')) }}
+  <?php if( $group_id == 3 ){ ?>
+    {{ Form::open(array('url' => 'dashboard', 'class' => '', 'method' => 'get')) }}
+  <?php }else{ ?>
+    {{ Form::open(array('url' => 'contact_dashboard/'.$contact_id, 'class' => '', 'method' => 'get')) }}
+  <?php } ?>
+  
     <div class="col-xs-12">
       <div class="row">
         <div class="col-md-6">
@@ -36,7 +41,11 @@
           <div class="form-group">
             <label>&nbsp;</label><br />
             <button type="submit" class="btn btn-primary">Filter</button>
-            <a class="btn btn-success" href="{{url('contact_dashboard/'.$contact_id)}}">Refresh</a>
+            <?php if( $group_id == 3 ){ ?>
+              <a class="btn btn-success" href="{{url('dashboard')}}">Refresh</a>
+            <?php }else{ ?>
+              <a class="btn btn-success" href="{{url('contact_dashboard/'.$contact_id)}}">Refresh</a>
+            <?php } ?>            
           </div>
           <!-- /.form-group -->
         </div>
