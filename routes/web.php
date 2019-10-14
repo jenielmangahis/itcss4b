@@ -93,6 +93,7 @@ Route::post('contact_datasource/update', ['as'=>'contact_datasource/update','use
 
 //Contact Advances
 Route::get('/advance_application/{advance_id}', ['as'=>'advance_application','uses'=>'ContactAdvanceController@advance_application'])->middleware('auth');
+Route::get('/advance_documents/{advance_id}', ['as'=>'advance_documents','uses'=>'ContactAdvanceController@advance_documents'])->middleware('auth');
 Route::post('contact_advance/store', ['as'=>'contact_advance/store','uses'=>'ContactAdvanceController@store'])->middleware('auth');
 Route::post('contact_advance/update', ['as'=>'contact_advance/update','uses'=>'ContactAdvanceController@update'])->middleware('auth');
 Route::post('contact_advance/update_application', ['as'=>'contact_advance/update_application','uses'=>'ContactAdvanceController@update_application'])->middleware('auth');

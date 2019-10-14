@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\ContactAdvance;
 use App\ContactTask;
 use App\Contact;
+use App\ContactDocs;
 use App\ContactBusinessInformation;
 use App\ContactBrokerInformation;
 use App\ContactLoanInformation;
@@ -51,13 +52,13 @@ class ContactAdvanceController extends Controller
             return $next($request);     
         });                 
     }
-
     
     public function advance_application($id)
     {  
         /*
          * Contact Advance - Start
-        */         
+        */    
+            $hash_id               = $id;     
             $id                    = Hashids::decode($id)[0]; 
             $contact_advance_query = ContactAdvance::query();
             if($id) {
@@ -74,6 +75,7 @@ class ContactAdvanceController extends Controller
                 $company_user = CompanyUser::where('company_id','=',$contact->company_id)->get();
 
                 return view('advances.index', [
+                    'hash_id' => $hash_id,
                     'advance_id' => $id,
                     'advance' => $contact_advance,
                     'contact' => $contact,
@@ -88,6 +90,57 @@ class ContactAdvanceController extends Controller
         /*
          * Contact Advance - End
         */            
+    }    
+
+    public function advance_documents($id, Request $request)
+    {  
+        $hash_id               = $id;     
+        $id                    = Hashids::decode($id)[0]; 
+        $contact_advance_query = ContactAdvance::query();
+
+        if($id) {
+            $contact_advance = $contact_advance_query->where('id','=', $id)->first();
+            $contact = Contact::where('id', '=', $contact_advance->contact_id)->first();
+            $company_user = CompanyUser::where('company_id','=',$contact->company_id)->get();
+
+            /*
+             * For docs - start
+            */  
+            //$search_by_documents = "";
+            $search_field_documents = "";
+
+            $search_by_documents    = $request->input('search_by_documents');
+            $search_field_documents = $request->input('search_field_documents');  
+            if($search_by_documents != '' && $search_field_documents != '') {
+                $contact_docs_query = ContactDocs::query();
+
+                if($search_by_documents != '' && $search_field_documents != '') {
+                    $contact_docs_query = $contact_docs_query->where('contact_docs.'.$search_by_documents, 'like', '%' . $search_field_documents . '%');
+                    $contact_docs_query = $contact_docs_query->where('contact_id','=', $contact->id);
+                    $contactDocs = $contact_docs_query->paginate(10);
+                }            
+            } else {
+                $contactDocs = ContactDocs::where('contact_id', '=', $contact->id)->get();
+            }
+
+            $contactDoc = new ContactDocs();
+            $documentTypes = $contactDoc->documentTypes();
+            /*
+             * Docs - end
+            */            
+            
+            return view('advances.documents', [
+                'hash_id' => $hash_id,
+                'advance_id' => $id,
+                'advance' => $contact_advance,
+                'contact' => $contact,
+                'company_user' => $company_user,
+                'contactDocs' => $contactDocs,
+                'search_field_documents ' => $search_field_documents,
+                'documentTypes' => $documentTypes,
+                'group_id' => Auth::user()->group_id,
+            ]);                
+        }    
     }    
 
     public function store(Request $request)
@@ -244,11 +297,6 @@ class ContactAdvanceController extends Controller
                                           
                  ]);                
             }           
-
-            /*echo '<pre>';
-            print_r($request->input());
-            echo '</pre>';
-            exit;*/
 
             $id = Hashids::decode($request->input('advance_id'))[0];
             $advance_id = $id;
