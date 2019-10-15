@@ -122,7 +122,7 @@
                   </div>
                 </div>
 
-                {{ Form::open(array('url' => 'contact_advance/update_application', 'class' => 'edit-advance-form-application', 'id' => 'edit-advance-form-application')) }}
+                {{ Form::open(array('url' => 'contact_advance/update_advance', 'class' => 'edit-advance-form-application', 'id' => 'edit-advance-form-application')) }}
                 <input type="hidden" name="advance_id" id="advance_id" class="advance_id" value="{{ Hashids::encode($advance->id) }}">
                 <input type="hidden" name="contact_id" id="contact_id" class="contact_id" value="{{ $contact->id }}">                
                 <div class="box box-primary">
@@ -260,12 +260,14 @@
                
                 </div>
 
+                {!! Form::close() !!}
+
                 <div class="box box-primary">
                   <div id="" class="form-group">
 
                     <div class="row">
-                      <div class="col-xs-12 calendar-events-header">
-                        <div class="pull-left calendar-events-title">Docs</div>
+                      <div class="col-xs-12 calendar-events-header" style="padding-top: 10px;">
+                        <div class="pull-left"><strong>DOCUMENTS</strong></div>
                         <div class="pull-right">
                             <a href="javascript:void(0);" class="btn btn-primary" id="" data-toggle="modal" data-target="#modalAddDocs">
                                 <i class="fa fa-plus"></i> Add Docs
@@ -279,14 +281,12 @@
 
                     <div class="row">
                       <?php if( $group_id == 3 ){ ?>
-                        {{ Form::open(array('url' => 'dashboard/', 'class' => '', 'method' => 'get')) }}
+                        {{ Form::open(array('url' => 'advance_documents/', 'class' => '', 'method' => 'get')) }}
                       <?php }else{ ?>
-                        {{ Form::open(array('url' => 'contact_dashboard/'.$contact->id, 'class' => '', 'method' => 'get')) }}
+                        {{ Form::open(array('url' => 'advance_documents/'.$hash_id, 'class' => '', 'method' => 'get')) }}
                       <?php } ?>
-                      
-
                         <div class="col-xs-12">
-                          <div class="row">
+                          <div class="row" style="margin-top: 10px;">
                             <div class="col-md-6">
                               <div class="form-group">
                                 <label>Search By: </label><br />
@@ -306,7 +306,7 @@
                                 <?php if( $group_id == 3 ){ ?>
                                   <a class="btn btn-success" href="{{url('dashboard')}}">Refresh</a>
                                 <?php }else{ ?>
-                                  <a class="btn btn-success" href="{{url('contact_dashboard/'.$contact->id)}}">Refresh</a>
+                                  <a class="btn btn-success" href="{{url('advance_documents/'.$hash_id)}}">Refresh</a>
                                 <?php } ?>            
                               </div>
                               <!-- /.form-group -->
@@ -413,16 +413,13 @@
                     </table>
 
                     <div style="text-align: center;" class="box-footer clearfix">
-                        
-                    </div>
+                        {{ $contactDocs->links() }}
+                    </div>                    
 
-                    <div style="text-align: center;" class="box-footer clearfix">
-
-                    </div>
 
                     <div id="modalAddDocs" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
                         {{ Form::open(array('url' => 'contact_docs/store', 'class' => '', 'id' => 'add-call-log-form', 'enctype' => 'multipart/form-data')) }}
-                          <input type="hidden" id="" name="contact_id" value="<?php echo $contact->id; ?>">
+                          <input type="hidden" id="" name="contact_id" value="<?php echo Hashids::encode($contact->id); ?>">
                           <div class="modal-dialog modal-lg" style="width: 800px !important;">
                             <div class="modal-content">
 
@@ -474,9 +471,9 @@
                 </div>
 
                 <div class="pull-right">
-                  <button type="submit" class="btn btn-primary">Update</button>
+                  <button type="button" id="btn-update-advance-in-document-form" class="btn btn-primary btn-update-advance-in-document-form">Update</button>
                 </div>     
-                {!! Form::close() !!}              
+                              
               </section>
             </div>
           </div>
@@ -492,6 +489,10 @@
   var base_url = '<?php echo url("/"); ?>';
 
   $(function () {
+
+    $( "#btn-update-advance-in-document-form" ).click(function() {
+      $( "#edit-advance-form-application" ).submit();
+    });    
 
     $( "#advance_amount" ).change(function() {
       compute_payback_payment();

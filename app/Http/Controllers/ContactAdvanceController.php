@@ -100,8 +100,8 @@ class ContactAdvanceController extends Controller
 
         if($id) {
             $contact_advance = $contact_advance_query->where('id','=', $id)->first();
-            $contact = Contact::where('id', '=', $contact_advance->contact_id)->first();
-            $company_user = CompanyUser::where('company_id','=',$contact->company_id)->get();
+            $contact         = Contact::where('id', '=', $contact_advance->contact_id)->first();
+            $company_user    = CompanyUser::where('company_id','=',$contact->company_id)->get();
 
             /*
              * For docs - start
@@ -120,7 +120,7 @@ class ContactAdvanceController extends Controller
                     $contactDocs = $contact_docs_query->paginate(10);
                 }            
             } else {
-                $contactDocs = ContactDocs::where('contact_id', '=', $contact->id)->get();
+                $contactDocs = ContactDocs::where('contact_id', '=', $contact->id)->paginate(10);
             }
 
             $contactDoc = new ContactDocs();
@@ -415,6 +415,63 @@ class ContactAdvanceController extends Controller
             }       
 
         }        
+    }
+
+    public function update_advance(Request $request) 
+    {
+        if ($request->isMethod('post'))
+        {
+            $this->validate($request, [
+                'advance_type'        => 'required',
+                'payment_method'      => 'required',
+                'advance_amount'      => 'required',
+                'payment_period_type' => 'required',
+                'payment_period'      => 'required|numeric'
+             ]); 
+
+            echo '<pre>';
+            print_r($request->input());
+            echo '</pre>';
+
+            $id = Hashids::decode($request->input('advance_id'))[0];
+            $advance_id = $id;
+            $contact_advance = ContactAdvance::find($advance_id);
+
+            if($contact_advance) {
+
+                $advance_amount = $request->input('advance_amount');
+                $factor_rate    = $request->input('factor_rate');
+                $payment_period = $request->input('payment_period');
+
+                $payback_amount = $advance_amount * $factor_rate;
+                $payment        = $payback_amount / $payment_period;
+
+                $contact_advance->lender_id            = $request->input('lender_id');
+                $contact_advance->sales_user_id        = $request->input('sales_user_id');
+                $contact_advance->under_writer_user_id = $request->input('under_writer_user_id');
+                $contact_advance->closer_user_id       = $request->input('closer_user_id');
+
+                $contact_advance->amount          = $advance_amount;
+                $contact_advance->payback         = $payback_amount;
+                $contact_advance->factor_rate     = $request->input('factor_rate');
+                $contact_advance->remit           = $request->input('remit');
+                $contact_advance->period          = $request->input('payment_period');
+                $contact_advance->period_type     = $request->input('payment_period_type');
+                $contact_advance->payment         = $payment;
+                $contact_advance->advance_type    = $request->input('advance_type');
+                $contact_advance->payment_method  = $request->input('payment_method');
+                $contact_advance->save();  
+
+                Session::flash('message', 'You have successfully update advances');
+                Session::flash('alert_class', 'alert-success');
+                return redirect()->back();                 
+            } else {
+                Session::flash('message', 'Unable to update advances');
+                Session::flash('alert_class', 'alert-danger');  
+                return redirect()->back();                      
+            }             
+
+        }
     }
     
     public function ajax_load_payback_payment_computation(Request $request)
