@@ -70,7 +70,7 @@ class DashboardController extends Controller
         $contactUser = ContactUser::where('user_id','=', $user_id)->first();
 
         $contact_id = $contactUser->contact_id;
-        $contact = Contact::find($contact_id); 
+        $contact    = Contact::find($contact_id); 
         $business_info = ContactBusinessInformation::where('contact_id','=', $contact_id)->first();
 
         /*
