@@ -332,7 +332,7 @@ class DashboardController extends Controller
             }            
         } else {
             //$contact_events = ContactEvent::paginate(10);
-            $contactDocs = ContactDocs::where('contact_id', '=', $contact->id)->get();
+            $contactDocs = ContactDocs::where('contact_id', '=', $contact->id)->paginate(10);
         }
 
         $contactDoc = new ContactDocs();

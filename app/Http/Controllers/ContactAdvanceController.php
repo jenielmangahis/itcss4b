@@ -13,6 +13,7 @@ use App\ContactDocs;
 use App\ContactBusinessInformation;
 use App\ContactBrokerInformation;
 use App\ContactLoanInformation;
+use App\ContactAdvanceUnderwriterNote;
 use App\CompanyUser;
 use App\Companies;
 use App\Stage;
@@ -141,7 +142,32 @@ class ContactAdvanceController extends Controller
                 'group_id' => Auth::user()->group_id,
             ]);                
         }    
-    }    
+    }  
+
+    public function advance_underwriter_notes($id, Request $request)
+    {
+        $hash_id               = $id;     
+        $id                    = Hashids::decode($id)[0]; 
+        $contact_advance_query = ContactAdvance::query();
+
+        if($id) {
+            $contact_advance = $contact_advance_query->where('id','=', $id)->first();
+            $contact         = Contact::where('id', '=', $contact_advance->contact_id)->first();
+            $company_user    = CompanyUser::where('company_id','=',$contact->company_id)->get();   
+
+            $under_writer_note = ContactAdvanceUnderwriterNote::where('contact_advance_id','=', $contact_advance->id)->first();     
+            
+            return view('advances.underwriter-notes', [
+                'hash_id' => $hash_id,
+                'advance_id' => $id,
+                'advance' => $contact_advance,
+                'contact' => $contact,
+                'company_user' => $company_user,
+                'under_writer_note' => $under_writer_note,
+
+            ]);                
+        }   
+    }  
 
     public function store(Request $request)
     {
@@ -429,10 +455,6 @@ class ContactAdvanceController extends Controller
                 'payment_period'      => 'required|numeric'
              ]); 
 
-            echo '<pre>';
-            print_r($request->input());
-            echo '</pre>';
-
             $id = Hashids::decode($request->input('advance_id'))[0];
             $advance_id = $id;
             $contact_advance = ContactAdvance::find($advance_id);
@@ -461,6 +483,82 @@ class ContactAdvanceController extends Controller
                 $contact_advance->advance_type    = $request->input('advance_type');
                 $contact_advance->payment_method  = $request->input('payment_method');
                 $contact_advance->save();  
+
+                Session::flash('message', 'You have successfully update advances');
+                Session::flash('alert_class', 'alert-success');
+                return redirect()->back();                 
+            } else {
+                Session::flash('message', 'Unable to update advances');
+                Session::flash('alert_class', 'alert-danger');  
+                return redirect()->back();                      
+            }             
+
+        }
+    }
+
+    public function update_underwriter_notes(Request $request) 
+    {
+        if ($request->isMethod('post'))
+        {
+            $this->validate($request, [
+                'advance_type'        => 'required',
+                'payment_method'      => 'required',
+                'advance_amount'      => 'required',
+                'payment_period_type' => 'required',
+                'payment_period'      => 'required|numeric'
+             ]); 
+
+            $id = Hashids::decode($request->input('advance_id'))[0];
+            $advance_id = $id;
+            $contact_advance = ContactAdvance::find($advance_id);
+
+            if($contact_advance) {                
+
+                $advance_amount = $request->input('advance_amount');
+                $factor_rate    = $request->input('factor_rate');
+                $payment_period = $request->input('payment_period');
+
+                $payback_amount = $advance_amount * $factor_rate;
+                $payment        = $payback_amount / $payment_period;
+
+                $contact_advance->lender_id            = $request->input('lender_id');
+                $contact_advance->sales_user_id        = $request->input('sales_user_id');
+                $contact_advance->under_writer_user_id = $request->input('under_writer_user_id');
+                $contact_advance->closer_user_id       = $request->input('closer_user_id');
+
+                $contact_advance->amount          = $advance_amount;
+                $contact_advance->payback         = $payback_amount;
+                $contact_advance->factor_rate     = $request->input('factor_rate');
+                $contact_advance->remit           = $request->input('remit');
+                $contact_advance->period          = $request->input('payment_period');
+                $contact_advance->period_type     = $request->input('payment_period_type');
+                $contact_advance->payment         = $payment;
+                $contact_advance->advance_type    = $request->input('advance_type');
+                $contact_advance->payment_method  = $request->input('payment_method');
+                $contact_advance->save();  
+
+                // Contact Advance Underwriter Notes - Start
+                $contact_au_notes = ContactAdvanceUnderwriterNote::where('contact_advance_id','=', $contact_advance->id)->first();
+                if($contact_au_notes) {
+                    $contact_au_notes->under_writer_opinion = $request->input('under_writer_opinion');
+                    $contact_au_notes->tax_liens_judgements = $request->input('tax_liens_judgements');
+                    $contact_au_notes->ucc_position         = $request->input('ucc_position');
+                    $contact_au_notes->advance_history_comments = $request->input('advance_history_comments');
+                    $contact_au_notes->major_issues         = $request->input('major_issues');
+                    $contact_au_notes->required_paperworks_information = $request->input('required_paperworks_information');
+                    $contact_au_notes->save();
+                } else {
+                    $contact_au_notes                       = new ContactAdvanceUnderwriterNote();
+                    $contact_au_notes->contact_advance_id   = $contact_advance->id;
+                    $contact_au_notes->under_writer_opinion = $request->input('under_writer_opinion');
+                    $contact_au_notes->tax_liens_judgements = $request->input('tax_liens_judgements');
+                    $contact_au_notes->ucc_position         = $request->input('ucc_position');
+                    $contact_au_notes->advance_history_comments = $request->input('advance_history_comments');
+                    $contact_au_notes->major_issues         = $request->input('major_issues');
+                    $contact_au_notes->required_paperworks_information = $request->input('required_paperworks_information');
+                    $contact_au_notes->save();
+                }                
+                // Contact Advance Underwriter Notes - End
 
                 Session::flash('message', 'You have successfully update advances');
                 Session::flash('alert_class', 'alert-success');

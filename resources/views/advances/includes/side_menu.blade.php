@@ -17,8 +17,8 @@
     <li <?php echo Route::current()->getName() == 'dashboard' ? 'class="active"' : ''; ?>>
       <a href="#"><i class="fa fa-list-ul"></i> <span>Submissions </span></a>
     </li>
-    <li <?php echo Route::current()->getName() == 'dashboard' ? 'class="active"' : ''; ?>>
-      <a href="#"><i class="fa fa-list-ul"></i> <span>Underwriter Notes </span></a>
+    <li <?php echo Route::current()->getName() == 'advance_underwriter_notes' ? 'class="active"' : ''; ?>>
+      <a href="{{url('advance_underwriter_notes/' . $hash_id)}}"><i class="fa fa-list-ul"></i> <span>Underwriter Notes </span></a>
     </li>
     <li <?php echo Route::current()->getName() == 'dashboard' ? 'class="active"' : ''; ?>>
       <a href="#"><i class="fa fa-list-ul"></i> <span>Funding Info </span></a>
