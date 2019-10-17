@@ -14,6 +14,7 @@ use App\ContactBusinessInformation;
 use App\ContactBrokerInformation;
 use App\ContactLoanInformation;
 use App\ContactAdvanceUnderwriterNote;
+use App\ContactAdvanceFundingInfo;
 use App\CompanyUser;
 use App\Companies;
 use App\Stage;
@@ -168,6 +169,31 @@ class ContactAdvanceController extends Controller
             ]);                
         }   
     }  
+
+    public function advance_funding_info($id, Request $request)
+    {
+        $hash_id               = $id;     
+        $id                    = Hashids::decode($id)[0]; 
+        $contact_advance_query = ContactAdvance::query();
+
+        if($id) {
+            $contact_advance = $contact_advance_query->where('id','=', $id)->first();
+            $contact         = Contact::where('id', '=', $contact_advance->contact_id)->first();
+            $company_user    = CompanyUser::where('company_id','=',$contact->company_id)->get();      
+
+            $funding_info = ContactAdvanceFundingInfo::where('contact_advance_id','=', $contact_advance->id)->first(); 
+            
+            return view('advances.funding_info', [
+                'hash_id' => $hash_id,
+                'advance_id' => $id,
+                'advance' => $contact_advance,
+                'contact' => $contact,
+                'company_user' => $company_user,
+                'funding_info' => $funding_info
+
+            ]);                
+        } 
+    }
 
     public function store(Request $request)
     {
@@ -565,6 +591,89 @@ class ContactAdvanceController extends Controller
                 return redirect()->back();                 
             } else {
                 Session::flash('message', 'Unable to update advances');
+                Session::flash('alert_class', 'alert-danger');  
+                return redirect()->back();                      
+            }             
+
+        }
+    }
+
+    public function update_funding_info(Request $request) 
+    {
+        if ($request->isMethod('post'))
+        {
+            $this->validate($request, [
+                'advance_type'        => 'required',
+                'payment_method'      => 'required',
+                'advance_amount'      => 'required',
+                'payment_period_type' => 'required',
+                'payment_period'      => 'required|numeric'
+             ]); 
+
+            $id = Hashids::decode($request->input('advance_id'))[0];
+            $advance_id = $id;
+            $contact_advance = ContactAdvance::find($advance_id);
+
+            if($contact_advance) {                
+
+                $advance_amount = $request->input('advance_amount');
+                $factor_rate    = $request->input('factor_rate');
+                $payment_period = $request->input('payment_period');
+
+                $payback_amount = $advance_amount * $factor_rate;
+                $payment        = $payback_amount / $payment_period;
+
+                $contact_advance->lender_id            = $request->input('lender_id');
+                $contact_advance->sales_user_id        = $request->input('sales_user_id');
+                $contact_advance->under_writer_user_id = $request->input('under_writer_user_id');
+                $contact_advance->closer_user_id       = $request->input('closer_user_id');
+
+                $contact_advance->amount          = $advance_amount;
+                $contact_advance->payback         = $payback_amount;
+                $contact_advance->factor_rate     = $request->input('factor_rate');
+                $contact_advance->remit           = $request->input('remit');
+                $contact_advance->period          = $request->input('payment_period');
+                $contact_advance->period_type     = $request->input('payment_period_type');
+                $contact_advance->payment         = $payment;
+                $contact_advance->advance_type    = $request->input('advance_type');
+                $contact_advance->payment_method  = $request->input('payment_method');
+                $contact_advance->save();  
+
+                // Contact Advance Funding Info - Start    
+                
+                $contact_adv_funding_info = ContactAdvanceFundingInfo::where('contact_advance_id','=', $contact_advance->id)->first();
+                if($contact_adv_funding_info) {
+                    $contact_adv_funding_info->contract_date    = $request->input('contract_date');
+                    $contact_adv_funding_info->contract_number  = $request->input('contract_number');
+                    $contact_adv_funding_info->funding_date     = $request->input('funding_date');
+                    $contact_adv_funding_info->wire_conf_number = $request->input('wire_conf_number');
+                    $contact_adv_funding_info->routing_number   = $request->input('routing_number');
+                    $contact_adv_funding_info->account_number   = $request->input('account_number');
+                    $contact_adv_funding_info->account_type     = $request->input('account_type');
+                    $contact_adv_funding_info->name_of_account  = $request->input('name_of_account');
+                    $contact_adv_funding_info->ach_gateway      = $request->input('ach_gateway');
+                    $contact_adv_funding_info->save();
+                } else {
+                    $contact_adv_funding_info                     = new ContactAdvanceFundingInfo();
+                    $contact_adv_funding_info->contact_advance_id = $contact_advance->id;
+                    $contact_adv_funding_info->contract_date    = $request->input('contract_date');
+                    $contact_adv_funding_info->contract_number  = $request->input('contract_number');
+                    $contact_adv_funding_info->funding_date     = $request->input('funding_date');
+                    $contact_adv_funding_info->wire_conf_number = $request->input('wire_conf_number');
+                    $contact_adv_funding_info->routing_number   = $request->input('routing_number');
+                    $contact_adv_funding_info->account_number   = $request->input('account_number');
+                    $contact_adv_funding_info->account_type     = $request->input('account_type');
+                    $contact_adv_funding_info->name_of_account  = $request->input('name_of_account');
+                    $contact_adv_funding_info->ach_gateway      = $request->input('ach_gateway');
+                    $contact_adv_funding_info->save();
+                }                  
+                // Contact Advance Funding Info - End
+
+                Session::flash('message', 'You have successfully update advances and funding info');
+                Session::flash('alert_class', 'alert-success');
+                return redirect()->back();                 
+            } else {
+                Session::flash('message', 'Unable to update advances and funding info');
                 Session::flash('alert_class', 'alert-danger');  
                 return redirect()->back();                      
             }             

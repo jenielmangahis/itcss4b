@@ -95,11 +95,13 @@ Route::post('contact_datasource/update', ['as'=>'contact_datasource/update','use
 Route::get('/advance_application/{advance_id}', ['as'=>'advance_application','uses'=>'ContactAdvanceController@advance_application'])->middleware('auth');
 Route::get('/advance_documents/{advance_id}', ['as'=>'advance_documents','uses'=>'ContactAdvanceController@advance_documents'])->middleware('auth');
 Route::get('/advance_underwriter_notes/{advance_id}', ['as'=>'advance_underwriter_notes','uses'=>'ContactAdvanceController@advance_underwriter_notes'])->middleware('auth');
+Route::get('/advance_funding_info/{advance_id}', ['as'=>'advance_funding_info','uses'=>'ContactAdvanceController@advance_funding_info'])->middleware('auth');
 Route::post('contact_advance/store', ['as'=>'contact_advance/store','uses'=>'ContactAdvanceController@store'])->middleware('auth');
 Route::post('contact_advance/update', ['as'=>'contact_advance/update','uses'=>'ContactAdvanceController@update'])->middleware('auth');
 Route::post('contact_advance/update_application', ['as'=>'contact_advance/update_application','uses'=>'ContactAdvanceController@update_application'])->middleware('auth');
 Route::post('contact_advance/update_advance', ['as'=>'contact_advance/update_advance','uses'=>'ContactAdvanceController@update_advance'])->middleware('auth');
 Route::post('contact_advance/update_underwriter_notes', ['as'=>'contact_advance/update_underwriter_notes','uses'=>'ContactAdvanceController@update_underwriter_notes'])->middleware('auth');
+Route::post('contact_advance/update_funding_info', ['as'=>'contact_advance/update_funding_info','uses'=>'ContactAdvanceController@update_funding_info'])->middleware('auth');
 Route::get('contact_advance/ajax_load_payback_payment_computation', ['as'=>'contact_advance/ajax_load_payback_payment_computation','uses'=>'ContactAdvanceController@ajax_load_payback_payment_computation'])->middleware('auth');
 Route::get('contact_advance/ajax_load_payback_payment_computation_edit', ['as'=>'contact_advance/ajax_load_payback_payment_computation_edit','uses'=>'ContactAdvanceController@ajax_load_payback_payment_computation'])->middleware('auth');
 Route::post('contact_advance/destroy', ['as'=>'contact_advance/destroy','uses'=>'ContactAdvanceController@destroy'])->middleware('auth');
