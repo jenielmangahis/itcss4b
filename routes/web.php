@@ -96,7 +96,9 @@ Route::get('/advance_application/{advance_id}', ['as'=>'advance_application','us
 Route::get('/advance_documents/{advance_id}', ['as'=>'advance_documents','uses'=>'ContactAdvanceController@advance_documents'])->middleware('auth');
 Route::get('/advance_underwriter_notes/{advance_id}', ['as'=>'advance_underwriter_notes','uses'=>'ContactAdvanceController@advance_underwriter_notes'])->middleware('auth');
 Route::get('/advance_funding_info/{advance_id}', ['as'=>'advance_funding_info','uses'=>'ContactAdvanceController@advance_funding_info'])->middleware('auth');
+Route::get('/advance_payments/{advance_id}', ['as'=>'advance_payments','uses'=>'ContactAdvanceController@advance_payments'])->middleware('auth');
 Route::post('contact_advance/store', ['as'=>'contact_advance/store','uses'=>'ContactAdvanceController@store'])->middleware('auth');
+Route::post('contact_advance/store_advance', ['as'=>'contact_advance/store_advance','uses'=>'ContactAdvanceController@store_advance'])->middleware('auth');
 Route::post('contact_advance/update', ['as'=>'contact_advance/update','uses'=>'ContactAdvanceController@update'])->middleware('auth');
 Route::post('contact_advance/update_application', ['as'=>'contact_advance/update_application','uses'=>'ContactAdvanceController@update_application'])->middleware('auth');
 Route::post('contact_advance/update_advance', ['as'=>'contact_advance/update_advance','uses'=>'ContactAdvanceController@update_advance'])->middleware('auth');

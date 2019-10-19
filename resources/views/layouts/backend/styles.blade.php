@@ -13,6 +13,7 @@
 
 <!-- Select2 -->
 <link href="{{ asset("/bower_components/select2/dist/css/select2.min.css") }}" rel="stylesheet" type="text/css" />
+
 <!-- Theme style -->
 <link href="{{ asset('/bower_components/admin-lte/dist/css/AdminLTE.min.css')}}" rel="stylesheet" type="text/css" />
 <!-- AdminLTE Skins. We have chosen the skin-blue for this starter

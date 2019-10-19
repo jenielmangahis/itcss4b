@@ -15,9 +15,11 @@ use App\ContactBrokerInformation;
 use App\ContactLoanInformation;
 use App\ContactAdvanceUnderwriterNote;
 use App\ContactAdvanceFundingInfo;
+use App\ContactAdvancePayment;
 use App\CompanyUser;
 use App\Companies;
 use App\Stage;
+use App\User;
 
 use UserHelper;
 use GlobalHelper;
@@ -25,6 +27,7 @@ use GlobalHelper;
 use View;
 use Hash;
 use Hashids;
+use Carbon;
 
 use Session;
 
@@ -195,6 +198,32 @@ class ContactAdvanceController extends Controller
         } 
     }
 
+    public function advance_payments($id, Request $request)
+    {
+        $hash_id               = $id;     
+        $id                    = Hashids::decode($id)[0]; 
+        $contact_advance_query = ContactAdvance::query();
+
+        if($id) {
+            $contact_advance = $contact_advance_query->where('id','=', $id)->first();
+            $contact         = Contact::where('id', '=', $contact_advance->contact_id)->first();
+            $company_user    = CompanyUser::where('company_id','=',$contact->company_id)->get();  
+
+            $users           = User::select('id','firstname','lastname')->where('is_active','=',0)->get();
+            $advance_payments = ContactAdvancePayment::where('contact_advance_id','=',$contact_advance->id)->paginate(10);
+            
+            return view('advances.payments', [
+                'hash_id' => $hash_id,
+                'advance_id' => $id,
+                'advance' => $contact_advance,
+                'contact' => $contact,
+                'company_user' => $company_user,
+                'advance_payments' => $advance_payments,
+                'users' => $users
+            ]);                
+        } 
+    }    
+
     public function store(Request $request)
     {
         if ($request->isMethod('post'))
@@ -235,7 +264,6 @@ class ContactAdvanceController extends Controller
             $contact_adv->status          = "Started"; //Paid in Full, Pricing, Started
             $contact_adv->save();            
 
-
             Session::flash('message', 'You have successfully created new advances');
             Session::flash('alert_class', 'alert-success');
             return redirect()->back();             
@@ -245,6 +273,50 @@ class ContactAdvanceController extends Controller
             return redirect()->back();			
 		}
     } 
+
+    public function store_advance(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $this->validate($request, [
+                'transaction_id' => 'required',
+                'amount'         => 'required|numeric'
+             ]);  
+
+            $_time = Carbon\Carbon::now();
+            $process_date = $_time->toDateString();  
+
+            $processed = Auth::user()->firstname . " " . Auth::user()->lastname;
+
+            $id = Hashids::decode($request->input('advance_id'))[0];
+            $advance_id = $id;            
+            
+            $contact_adv_payment = new ContactAdvancePayment;
+            $contact_adv_payment->contact_advance_id = $advance_id;
+            $contact_adv_payment->transaction_id     = $request->input('transaction_id');
+            $contact_adv_payment->amount             = $request->input('amount');
+            $contact_adv_payment->type               = $request->input('type');
+            $contact_adv_payment->payee_id           = $request->input('payee');
+            $contact_adv_payment->memo               = $request->input('memo');
+            $contact_adv_payment->processed          = $processed;
+            $contact_adv_payment->process_date       = $process_date;
+            $contact_adv_payment->status             = $request->input('status');
+
+            //$contact_adv_payment->payee = $request->input('');
+            //$contact_adv_payment->cleared_date       = $request->input('');
+
+            $contact_adv_payment->save();
+
+            Session::flash('message', 'You have successfully add payment');
+            Session::flash('alert_class', 'alert-success');
+            return redirect()->back();
+        } else {
+            Session::flash('message', 'Unable to add payment');
+            Session::flash('alert_class', 'alert-danger');  
+            return redirect()->back();  
+        }     
+
+    }
 
     public function update(Request $request)
     {

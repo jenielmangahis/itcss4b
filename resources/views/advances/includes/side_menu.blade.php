@@ -23,8 +23,8 @@
     <li <?php echo Route::current()->getName() == 'advance_funding_info' ? 'class="active"' : ''; ?>>
       <a href="{{url('advance_funding_info/' . $hash_id)}}"><i class="fa fa-list-ul"></i> <span>Funding Info </span></a>
     </li>
-    <li <?php echo Route::current()->getName() == 'dashboard' ? 'class="active"' : ''; ?>>
-      <a href="#"><i class="fa fa-list-ul"></i> <span>Payments </span></a>
+    <li <?php echo Route::current()->getName() == 'advance_payments' ? 'class="active"' : ''; ?>>
+      <a href="{{url('advance_payments/' . $hash_id)}}"><i class="fa fa-list-ul"></i> <span>Payments </span></a>
     </li>
 
   </ul>
