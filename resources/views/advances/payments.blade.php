@@ -135,7 +135,7 @@
                       <div class="col-xs-12 calendar-events-header" style="padding-top: 10px;">
                         <div class="pull-left"><strong>PAYMENTS</strong></div>
                         <div class="pull-right">      
-                            <a href="javascript:void(0);" class="btn btn-primary" id="" data-toggle="modal" data-target="#modalAddDocs">
+                            <a href="javascript:void(0);" class="btn btn-primary" id="" data-toggle="modal" data-target="#modalAddPayment">
                                 <i class="fa fa-plus"></i> Add Payment
                             </a>                             
                             <a href="javascript:location.reload();" class="btn btn-primary">
@@ -195,46 +195,116 @@
                             <td>{{ $payment->transaction_id }}</td>
                             <td>{{ $payment->amount }}</td>
                             <td>{{ $payment->type }}</td>
-                            <td>-</td>
+                            <td>{{ $payment->memo }}</td>
                             <td>{{ $payment->transaction_id }}</td>
                             <td>{{ $payment->status }}</td>
                             <td>  
-                              <a href="javascript:void(0);" class="btn btn-xs btn-primary" id="" data-toggle="modal" data-target="#modalViewDoc">
-                                  <i class="fa fa-search-plus"></i>
+
+                              <a href="javascript:void(0);" class="btn btn-xs btn-primary" id="" data-toggle="modal" data-target="#modalEditPayment-<?php echo $payment->id; ?>">
+                                <i class="fa fa-edit"></i>
                               </a>
-                              <a href="{{ URL::asset('uploads/contact_docs/') }}" class="btn btn-xs btn-primary" id="">
-                                  <i class="fa fa-download"></i>
-                              </a>
-                              <a href="javascript:void(0);" class="btn btn-xs btn-primary" id="" data-toggle="modal" data-target="#modalDeleteDoc">
+
+                              <a href="javascript:void(0);" class="btn btn-xs btn-danger" id="" data-toggle="modal" data-target="#modalDeleteDoc-<?php echo $payment->id; ?>">
                                   <i class="fa fa-trash"></i>
                               </a> 
 
-                              <div id="modalViewDoc" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
-                                <div class="modal-dialog modal-lg" style="width: 400px !important;">
-                                  <div class="modal-content">
+                              <div id="modalEditPayment-<?php echo $payment->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
+                                {{ Form::open(array('url' => 'contact_advance/update_advance_payment', 'class' => '', 'id' => 'update-advance-form', 'enctype' => 'multipart/form-data')) }}
+                                  <input type="hidden" id="" name="payment_id" value="<?php echo Hashids::encode($payment->id); ?>">
+                                  <input type="hidden" id="" name="contact_id" value="<?php echo Hashids::encode($contact->id); ?>">
+                                  <input type="hidden" name="advance_id" id="advance_id" class="advance_id" value="{{ Hashids::encode($advance->id) }}">
+                                  <div class="modal-dialog modal-lg" style="width: 600px !important;">
+                                    <div class="modal-content">
 
                                       <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                                         </button>
-                                        <h4 class="modal-title" id="myModalLabel">View Doc</h4>
+                                        <h4 class="modal-title" id="myModalLabel">Edit Payment</h4>
                                       </div>
-
                                       <div class="modal-body">
-          
-                                      </div>
 
-                                      <div class="modal-footer"> 
-                                        <a href="{{ URL::asset('uploads/contact_docs/') }}" class="btn btn-primary" id="">
-                                            <i class="fa fa-download"></i> Download
-                                        </a>                 
+                                        <div class="row">
+                                          <div class="col-xs-12">
+                                            <div class="form-group">
+                                              <label for="inputField">Transaction ID</label>
+                                              <input type="text" class="form-control" id="transaction_id" name="transaction_id" value="{{ $payment->transaction_id }}" required placeholder=""> 
+                                            </div>                
+                                          </div>      
+                                        </div>
+
+                                        <div class="row">
+                                          <div class="col-xs-12">
+                                            <div class="form-group">
+                                              <label for="inputField">Amount</label>
+                                              <input type="number" step="0.01" class="form-control" id="amount" name="amount" value="{{ $payment->amount }}" required placeholder=""> 
+                                            </div>                
+                                          </div>      
+                                        </div>                            
+
+                                        <div class="row">
+                                          <div class="col-xs-12">
+                                            <div class="form-group">
+                                              <label for="inputField">Type</label>
+                                              <select name="type" id="type" class="form-control">
+                                                <option <?php echo $payment->type == 'cc' ? 'selected="selected"' : ''; ?>value="cc">CC</option>
+                                                <option <?php echo $payment->type == 'ach' ? 'selected="selected"' : ''; ?> value="ach">ACH</option>
+                                              </select>   
+                                            </div>                
+                                          </div>      
+                                        </div>
+
+                                        <div class="row">
+                                          <div class="col-xs-12">
+                                            <div class="form-group">
+                                              <label for="inputField">Payee</label>
+                                              <select name="payee" id="payee" class="form-control" style="width: 100%;">
+                                                @if(!$users->isEmpty())
+                                                  @foreach($users as $cuser)
+                                                    <option <?php echo $payment->payee_id == $cuser->id ? 'selected="selected"' : ''; ?> value="{{ $cuser->id }}">{{ $cuser->firstname }} {{ $cuser->lastname }}</option>
+                                                  @endforeach
+                                                @endif
+                                              </select>  
+
+                                            </div>                
+                                          </div>      
+                                        </div>
+
+                                        <div class="row">
+                                          <div class="col-xs-12">
+                                            <div class="form-group">
+                                              <label for="inputField">Memo</label>
+                                              <textarea class="form-control" name="memo" class="memo" rows="4" cols="2">{{ $payment->memo }}</textarea>
+                                            </div>                
+                                          </div>      
+                                        </div>                            
+
+                                        <div class="row">
+                                          <div class="col-xs-12">
+                                            <div class="form-group">
+                                              <label for="inputField">Status</label>
+                                              <select name="status" id="status" class="form-control">
+                                                <option <?php echo $payment->status == 'paid' ? 'selected="selected"' : ''; ?> value="paid">Paid</option>
+                                                <option <?php echo $payment->status == 'pending' ? 'selected="selected"' : ''; ?> value="pending">Pending</option>
+                                              </select>   
+                                            </div>                
+                                          </div>      
+                                        </div>                            
+
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="submit" class="btn btn-default">Update Payment</button>
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                       </div>
 
-                                  </div>            
-                                </div>
+                                    </div>
+                                  </div>
+                                {!! Form::close() !!}        
+                            </div>                
+
+                            {!! Form::close() !!}
                               </div>
 
-                              <div id="modalDeleteDoc" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
+                              <div id="modalDeleteDoc-<?php echo $payment->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
                                 <div class="modal-dialog modal-md">
                                   <div class="modal-content">
 
@@ -244,11 +314,11 @@
                                       <h4 class="modal-title" id="myModalLabel">Delete</h4>
                                     </div>
                                     <div class="modal-body">
-                                      Are you sure you want to delete selected document?
+                                      Are you sure you want to delete selected payment?
                                     </div>
                                     <div class="modal-footer">
-                                      {{ Form::open(array('url' => 'contact_docs/destroy')) }}
-                                        <?php echo Form::hidden('id', Hashids::encode(1) ,[]); ?>
+                                      {{ Form::open(array('url' => 'contact_advance/destroy_payment')) }}
+                                        <?php echo Form::hidden('id', Hashids::encode($payment->id) ,[]); ?>
                                         <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                                         <button type="submit" class="btn btn-danger">Yes</button>
                                       {!! Form::close() !!}
@@ -274,7 +344,7 @@
                   </div>
                 </div>
 
-                <div id="modalAddDocs" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
+                <div id="modalAddPayment" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
                     {{ Form::open(array('url' => 'contact_advance/store_advance', 'class' => '', 'id' => 'add-advance-form', 'enctype' => 'multipart/form-data')) }}
                       <input type="hidden" id="" name="contact_id" value="<?php echo Hashids::encode($contact->id); ?>">
                       <input type="hidden" name="advance_id" id="advance_id" class="advance_id" value="{{ Hashids::encode($advance->id) }}">

@@ -318,6 +318,60 @@ class ContactAdvanceController extends Controller
 
     }
 
+    public function update_advance_payment(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $this->validate($request, [
+                'transaction_id' => 'required',
+                'amount'         => 'required|numeric'
+             ]);  
+
+            $payment_id_inc = Hashids::decode($request->input('payment_id'))[0];
+            $payment_id     = $payment_id_inc;  
+
+            $ca_payment = ContactAdvancePayment::find($payment_id);
+            if($ca_payment) {
+                $_time = Carbon\Carbon::now();
+                $process_date = $_time->toDateString();  
+
+                $processed = Auth::user()->firstname . " " . Auth::user()->lastname;
+
+                $id = Hashids::decode($request->input('advance_id'))[0];
+                $advance_id = $id;            
+                
+                //$contact_adv_payment->contact_advance_id = $advance_id;
+                $ca_payment->transaction_id     = $request->input('transaction_id');
+                $ca_payment->amount             = $request->input('amount');
+                $ca_payment->type               = $request->input('type');
+                $ca_payment->payee_id           = $request->input('payee');
+                $ca_payment->memo               = $request->input('memo');
+                //$ca_payment->processed          = $processed;
+                //$ca_payment->process_date       = $process_date;
+                $ca_payment->status             = $request->input('status');
+
+                //$contact_adv_payment->payee = $request->input('');
+                //$contact_adv_payment->cleared_date       = $request->input('');
+
+                $ca_payment->save();
+
+                Session::flash('message', 'You have successfully add payment');
+                Session::flash('alert_class', 'alert-success');
+                return redirect()->back();
+            } else {
+                Session::flash('message', 'Unable to update payment');
+                Session::flash('alert_class', 'alert-danger');  
+                return redirect()->back();  
+            }
+
+        } else {
+            Session::flash('message', 'Unable to update payment');
+            Session::flash('alert_class', 'alert-danger');  
+            return redirect()->back();  
+        }     
+
+    }
+
     public function update(Request $request)
     {
         if ($request->isMethod('post'))
@@ -810,6 +864,23 @@ class ContactAdvanceController extends Controller
                 return redirect()->back();
             }
         }
-    }     
+    }   
+  
+    public function destroy_payment(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $id = $request->input('id');
+            $id = Hashids::decode($id)[0];
+            $ca = ContactAdvancePayment::find($id);
+
+            if($ca) {   
+                $ca->delete();
+                Session::flash('message', "Delete Successful");
+                Session::flash('alert_class', 'alert-success');
+                return redirect()->back();
+            }
+        }
+    }    
 
 }
