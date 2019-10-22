@@ -287,6 +287,8 @@
                     <li class=""><a href="#tab_tasks" data-toggle="tab"><i class="fa fa-list"></i> Tasks</a></li>
                     <li class=""><a href="#tab_emails" data-toggle="tab"><i class="fa fa-envelope-open"></i> Emails</a></li>
                     <li class=""><a href="#tab_advances" data-toggle="tab"><i class="fa fa-dollar"></i> Advances</a></li>
+                    <li class=""><a href="#tab_payments" data-toggle="tab"><i class="fa fa-dollar"></i> Payments</a></li>
+                    <li class=""><a href="#tab_balances" data-toggle="tab"><i class="fa fa-dollar"></i> Balances</a></li>
                   </ul>
                 
                   <div class="tab-content">
@@ -307,6 +309,12 @@
                     </div>
                     <div class="tab-pane" id="tab_advances">
                       @include('contact.dashboard.tab-sections.tab_advances')
+                    </div>
+                    <div class="tab-pane" id="tab_payments">
+                      @include('contact.dashboard.tab-sections.tab_payments')
+                    </div>
+                    <div class="tab-pane" id="tab_balances">
+                      @include('contact.dashboard.tab-sections.tab_balances')
                     </div>
 
                     <!-- /.tab-pane -->

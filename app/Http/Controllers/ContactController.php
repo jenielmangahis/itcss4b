@@ -88,6 +88,10 @@ class ContactController extends Controller
                             ->paginate(15); 
             }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
                 $contact = Contact::orderBy('created_at', 'desc')->paginate(15);  
+            }else{
+                $contact = Contact::where('user_id','=', $user_id)
+                            ->orderBy('created_at', 'desc')
+                            ->paginate(15); 
             }            
         }
 
