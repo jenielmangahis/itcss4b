@@ -343,7 +343,7 @@
     var stage_id = $('#stage_id').val();
     var status = "<?php echo $contact->status; ?>";
     $('#stage-status-container').html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
-    var url = base_url + '/workflow/ajax_load_stage_status'
+    var url = base_url + '/contact/ajax_load_stage_status'
     $.ajax({
          type: "GET",
          url: url,               

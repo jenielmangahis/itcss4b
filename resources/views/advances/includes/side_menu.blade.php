@@ -12,9 +12,6 @@
       <a href="{{url('advance_documents/' . $hash_id)}}"><i class="fa fa-list-ul"></i> <span>Documents </span></a>
     </li>
     <li <?php echo Route::current()->getName() == 'dashboard' ? 'class="active"' : ''; ?>>
-      <a href="#"><i class="fa fa-list-ul"></i> <span>Applications </span></a>
-    </li>
-    <li <?php echo Route::current()->getName() == 'dashboard' ? 'class="active"' : ''; ?>>
       <a href="#"><i class="fa fa-list-ul"></i> <span>Submissions </span></a>
     </li>
     <li <?php echo Route::current()->getName() == 'advance_underwriter_notes' ? 'class="active"' : ''; ?>>
