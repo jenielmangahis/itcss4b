@@ -60,6 +60,8 @@ class ContactAdvanceController extends Controller
     
     public function advance_application($id)
     {  
+        $count_payment_made  = 0;
+        $last_payment_amount = 0;
         /*
          * Contact Advance - Start
         */    
@@ -79,6 +81,14 @@ class ContactAdvanceController extends Controller
 
                 $company_user = CompanyUser::where('company_id','=',$contact->company_id)->get();
 
+                $total_advance_payment = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->sum('amount');
+                $count_payment_made    = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->count();
+                $last_payment          = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->orderBy('created_at', 'desc')->first();
+
+                if($last_payment) {
+                    $last_payment_amount = $last_payment->amount;              
+                }
+
                 return view('advances.index', [
                     'hash_id' => $hash_id,
                     'advance_id' => $id,
@@ -89,7 +99,10 @@ class ContactAdvanceController extends Controller
                     'contact_business_info' => $contact_business_info,
                     'contact_loan_info' => $contact_loan_info,
                     'contact_broker_info' => $contact_broker_info,
-                    'company_user' => $company_user,      
+                    'company_user' => $company_user,
+                    'total_advance_payment' => $total_advance_payment,
+                    'count_payment_made' => $count_payment_made,
+                    'last_payment_amount' => $last_payment_amount,
                 ]);                
             }                                   
         /*
@@ -99,6 +112,9 @@ class ContactAdvanceController extends Controller
 
     public function advance_documents($id, Request $request)
     {  
+        $count_payment_made  = 0;
+        $last_payment_amount = 0;
+
         $hash_id               = $id;     
         $id                    = Hashids::decode($id)[0]; 
         $contact_advance_query = ContactAdvance::query();
@@ -107,6 +123,14 @@ class ContactAdvanceController extends Controller
             $contact_advance = $contact_advance_query->where('id','=', $id)->first();
             $contact         = Contact::where('id', '=', $contact_advance->contact_id)->first();
             $company_user    = CompanyUser::where('company_id','=',$contact->company_id)->get();
+
+            $total_advance_payment = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->sum('amount');
+            $count_payment_made    = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->count();
+            $last_payment          = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->orderBy('created_at', 'desc')->first();
+
+            if($last_payment) {
+                $last_payment_amount = $last_payment->amount;              
+            }            
 
             /*
              * For docs - start
@@ -144,12 +168,18 @@ class ContactAdvanceController extends Controller
                 'search_field_documents ' => $search_field_documents,
                 'documentTypes' => $documentTypes,
                 'group_id' => Auth::user()->group_id,
+                'total_advance_payment' => $total_advance_payment,
+                'count_payment_made' => $count_payment_made,
+                'last_payment_amount' => $last_payment_amount,                
             ]);                
         }    
     }  
 
     public function advance_underwriter_notes($id, Request $request)
     {
+        $count_payment_made  = 0;
+        $last_payment_amount = 0;
+
         $hash_id               = $id;     
         $id                    = Hashids::decode($id)[0]; 
         $contact_advance_query = ContactAdvance::query();
@@ -159,7 +189,15 @@ class ContactAdvanceController extends Controller
             $contact         = Contact::where('id', '=', $contact_advance->contact_id)->first();
             $company_user    = CompanyUser::where('company_id','=',$contact->company_id)->get();   
 
-            $under_writer_note = ContactAdvanceUnderwriterNote::where('contact_advance_id','=', $contact_advance->id)->first();     
+            $under_writer_note = ContactAdvanceUnderwriterNote::where('contact_advance_id','=', $contact_advance->id)->first();   
+
+            $total_advance_payment = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->sum('amount');
+            $count_payment_made    = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->count();
+            $last_payment          = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->orderBy('created_at', 'desc')->first();
+
+            if($last_payment) {
+                $last_payment_amount = $last_payment->amount;              
+            }                  
             
             return view('advances.underwriter-notes', [
                 'hash_id' => $hash_id,
@@ -168,6 +206,9 @@ class ContactAdvanceController extends Controller
                 'contact' => $contact,
                 'company_user' => $company_user,
                 'under_writer_note' => $under_writer_note,
+                'total_advance_payment' => $total_advance_payment,
+                'count_payment_made' => $count_payment_made,
+                'last_payment_amount' => $last_payment_amount,                 
 
             ]);                
         }   
@@ -175,6 +216,9 @@ class ContactAdvanceController extends Controller
 
     public function advance_funding_info($id, Request $request)
     {
+        $count_payment_made  = 0;
+        $last_payment_amount = 0;
+
         $hash_id               = $id;     
         $id                    = Hashids::decode($id)[0]; 
         $contact_advance_query = ContactAdvance::query();
@@ -185,6 +229,14 @@ class ContactAdvanceController extends Controller
             $company_user    = CompanyUser::where('company_id','=',$contact->company_id)->get();      
 
             $funding_info = ContactAdvanceFundingInfo::where('contact_advance_id','=', $contact_advance->id)->first(); 
+
+            $total_advance_payment = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->sum('amount');
+            $count_payment_made    = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->count();
+            $last_payment          = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->orderBy('created_at', 'desc')->first();
+
+            if($last_payment) {
+                $last_payment_amount = $last_payment->amount;              
+            }             
             
             return view('advances.funding_info', [
                 'hash_id' => $hash_id,
@@ -192,14 +244,19 @@ class ContactAdvanceController extends Controller
                 'advance' => $contact_advance,
                 'contact' => $contact,
                 'company_user' => $company_user,
-                'funding_info' => $funding_info
-
+                'funding_info' => $funding_info,
+                'total_advance_payment' => $total_advance_payment,
+                'count_payment_made' => $count_payment_made,
+                'last_payment_amount' => $last_payment_amount, 
             ]);                
         } 
     }
 
     public function advance_payments($id, Request $request)
     {
+        $count_payment_made  = 0;
+        $last_payment_amount = 0;
+                
         $hash_id               = $id;     
         $id                    = Hashids::decode($id)[0]; 
         $contact_advance_query = ContactAdvance::query();
@@ -211,6 +268,14 @@ class ContactAdvanceController extends Controller
 
             $users           = User::select('id','firstname','lastname')->where('is_active','=',0)->get();
             $advance_payments = ContactAdvancePayment::where('contact_advance_id','=',$contact_advance->id)->paginate(10);
+
+            $total_advance_payment = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->sum('amount');
+            $count_payment_made    = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->count();
+            $last_payment          = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->orderBy('created_at', 'desc')->first();
+
+            if($last_payment) {
+                $last_payment_amount = $last_payment->amount;              
+            }             
             
             return view('advances.payments', [
                 'hash_id' => $hash_id,
@@ -219,7 +284,10 @@ class ContactAdvanceController extends Controller
                 'contact' => $contact,
                 'company_user' => $company_user,
                 'advance_payments' => $advance_payments,
-                'users' => $users
+                'users' => $users,
+                'total_advance_payment' => $total_advance_payment,
+                'count_payment_made' => $count_payment_made,
+                'last_payment_amount' => $last_payment_amount,                 
             ]);                
         } 
     }    

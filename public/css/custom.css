@@ -50,3 +50,39 @@
 	/*color: #ffffff !important;*/
 	color: #ffffff !important;
 }
+
+/* For tabs */
+.nav-tabs li{
+background-color:#3c8dbc !important;
+min-width: 8%;
+/*width: 9%;*/
+margin-right: 2px !important;    
+font-size: 13px;
+}
+.nav-tabs li a{
+padding: 10px 10px;
+color: #ffffff !important;
+}
+.nav-tabs li.active{
+background-color: #222D32 !important;
+}
+.nav-tabs li.active a{
+color:#3c8dbc !important;
+}
+.dropdown ul.dropdown-menu li a:hover{
+background-color: #3c8dbc !important;
+color: #ffffff !important;
+}
+.dropdown ul.dropdown-menu li a{
+color: #ffffff !important;
+}
+.btn-contact-dashboard{
+width: 100%;
+margin-bottom: 2px;
+font-size: 12px;
+padding: 4px;
+}
+
+.small-box h3 {
+	font-size: 20px !important;
+}

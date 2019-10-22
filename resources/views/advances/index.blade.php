@@ -13,38 +13,6 @@
 @endsection
 
 @section('main')
-<style>
-  .nav-tabs li{
-    background-color:#3c8dbc !important;
-    min-width: 8%;
-    /*width: 9%;*/
-    margin-right: 2px !important;    
-    font-size: 13px;
-  }
-  .nav-tabs li a{
-    padding: 10px 10px;
-    color: #ffffff !important;
-  }
-  .nav-tabs li.active{
-    background-color: #222D32 !important;
-  }
-  .nav-tabs li.active a{
-    color:#3c8dbc !important;
-  }
-  .dropdown ul.dropdown-menu li a:hover{
-    background-color: #3c8dbc !important;
-    color: #ffffff !important;
-  }
-  .dropdown ul.dropdown-menu li a{
-    color: #ffffff !important;
-  }
-  .btn-contact-dashboard{
-    width: 100%;
-    margin-bottom: 2px;
-    font-size: 12px;
-    padding: 4px;
-  }
-</style>
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
@@ -99,60 +67,8 @@
               </section>
 
               <section class="col-lg-9 connectedSortable ui-sortable">
-                <div class="">
-                  <div class="row">
-                    <div class="col-lg-2 col-xs-6">
-                      <!-- small box -->
-                      <div class="small-box bg-aqua">
-                        <div class="inner">
-                          <h3>0.00</h3>
-                          <p>Balance</p>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-2 col-xs-6">
-                      <!-- small box -->
-                      <div class="small-box bg-green">
-                        <div class="inner">
-                          <h3>0.00</h3>
-                          <p>Payments Made</p>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-2 col-xs-6">
-                      <!-- small box -->
-                      <div class="small-box bg-yellow">
-                        <div class="inner">
-                          <h3>0.00</h3>
-                          <p>Return</p>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-2 col-xs-6">
-                      <!-- small box -->
-                      <div class="small-box bg-red">
-                        <div class="inner">
-                          <h3>0.00</h3>
-                          <p>Last Payment</p>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-2 col-xs-6">
-                      <!-- small box -->
-                      <div class="small-box bg-red">
-                        <div class="inner">
-                          <h3>0<sup style="font-size: 20px">%</sup></h3>
-                          <p>Performance</p>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- ./col -->
-                  </div>
-                </div>
+
+                @include('advances.includes.summary_block')
 
                 {{ Form::open(array('url' => 'contact_advance/update_application', 'class' => 'edit-advance-form-application', 'id' => 'edit-advance-form-application')) }}
                 <input type="hidden" name="advance_id" id="advance_id" class="advance_id" value="{{ Hashids::encode($advance->id) }}">

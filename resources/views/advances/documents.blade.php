@@ -67,60 +67,8 @@
               </section>
 
               <section class="col-lg-9 connectedSortable ui-sortable">
-                <div class="">
-                  <div class="row">
-                    <div class="col-lg-2 col-xs-6">
-                      <!-- small box -->
-                      <div class="small-box bg-aqua">
-                        <div class="inner">
-                          <h3>0.00</h3>
-                          <p>Balance</p>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-2 col-xs-6">
-                      <!-- small box -->
-                      <div class="small-box bg-green">
-                        <div class="inner">
-                          <h3>0.00</h3>
-                          <p>Payments Made</p>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-2 col-xs-6">
-                      <!-- small box -->
-                      <div class="small-box bg-yellow">
-                        <div class="inner">
-                          <h3>0.00</h3>
-                          <p>Return</p>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-2 col-xs-6">
-                      <!-- small box -->
-                      <div class="small-box bg-red">
-                        <div class="inner">
-                          <h3>0.00</h3>
-                          <p>Last Payment</p>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- ./col -->
-                    <div class="col-lg-2 col-xs-6">
-                      <!-- small box -->
-                      <div class="small-box bg-red">
-                        <div class="inner">
-                          <h3>0<sup style="font-size: 20px">%</sup></h3>
-                          <p>Performance</p>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- ./col -->
-                  </div>
-                </div>
+
+                @include('advances.includes.summary_block')
 
                 {{ Form::open(array('url' => 'contact_advance/update_advance', 'class' => 'edit-advance-form-application', 'id' => 'edit-advance-form-application')) }}
                 <input type="hidden" name="advance_id" id="advance_id" class="advance_id" value="{{ Hashids::encode($advance->id) }}">
