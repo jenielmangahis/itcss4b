@@ -256,7 +256,7 @@ class ContactAdvanceController extends Controller
     {
         $count_payment_made  = 0;
         $last_payment_amount = 0;
-                
+
         $hash_id               = $id;     
         $id                    = Hashids::decode($id)[0]; 
         $contact_advance_query = ContactAdvance::query();
@@ -267,7 +267,22 @@ class ContactAdvanceController extends Controller
             $company_user    = CompanyUser::where('company_id','=',$contact->company_id)->get();  
 
             $users           = User::select('id','firstname','lastname')->where('is_active','=',0)->get();
-            $advance_payments = ContactAdvancePayment::where('contact_advance_id','=',$contact_advance->id)->paginate(10);
+
+            $search_field_adv_payment = "";
+
+            $search_by_adv_payment    = $request->input('search_by_adv_payment');
+            $search_field_adv_payment = $request->input('search_field_adv_payment');  
+            if($search_by_adv_payment != '' && $search_field_adv_payment != '') {
+                $advance_payments_query = ContactAdvancePayment::query();
+
+                if($search_by_adv_payment != '' && $search_field_adv_payment != '') {
+                    $advance_payments_query = $advance_payments_query->where('contact_advance_payments.'.$search_by_adv_payment, 'like', '%' . $search_field_adv_payment . '%');
+                    $advance_payments_query = $advance_payments_query->where('contact_advance_id','=',$contact_advance->id);
+                    $advance_payments = $advance_payments_query->paginate(10);
+                }            
+            } else {
+                $advance_payments = ContactAdvancePayment::where('contact_advance_id','=',$contact_advance->id)->paginate(10);
+            }
 
             $total_advance_payment = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->sum('amount');
             $count_payment_made    = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->count();
@@ -285,6 +300,7 @@ class ContactAdvanceController extends Controller
                 'company_user' => $company_user,
                 'advance_payments' => $advance_payments,
                 'users' => $users,
+                'search_field_adv_payment' => $search_field_adv_payment,
                 'total_advance_payment' => $total_advance_payment,
                 'count_payment_made' => $count_payment_made,
                 'last_payment_amount' => $last_payment_amount,                 

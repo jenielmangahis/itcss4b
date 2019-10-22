@@ -76,6 +76,8 @@
                 
                 @include('advances.includes.edit_advance_fields')
 
+                {!! Form::close() !!}
+
                 <div class="box box-primary">
                   <div id="" class="form-group">
 
@@ -102,10 +104,10 @@
                             <div class="col-md-6">
                               <div class="form-group">
                                 <label>Search By: </label><br />
-                                <select name="search_by_documents" class="form-control" style="width: 30%; float: left;">
+                                <select name="search_by_adv_payment" class="form-control" style="width: 30%; float: left;">
                                   <option value="transaction_id" selected="selected">Transaction ID</option>              
                                 </select>            
-                                <input class="form-control" type="text" value="<?php //echo $search_field_documents; ?>" name="search_field_documents" placeholder="Default Search" style="width: 70%; float: right;">
+                                <input class="form-control" type="text" value="<?php echo $search_field_adv_payment; ?>" name="search_field_adv_payment" placeholder="Default Search" style="width: 70%; float: right;">
                               </div>
                               <!-- /.form-group -->
                             </div>
@@ -120,8 +122,8 @@
                               <!-- /.form-group -->
                             </div>
                           </div>                
+                        </div>
 
-                        </div>                      
                       {!! Form::close() !!}         
                     </div>
 
@@ -384,10 +386,9 @@
                     {!! Form::close() !!}        
                 </div>                
 
-                {!! Form::close() !!}
 
                 <div class="pull-right">
-                  <button type="button" id="btn-update-advance-payment-form" class="btn btn-primary btn-update-advance-payment-form">Add</button>
+                  <button type="button" id="btn-update-advance-payment-form" class="btn btn-primary btn-update-advance-payment-form">Update</button>
                 </div>     
                               
               </section>
