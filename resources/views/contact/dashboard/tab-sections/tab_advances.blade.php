@@ -69,8 +69,9 @@
     <th>Period</th>
     <th>Type</th>
     <th>Status</th>
-
-    <th style="width:10%;">Action</th>
+    <?php if( $group_id == 1 ){ ?>
+      <th style="width:10%;">Action</th>
+    <?php } ?>
   </tr>
 
   @foreach($contact_advances as $advance)
@@ -91,6 +92,7 @@
       
       <td>{{ $advance->advance_type }}</td>
       <td>{{ $advance->status }}</td>
+      <?php if( $group_id == 1 ){ ?>
       <td>
         <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDeleteAdvance-<?= $advance->id; ?>">
             <i class="fa fa-trash"></i>
@@ -102,6 +104,7 @@
             <i class="fa fa-edit"></i>
         </a>                                          
       </td>
+      <?php } ?>
     </tr>  
 
     <div id="modalDeleteAdvance-<?= $advance->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">

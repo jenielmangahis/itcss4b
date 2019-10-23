@@ -26,6 +26,7 @@ use App\ContactHistory;
 use App\ContactAdvance;
 use App\ContactUser;
 use App\User;
+use App\ContactAdvancePayment;
 
 use UserHelper;
 
@@ -356,6 +357,31 @@ class DashboardController extends Controller
          * Contact User - end
         */
 
+        /*
+         * Contact Advance Payment
+        */
+            $contactAdvance = ContactAdvance::where('contact_id', '=', $contact_id)->get();
+            $a_payments = array();
+            foreach($contactAdvance as $ca){
+                $contactAdvancePayment = ContactAdvancePayment::where('contact_advance_id', '=', $ca->id)->get();
+                foreach($contactAdvancePayment as $cp){
+                    $a_payments[] = [
+                        'payment_advance_id' => $cp->id,
+                        'advance' => ['contract_number' => $ca->contract_number, 'loan_id' => $ca->loan_id],
+                        'transaction_id' => $cp->transaction_id,
+                        'process_by' => $cp->processed,
+                        'process_date' => date("F j Y", strtotime($cp->process_date)),
+                        'amount' => number_format($cp->amount,2),
+                        'type' => strtoupper($cp->type),
+                        'memo' => $cp->memo,
+                        'payee' => $cp->payee,
+                        'status' => $cp->status
+                    ];
+                }
+            }
+        /*
+         * Contact Advance Payment = end
+        */
         return view('dashboard.contact.index',[
             'contact_id' => Hashids::encode($contact_id),            
             'contact' => $contact,            
@@ -393,7 +419,9 @@ class DashboardController extends Controller
             'search_by_advance' => $search_by_advance,
             'userContactInfo' => $userContactInfo,
             'has_client_portal' => $has_client_portal,
-            'group_id' => Auth::user()->group_id
+            'group_id' => Auth::user()->group_id,
+            'a_payments' => $a_payments, 
+            'contactAdvance' => $contactAdvance
         ]); 
     }
 }
