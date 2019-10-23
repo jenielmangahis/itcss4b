@@ -201,13 +201,13 @@ class ContactDashboardController extends Controller
                 $contact_advance_query = ContactAdvance::query();
                 $contact_advance_query = $contact_advance_query->where($search_by_advance, 'like', '%' . $search_advance_field . '%');
                 $contact_advance_query = $contact_advance_query->where('contact_id','=', $contact->id);               
-                $contact_advances = $contact_advance_query->paginate(10);
+                $contact_advances = $contact_advance_query->orderBy('created_at', 'desc')->paginate(10);
             } else {
                 $contact_advance_query = ContactAdvance::query();
                 if($contact) {
                     $contact_advance_query = $contact_advance_query->where('contact_id','=', $contact->id);
                 }                
-                $contact_advances = $contact_advance_query->paginate(10);
+                $contact_advances = $contact_advance_query->orderBy('created_at', 'desc')->paginate(10);
             }
             
         /*

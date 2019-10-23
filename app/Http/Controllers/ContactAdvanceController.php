@@ -337,7 +337,7 @@ class ContactAdvanceController extends Controller
             $contact_adv->contract_number = $contract_number;
             $contact_adv->amount          = $advance_amount;
             $contact_adv->payback         = $payback_amount;
-            $contact_adv->balance         = 0;
+            $contact_adv->balance         = $payback_amount;
             $contact_adv->factor_rate     = $request->input('factor_rate');
             $contact_adv->remit           = $request->input('remit');
             $contact_adv->period          = $request->input('payment_period');
@@ -391,6 +391,24 @@ class ContactAdvanceController extends Controller
 
             $contact_adv_payment->save();
 
+            /* Update advance balance amount - start */
+            $new_balance = 0;
+            $contact_adv = ContactAdvance::find($advance_id);
+            if($contact_adv) {
+
+                if($contact_adv->balance > 0) {
+                    $new_balance = $contact_adv->balance - $request->input('amount');
+                } else {
+                    $new_balance = $contact_adv->payback - $request->input('amount');
+                }
+                if($request->input('status') == 'paid') {
+                    $contact_adv->balance      = $new_balance;
+                    $contact_adv->save();
+                }
+
+            }
+            /* Update advance balance amount - end */
+
             Session::flash('message', 'You have successfully add payment');
             Session::flash('alert_class', 'alert-success');
             return redirect()->back();
@@ -422,7 +440,8 @@ class ContactAdvanceController extends Controller
                 $processed = Auth::user()->firstname . " " . Auth::user()->lastname;
 
                 $id = Hashids::decode($request->input('advance_id'))[0];
-                $advance_id = $id;            
+                $advance_id = $id;       
+                $previous_amount = $ca_payment->amount;
                 
                 //$contact_adv_payment->contact_advance_id = $advance_id;
                 $ca_payment->transaction_id     = $request->input('transaction_id');
@@ -438,6 +457,24 @@ class ContactAdvanceController extends Controller
                 //$contact_adv_payment->cleared_date       = $request->input('');
 
                 $ca_payment->save();
+
+                /* Update advance balance amount - start */
+                $new_balance = 0;
+                $contact_adv = ContactAdvance::find($advance_id);
+                if($contact_adv) {
+
+                    if($contact_adv->balance > 0) {
+                        $new_balance = ($contact_adv->balance + $previous_amount) - $request->input('amount');
+                    } else {
+                        $new_balance = $contact_adv->payback - $request->input('amount');
+                    }
+                    if($request->input('status') == 'paid') {
+                        $contact_adv->balance      = $new_balance;
+                        $contact_adv->save();
+                    }
+
+                }
+                /* Update advance balance amount - end */                
 
                 Session::flash('message', 'You have successfully add payment');
                 Session::flash('alert_class', 'alert-success');
