@@ -74,9 +74,9 @@
     <!-- ./col -->
     <div class="col-lg-2 col-xs-6">
       <!-- small box -->
-      <div class="small-box bg-red">
+      <div class="small-box bg-blue">
         <div class="inner">
-          <h3><?php echo $performance; ?>%</h3>
+          <h3><?php echo number_format($performance,2); ?>%</h3>
           <p>Performance</p>
         </div>
       </div>

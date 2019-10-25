@@ -16,6 +16,8 @@ use App\ContactLoanInformation;
 use App\ContactAdvanceUnderwriterNote;
 use App\ContactAdvanceFundingInfo;
 use App\ContactAdvancePayment;
+use App\ContactAdvanceMerchantStatementRecord;
+use App\ContactAdvanceFinancialBankStatementRecord;
 use App\CompanyUser;
 use App\Companies;
 use App\Stage;
@@ -306,7 +308,100 @@ class ContactAdvanceController extends Controller
                 'last_payment_amount' => $last_payment_amount,                 
             ]);                
         } 
-    }    
+    }   
+
+    
+    public function advance_financials($id, Request $request)
+    {
+        $count_payment_made  = 0;
+        $last_payment_amount = 0;
+
+        $hash_id               = $id;     
+        $id                    = Hashids::decode($id)[0]; 
+        $contact_advance_query = ContactAdvance::query();
+
+        if($id) {
+            $contact_advance = $contact_advance_query->where('id','=', $id)->first();
+            $contact         = Contact::where('id', '=', $contact_advance->contact_id)->first();
+            $company_user    = CompanyUser::where('company_id','=',$contact->company_id)->get();  
+
+            $users           = User::select('id','firstname','lastname')->where('is_active','=',0)->get();
+
+            $total_advance_payment = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->sum('amount');
+            $count_payment_made    = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->count();
+            $last_payment          = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->orderBy('created_at', 'desc')->first();
+
+            if($last_payment) {
+                $last_payment_amount = $last_payment->amount;              
+            }     
+
+            $contact_adv_financial_bank_statement = ContactAdvanceFinancialBankStatementRecord::where('contact_advance_id','=', $contact_advance->id)->get();  
+            
+            $contact_adv_financial_bank_statement_array = array();
+            if(!$contact_adv_financial_bank_statement->isEmpty()) {
+                $contact_adv_financial_bank_statement_array = $contact_adv_financial_bank_statement->toArray();
+            }
+
+            $contact_adv_merchant_statement = ContactAdvanceMerchantStatementRecord::where('contact_advance_id','=', $contact_advance->id)->get();  
+            
+            $contact_adv_merchant_statement_array = array();
+            if(!$contact_adv_merchant_statement->isEmpty()) {
+                $contact_adv_merchant_statement_array = $contact_adv_merchant_statement->toArray();
+            }         
+
+            return view('advances.financials', [
+                'hash_id' => $hash_id,
+                'advance_id' => $id,
+                'advance' => $contact_advance,
+                'contact' => $contact,
+                'company_user' => $company_user,
+                'users' => $users,
+                'total_advance_payment' => $total_advance_payment,
+                'count_payment_made' => $count_payment_made,
+                'last_payment_amount' => $last_payment_amount,
+                'contact_adv_financial_bank_statement' => $contact_adv_financial_bank_statement_array,
+                'contact_adv_merchant_statement' => $contact_adv_merchant_statement_array,
+            ]);                
+        } 
+    }   
+
+    public function advance_submission($id, Request $request)
+    {
+        $count_payment_made  = 0;
+        $last_payment_amount = 0;
+
+        $hash_id               = $id;     
+        $id                    = Hashids::decode($id)[0]; 
+        $contact_advance_query = ContactAdvance::query();
+
+        if($id) {
+            $contact_advance = $contact_advance_query->where('id','=', $id)->first();
+            $contact         = Contact::where('id', '=', $contact_advance->contact_id)->first();
+            $company_user    = CompanyUser::where('company_id','=',$contact->company_id)->get();  
+
+            $users           = User::select('id','firstname','lastname')->where('is_active','=',0)->get();
+
+            $total_advance_payment = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->sum('amount');
+            $count_payment_made    = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->count();
+            $last_payment          = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->orderBy('created_at', 'desc')->first();
+
+            if($last_payment) {
+                $last_payment_amount = $last_payment->amount;              
+            }             
+            
+            return view('advances.submission', [
+                'hash_id' => $hash_id,
+                'advance_id' => $id,
+                'advance' => $contact_advance,
+                'contact' => $contact,
+                'company_user' => $company_user,
+                'users' => $users,
+                'total_advance_payment' => $total_advance_payment,
+                'count_payment_made' => $count_payment_made,
+                'last_payment_amount' => $last_payment_amount,                 
+            ]);                
+        }  
+    } 
 
     public function store(Request $request)
     {
@@ -768,6 +863,170 @@ class ContactAdvanceController extends Controller
 
         }
     }
+
+    public function update_financial(Request $request) 
+    {
+        if ($request->isMethod('post'))
+        {
+            $this->validate($request, [
+                'advance_type'        => 'required',
+                'payment_method'      => 'required',
+                'advance_amount'      => 'required',
+                'payment_period_type' => 'required',
+                'payment_period'      => 'required|numeric'
+             ]);
+
+            $id = Hashids::decode($request->input('advance_id'))[0];
+            $advance_id = $id;
+            $contact_advance = ContactAdvance::find($advance_id);
+
+            if($contact_advance) {
+
+                $advance_amount = $request->input('advance_amount');
+                $factor_rate    = $request->input('factor_rate');
+                $payment_period = $request->input('payment_period');
+
+                $payback_amount = $advance_amount * $factor_rate;
+                $payment        = $payback_amount / $payment_period;
+
+                $contact_advance->lender_id            = $request->input('lender_id');
+                $contact_advance->sales_user_id        = $request->input('sales_user_id');
+                $contact_advance->under_writer_user_id = $request->input('under_writer_user_id');
+                $contact_advance->closer_user_id       = $request->input('closer_user_id');
+
+                $contact_advance->amount          = $advance_amount;
+                $contact_advance->payback         = $payback_amount;
+                $contact_advance->factor_rate     = $request->input('factor_rate');
+                $contact_advance->remit           = $request->input('remit');
+                $contact_advance->period          = $request->input('payment_period');
+                $contact_advance->period_type     = $request->input('payment_period_type');
+                $contact_advance->payment         = $payment;
+                $contact_advance->advance_type    = $request->input('advance_type');
+                $contact_advance->payment_method  = $request->input('payment_method');
+                $contact_advance->save();  
+
+                /* Save Advance Financial Bank Statement - Start */
+                $contact_adv_financial_bank_statement = ContactAdvanceFinancialBankStatementRecord::select('contact_advance_financial_bank_statement_records.id as id')->where('contact_advance_id','=', $contact_advance->id)->get();       
+                if(!$contact_adv_financial_bank_statement->isEmpty()) {
+                    $banks_field_array = $request->input('bank');
+                    $ids_to_update      = array();
+
+                    foreach($contact_adv_financial_bank_statement as $cafbs) {
+                        $ids_to_update[] = $cafbs->id;
+                    }
+
+                    $inc = 1;
+                    foreach($ids_to_update as $id_key => $cafbsr_id) {
+                        $contact_adv_financial_bank_statement_update = ContactAdvanceFinancialBankStatementRecord::find($cafbsr_id);
+                        if($contact_adv_financial_bank_statement_update) {
+                            //$contact_adv_financial_bank_statement_update->contact_advance_id = $contact_advance->id;
+                            $contact_adv_financial_bank_statement_update->name  = $request->input('bank_name');
+                            $contact_adv_financial_bank_statement_update->month = $banks_field_array["'bank_month'"][$inc] != '' ? $banks_field_array["'bank_month'"][$inc] : 0;
+                            $contact_adv_financial_bank_statement_update->year  = $banks_field_array["'bank_year'"][$inc];
+                            $contact_adv_financial_bank_statement_update->total_deposits = $banks_field_array["'total_deposits'"][$inc];
+                            $contact_adv_financial_bank_statement_update->averate_daily  = $banks_field_array["'averate_daily'"][$inc];
+                            $contact_adv_financial_bank_statement_update->withdrawal     = $banks_field_array["'withdrawal'"][$inc];
+                            $contact_adv_financial_bank_statement_update->ending_balance = $banks_field_array["'ending_balance'"][$inc];
+                            $contact_adv_financial_bank_statement_update->deposits = $banks_field_array["'deposits'"][$inc];
+                            $contact_adv_financial_bank_statement_update->days_neg = $banks_field_array["'days_neg'"][$inc];
+                            $contact_adv_financial_bank_statement_update->nsf      = $banks_field_array["'nsf'"][$inc];
+                            $contact_adv_financial_bank_statement_update->save(); 
+                            $inc++;
+                        }
+                    }
+
+                } else {
+
+                    $banks_field_array = $request->input('bank');
+
+                    $contact_adv_financial_bank_statement_new = '';
+                    $months_inc = GlobalHelper::loadNumbers(12);
+
+                    foreach($months_inc as $m_key => $m_inc) {
+                        $contact_adv_financial_bank_statement_new = new ContactAdvanceFinancialBankStatementRecord();
+                        $contact_adv_financial_bank_statement_new->contact_advance_id = $contact_advance->id;
+                        $contact_adv_financial_bank_statement_new->name               = $request->input('bank_name');
+                        $contact_adv_financial_bank_statement_new->month = $banks_field_array["'bank_month'"][$m_inc] != '' ? $banks_field_array["'bank_month'"][$m_inc] : 0;
+                        $contact_adv_financial_bank_statement_new->year  = $banks_field_array["'bank_year'"][$m_inc];
+                        $contact_adv_financial_bank_statement_new->total_deposits = $banks_field_array["'total_deposits'"][$m_inc];
+                        $contact_adv_financial_bank_statement_new->averate_daily  = $banks_field_array["'averate_daily'"][$m_inc];
+                        $contact_adv_financial_bank_statement_new->withdrawal     = $banks_field_array["'withdrawal'"][$m_inc];
+                        $contact_adv_financial_bank_statement_new->ending_balance = $banks_field_array["'ending_balance'"][$m_inc];
+                        $contact_adv_financial_bank_statement_new->deposits = $banks_field_array["'deposits'"][$m_inc];
+                        $contact_adv_financial_bank_statement_new->days_neg = $banks_field_array["'days_neg'"][$m_inc];
+                        $contact_adv_financial_bank_statement_new->nsf      = $banks_field_array["'nsf'"][$m_inc];
+                        $contact_adv_financial_bank_statement_new->save();                      
+                    }
+              
+                }    
+                /* Save Advance Financial Bank Statement - End */  
+
+                /* Save Advance Merchant Statement - Start */
+                $contact_adv_merchant_statement = ContactAdvanceMerchantStatementRecord::select('contact_advance_merchant_statement_records.id as id')->where('contact_advance_id','=', $contact_advance->id)->get();                
+                if(!$contact_adv_merchant_statement->isEmpty()) {
+                    $merchant_field_array = $request->input('merchant');
+                    $ids_to_update        = array();
+
+                    foreach($contact_adv_merchant_statement as $cams) {
+                        $ids_to_update[] = $cams->id;
+                    }   
+
+                    $inc = 1;
+                    foreach($ids_to_update as $id_key => $cams_id) {
+                        $contact_adv_merchant_statement_update = ContactAdvanceMerchantStatementRecord::find($cams_id);
+                        if($contact_adv_merchant_statement_update) {
+                            //$contact_adv_merchant_statement_update->contact_advance_id = $contact_advance->id;
+                            $contact_adv_merchant_statement_update->name   = $request->input('merchant_name');
+                            $contact_adv_merchant_statement_update->month = $merchant_field_array["'merchant_month'"][$inc] != '' ? $merchant_field_array["'merchant_month'"][$inc] : 0;
+                            $contact_adv_merchant_statement_update->year  = $merchant_field_array["'merchant_year'"][$inc];
+                            $contact_adv_merchant_statement_update->total_volume = $merchant_field_array["'total_volume'"][$inc];
+                            $contact_adv_merchant_statement_update->visa_ms_disc  = $merchant_field_array["'visa_ms_disc'"][$inc];
+                            $contact_adv_merchant_statement_update->amex     = $merchant_field_array["'amex'"][$inc];
+                            $contact_adv_merchant_statement_update->charge_back_volume = $merchant_field_array["'charge_back_volume'"][$inc];
+                            $contact_adv_merchant_statement_update->transaction = $merchant_field_array["'transaction'"][$inc];
+                            $contact_adv_merchant_statement_update->batches = $merchant_field_array["'batches'"][$inc];
+                            $contact_adv_merchant_statement_update->save();     
+                            $inc++;
+                        }
+                    }                    
+
+                } else {
+                    $merchant_field_array = $request->input('merchant');
+
+                    $contact_adv_merchant_statement_new = '';
+                    $months_inc = GlobalHelper::loadNumbers(12);  
+
+                    foreach($months_inc as $m_key => $m_inc) {
+                        $contact_adv_merchant_statement_new = new ContactAdvanceMerchantStatementRecord();
+                        $contact_adv_merchant_statement_new->contact_advance_id = $contact_advance->id;
+                        $contact_adv_merchant_statement_new->name               = $request->input('merchant_name');
+                        $contact_adv_merchant_statement_new->month = $merchant_field_array["'merchant_month'"][$m_inc] != '' ? $merchant_field_array["'merchant_month'"][$m_inc] : 0;
+                        $contact_adv_merchant_statement_new->year  = $merchant_field_array["'merchant_year'"][$m_inc];
+                        $contact_adv_merchant_statement_new->total_volume = $merchant_field_array["'total_volume'"][$m_inc];
+                        $contact_adv_merchant_statement_new->visa_ms_disc  = $merchant_field_array["'visa_ms_disc'"][$m_inc];
+                        $contact_adv_merchant_statement_new->amex     = $merchant_field_array["'amex'"][$m_inc];
+                        $contact_adv_merchant_statement_new->charge_back_volume = $merchant_field_array["'charge_back_volume'"][$m_inc];
+                        $contact_adv_merchant_statement_new->transaction = $merchant_field_array["'transaction'"][$m_inc];
+                        $contact_adv_merchant_statement_new->batches = $merchant_field_array["'batches'"][$m_inc];
+                        $contact_adv_merchant_statement_new->save();                      
+                    }                                      
+
+                }
+                /* Save Advance Merchant Statement - End */
+
+                //exit;
+
+                Session::flash('message', 'You have successfully update advances');
+                Session::flash('alert_class', 'alert-success');
+                return redirect()->back();                 
+            } else {
+                Session::flash('message', 'Unable to update advances');
+                Session::flash('alert_class', 'alert-danger');  
+                return redirect()->back();                      
+            }             
+
+        }
+    }    
 
     public function update_underwriter_notes(Request $request) 
     {

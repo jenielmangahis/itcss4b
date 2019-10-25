@@ -5,14 +5,14 @@
     <li <?php echo Route::current()->getName() == 'advance_application' ? 'class="active"' : ''; ?>>
       <a href="{{url('advance_application/' . $hash_id)}}"><i class="fa fa-list-ul"></i> <span>Application </span></a>
     </li>
-    <li <?php echo Route::current()->getName() == 'dashboard' ? 'class="active"' : ''; ?>>
-      <a href="#"><i class="fa fa-list-ul"></i> <span>Financials </span></a>
+    <li <?php echo Route::current()->getName() == 'advance_financials' ? 'class="active"' : ''; ?>>
+      <a href="{{url('advance_financials/' . $hash_id)}}"><i class="fa fa-list-ul"></i> <span>Financials </span></a>
     </li>
     <li <?php echo Route::current()->getName() == 'advance_documents' ? 'class="active"' : ''; ?>>
       <a href="{{url('advance_documents/' . $hash_id)}}"><i class="fa fa-list-ul"></i> <span>Documents </span></a>
     </li>
-    <li <?php echo Route::current()->getName() == 'dashboard' ? 'class="active"' : ''; ?>>
-      <a href="#"><i class="fa fa-list-ul"></i> <span>Submissions </span></a>
+    <li <?php echo Route::current()->getName() == 'advance_submission' ? 'class="active"' : ''; ?>>
+      <a href="{{url('advance_submission/' . $hash_id)}}"><i class="fa fa-list-ul"></i> <span>Submissions </span></a>
     </li>
     <li <?php echo Route::current()->getName() == 'advance_underwriter_notes' ? 'class="active"' : ''; ?>>
       <a href="{{url('advance_underwriter_notes/' . $hash_id)}}"><i class="fa fa-list-ul"></i> <span>Underwriter Notes </span></a>

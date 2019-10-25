@@ -70,7 +70,7 @@
 
                 @include('advances.includes.summary_block')
 
-                {{ Form::open(array('url' => 'contact_advance/update_funding_info', 'class' => 'edit-advance-form-application', 'id' => 'edit-advance-form-application')) }}
+                {{ Form::open(array('url' => 'contact_advance/update_advance', 'class' => 'edit-advance-form-application', 'id' => 'edit-advance-form-application')) }}
                 <input type="hidden" name="advance_id" id="advance_id" class="advance_id" value="{{ Hashids::encode($advance->id) }}">
                 <input type="hidden" name="contact_id" id="contact_id" class="contact_id" value="{{ $contact->id }}">                
                 
