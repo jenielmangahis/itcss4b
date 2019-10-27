@@ -46,6 +46,9 @@ class DashboardController extends Controller
 
             $user_id  = Auth::user()->id;
             $group_id = Auth::user()->group_id;
+            if($group_id == 1){
+                return redirect()->route('contact'); 
+            }
             $module   = 'dashboard';
             $with_permission = UserHelper::checkUserRole($group_id, $module); 
             if(!$with_permission) {
@@ -73,6 +76,8 @@ class DashboardController extends Controller
         $contact_id = $contactUser->contact_id;
         $contact    = Contact::find($contact_id); 
         $business_info = ContactBusinessInformation::where('contact_id','=', $contact_id)->first();
+
+
 
         /*
          * For contact event - start
