@@ -17,10 +17,10 @@
       <div class="form-group">
         <label for="inputLabel">Lender</label>
         <select name="lender_id" id="lender_id" class="form-control">
-          <option value="0">Please select user</option>
-          @if(!$company_user->isEmpty())
-            @foreach($company_user as $cuser)
-              <option <?php echo $advance->lender_id == $cuser->user->id ? "selected" : ""; ?> value="{{ $cuser->user->id }}">{{ $cuser->user->firstname }} {{ $cuser->user->lastname }}</option>
+          <option value="0">Please select lender</option>
+          @if(!$lenders->isEmpty())
+            @foreach($lenders as $lender)
+              <option <?php echo $advance->lender_id == $lender->id ? "selected" : ""; ?> value="{{ $lender->id }}">{{ $lender->company_name }}</option>
             @endforeach
           @endif
         </select>  

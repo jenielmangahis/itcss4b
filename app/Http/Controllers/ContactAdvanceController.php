@@ -19,6 +19,7 @@ use App\ContactAdvancePayment;
 use App\ContactAdvanceMerchantStatementRecord;
 use App\ContactAdvanceFinancialBankStatementRecord;
 use App\CompanyUser;
+use App\Lender;
 use App\Companies;
 use App\Stage;
 use App\User;
@@ -91,6 +92,8 @@ class ContactAdvanceController extends Controller
                     $last_payment_amount = $last_payment->amount;              
                 }
 
+                $lenders = Lender::all();
+
                 return view('advances.index', [
                     'hash_id' => $hash_id,
                     'advance_id' => $id,
@@ -105,6 +108,7 @@ class ContactAdvanceController extends Controller
                     'total_advance_payment' => $total_advance_payment,
                     'count_payment_made' => $count_payment_made,
                     'last_payment_amount' => $last_payment_amount,
+                    'lenders' => $lenders,
                 ]);                
             }                                   
         /*
@@ -158,7 +162,9 @@ class ContactAdvanceController extends Controller
             $documentTypes = $contactDoc->documentTypes();
             /*
              * Docs - end
-            */            
+            */    
+
+            $lenders = Lender::all();        
             
             return view('advances.documents', [
                 'hash_id' => $hash_id,
@@ -172,7 +178,8 @@ class ContactAdvanceController extends Controller
                 'group_id' => Auth::user()->group_id,
                 'total_advance_payment' => $total_advance_payment,
                 'count_payment_made' => $count_payment_made,
-                'last_payment_amount' => $last_payment_amount,                
+                'last_payment_amount' => $last_payment_amount,
+                'lenders' => $lenders,        
             ]);                
         }    
     }  
@@ -199,7 +206,9 @@ class ContactAdvanceController extends Controller
 
             if($last_payment) {
                 $last_payment_amount = $last_payment->amount;              
-            }                  
+            }          
+
+            $lenders = Lender::all();        
             
             return view('advances.underwriter-notes', [
                 'hash_id' => $hash_id,
@@ -210,7 +219,8 @@ class ContactAdvanceController extends Controller
                 'under_writer_note' => $under_writer_note,
                 'total_advance_payment' => $total_advance_payment,
                 'count_payment_made' => $count_payment_made,
-                'last_payment_amount' => $last_payment_amount,                 
+                'last_payment_amount' => $last_payment_amount,   
+                'lenders' => $lenders,              
 
             ]);                
         }   
@@ -240,6 +250,8 @@ class ContactAdvanceController extends Controller
                 $last_payment_amount = $last_payment->amount;              
             }             
             
+            $lenders = Lender::all();
+
             return view('advances.funding_info', [
                 'hash_id' => $hash_id,
                 'advance_id' => $id,
@@ -250,6 +262,7 @@ class ContactAdvanceController extends Controller
                 'total_advance_payment' => $total_advance_payment,
                 'count_payment_made' => $count_payment_made,
                 'last_payment_amount' => $last_payment_amount, 
+                'lenders' => $lenders,
             ]);                
         } 
     }
@@ -292,7 +305,9 @@ class ContactAdvanceController extends Controller
 
             if($last_payment) {
                 $last_payment_amount = $last_payment->amount;              
-            }             
+            }    
+
+            $lenders = Lender::all();         
             
             return view('advances.payments', [
                 'hash_id' => $hash_id,
@@ -305,7 +320,8 @@ class ContactAdvanceController extends Controller
                 'search_field_adv_payment' => $search_field_adv_payment,
                 'total_advance_payment' => $total_advance_payment,
                 'count_payment_made' => $count_payment_made,
-                'last_payment_amount' => $last_payment_amount,                 
+                'last_payment_amount' => $last_payment_amount, 
+                'lenders' => $lenders,                
             ]);                
         } 
     }   
@@ -347,7 +363,9 @@ class ContactAdvanceController extends Controller
             $contact_adv_merchant_statement_array = array();
             if(!$contact_adv_merchant_statement->isEmpty()) {
                 $contact_adv_merchant_statement_array = $contact_adv_merchant_statement->toArray();
-            }         
+            }
+
+            $lenders = Lender::all(); 
 
             return view('advances.financials', [
                 'hash_id' => $hash_id,
@@ -361,6 +379,7 @@ class ContactAdvanceController extends Controller
                 'last_payment_amount' => $last_payment_amount,
                 'contact_adv_financial_bank_statement' => $contact_adv_financial_bank_statement_array,
                 'contact_adv_merchant_statement' => $contact_adv_merchant_statement_array,
+                'lenders' => $lenders,
             ]);                
         } 
     }   
@@ -387,7 +406,9 @@ class ContactAdvanceController extends Controller
 
             if($last_payment) {
                 $last_payment_amount = $last_payment->amount;              
-            }             
+            }  
+
+            $lenders = Lender::all();           
             
             return view('advances.submission', [
                 'hash_id' => $hash_id,
@@ -398,7 +419,8 @@ class ContactAdvanceController extends Controller
                 'users' => $users,
                 'total_advance_payment' => $total_advance_payment,
                 'count_payment_made' => $count_payment_made,
-                'last_payment_amount' => $last_payment_amount,                 
+                'last_payment_amount' => $last_payment_amount,
+                'lenders' => $lenders,               
             ]);                
         }  
     } 
