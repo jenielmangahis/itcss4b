@@ -99,6 +99,12 @@ class MailMessagingController extends Controller
             $send_cc = array();
             $send_bcc = array();
 
+            $auth_email  = Auth::user()->email;
+
+            if($auth_email == null or !isset($auth_email)) {
+                $auth_email = 'NA';
+            }
+
             $enable_email = true;
             if($enable_email) {         
 
@@ -133,7 +139,7 @@ class MailMessagingController extends Controller
                         $mailMessaging->cc         = $cc;
                         $mailMessaging->bcc        = $bcc;
                         $mailMessaging->content    = $request->input('content');
-                        //$mailMessaging->sender     = "NA";
+                        $mailMessaging->sender     = $auth_email;
                         $mailMessaging->save();
                     }
                 }
