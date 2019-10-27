@@ -91,7 +91,7 @@
                         <div class="col-xs-4">
                           <div class="form-group">
                             <label>Bank</label>
-                            <input type="text" class="form-control" id="bank_name" name="bank_name" value="{{$contact_adv_financial_bank_statement[1]['name']}}" placeholder="" required="">
+                            <input type="text" class="form-control" id="bank_name" name="bank_name" value="<?php echo  isset($contact_adv_financial_bank_statement[1]['name']) ? $contact_adv_financial_bank_statement[1]['name'] : ''; ?>" placeholder="" required="">
                           </div>   
                         </div>
                       </div>
@@ -122,49 +122,55 @@
                                   <select style="width: 85px;" name="bank['bank_month'][{{$num}}]" id="bank_month" class="form-control">
                                     <option value="">Month</option>
                                     @foreach($numbers as $months)
-                                      <option <?php echo $contact_adv_financial_bank_statement[$inc]['month'] == $months ? 'selected="selected"' : ''; ?> value="{{$months}}">{{ date("M", mktime(0, 0, 0, $months, 10)) }}</option>
+                                      <?php
+                                        $selected_field = "";
+                                        if(isset($contact_adv_financial_bank_statement[$inc]['month'])) {
+                                          $selected_field == $contact_adv_financial_bank_statement[$inc]['month'];
+                                        }
+                                      ?>
+                                      <option <?php echo $selected_field == $months ? 'selected="selected"' : ''; ?> value="{{$months}}">{{ date("M", mktime(0, 0, 0, $months, 10)) }}</option>
                                     @endforeach
                                   </select>                   
                                 </div>                              
                               </th>
                               <td>
                                 <div class="form-group">
-                                  <input type="number" class="form-control" id="bank_year" name="bank['bank_year'][{{$num}}]" value="{{ $contact_adv_financial_bank_statement[$inc]['year'] }}" placeholder="Year">
+                                  <input type="number" class="form-control" id="bank_year" name="bank['bank_year'][{{$num}}]" value="<?php echo isset($contact_adv_financial_bank_statement[$inc]['year']) ? $contact_adv_financial_bank_statement[$inc]['year'] : ''; ?>" placeholder="Year">
                                 </div>                                
                               </td>
                               <td>
                                 <div class="form-group">
-                                  <input type="number" step="0.01" class="form-control" id="total_deposits" name="bank['total_deposits'][{{$num}}]" value="{{$contact_adv_financial_bank_statement[$inc]['total_deposits']}}" placeholder="0.00">
+                                  <input type="number" step="0.01" class="form-control" id="total_deposits" name="bank['total_deposits'][{{$num}}]" value="<?php echo isset($contact_adv_financial_bank_statement[$inc]['total_deposits']) ? $contact_adv_financial_bank_statement[$inc]['total_deposits'] : ''; ?>" placeholder="0.00">
                                 </div>
                               </td>
                               <td>
                                 <div class="form-group">
-                                  <input type="number" step="0.01" class="form-control" id="averate_daily" name="bank['averate_daily'][{{$num}}]" value="{{ $contact_adv_financial_bank_statement[$inc]['averate_daily'] }}" placeholder="0.00">
+                                  <input type="number" step="0.01" class="form-control" id="averate_daily" name="bank['averate_daily'][{{$num}}]" value="<?php echo isset($contact_adv_financial_bank_statement[$inc]['averate_daily']) ? $contact_adv_financial_bank_statement[$inc]['averate_daily'] : ''; ?>" placeholder="0.00">
                                 </div>
                               </td>
                               <td>
                                 <div class="form-group">
-                                  <input type="number" step="0.01" class="form-control" id="withdrawal" name="bank['withdrawal'][{{$num}}]" value="{{ $contact_adv_financial_bank_statement[$inc]['withdrawal'] }}" placeholder="0.00">
+                                  <input type="number" step="0.01" class="form-control" id="withdrawal" name="bank['withdrawal'][{{$num}}]" value="<?php echo isset($contact_adv_financial_bank_statement[$inc]['withdrawal'] ) ? $contact_adv_financial_bank_statement[$inc]['withdrawal'] : ''; ?>" placeholder="0.00">
                                 </div>
                               </td>
                               <td>
                                 <div class="form-group">
-                                  <input type="number" step="0.01" class="form-control" id="ending_balance" name="bank['ending_balance'][{{$num}}]" value="{{ $contact_adv_financial_bank_statement[$inc]['ending_balance'] }}" placeholder="0.00">
+                                  <input type="number" step="0.01" class="form-control" id="ending_balance" name="bank['ending_balance'][{{$num}}]" value="<?php echo isset($contact_adv_financial_bank_statement[$inc]['ending_balance']) ? $contact_adv_financial_bank_statement[$inc]['ending_balance'] : ''; ?>" placeholder="0.00">
                                 </div>
                               </td>
                               <td>
                                 <div class="form-group">
-                                  <input type="number" class="form-control" id="deposits" name="bank['deposits'][{{$num}}]" value="{{ $contact_adv_financial_bank_statement[$inc]['deposits'] }}" placeholder="0">
+                                  <input type="number" class="form-control" id="deposits" name="bank['deposits'][{{$num}}]" value="<?php echo isset($contact_adv_financial_bank_statement[$inc]['deposits']) ? $contact_adv_financial_bank_statement[$inc]['deposits'] : '' ?>" placeholder="0">
                                 </div>
                               </td>
                               <td>
                                 <div class="form-group">
-                                  <input type="number" class="form-control" id="days_neg" name="bank['days_neg'][{{$num}}]" value="{{ $contact_adv_financial_bank_statement[$inc]['days_neg'] }}" placeholder="0">
+                                  <input type="number" class="form-control" id="days_neg" name="bank['days_neg'][{{$num}}]" value="<?php echo isset($contact_adv_financial_bank_statement[$inc]['days_neg']) ? $contact_adv_financial_bank_statement[$inc]['days_neg'] : ''; ?>" placeholder="0">
                                 </div>
                               </td>
                               <td>
                                 <div class="form-group">
-                                  <input type="number" class="form-control" id="nsf" name="bank['nsf'][{{$num}}]" value="{{ $contact_adv_financial_bank_statement[$inc]['nsf'] }}" placeholder="0">
+                                  <input type="number" class="form-control" id="nsf" name="bank['nsf'][{{$num}}]" value="<?php echo isset($contact_adv_financial_bank_statement[$inc]['nsf']) ? $contact_adv_financial_bank_statement[$inc]['nsf'] : ''; ?>" placeholder="0">
                                 </div>
                               </td>
                             </tr>
@@ -178,7 +184,7 @@
                         <div class="col-xs-4">
                           <div class="form-group">
                             <label>Merchant Statement</label>
-                            <input type="text" class="form-control" id="merchant_name" name="merchant_name" value="{{ $contact_adv_merchant_statement[1]['name'] }}" placeholder="" required="">
+                            <input type="text" class="form-control" id="merchant_name" name="merchant_name" value="<?php echo isset($contact_adv_merchant_statement[1]['name']) ? $contact_adv_merchant_statement[1]['name'] : ''; ?>" placeholder="" required="">
                           </div>   
                         </div>
                       </div>     
@@ -207,44 +213,50 @@
                                   <select style="width: 85px;" name="merchant['merchant_month'][{{$num}}]" id="merchant_month" class="form-control">
                                     <option value="">Month</option>
                                     @foreach($numbers as $months)
-                                      <option <?php echo $contact_adv_merchant_statement[$incm]['month'] == $months ? 'selected="selected"' : ''; ?> value="{{$months}}">{{ date("M", mktime(0, 0, 0, $months, 10)) }}</option>
+                                      <?php
+                                        $selected_field = "";
+                                        if(isset($contact_adv_merchant_statement[$inc]['month'])) {
+                                          $selected_field == $contact_adv_merchant_statement[$incm]['month'];
+                                        }
+                                      ?>                                    
+                                      <option <?php echo $selected_field == $months ? 'selected="selected"' : ''; ?> value="{{$months}}">{{ date("M", mktime(0, 0, 0, $months, 10)) }}</option>
                                     @endforeach
                                   </select>                   
                                 </div>                              
                               </th>
                               <td>
                                 <div class="form-group">
-                                  <input type="number" class="form-control" id="merchant_year" name="merchant['merchant_year'][{{$num}}]" value="{{$contact_adv_merchant_statement[$incm]['year']}}" placeholder="Year">
+                                  <input type="number" class="form-control" id="merchant_year" name="merchant['merchant_year'][{{$num}}]" value="<?php echo isset($contact_adv_merchant_statement[$incm]['year']) ? $contact_adv_merchant_statement[$incm]['year'] : ''; ?>" placeholder="Year">
                                 </div>                                
                               </td>
                               <td>
                                 <div class="form-group">
-                                  <input type="number" step="0.01" class="form-control" id="total_volume" name="merchant['total_volume'][{{$num}}]" value="{{$contact_adv_merchant_statement[$incm]['total_volume']}}" placeholder="0.00">
+                                  <input type="number" step="0.01" class="form-control" id="total_volume" name="merchant['total_volume'][{{$num}}]" value="<?php echo isset($contact_adv_merchant_statement[$incm]['total_volume']) ? $contact_adv_merchant_statement[$incm]['total_volume'] : ''; ?>" placeholder="0.00">
                                 </div>
                               </td>
                               <td>
                                 <div class="form-group">
-                                  <input type="number" step="0.01" class="form-control" id="visa_ms_disc" name="merchant['visa_ms_disc'][{{$num}}]" value="{{$contact_adv_merchant_statement[$incm]['visa_ms_disc']}}" placeholder="0.00">
+                                  <input type="number" step="0.01" class="form-control" id="visa_ms_disc" name="merchant['visa_ms_disc'][{{$num}}]" value="<?php echo isset($contact_adv_merchant_statement[$incm]['visa_ms_disc']) ? $contact_adv_merchant_statement[$incm]['visa_ms_disc'] : ''; ?>" placeholder="0.00">
                                 </div>
                               </td>
                               <td>
                                 <div class="form-group">
-                                  <input type="number" step="0.01" class="form-control" id="amex" name="merchant['amex'][{{$num}}]" value="{{$contact_adv_merchant_statement[$incm]['amex']}}" placeholder="0.00">
+                                  <input type="number" step="0.01" class="form-control" id="amex" name="merchant['amex'][{{$num}}]" value="<?php echo isset($contact_adv_merchant_statement[$incm]['amex']) ? $contact_adv_merchant_statement[$incm]['amex'] : ''; ?>" placeholder="0.00">
                                 </div>
                               </td>
                               <td>
                                 <div class="form-group">
-                                  <input type="number" step="0.01" class="form-control" id="charge_back_volume" name="merchant['charge_back_volume'][{{$num}}]" value="{{$contact_adv_merchant_statement[$incm]['charge_back_volume']}}" placeholder="0.00">
+                                  <input type="number" step="0.01" class="form-control" id="charge_back_volume" name="merchant['charge_back_volume'][{{$num}}]" value="<?php echo isset($contact_adv_merchant_statement[$incm]['charge_back_volume']) ? $contact_adv_merchant_statement[$incm]['charge_back_volume'] : ''; ?>" placeholder="0.00">
                                 </div>
                               </td>
                               <td>
                                 <div class="form-group">
-                                  <input type="number" class="form-control" id="transaction" name="merchant['transaction'][{{$num}}]" value="{{$contact_adv_merchant_statement[$incm]['transaction']}}" placeholder="0">
+                                  <input type="number" class="form-control" id="transaction" name="merchant['transaction'][{{$num}}]" value="<?php echo isset($contact_adv_merchant_statement[$incm]['transaction']) ? $contact_adv_merchant_statement[$incm]['transaction'] : ''; ?>" placeholder="0">
                                 </div>
                               </td>
                               <td>
                                 <div class="form-group">
-                                  <input type="number" class="form-control" id="batches" name="merchant['batches'][{{$num}}]" value="{{$contact_adv_merchant_statement[$incm]['batches']}}" placeholder="0">
+                                  <input type="number" class="form-control" id="batches" name="merchant['batches'][{{$num}}]" value="<?php isset($contact_adv_merchant_statement[$incm]['batches']) ? $contact_adv_merchant_statement[$incm]['batches'] : ''; ?>" placeholder="0">
                                 </div>
                               </td>
                             </tr>
