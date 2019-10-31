@@ -486,20 +486,7 @@ class ContactAdvanceController extends Controller
                     $recipient_to = $recipient;
                     Mail::to($recipient_to)
                         ->send(new MailSubmission($from_email, $subject, $message));
-                }
-
-                /*if(count($recipients) <= 1) {
-                    $recipient_to = $recipients[0];
-                    Mail::to($recipient_to)
-                        ->send(new MailSubmission($from_email, $subject, $message)); 
-                }elseif(count($recipients) > 1) {
-                    $recipient_to  = $recipients[0];
-                    unset($recipients[0]);
-                    $recipient_bcc = $recipients;
-                    Mail::to($recipient_to)
-                        ->bcc($recipient_bcc)
-                        ->send(new MailSubmission($from_email, $subject, $message));                        
-                }*/       
+                }     
 
                 Session::flash('message', 'You have successfully send submission');
                 Session::flash('alert_class', 'alert-success');

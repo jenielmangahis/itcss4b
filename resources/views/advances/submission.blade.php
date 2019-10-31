@@ -167,7 +167,7 @@
 
                       @else
                         <li>
-                          <i class="fa fa-file-text bg-blue"></i>
+                          <i class="fa fa-mail-forward bg-blue"></i>
                           <div class="timeline-item"><h3 class="timeline-header"><strong>Submission is empty</strong></h3></div>  
                         </li>
                       @endif
