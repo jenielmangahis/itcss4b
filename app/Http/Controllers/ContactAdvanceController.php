@@ -482,7 +482,13 @@ class ContactAdvanceController extends Controller
                 $subject      = $request->input('subject');
                 $message      = $request->input('content');
 
-                if(count($recipients) <= 1) {
+                foreach($recipients as $recipient) {
+                    $recipient_to = $recipient;
+                    Mail::to($recipient_to)
+                        ->send(new MailSubmission($from_email, $subject, $message));
+                }
+
+                /*if(count($recipients) <= 1) {
                     $recipient_to = $recipients[0];
                     Mail::to($recipient_to)
                         ->send(new MailSubmission($from_email, $subject, $message)); 
@@ -493,7 +499,7 @@ class ContactAdvanceController extends Controller
                     Mail::to($recipient_to)
                         ->bcc($recipient_bcc)
                         ->send(new MailSubmission($from_email, $subject, $message));                        
-                }       
+                }*/       
 
                 Session::flash('message', 'You have successfully send submission');
                 Session::flash('alert_class', 'alert-success');
