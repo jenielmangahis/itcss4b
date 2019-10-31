@@ -131,18 +131,45 @@ CREATE TABLE IF NOT EXISTS `contact_advances` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table corecmsdb.contact_advances: ~5 rows (approximately)
 DELETE FROM `contact_advances`;
 /*!40000 ALTER TABLE `contact_advances` DISABLE KEYS */;
 INSERT INTO `contact_advances` (`id`, `contact_id`, `company_id`, `lender_id`, `sales_user_id`, `under_writer_user_id`, `closer_user_id`, `loan_id`, `contract_date`, `contract_number`, `advance_date`, `amount`, `payback`, `balance`, `factor_rate`, `remit`, `period`, `period_type`, `payment`, `advance_type`, `payment_method`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 27, 0, 1, 1, 0, 1, '230919/7242', NULL, '230919/3278', NULL, 8693.00, 156474.00, 0.00, 18.00, 15.00, '5', 'days', 31294.80, 'add-on', 'cc', 'Started', '2019-09-23 17:17:28', '2019-10-17 14:41:22', NULL),
+	(1, 27, 0, 1, 1, 0, 1, '230919/7242', NULL, '230919/3278', NULL, 8693.00, 156474.00, 0.00, 18.00, 15.00, '5', 'days', 31294.80, 'add-on', 'ach', 'Started', '2019-09-23 17:17:28', '2019-10-22 07:37:06', NULL),
 	(2, 27, 0, 2, 0, 0, 0, '240919/8415', NULL, '240919/6015', NULL, 8000.00, 2800.00, 0.00, 35.00, 25.00, '10', 'month', 280.00, 'new', 'ach', 'Started', '2019-09-24 16:15:02', '2019-09-26 07:54:13', NULL),
 	(3, 28, 0, 1, 0, 0, 0, '260919/6135', NULL, '260919/9772', NULL, 85000.00, 15300.00, 0.00, 18.00, 15.00, '12', 'month', 1275.00, 'renewal', 'cc', 'Started', '2019-09-26 07:55:20', '2019-09-26 07:55:20', NULL),
 	(4, 27, 0, 2, 0, 0, 0, '021019/7761', NULL, '021019/3934', NULL, 100000.00, 135000.00, 0.00, 1.35, 1.32, '24', 'days', 5625.00, 'new', 'ach', 'Started', '2010-08-02 07:26:06', '2019-10-02 07:26:57', NULL),
-	(5, 27, 0, 1, 0, 0, 0, '021019/7829', NULL, '021019/4606', NULL, 200000.00, 264000.00, 0.00, 1.32, 1.35, '24', 'days', 11000.00, 'new', 'ach', 'Started', '2019-10-02 07:27:38', '2019-10-02 07:27:38', NULL);
+	(5, 27, 0, 1, 0, 0, 0, '021019/7829', NULL, '021019/4606', NULL, 200000.00, 264000.00, 0.00, 1.32, 1.35, '24', 'days', 11000.00, 'new', 'ach', 'Started', '2019-10-02 07:27:38', '2019-10-02 07:27:38', NULL),
+	(6, 27, 0, 0, 1, 1, 0, '231019/7901', NULL, '231019/7919', NULL, 55000.00, 71500.00, 65000.00, 1.30, 5.00, '12', 'month', 5958.33, 'new', 'cc', 'Started', '2019-10-23 11:43:47', '2019-10-25 10:57:58', NULL);
 /*!40000 ALTER TABLE `contact_advances` ENABLE KEYS */;
+
+-- Dumping structure for table corecmsdb.contact_advance_financial_bank_statement_records
+DROP TABLE IF EXISTS `contact_advance_financial_bank_statement_records`;
+CREATE TABLE IF NOT EXISTS `contact_advance_financial_bank_statement_records` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `contact_advance_id` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `month` int(11) DEFAULT '0',
+  `year` year(4) DEFAULT '2000',
+  `total_deposits` double(11,2) DEFAULT '0.00',
+  `averate_daily` double(11,2) DEFAULT '0.00',
+  `withdrawal` double(11,2) DEFAULT '0.00',
+  `ending_balance` double(11,2) DEFAULT '0.00',
+  `deposits` int(11) DEFAULT NULL,
+  `days_neg` int(11) DEFAULT NULL,
+  `nsf` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table corecmsdb.contact_advance_financial_bank_statement_records: ~0 rows (approximately)
+DELETE FROM `contact_advance_financial_bank_statement_records`;
+/*!40000 ALTER TABLE `contact_advance_financial_bank_statement_records` DISABLE KEYS */;
+/*!40000 ALTER TABLE `contact_advance_financial_bank_statement_records` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_advance_funding_info
 DROP TABLE IF EXISTS `contact_advance_funding_info`;
@@ -162,14 +189,110 @@ CREATE TABLE IF NOT EXISTS `contact_advance_funding_info` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table corecmsdb.contact_advance_funding_info: ~0 rows (approximately)
 DELETE FROM `contact_advance_funding_info`;
 /*!40000 ALTER TABLE `contact_advance_funding_info` DISABLE KEYS */;
 INSERT INTO `contact_advance_funding_info` (`id`, `contact_advance_id`, `contract_date`, `contract_number`, `funding_date`, `wire_conf_number`, `routing_number`, `account_number`, `account_type`, `name_of_account`, `ach_gateway`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 1, '2019-10-18', 'dfdsfd', '2019-11-01', 'dfdf', '123456sdfds', '544545-45454', 'Savings Account', 'Bryann', 'Other', '2019-10-17 14:41:22', '2019-10-17 14:56:56', NULL);
+	(1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-10-17 14:41:22', '2019-10-22 06:46:16', NULL),
+	(2, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-10-24 06:21:27', '2019-10-24 06:51:20', NULL);
 /*!40000 ALTER TABLE `contact_advance_funding_info` ENABLE KEYS */;
+
+-- Dumping structure for table corecmsdb.contact_advance_merchant_statement_records
+DROP TABLE IF EXISTS `contact_advance_merchant_statement_records`;
+CREATE TABLE IF NOT EXISTS `contact_advance_merchant_statement_records` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `contact_advance_id` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `month` int(11) DEFAULT '0',
+  `year` year(4) DEFAULT '2000',
+  `total_volume` double(11,2) DEFAULT '0.00',
+  `visa_ms_disc` double(11,2) DEFAULT '0.00',
+  `amex` double(11,2) DEFAULT '0.00',
+  `charge_back_volume` double(11,2) DEFAULT '0.00',
+  `transaction` int(11) DEFAULT NULL,
+  `batches` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table corecmsdb.contact_advance_merchant_statement_records: ~0 rows (approximately)
+DELETE FROM `contact_advance_merchant_statement_records`;
+/*!40000 ALTER TABLE `contact_advance_merchant_statement_records` DISABLE KEYS */;
+/*!40000 ALTER TABLE `contact_advance_merchant_statement_records` ENABLE KEYS */;
+
+-- Dumping structure for table corecmsdb.contact_advance_payments
+DROP TABLE IF EXISTS `contact_advance_payments`;
+CREATE TABLE IF NOT EXISTS `contact_advance_payments` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `contact_advance_id` int(11) NOT NULL DEFAULT '0',
+  `transaction_id` varchar(180) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `amount` double(11,2) NOT NULL,
+  `type` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payee` varchar(180) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payee_id` int(11) NOT NULL DEFAULT '0',
+  `memo` mediumtext COLLATE utf8mb4_unicode_ci,
+  `processed` varchar(180) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `process_date` date DEFAULT NULL,
+  `cleared_date` date DEFAULT NULL,
+  `status` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table corecmsdb.contact_advance_payments: ~2 rows (approximately)
+DELETE FROM `contact_advance_payments`;
+/*!40000 ALTER TABLE `contact_advance_payments` DISABLE KEYS */;
+INSERT INTO `contact_advance_payments` (`id`, `contact_advance_id`, `transaction_id`, `amount`, `type`, `payee`, `payee_id`, `memo`, `processed`, `process_date`, `cleared_date`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 1, 'TRAN-001', 600.00, 'cc', NULL, 1, 'Test only update', 'Bryann Revina', '2019-10-19', NULL, 'pending', '2019-10-19 15:55:29', '2019-10-21 15:26:38', NULL),
+	(2, 1, 'TRAN-002', 360.00, 'cc', NULL, 1, 'test', 'Bryann Revina', '2019-10-19', NULL, 'paid', '2019-10-19 15:55:55', '2019-10-19 15:55:55', NULL),
+	(3, 1, 'TRAN-003', 300.00, 'ach', NULL, 1, 'This is only a test..', 'Bryann Revina', '2019-10-21', NULL, 'paid', '2019-10-21 07:45:37', '2019-10-21 07:45:37', NULL),
+	(4, 6, 'TRAN-011', 1000.00, 'ach', NULL, 1, 'This is test only', 'Bryann Revina', '2019-10-23', NULL, 'paid', '2019-10-23 12:30:11', '2019-10-23 12:34:06', NULL);
+/*!40000 ALTER TABLE `contact_advance_payments` ENABLE KEYS */;
+
+-- Dumping structure for table corecmsdb.contact_advance_submissions
+DROP TABLE IF EXISTS `contact_advance_submissions`;
+CREATE TABLE IF NOT EXISTS `contact_advance_submissions` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `contact_advance_id` int(11) NOT NULL DEFAULT '0',
+  `email_template_id` int(11) NOT NULL DEFAULT '0',
+  `recipient` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sender` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `subject` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `documents` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table corecmsdb.contact_advance_submissions: ~15 rows (approximately)
+DELETE FROM `contact_advance_submissions`;
+/*!40000 ALTER TABLE `contact_advance_submissions` DISABLE KEYS */;
+INSERT INTO `contact_advance_submissions` (`id`, `contact_advance_id`, `email_template_id`, `recipient`, `sender`, `subject`, `content`, `documents`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
+	(1, 6, 1, 'bryann@revina.com', 'test@test.com', 'Test Only', 'This is the documents', 'serialize ekek', 'submitted', '2019-10-30 14:06:46', '2019-10-30 14:06:48', NULL),
+	(2, 6, 2, 'juke@gmail.com', 'jeniel@mangahis.com', 'Submit Documents', 'This is only a test', 'test,test,testse', 'submitted', '2019-10-30 14:29:40', '2019-10-30 14:29:41', NULL),
+	(3, 6, 0, 'a:2:{i:0;s:17:"bryann@google.com";i:1;s:19:"bdr030385@gmail.com";}', 'bryann.revina@gmail.com', 'Test Only', '<p>this is only a test</p>', 'a:2:{i:0;s:1:"5";i:1;s:1:"6";}', 'submitted', '2019-10-30 19:01:34', '2019-10-30 19:01:34', NULL),
+	(4, 6, 0, 'a:2:{i:0;s:17:"bryann@google.com";i:1;s:19:"bdr030385@gmail.com";}', 'bryann.revina@gmail.com', 'Lendee Requirements', '<p>This is only a testing pace</p>', 'a:2:{i:0;s:1:"5";i:1;s:1:"6";}', 'submitted', '2019-10-31 05:10:07', '2019-10-31 05:10:07', NULL),
+	(5, 6, 0, 'a:2:{i:0;s:17:"bryann@google.com";i:1;s:19:"bdr030385@gmail.com";}', 'bryann.revina@gmail.com', 'Test ONly', '<p>This is a test only</p>', 'a:2:{i:0;s:1:"5";i:1;s:1:"6";}', 'submitted', '2019-10-31 06:34:15', '2019-10-31 06:34:15', NULL),
+	(6, 6, 0, 'a:2:{i:0;s:17:"bryann@google.com";i:1;s:19:"bdr030385@gmail.com";}', 'bryann.revina@gmail.com', 'Test ONly', '<p>This is a test only</p>', 'a:2:{i:0;s:1:"5";i:1;s:1:"6";}', 'submitted', '2019-10-31 06:34:52', '2019-10-31 06:34:52', NULL),
+	(7, 6, 0, 'a:2:{i:0;s:17:"bryann@google.com";i:1;s:19:"bdr030385@gmail.com";}', 'bryann.revina@gmail.com', 'Test ONly', '<p>This is a test only</p>', 'a:2:{i:0;s:1:"5";i:1;s:1:"6";}', 'submitted', '2019-10-31 06:35:06', '2019-10-31 06:35:06', NULL),
+	(8, 6, 0, 'a:2:{i:0;s:17:"bryann@google.com";i:1;s:19:"bdr030385@gmail.com";}', 'bryann.revina@gmail.com', 'Sample Documents', '<p>This is only a testing</p>', 'a:1:{i:0;s:1:"5";}', 'submitted', '2019-10-31 06:37:48', '2019-10-31 06:37:48', NULL),
+	(9, 6, 0, 'a:2:{i:0;s:17:"bryann@google.com";i:1;s:19:"bdr030385@gmail.com";}', 'bryann.revina@gmail.com', 'Test Subject', '<p>dff</p>', 'a:2:{i:0;s:1:"5";i:1;s:1:"6";}', 'submitted', '2019-10-31 06:40:02', '2019-10-31 06:40:02', NULL),
+	(10, 6, 0, 'a:2:{i:0;s:17:"bryann@google.com";i:1;s:19:"bdr030385@gmail.com";}', 'bryann.revina@gmail.com', 'Test Subject', '<p>This is only a test...</p>', 'a:2:{i:0;s:1:"5";i:1;s:1:"6";}', 'submitted', '2019-10-31 06:41:58', '2019-10-31 06:41:58', NULL),
+	(11, 6, 0, 'a:2:{i:0;s:17:"bryann@google.com";i:1;s:19:"bdr030385@gmail.com";}', 'bryann.revina@gmail.com', 'Test Subject', '<p>dfdf</p>', 'a:1:{i:0;s:1:"5";}', 'submitted', '2019-10-31 06:47:49', '2019-10-31 06:47:49', NULL),
+	(12, 6, 0, 'a:2:{i:0;s:17:"bryann@google.com";i:1;s:19:"bdr030385@gmail.com";}', 'bryann.revina@gmail.com', 'Sample Docs', '<p>dfdf</p>', 'a:1:{i:0;s:1:"6";}', 'submitted', '2019-10-31 06:49:00', '2019-10-31 06:49:00', NULL),
+	(13, 6, 0, 'a:2:{i:0;s:17:"bryann@google.com";i:1;s:19:"bdr030385@gmail.com";}', 'bryann.revina@gmail.com', 'Sample Docs', '<p>dfdf</p>', 'a:1:{i:0;s:1:"6";}', 'submitted', '2019-10-31 06:49:56', '2019-10-31 06:49:56', NULL),
+	(14, 6, 0, 'a:1:{i:0;s:19:"bdr030385@gmail.com";}', 'bryann.revina@gmail.com', 'Again Test', '<p>Sample docs to be attached</p>', 'a:1:{i:0;s:1:"6";}', 'submitted', '2019-10-31 06:50:33', '2019-10-31 06:50:33', NULL),
+	(15, 6, 0, 'a:2:{i:0;s:17:"bryann@google.com";i:1;s:19:"bdr030385@gmail.com";}', 'bryann.revina@gmail.com', 'Lenders Docs', '<p>PLease see attached file</p>', 'a:1:{i:0;s:1:"5";}', 'submitted', '2019-10-31 06:55:21', '2019-10-31 06:55:21', NULL);
+/*!40000 ALTER TABLE `contact_advance_submissions` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_advance_underwriter_notes
 DROP TABLE IF EXISTS `contact_advance_underwriter_notes`;
@@ -502,7 +625,7 @@ CREATE TABLE IF NOT EXISTS `contact_history` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table corecmsdb.contact_history: ~27 rows (approximately)
 DELETE FROM `contact_history`;
@@ -541,7 +664,10 @@ INSERT INTO `contact_history` (`id`, `user_id`, `contact_id`, `company_id`, `tit
 	(31, 1, 27, 0, 'Add New Document', 'Document File Name: RG211131-400x337.jpg', 'Docs', '2019-10-15 05:12:42', '2019-10-15 05:12:42', NULL),
 	(32, 1, 27, 0, 'Delete Document', 'Document File Name: RG110001.jpg', 'Docs', '2019-10-15 05:13:13', '2019-10-15 05:13:13', NULL),
 	(33, 1, 27, 0, 'Delete Document', 'Document File Name: RG211131-400x337.jpg', 'Docs', '2019-10-15 05:13:21', '2019-10-15 05:13:21', NULL),
-	(34, 1, 27, 0, 'Add New Document', 'Document File Name: Aswith.docx', 'Docs', '2019-10-15 05:42:25', '2019-10-15 05:42:25', NULL);
+	(34, 1, 27, 0, 'Add New Document', 'Document File Name: Aswith.docx', 'Docs', '2019-10-15 05:42:25', '2019-10-15 05:42:25', NULL),
+	(35, 1, 27, 0, 'Send Email', NULL, 'Emails', '2019-10-27 14:11:03', '2019-10-27 14:11:03', NULL),
+	(36, 1, 27, 0, 'Send Email', NULL, 'Emails', '2019-10-27 14:12:21', '2019-10-27 14:12:21', NULL),
+	(37, 1, 27, 0, 'Send Email', NULL, 'Emails', '2019-10-27 14:14:07', '2019-10-27 14:14:07', NULL);
 /*!40000 ALTER TABLE `contact_history` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_loan_informations
@@ -787,14 +913,17 @@ CREATE TABLE IF NOT EXISTS `mail_messaging` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table corecmsdb.mail_messaging: ~2 rows (approximately)
+-- Dumping data for table corecmsdb.mail_messaging: ~4 rows (approximately)
 DELETE FROM `mail_messaging`;
 /*!40000 ALTER TABLE `mail_messaging` DISABLE KEYS */;
 INSERT INTO `mail_messaging` (`id`, `user_id`, `contact_id`, `recipient`, `sender`, `subject`, `cc`, `bcc`, `content`, `status`, `date`, `date_last_opened`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(12, 1, 27, 'marfore@test.com', 'NA', 'Climb Meeting', 'juanbinigno@gmail.com,marfore@test.com', '', '<p>Climb meeting this coming sunday. Please be no late at juan carlos house</p>', 1, '2019-09-10 06:35:21', '2019-09-10 06:35:48', '2019-09-10 06:35:21', '2019-09-10 06:35:48', NULL),
-	(13, 1, 27, 'BBB@test.com', 'NA', 'Followup Meeting with the Group', '', '', '<p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>', 1, '2019-09-10 06:54:37', '2019-09-10 06:54:37', '2019-09-10 06:54:37', '2019-09-10 06:54:37', NULL);
+	(13, 1, 27, 'BBB@test.com', 'NA', 'Followup Meeting with the Group', '', '', '<p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>', 1, '2019-09-10 06:54:37', '2019-09-10 06:54:37', '2019-09-10 06:54:37', '2019-09-10 06:54:37', NULL),
+	(14, 1, 27, 'bryann@testing.com', 'NA', 'Test only', 'marfore@test.com', 'bryann@bio.com', '<p>This is only a test</p>', 1, '2019-10-27 14:11:03', '2019-10-27 14:11:03', '2019-10-27 14:11:03', '2019-10-27 14:11:03', NULL),
+	(15, 1, 27, 'BBB@test.com', 'NA', 'Test only', 'marfore@test.com', 'bryann@bio.com', '<p>This is only a test.</p>', 1, '2019-10-27 14:12:21', '2019-10-27 14:12:21', '2019-10-27 14:12:21', '2019-10-27 14:12:21', NULL),
+	(16, 1, 27, 'testing1223@gmail.com', 'bryann.revina@gmail.com', 'Test Only.', 'juanbinigno@gmail.com', 'carlos.magasi@gmail.com', '<p>This is a test only.</p>', 1, '2019-10-27 14:14:07', '2019-10-27 14:14:07', '2019-10-27 14:14:07', '2019-10-27 14:14:07', NULL);
 /*!40000 ALTER TABLE `mail_messaging` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.media_types
@@ -823,7 +952,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table corecmsdb.migrations: ~36 rows (approximately)
 DELETE FROM `migrations`;
@@ -877,7 +1006,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(46, '2019_10_14_131712_add_another_fields_to_contact_advances_table', 35),
 	(47, '2019_10_15_122611_create_contact_advance_underwriter_notes_table', 36),
 	(49, '2019_10_15_123453_add_field_to_contact_advance_underwriter_notes_table', 37),
-	(50, '2019_10_17_115834_create_contact_advance_funding_info_table', 38);
+	(50, '2019_10_17_115834_create_contact_advance_funding_info_table', 38),
+	(51, '2019_10_19_133033_create_contact_advance_payments_table', 39),
+	(52, '2019_10_24_082931_create_contact_advance_financial_bank_statement_records_table', 40),
+	(53, '2019_10_24_083041_create_contact_advance_merchant_statement_records_table', 40),
+	(54, '2019_10_28_124748_create_contact_advance_submissions_table', 41);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.note_types
@@ -1001,13 +1134,13 @@ CREATE TABLE IF NOT EXISTS `users` (
 DELETE FROM `users`;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`, `group_id`, `nickname`, `firstname`, `lastname`, `mobile_number`, `work_number`, `home_number`, `username`, `email`, `email_verified_at`, `password`, `status`, `profile_img`, `is_active`, `remember_token`, `created_at`, `updated_at`, `deleted_at`, `last_login`, `reset_code`) VALUES
-	(1, 1, 'B1', 'Bryann', 'Revina', '09279983995', NULL, NULL, 'bryann03', 'bryann.revina@gmail.com', NULL, '$2y$10$t780SAl1b2k0yXzhh5eCtuwOjgzBEukfDScQrs6CW/FUzJHhAF2qK', NULL, '0723844514a8e149966354f21b337c34.jpg', 0, NULL, '2019-05-11 06:03:15', '2019-10-17 12:17:44', NULL, '2019-10-17 12:17:44', NULL),
+	(1, 1, 'B1', 'Bryann', 'Revina', '09279983995', NULL, NULL, 'bryann03', 'bryann.revina@gmail.com', NULL, '$2y$10$t780SAl1b2k0yXzhh5eCtuwOjgzBEukfDScQrs6CW/FUzJHhAF2qK', NULL, '0723844514a8e149966354f21b337c34.jpg', 0, NULL, '2019-05-11 06:03:15', '2019-10-31 04:21:17', NULL, '2019-10-31 04:21:17', NULL),
 	(3, 3, 'User 01', 'User', '01', '5119685', '9876565', '855965', 'user01', 'user01@gmail.com', NULL, '$2y$10$t780SAl1b2k0yXzhh5eCtuwOjgzBEukfDScQrs6CW/FUzJHhAF2qK', NULL, NULL, 0, NULL, '2019-05-11 06:03:15', '2019-05-29 09:08:40', NULL, NULL, NULL),
 	(4, 0, 'User 02', 'User', '02', NULL, NULL, NULL, 'user02', 'user02@gmail.com', NULL, '$2y$10$t780SAl1b2k0yXzhh5eCtuwOjgzBEukfDScQrs6CW/FUzJHhAF2qK', NULL, NULL, 0, NULL, '2019-05-11 06:03:15', '2019-05-11 06:03:15', NULL, NULL, NULL),
 	(5, 0, 'User 03', 'User', '03', NULL, NULL, NULL, 'user03', 'user03@gmail.com', NULL, '$2y$10$t780SAl1b2k0yXzhh5eCtuwOjgzBEukfDScQrs6CW/FUzJHhAF2qK', NULL, NULL, 0, NULL, '2019-05-11 06:03:15', '2019-05-11 06:03:15', NULL, NULL, NULL),
 	(6, 0, 'User 04', 'User', '04', NULL, NULL, NULL, 'user04', 'test04@test.com', NULL, '$2y$10$t780SAl1b2k0yXzhh5eCtuwOjgzBEukfDScQrs6CW/FUzJHhAF2qK', NULL, NULL, 0, NULL, '2019-05-16 04:05:06', '2019-05-16 04:05:12', NULL, NULL, NULL),
 	(9, 0, 'Aleng Ilay', 'Lily', 'Revina', '343', '343', '343', 'bryann4545', 'test@test.com', NULL, '$2y$10$mI/RYgVKvbxjTyW6oG4QRuZNJKo9TYIWGnpUIIUKA2EJPeUJJC0le', 'active', NULL, 0, NULL, '2019-05-16 06:49:06', '2019-05-16 07:18:05', NULL, NULL, NULL),
-	(10, 2, 'Sir Juke Pangan', 'Juke', 'Pangan', '09279876542', '09209876542', '09109876542', 'juke101', 'juke.pangan@test.com', NULL, '$2y$10$iZTWCTeclAJe0Np8LUK/9eZ8Uv2ecwmgg9Hjsf1kN4.KAvXxsQaiK', NULL, NULL, 0, NULL, '2019-05-23 07:44:49', '2019-05-29 06:52:29', NULL, NULL, NULL),
+	(10, 2, 'Sir Juke Pangan', 'Juke', 'Pangan', '09279876542', '09209876542', '09109876542', 'juke101', 'juke.pangan@test.com', NULL, '$2y$10$iZTWCTeclAJe0Np8LUK/9eZ8Uv2ecwmgg9Hjsf1kN4.KAvXxsQaiK', NULL, NULL, 0, NULL, '2019-05-23 07:44:49', '2019-10-27 15:40:02', NULL, '2019-10-27 15:40:02', NULL),
 	(11, 2, 'Bonn', 'Bonn', 'Mendoza', '5465454', '5465465', '56546', 'bonn03', 'bonn.mendoza@gmail.com', NULL, '$2y$10$5brM7VSVkntHle4hJRtrBOJ8X4aLJ0mGJLEQeeqlfzW0NSyT0GPSi', NULL, NULL, 0, NULL, '2019-06-13 07:39:01', '2019-06-13 07:39:01', NULL, NULL, NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 

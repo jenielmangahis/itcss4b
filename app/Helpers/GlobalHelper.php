@@ -285,10 +285,14 @@ class GlobalHelper
       }
 
       public static function generate_order_number($inc_number = 001) {
-          $date         = date('dmy');
-          $inc_number   = $inc_number;
-          $order_number = $date . "/" . str_pad($inc_number, 4, '0', STR_PAD_LEFT); 
-          return $order_number;
+            $date         = date('dmy');
+            $inc_number   = $inc_number;
+            $order_number = $date . "/" . str_pad($inc_number, 4, '0', STR_PAD_LEFT); 
+            return $order_number;
       }      
+
+      public static function is_serialized_string($string) {
+            return ($string == 'b:0;' || @unserialize($string) !== false);
+      }
 }
 ?>

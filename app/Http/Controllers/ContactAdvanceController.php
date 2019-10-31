@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 use App\ContactAdvance;
 use App\ContactTask;
@@ -18,7 +19,9 @@ use App\ContactAdvanceFundingInfo;
 use App\ContactAdvancePayment;
 use App\ContactAdvanceMerchantStatementRecord;
 use App\ContactAdvanceFinancialBankStatementRecord;
+use App\ContactAdvanceSubmission;
 use App\CompanyUser;
+use App\EmailTemplate;
 use App\Lender;
 use App\Companies;
 use App\Stage;
@@ -26,6 +29,9 @@ use App\User;
 
 use UserHelper;
 use GlobalHelper;
+
+use App\Mail\MailContact;
+use App\Mail\MailSubmission;
 
 use View;
 use Hash;
@@ -389,6 +395,7 @@ class ContactAdvanceController extends Controller
         $count_payment_made  = 0;
         $last_payment_amount = 0;
 
+        $user_id               = Auth::user()->id;
         $hash_id               = $id;     
         $id                    = Hashids::decode($id)[0]; 
         $contact_advance_query = ContactAdvance::query();
@@ -408,8 +415,13 @@ class ContactAdvanceController extends Controller
                 $last_payment_amount = $last_payment->amount;              
             }  
 
-            $lenders = Lender::all();           
-            
+            $lenders = Lender::all();         
+            $ca_submissions = ContactAdvanceSubmission::where('contact_advance_id', '=', $contact_advance->id)->get();     
+
+            $emailTemplates = EmailTemplate::where('user_id', '=', $user_id)->get();         
+
+            $documents = ContactDocs::where('contact_id', '=', $contact->id)->get();
+
             return view('advances.submission', [
                 'hash_id' => $hash_id,
                 'advance_id' => $id,
@@ -420,10 +432,80 @@ class ContactAdvanceController extends Controller
                 'total_advance_payment' => $total_advance_payment,
                 'count_payment_made' => $count_payment_made,
                 'last_payment_amount' => $last_payment_amount,
-                'lenders' => $lenders,               
+                'lenders' => $lenders,
+                'ca_submissions' => $ca_submissions,
+                'emailTemplates' => $emailTemplates,
+                'documents' => $documents,  
             ]);                
         }  
     } 
+
+    public function send_submission(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $this->validate($request, [
+                'recipient'           => 'required',
+                'subject'             => 'required',
+                'content'             => 'required'   
+             ]);
+
+            $recipient_bcc = array();
+            $recipient_to  = array();
+
+            $contact_advance_id  = 0;
+            $contact_advance_id  = Hashids::decode($request->input('contact_advance_id'))[0];             
+
+            $auth_email          = Auth::user()->email;
+
+            if($auth_email == null or !isset($auth_email)) {
+                $auth_email = 'NA';
+            }
+
+            $enable_email = true;
+            if($enable_email) { 
+
+                $contact_adv_sub = new ContactAdvanceSubmission;
+
+                $contact_adv_sub->contact_advance_id = $contact_advance_id;
+                $contact_adv_sub->email_template_id  = $request->input('email_template_id');
+                $contact_adv_sub->recipient = serialize($request->input('recipient'));
+                $contact_adv_sub->sender    = $auth_email;
+                $contact_adv_sub->subject   = $request->input('subject');
+                $contact_adv_sub->content   = $request->input('content');
+                $contact_adv_sub->documents = serialize($request->input('documents'));
+                $contact_adv_sub->status    = 'submitted';
+                $contact_adv_sub->save();
+
+                $from_email   = 'noreply@corecms.com';
+                $recipients   = $request->input('recipient');
+                $subject      = $request->input('subject');
+                $message      = $request->input('content');
+
+                if(count($recipients) <= 1) {
+                    $recipient_to = $recipients[0];
+                    Mail::to($recipient_to)
+                        ->send(new MailSubmission($from_email, $subject, $message)); 
+                }elseif(count($recipients) > 1) {
+                    $recipient_to  = $recipients[0];
+                    unset($recipients[0]);
+                    $recipient_bcc = $recipients;
+                    Mail::to($recipient_to)
+                        ->bcc($recipient_bcc)
+                        ->send(new MailSubmission($from_email, $subject, $message));                        
+                }       
+
+                Session::flash('message', 'You have successfully send submission');
+                Session::flash('alert_class', 'alert-success');
+                return redirect()->back();                   
+
+            }
+
+            Session::flash('message', 'Unable to send submission');
+            Session::flash('alert_class', 'alert-danger');  
+            return redirect()->back();  
+        }
+    }
 
     public function store(Request $request)
     {
