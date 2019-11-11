@@ -125,9 +125,18 @@ class ContactController extends Controller
         $companies = Companies::all();
 
         if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
+
+            $company_id   = 0;
+            $user_id      = Auth::user()->id;
+            $company_user = CompanyUser::where('user_id','=', $user_id)->first();
+            if($company_user) {
+                $company_id  = $company_user->company_id;
+            }
+
             return view('contact.c_create', [
                 'stages' => $stages,
-                'companies' => $companies
+                'companies' => $companies,
+                'company_id' => $company_id,
             ]);   
         }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
             return view('contact.create', [
@@ -181,7 +190,12 @@ class ContactController extends Controller
             $contact = new Contact;
 
             if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
-                $contact->user_id       = $user_id;
+
+                if(!empty($request->input('user_id')) && $request->input('user_id') != "") {
+                    $contact->user_id       = $request->input('user_id');
+                } else {
+                    $contact->user_id       = $user_id;
+                }
                 $contact->company_id    = $company_id;  
             }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
                 $contact->user_id       = $request->input('user_id');

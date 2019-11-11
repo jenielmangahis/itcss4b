@@ -106,7 +106,15 @@
       <?php echo Form::text('zip_code', old('zip_code') ,['class' => 'form-control', 'required' => '']); ?>
     </div>
   </div>
+
+  <div class="col-md-5">
+    <div class="form-group">
+      <div id="company-users-container"></div>           
+    </div>  
+  </div>
+
 </div>
+
 <hr />
 <div class="row">
   <div class="col-md-5">

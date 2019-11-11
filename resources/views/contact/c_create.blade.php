@@ -134,7 +134,8 @@
         }, 250);
       }); */ 
 
-      var company_id = $('#company_id').val();
+      //var company_id = $('#company_id').val();
+      var company_id = "<?php echo $company_id; ?>";
       $('#company-users-container').html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
       var url = base_url + '/contact/ajax_load_company_users'
       $.ajax({
