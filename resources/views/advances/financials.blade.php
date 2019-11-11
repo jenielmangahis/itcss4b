@@ -124,18 +124,34 @@
                                     @foreach($numbers as $months)
                                       <?php
                                         $selected_field = "";
+                                        $selected       = "";
                                         if(isset($contact_adv_financial_bank_statement[$inc]['month'])) {
-                                          $selected_field == $contact_adv_financial_bank_statement[$inc]['month'];
+                                          $selected_field = $contact_adv_financial_bank_statement[$inc]['month'];
+                                          if($selected_field == $months) {
+                                            $selected = 'selected="selected"';
+                                          }
                                         }
                                       ?>
-                                      <option <?php echo $selected_field == $months ? 'selected="selected"' : ''; ?> value="{{$months}}">{{ date("M", mktime(0, 0, 0, $months, 10)) }}</option>
+                                      <option <?php echo $selected; ?> value="{{$months}}">{{ date("M", mktime(0, 0, 0, $months, 10)) }}</option>
                                     @endforeach
                                   </select>                   
                                 </div>                              
                               </th>
                               <td>
                                 <div class="form-group">
-                                  <input type="number" class="form-control" id="bank_year" name="bank['bank_year'][{{$num}}]" value="<?php echo isset($contact_adv_financial_bank_statement[$inc]['year']) ? $contact_adv_financial_bank_statement[$inc]['year'] : ''; ?>" placeholder="Year">
+                                  <!-- <input type="number" class="form-control" id="bank_year" name="bank['bank_year'][{{$num}}]" value="<?php //echo isset($contact_adv_financial_bank_statement[$inc]['year']) ? $contact_adv_financial_bank_statement[$inc]['year'] : ''; ?>" placeholder="Year"> -->
+                                  <select style="width: 85px;" name="bank['bank_year'][{{$num}}]" id="bank_year" class="form-control">
+                                    <option value="">Year</option>
+                                    @foreach($year_array as $year)
+                                      <?php 
+                                        $selected = "";
+                                        if(isset($contact_adv_financial_bank_statement[$inc]['year']) && $contact_adv_financial_bank_statement[$inc]['year'] == $year) {
+                                          $selected = 'selected="selected"';
+                                        }
+                                      ?>                                    
+                                      <option <?php echo $selected; ?> value="{{$year}}">{{$year}}</option>
+                                    @endforeach
+                                  </select>                                
                                 </div>                                
                               </td>
                               <td>
@@ -215,18 +231,35 @@
                                     @foreach($numbers as $months)
                                       <?php
                                         $selected_field = "";
-                                        if(isset($contact_adv_merchant_statement[$inc]['month'])) {
-                                          $selected_field == $contact_adv_merchant_statement[$incm]['month'];
+                                        $selected_month = "";
+                                        if(isset($contact_adv_merchant_statement[$incm]['month'])) {
+                                          $selected_field = $contact_adv_merchant_statement[$incm]['month'];
+                                          if($selected_field == $months) {
+                                            $selected_month = 'selected="selected"';
+                                          }                                          
                                         }
                                       ?>                                    
-                                      <option <?php echo $selected_field == $months ? 'selected="selected"' : ''; ?> value="{{$months}}">{{ date("M", mktime(0, 0, 0, $months, 10)) }}</option>
+                                      <option <?php echo $selected_month; ?> value="{{$months}}">{{ date("M", mktime(0, 0, 0, $months, 10)) }}</option>
                                     @endforeach
                                   </select>                   
                                 </div>                              
                               </th>
                               <td>
                                 <div class="form-group">
-                                  <input type="number" class="form-control" id="merchant_year" name="merchant['merchant_year'][{{$num}}]" value="<?php echo isset($contact_adv_merchant_statement[$incm]['year']) ? $contact_adv_merchant_statement[$incm]['year'] : ''; ?>" placeholder="Year">
+                                  <!-- <input type="number" class="form-control" id="merchant_year" name="merchant['merchant_year'][{{$num}}]" value="<?php //echo isset($contact_adv_merchant_statement[$incm]['year']) ? $contact_adv_merchant_statement[$incm]['year'] : ''; ?>" placeholder="Year"> -->
+                                  <select style="width: 85px;" name="merchant['merchant_year'][{{$num}}]" id="merchant_year" class="form-control">
+                                    <option value="">Year</option>
+                                    @foreach($year_array as $year)
+                                      <?php 
+                                        $selected = "";
+                                        if(isset($contact_adv_merchant_statement[$incm]['year']) && $contact_adv_merchant_statement[$incm]['year'] == $year) {
+                                          $selected = 'selected="selected"';
+                                        }
+                                      ?>                                    
+                                      <option <?php echo $selected; ?> value="{{$year}}">{{$year}}</option>
+                                    @endforeach
+                                  </select>
+                                  </div>
                                 </div>                                
                               </td>
                               <td>

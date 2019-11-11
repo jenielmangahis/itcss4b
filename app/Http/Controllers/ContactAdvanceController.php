@@ -373,6 +373,13 @@ class ContactAdvanceController extends Controller
 
             $lenders = Lender::all(); 
 
+            $year_arr   = array();
+            $start_year = date('Y') - 1;
+            $end_year   = date('Y') + 5;
+            for ($start_year; $start_year <= $end_year; $start_year++) {
+                $year_arr[] = $start_year;
+            }
+
             return view('advances.financials', [
                 'hash_id' => $hash_id,
                 'advance_id' => $id,
@@ -386,6 +393,7 @@ class ContactAdvanceController extends Controller
                 'contact_adv_financial_bank_statement' => $contact_adv_financial_bank_statement_array,
                 'contact_adv_merchant_statement' => $contact_adv_merchant_statement_array,
                 'lenders' => $lenders,
+                'year_array' => $year_arr,
             ]);                
         } 
     }   
