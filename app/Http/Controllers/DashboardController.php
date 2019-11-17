@@ -46,9 +46,10 @@ class DashboardController extends Controller
 
             $user_id  = Auth::user()->id;
             $group_id = Auth::user()->group_id;
-            if($group_id == 1){
+            if($group_id == 1 || $group_id == 2){
                 return redirect()->route('contact'); 
             }
+            
             $module   = 'dashboard';
             $with_permission = UserHelper::checkUserRole($group_id, $module); 
             if(!$with_permission) {

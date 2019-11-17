@@ -2,14 +2,26 @@
 .skin-blue .main-header .logo, .skin-blue .main-header .navbar, a.logo:hover {
 	background-color: #070707 !important;
 }
+.main-header .logo {
+	height: 84px !important;
+}
+.sidebar{
+	padding-top: 40px;
+}
+.navbar-custom-menu{
+	margin-top: 13px;
+}
+.sidebar-toggle{
+	margin-top: 14px;
+}
 </style>
 <header class="main-header">
 	<!-- Logo -->
 	<a href="index2.html" class="logo">
 	  <!-- mini logo for sidebar mini 50x50 pixels -->
-	  <span class="logo-mini"><img src="{{ asset('/images/corelogo.jpg') }}" alt="CoreCMS" style="width:77%;" /></span>
+	  <span class="logo-mini"><img src="{{ asset('/images/corelogo.jpg') }}" alt="CoreCMS" style="width:77%;margin-top: 22px;" /></span>
 	  <!-- logo for regular state and mobile devices -->
-	  <span class="logo-lg"><img src="{{ asset('/images/corelogo_big.jpg') }}" alt="CoreCMS" style="width:50%;" /></span>
+	  <span class="logo-lg"><img src="{{ asset('/images/corelogo_big.jpg') }}" alt="CoreCMS" style="width:78%;margin-top: 7px;" /></span>
 	</a>
 
 	<!-- Header Navbar -->
