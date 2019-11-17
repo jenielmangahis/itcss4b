@@ -20,6 +20,7 @@ use App\ContactAdvancePayment;
 use App\ContactAdvanceMerchantStatementRecord;
 use App\ContactAdvanceFinancialBankStatementRecord;
 use App\ContactAdvanceSubmission;
+use App\ContactAdvanceParticipation;
 use App\CompanyUser;
 use App\EmailTemplate;
 use App\Lender;
@@ -330,8 +331,7 @@ class ContactAdvanceController extends Controller
                 'lenders' => $lenders,                
             ]);                
         } 
-    }   
-
+    }
     
     public function advance_financials($id, Request $request)
     {
@@ -447,6 +447,46 @@ class ContactAdvanceController extends Controller
             ]);                
         }  
     } 
+
+    public function advance_participation($id, Request $request)
+    {
+        $count_payment_made  = 0;
+        $last_payment_amount = 0;
+
+        $hash_id               = $id;     
+        $id                    = Hashids::decode($id)[0]; 
+        $contact_advance_query = ContactAdvance::query();
+
+        if($id) {
+            $contact_advance = $contact_advance_query->where('id','=', $id)->first();
+            $contact         = Contact::where('id', '=', $contact_advance->contact_id)->first();
+            $company_user    = CompanyUser::where('company_id','=',$contact->company_id)->get();      
+
+            $total_advance_payment = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->sum('amount');
+            $count_payment_made    = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->count();
+            $last_payment          = ContactAdvancePayment::where('status','=', 'paid')->where('contact_advance_id', '=', $contact_advance->id)->orderBy('created_at', 'desc')->first();
+
+            if($last_payment) {
+                $last_payment_amount = $last_payment->amount;              
+            }             
+
+            $participations = ContactAdvanceParticipation::where('contact_advance_id','=',$contact_advance->id)->get();
+            $lenders = Lender::all();
+
+            return view('advances.participation', [
+                'hash_id' => $hash_id,
+                'advance_id' => $id,
+                'advance' => $contact_advance,
+                'contact' => $contact,
+                'company_user' => $company_user,
+                'participations' => $participations,
+                'total_advance_payment' => $total_advance_payment,
+                'count_payment_made' => $count_payment_made,
+                'last_payment_amount' => $last_payment_amount, 
+                'lenders' => $lenders,
+            ]);                
+        } 
+    }
 
     public function send_submission(Request $request)
     {
@@ -619,6 +659,75 @@ class ContactAdvanceController extends Controller
         }     
 
     }
+
+    public function store_participation(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $this->validate($request, [
+                'lender_id'    => 'required',
+                'loan_amount'  => 'required|numeric',
+                'fee_amount'   => 'required|numeric',
+             ]);  
+
+            $id = Hashids::decode($request->input('advance_id'))[0];
+            $advance_id = $id;     
+
+            $contact_adv_participation = new ContactAdvanceParticipation;
+            $contact_adv_participation->contact_advance_id = $advance_id;
+            $contact_adv_participation->lender_id     = $request->input('lender_id');
+            $contact_adv_participation->loan_amount   = $request->input('loan_amount');
+            $contact_adv_participation->loan_amount_percent = $request->input('loan_amount_percent');
+            $contact_adv_participation->fee_amount    = $request->input('fee_amount');
+            $contact_adv_participation->fee_percent   = $request->input('fee_percent');
+            $contact_adv_participation->type          = $request->input('type');
+            $contact_adv_participation->save();
+
+            Session::flash('message', 'You have successfully add participation');
+            Session::flash('alert_class', 'alert-success');
+            return redirect()->back();            
+
+        } else {
+            Session::flash('message', 'Unable to add participation');
+            Session::flash('alert_class', 'alert-danger');  
+            return redirect()->back();              
+        }
+    }
+
+    public function update_participation(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $this->validate($request, [
+                'lender_id'    => 'required',
+                'loan_amount'  => 'required|numeric',
+                'fee_amount'   => 'required|numeric',
+             ]);  
+
+            $id = Hashids::decode($request->input('advance_id'))[0];
+            $participation_id = Hashids::decode($request->input('participation_id'))[0];
+            
+            $advance_id = $id;     
+
+            $contact_adv_participation = ContactAdvanceParticipation::find($participation_id);
+            $contact_adv_participation->lender_id     = $request->input('lender_id');
+            $contact_adv_participation->loan_amount   = $request->input('loan_amount');
+            $contact_adv_participation->loan_amount_percent = $request->input('loan_amount_percent');
+            $contact_adv_participation->fee_amount    = $request->input('fee_amount');
+            $contact_adv_participation->fee_percent   = $request->input('fee_percent');
+            $contact_adv_participation->type          = $request->input('type');
+            $contact_adv_participation->save();
+
+            Session::flash('message', 'You have successfully update participation');
+            Session::flash('alert_class', 'alert-success');
+            return redirect()->back();            
+
+        } else {
+            Session::flash('message', 'Unable to update participation');
+            Session::flash('alert_class', 'alert-danger');  
+            return redirect()->back();              
+        }
+    }    
 
     public function update_advance_payment(Request $request)
     {
@@ -1367,6 +1476,23 @@ class ContactAdvanceController extends Controller
             }
         }
     }    
+    
+    public function destroy_participation(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $id = $request->input('id');
+            $id = Hashids::decode($id)[0];
+            $ca = ContactAdvanceParticipation::find($id);
+
+            if($ca) {   
+                $ca->delete();
+                Session::flash('message', "Delete Successful");
+                Session::flash('alert_class', 'alert-success');
+                return redirect()->back();
+            }
+        }
+    }     
 
     public function ajax_load_stage_status(Request $request)
     {

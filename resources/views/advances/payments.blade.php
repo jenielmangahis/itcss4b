@@ -249,7 +249,7 @@
                                     </div>
                                   </div>
                                 {!! Form::close() !!}        
-                            </div>                
+                              </div>                
 
                             {!! Form::close() !!}
                               </div>
@@ -276,7 +276,7 @@
 
                                   </div>
                                 </div>
-                            </div>  
+                              </div>  
 
                             </td>
                           </tr> 

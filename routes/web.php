@@ -99,13 +99,15 @@ Route::get('/advance_funding_info/{advance_id}', ['as'=>'advance_funding_info','
 Route::get('/advance_payments/{advance_id}', ['as'=>'advance_payments','uses'=>'ContactAdvanceController@advance_payments'])->middleware('auth');
 Route::get('/advance_financials/{advance_id}', ['as'=>'advance_financials','uses'=>'ContactAdvanceController@advance_financials'])->middleware('auth');
 Route::get('/advance_submission/{advance_id}', ['as'=>'advance_submission','uses'=>'ContactAdvanceController@advance_submission'])->middleware('auth');
-
+Route::get('/advance_participation/{advance_id}', ['as'=>'advance_participation','uses'=>'ContactAdvanceController@advance_participation'])->middleware('auth');
 
 Route::post('contact_advance/store', ['as'=>'contact_advance/store','uses'=>'ContactAdvanceController@store'])->middleware('auth');
 Route::post('contact_advance/store_advance', ['as'=>'contact_advance/store_advance','uses'=>'ContactAdvanceController@store_advance'])->middleware('auth');
+Route::post('contact_advance/store_participation', ['as'=>'contact_advance/store_participation','uses'=>'ContactAdvanceController@store_participation'])->middleware('auth');
 Route::post('contact_advance/update', ['as'=>'contact_advance/update','uses'=>'ContactAdvanceController@update'])->middleware('auth');
 Route::post('contact_advance/update_application', ['as'=>'contact_advance/update_application','uses'=>'ContactAdvanceController@update_application'])->middleware('auth');
 Route::post('contact_advance/update_advance', ['as'=>'contact_advance/update_advance','uses'=>'ContactAdvanceController@update_advance'])->middleware('auth');
+Route::post('contact_advance/update_participation', ['as'=>'contact_advance/update_participation','uses'=>'ContactAdvanceController@update_participation'])->middleware('auth');
 Route::post('contact_advance/update_financial', ['as'=>'contact_advance/update_financial','uses'=>'ContactAdvanceController@update_financial'])->middleware('auth');
 Route::post('contact_advance/update_advance_payment', ['as'=>'contact_advance/update_advance_payment','uses'=>'ContactAdvanceController@update_advance_payment'])->middleware('auth');
 Route::post('contact_advance/update_underwriter_notes', ['as'=>'contact_advance/update_underwriter_notes','uses'=>'ContactAdvanceController@update_underwriter_notes'])->middleware('auth');
@@ -115,6 +117,7 @@ Route::get('contact_advance/ajax_load_payback_payment_computation', ['as'=>'cont
 Route::get('contact_advance/ajax_load_payback_payment_computation_edit', ['as'=>'contact_advance/ajax_load_payback_payment_computation_edit','uses'=>'ContactAdvanceController@ajax_load_payback_payment_computation'])->middleware('auth');
 Route::post('contact_advance/destroy', ['as'=>'contact_advance/destroy','uses'=>'ContactAdvanceController@destroy'])->middleware('auth');
 Route::post('contact_advance/destroy_payment', ['as'=>'contact_advance/destroy_payment','uses'=>'ContactAdvanceController@destroy_payment'])->middleware('auth');
+Route::post('contact_advance/destroy_participation', ['as'=>'contact_advance/destroy_participation','uses'=>'ContactAdvanceController@destroy_participation'])->middleware('auth');
 
 //Lenders Module
 Route::get('/lender', ['as'=>'lender','uses'=>'LenderController@index'])->middleware('auth');
