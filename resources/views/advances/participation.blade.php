@@ -105,8 +105,8 @@
                       </div>
 
                       <div class="col-xs-6">
-                        <div class="form-group">
-                          <label>0.00</label>
+                        <div class="form-group" style="text-align: right; margin-right: 10px;">
+                          <label>{{ number_format($advance->amount,2) }}</label>
                         </div>
                       </div>
 
@@ -142,9 +142,10 @@
                               </a>  
 
                               <div id="modalEditParticipation-<?php echo $participation->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
-                                {{ Form::open(array('url' => 'contact_advance/update_participation', 'class' => '', 'id' => 'edit-participation-form', 'enctype' => 'multipart/form-data')) }}
+                                {{ Form::open(array('url' => 'contact_advance/update_participation', 'class' => 'participation-form-edit-' . $participation->id, 'id' => 'participation-form-edit', 'enctype' => 'multipart/form-data')) }}
                                   <input type="hidden" id="" name="contact_id" value="<?php echo Hashids::encode($contact->id); ?>">
                                   <input type="hidden" name="advance_id" id="advance_id" class="advance_id" value="{{ Hashids::encode($advance->id) }}">
+                                  <input type="hidden" id="advance_amount" name="advance_amount" value="<?php echo $advance->amount; ?>">
                                   <input type="hidden" name="participation_id" id="participation_id" class="participation_id" value="{{ Hashids::encode($participation->id) }}">
                                   <div class="modal-dialog modal-lg" style="width: 600px !important;">
                                     <div class="modal-content">
@@ -169,20 +170,22 @@
                                           </div>      
                                         </div> 
 
-                                        <div class="row">
-                                          <div class="col-xs-12">
-                                            <div class="form-group">
-                                              <label for="inputField">Loan Amount</label>
-                                              <input type="number" step="0.01" class="form-control" id="loan_amount" name="loan_amount" value="{{ $participation->loan_amount }}" required placeholder=""> 
-                                            </div>                
-                                          </div>      
-                                        </div>   
+                                        <div class="participation-loan-amoun-container-edit" id="participation-loan-amoun-container-edit-<?php echo $participation->id; ?>">
+                                          <div class="row">
+                                            <div class="col-xs-12">
+                                              <div class="form-group">
+                                                <label for="inputField">Loan Amount </label>
+                                                <input type="number" step="0.01" class="form-control" id="loan_amount" name="loan_amount" value="{{ $participation->loan_amount }}" required placeholder=""> 
+                                              </div>                
+                                            </div>      
+                                          </div>                                            
+                                        </div>
 
                                         <div class="row">
                                           <div class="col-xs-12">
                                             <div class="form-group">
-                                              <label for="inputField">Loan Amount %</label>
-                                              <input type="number" step="0.01" class="form-control" id="loan_amount_percent" name="loan_amount_percent" value="{{ $participation->loan_amount_percent }}" required placeholder=""> 
+                                              <label for="inputField">Loan % <a href="javascript:void(0);" onclick="javascript:compute_participation_loan_amount_edit(<?php echo $participation->id; ?>);">Compute Loan Amount</a></label>
+                                              <input type="number" step="0.01" class="form-control loan_amount_percent_edit-<?php echo $participation->id; ?>" id="loan_amount_percent" name="loan_amount_percent" value="{{ $participation->loan_amount_percent }}" required placeholder=""> 
                                             </div>                
                                           </div>      
                                         </div>   
@@ -255,14 +258,16 @@
 
                             </td>
                           </tr>
+
                         @endforeach
                       </table>
                     </div>
 
                     <div id="modalAddParticipation" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
-                        {{ Form::open(array('url' => 'contact_advance/store_participation', 'class' => '', 'id' => 'add-participation-form', 'enctype' => 'multipart/form-data')) }}
+                        {{ Form::open(array('url' => 'contact_advance/store_participation', 'class' => 'participation-form', 'id' => 'add-participation-form', 'enctype' => 'multipart/form-data')) }}
                           <input type="hidden" id="" name="contact_id" value="<?php echo Hashids::encode($contact->id); ?>">
                           <input type="hidden" name="advance_id" id="advance_id" class="advance_id" value="{{ Hashids::encode($advance->id) }}">
+                          <input type="hidden" id="advance_amount" name="advance_amount" value="<?php echo $advance->amount; ?>">
                           <div class="modal-dialog modal-lg" style="width: 600px !important;">
                             <div class="modal-content">
 
@@ -286,20 +291,22 @@
                                   </div>      
                                 </div> 
 
-                                <div class="row">
-                                  <div class="col-xs-12">
-                                    <div class="form-group">
-                                      <label for="inputField">Loan Amount</label>
-                                      <input type="number" step="0.01" class="form-control" id="loan_amount" name="loan_amount" value="" required placeholder=""> 
-                                    </div>                
-                                  </div>      
-                                </div>   
+                                <div class="participation-loan-amoun-container" id="participation-loan-amoun-container">
+                                  <div class="row">
+                                    <div class="col-xs-12">
+                                      <div class="form-group">
+                                        <label for="inputField">Loan Amount</label>
+                                        <input type="number" disabled="" step="0.01" class="form-control" id="loan_amount" name="loan_amount" value="" required placeholder=""> 
+                                      </div>                
+                                    </div>      
+                                  </div>   
+                                </div>
 
                                 <div class="row">
                                   <div class="col-xs-12">
                                     <div class="form-group">
-                                      <label for="inputField">Loan Amount %</label>
-                                      <input type="number" step="0.01" class="form-control" id="loan_amount_percent" name="loan_amount_percent" value="" required placeholder=""> 
+                                      <label for="inputField">Loan %</label>
+                                      <input type="number" step="0.01" class="form-control loan_amount_percent" id="loan_amount_percent" name="loan_amount_percent" value="" required placeholder=""> 
                                     </div>                
                                   </div>      
                                 </div>   
@@ -387,7 +394,16 @@
 
     $('#factor_rate').on('input',function(e){
       compute_payback_payment();
-    });        
+    });     
+
+    $('.loan_amount_percent').on('input',function(e){
+      compute_participation_loan_amount();
+    });   
+            
+    $('.loan_amount_percent_edit-<?php echo $participation->id; ?>').on('input',function(e){
+      compute_participation_loan_amount_edit(<?php echo $participation->id; ?>);
+    });  
+                      
 
   });
 
@@ -400,6 +416,26 @@
       }, 250);
     });    
   } 
+
+  function compute_participation_loan_amount() {
+    $.get(base_url + '/contact_advance/ajax_load_participation_loan_amount', $('.participation-form').serialize(), function (o) {
+      $('#participation-loan-amoun-container').html('<br><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br>');
+
+      setTimeout(function () {
+        $('#participation-loan-amoun-container').html(o);
+      }, 250);
+    });    
+  }  
+
+  function compute_participation_loan_amount_edit(id) {
+    $.get(base_url + '/contact_advance/ajax_load_participation_loan_amount', $('.participation-form-edit-' + id).serialize(), function (o) {
+      $('#participation-loan-amoun-container-edit-' + id).html('<br><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br>');
+
+      setTimeout(function () {
+        $('#participation-loan-amoun-container-edit-' + id).html(o);
+      }, 250);
+    });    
+  }
  
 </script>
 

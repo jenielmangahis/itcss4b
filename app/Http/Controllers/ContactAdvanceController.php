@@ -666,17 +666,28 @@ class ContactAdvanceController extends Controller
         {
             $this->validate($request, [
                 'lender_id'    => 'required',
-                'loan_amount'  => 'required|numeric',
+                'advance_amount' => 'required|numeric',
+                'loan_amount_percent' => 'required|numeric',
                 'fee_amount'   => 'required|numeric',
+                //'loan_amount'  => 'required|numeric',
              ]);  
+
+            $amount_percent = 0;
 
             $id = Hashids::decode($request->input('advance_id'))[0];
             $advance_id = $id;     
 
+            $advance_amount      = $request->input('advance_amount');
+            $loan_amount_percent = $request->input('loan_amount_percent');
+
+            if(isset($advance_amount) && isset($loan_amount_percent)) {
+                $amount_percent = $advance_amount * ($loan_amount_percent / 100);
+            }            
+
             $contact_adv_participation = new ContactAdvanceParticipation;
             $contact_adv_participation->contact_advance_id = $advance_id;
             $contact_adv_participation->lender_id     = $request->input('lender_id');
-            $contact_adv_participation->loan_amount   = $request->input('loan_amount');
+            $contact_adv_participation->loan_amount   = $amount_percent;
             $contact_adv_participation->loan_amount_percent = $request->input('loan_amount_percent');
             $contact_adv_participation->fee_amount    = $request->input('fee_amount');
             $contact_adv_participation->fee_percent   = $request->input('fee_percent');
@@ -700,18 +711,28 @@ class ContactAdvanceController extends Controller
         {
             $this->validate($request, [
                 'lender_id'    => 'required',
-                'loan_amount'  => 'required|numeric',
+                'advance_amount' => 'required|numeric',
+                'loan_amount_percent' => 'required|numeric',
                 'fee_amount'   => 'required|numeric',
-             ]);  
+             ]);             
+
+            $amount_percent = 0;
 
             $id = Hashids::decode($request->input('advance_id'))[0];
             $participation_id = Hashids::decode($request->input('participation_id'))[0];
             
             $advance_id = $id;     
 
+            $advance_amount      = $request->input('advance_amount');
+            $loan_amount_percent = $request->input('loan_amount_percent');
+
+            if(isset($advance_amount) && isset($loan_amount_percent)) {
+                $amount_percent = $advance_amount * ($loan_amount_percent / 100);
+            }                
+
             $contact_adv_participation = ContactAdvanceParticipation::find($participation_id);
             $contact_adv_participation->lender_id     = $request->input('lender_id');
-            $contact_adv_participation->loan_amount   = $request->input('loan_amount');
+            $contact_adv_participation->loan_amount   = $amount_percent;
             $contact_adv_participation->loan_amount_percent = $request->input('loan_amount_percent');
             $contact_adv_participation->fee_amount    = $request->input('fee_amount');
             $contact_adv_participation->fee_percent   = $request->input('fee_percent');
@@ -1442,6 +1463,20 @@ class ContactAdvanceController extends Controller
             'payment' => $payment
         ]); 
     }    
+
+    public function ajax_load_participation_loan_amount(Request $request)
+    {
+        $advance_amount = $request->input('advance_amount');
+        $loan_amount_percent = $request->input('loan_amount_percent');
+
+        if(isset($advance_amount) && isset($loan_amount_percent)) {
+            $amount_percent = $advance_amount * ($loan_amount_percent / 100);
+        }
+
+        return view('advances.ajax.ajax_load_participation_loan_amount',[
+            'amount_percent' => $amount_percent
+        ]);         
+    }
 
     public function destroy(Request $request)
     {

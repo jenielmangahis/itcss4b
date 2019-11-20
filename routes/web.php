@@ -115,6 +115,7 @@ Route::post('contact_advance/update_funding_info', ['as'=>'contact_advance/updat
 Route::post('contact_advance/send_submission', ['as'=>'contact_advance/send_submission','uses'=>'ContactAdvanceController@send_submission'])->middleware('auth');
 Route::get('contact_advance/ajax_load_payback_payment_computation', ['as'=>'contact_advance/ajax_load_payback_payment_computation','uses'=>'ContactAdvanceController@ajax_load_payback_payment_computation'])->middleware('auth');
 Route::get('contact_advance/ajax_load_payback_payment_computation_edit', ['as'=>'contact_advance/ajax_load_payback_payment_computation_edit','uses'=>'ContactAdvanceController@ajax_load_payback_payment_computation'])->middleware('auth');
+Route::get('contact_advance/ajax_load_participation_loan_amount', ['as'=>'contact_advance/ajax_load_participation_loan_amount','uses'=>'ContactAdvanceController@ajax_load_participation_loan_amount'])->middleware('auth');
 Route::post('contact_advance/destroy', ['as'=>'contact_advance/destroy','uses'=>'ContactAdvanceController@destroy'])->middleware('auth');
 Route::post('contact_advance/destroy_payment', ['as'=>'contact_advance/destroy_payment','uses'=>'ContactAdvanceController@destroy_payment'])->middleware('auth');
 Route::post('contact_advance/destroy_participation', ['as'=>'contact_advance/destroy_participation','uses'=>'ContactAdvanceController@destroy_participation'])->middleware('auth');

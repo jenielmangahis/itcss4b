@@ -28,6 +28,8 @@ use App\ContactAdvance;
 use App\ContactUser;
 use App\User;
 
+use DB;
+
 use UserHelper;
 use GlobalHelper;
 
@@ -57,8 +59,14 @@ class ContactDashboardController extends Controller
             $pending_task_count = ContactTask::where('assigned_user_id','=', $user_id)->where('status','=', 'pending')->count();
             $pending_task       = ContactTask::where('assigned_user_id','=', $user_id)->where('status','=', 'pending')->get();
 
+            $idle_contacts_count = 1;
+            $idle_contacts = array();
+
             View::share ( 'pending_task_count', $pending_task_count );   
-            View::share ( 'pending_task', $pending_task);          
+            View::share ( 'pending_task', $pending_task);  
+
+            View::share ( 'idle_contacts_count', $idle_contacts_count );   
+            View::share ( 'idle_contacts', $idle_contacts);          
 
             return $next($request);     
         });                 
@@ -227,7 +235,7 @@ class ContactDashboardController extends Controller
 
         /*
          * Contact History - End
-        */ 
+        */             
 
         /*
          * For bank account - Start
