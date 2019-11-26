@@ -63,11 +63,18 @@
       @if(isset($idle_contacts) && $idle_contacts)
       <ul class="menu">
         @foreach($idle_contacts as $idl_contact)
+          <?php 
+            $contact_name = 'NA';
+            $contact_details = App\Contact::find($idl_contact['contact_id']);
+            if($contact_details) {
+              $contact_name = $contact_details->firstname . " " . $contact_details->lastname;
+            }
+          ?>
           <li>
             <a href="<?php echo url('contact_dashboard/' . Hashids::encode($idl_contact['contact_id']) . '#tab_tasks') ?>">
               <h3>
-                <strong>Contact</strong> - 
-                <!-- <small class="pull-right">-</small> -->
+                <strong>Contact</strong> - {{ $contact_name }}
+                <!-- <small class="pull-right">-</small> -->            
               </h3>
             </a>
           </li>
