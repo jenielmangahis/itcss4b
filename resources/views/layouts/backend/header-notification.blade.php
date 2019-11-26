@@ -62,9 +62,9 @@
       <!-- Inner menu: contains the tasks -->
       @if(isset($idle_contacts) && $idle_contacts)
       <ul class="menu">
-        @foreach($idle_contacts as $contact)
+        @foreach($idle_contacts as $idl_contact)
           <li>
-            <a href="<?php echo url('contact_dashboard/' . Hashids::encode($contact->id) . '#tab_tasks') ?>">
+            <a href="<?php echo url('contact_dashboard/' . Hashids::encode($idl_contact['contact_id']) . '#tab_tasks') ?>">
               <h3>
                 <strong>Contact</strong> - 
                 <!-- <small class="pull-right">-</small> -->

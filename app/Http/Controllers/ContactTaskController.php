@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use App\ContactHistory;
 use App\ContactTask;
 use App\Contact;
 use App\User;
@@ -40,6 +41,17 @@ class ContactTaskController extends Controller
 
             $pending_task_count = ContactTask::where('assigned_user_id','=', $user_id)->where('status','=', 'pending')->count();
             $pending_task       = ContactTask::where('assigned_user_id','=', $user_id)->where('status','=', 'pending')->get();
+
+            $idl_contacts = UserHelper::getIdleContacts();
+            $idle_contacts_count = 0;
+            $idle_contacts       = array();
+            if(!empty($idl_contacts)) {
+                $idle_contacts_count = $idl_contacts['total_idle'];
+                $idle_contacts       = $idl_contacts['idle_data'];
+            }
+
+            View::share ( 'idle_contacts_count', $idle_contacts_count );   
+            View::share ( 'idle_contacts', $idle_contacts);                   
 
             View::share ( 'pending_task_count', $pending_task_count );   
             View::share ( 'pending_task', $pending_task);   
