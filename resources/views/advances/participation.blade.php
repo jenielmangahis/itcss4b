@@ -371,6 +371,17 @@
 @endsection
 
 @section('page-footer-scripts')
+
+@if(isset($participation->id))
+  <script>
+    $(function () {
+      $('.loan_amount_percent_edit-<?php echo $participation->id; ?>').on('input',function(e){
+        compute_participation_loan_amount_edit(<?php echo $participation->id; ?>);
+      }); 
+    });     
+  </script>
+@endif
+
 <script>
   var base_url = '<?php echo url("/"); ?>';
 
@@ -398,12 +409,7 @@
 
     $('.loan_amount_percent').on('input',function(e){
       compute_participation_loan_amount();
-    });   
-            
-    $('.loan_amount_percent_edit-<?php echo $participation->id; ?>').on('input',function(e){
-      compute_participation_loan_amount_edit(<?php echo $participation->id; ?>);
-    });  
-                      
+    });              
 
   });
 
@@ -438,6 +444,8 @@
   }
  
 </script>
+
+
 
 @endsection
 
