@@ -103,7 +103,7 @@
   </div>
 </div>
 
-<div class="row">
+<div class="row date-bankruptcy-container">
   <div class="col-md-5">
     <div class="form-group">
       <label>Date of Bankruptcy <span class="required">*</span></label>
