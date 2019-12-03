@@ -10,6 +10,7 @@ use App\ContactTask;
 use App\ContactBusinessInformation;
 use App\ContactBrokerInformation;
 use App\ContactLoanInformation;
+use App\ContactAssignedUser;
 use App\ContactCallTracker;
 use App\ContactHistory;
 use App\CompanyUser;
@@ -136,6 +137,19 @@ class ContactController extends Controller
         $stages    = Stage::all();
         $companies = Companies::all();
 
+        $company_users_by_group = array();
+        $company_users = CompanyUser::all();
+
+        if($company_users) {
+            $inc = 1;
+            foreach($company_users as $company_u) {
+                $company_users_by_group[$company_u->company->name][$inc]['user_id'] = $company_u->user_id;
+                $company_users_by_group[$company_u->company->name][$inc]['company_id'] = $company_u->company_id;
+                $company_users_by_group[$company_u->company->name][$inc]['name'] = $company_u->user->firstname . " " . $company_u->user->lastname;
+            $inc++;
+            }
+        }      
+
         if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
 
             $company_id   = 0;
@@ -149,11 +163,13 @@ class ContactController extends Controller
                 'stages' => $stages,
                 'companies' => $companies,
                 'company_id' => $company_id,
+                'company_users_by_group' => $company_users_by_group,
             ]);   
         }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
             return view('contact.create', [
                 'stages' => $stages,
-                'companies' => $companies
+                'companies' => $companies,
+                'company_users_by_group' => $company_users_by_group,
             ]);   
         } 
     }      
@@ -184,7 +200,7 @@ class ContactController extends Controller
                     'address1'         => 'required',   
                     'zip_code'         => 'required',  
                     'company_id'       => 'required',
-                    'user_id'          => 'required',
+                    //'user_id'          => 'required',
                     'gross_monthly_credit_card_sales' => 'numeric',
                     'gross_yearly_sales' => 'numeric', 
                     'loan_amount'        => 'numeric',
@@ -202,7 +218,6 @@ class ContactController extends Controller
             $contact = new Contact;
 
             if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
-
                 if(!empty($request->input('user_id')) && $request->input('user_id') != "") {
                     $contact->user_id       = $request->input('user_id');
                 } else {
@@ -210,7 +225,8 @@ class ContactController extends Controller
                 }
                 $contact->company_id    = $company_id;  
             }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
-                $contact->user_id       = $request->input('user_id');
+                //$contact->user_id       = $request->input('user_id');
+                $contact->user_id       = $user_id;
                 $contact->company_id    = $request->input('company_id');
             } 
 
@@ -238,7 +254,8 @@ class ContactController extends Controller
                     $contact_business_info->user_id       = $user_id;
                     $contact_business_info->company_id    = $company_id;  
                 }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
-                    $contact_business_info->user_id       = $request->input('user_id');
+                    //$contact_business_info->user_id       = $request->input('user_id');
+                    $contact_business_info->user_id       = $user_id;
                     $contact_business_info->company_id    = $request->input('company_id');
                 } 
 
@@ -259,7 +276,8 @@ class ContactController extends Controller
                     $contact_loan_info->user_id       = $user_id;
                     $contact_loan_info->company_id    = $company_id;  
                 }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
-                    $contact_loan_info->user_id       = $request->input('user_id');
+                    //$contact_loan_info->user_id       = $request->input('user_id');
+                    $contact_loan_info->user_id       = $user_id;
                     $contact_loan_info->company_id    = $request->input('company_id');
                 }         
                 
@@ -272,13 +290,39 @@ class ContactController extends Controller
                     $contact_broker_info->user_id       = $user_id;
                     $contact_broker_info->company_id    = $company_id;  
                 }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
-                    $contact_broker_info->user_id       = $request->input('user_id');
+                    //$contact_broker_info->user_id       = $request->input('user_id');
+                    $contact_broker_info->user_id       = $user_id;
                     $contact_broker_info->company_id    = $request->input('company_id');
                 }         
                 
                 $contact_broker_info->contact_id    = $contact->id;  
                 $contact_broker_info->brokerage_fee = !empty($request->input('brokerage_fee')) ? $request->input('brokerage_fee') : 0;   
                 $contact_broker_info->save(); 
+
+                /* assigned contact to company user */
+                $assigned_users = $request->input('company_assigned_users');     
+                if(isset($assigned_users) && !empty($assigned_users)) {
+
+                    foreach($assigned_users as $a_user) {
+                        $uid        = $a_user;
+                        $company_id = 0;
+                        $contact_id = $contact->id;
+                        $c_user     = CompanyUser::where('user_id', '=', $uid)->first();
+
+                        if($c_user) {
+                            $company_id = $c_user->company_id;
+                        }
+
+                        $contact_assigned_user = new ContactAssignedUser;
+                        $contact_assigned_user->contact_id = $contact_id;
+                        $contact_assigned_user->company_id  = $company_id;
+                        $contact_assigned_user->user_id     = $uid;
+                        $contact_assigned_user->save();
+                    }
+
+                }
+                /* assigned contact to company user - end */
+
             }
 
             if($contact) {
@@ -303,6 +347,27 @@ class ContactController extends Controller
         $id        = Hashids::decode($id)[0]; 
         $stages    = Stage::all();
         $companies = Companies::all();
+
+        $company_users_by_group = array();
+        $company_users = CompanyUser::all();
+
+        if($company_users) {
+            $inc = 1;
+            foreach($company_users as $company_u) {
+                $company_users_by_group[$company_u->company->name][$inc]['user_id'] = $company_u->user_id;
+                $company_users_by_group[$company_u->company->name][$inc]['company_id'] = $company_u->company_id;
+                $company_users_by_group[$company_u->company->name][$inc]['name'] = $company_u->user->firstname . " " . $company_u->user->lastname;
+            $inc++;
+            }
+        }   
+
+        $existing_contact_assigned_user = ContactAssignedUser::where('contact_id','=', $id)->get();  
+        $existing_assigned_user = array();
+        if($existing_contact_assigned_user) {
+            $existing_assigned_user = $existing_contact_assigned_user->toArray();       
+        }
+
+
         if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
             $contact = Contact::where('id', '=', $id)->first();
             $contact_business_info = ContactBusinessInformation::where('contact_id', '=', $id)->first();
@@ -314,7 +379,9 @@ class ContactController extends Controller
                 'companies' => $companies,
                 'contact_business_info' => $contact_business_info,
                 'contact_loan_info' => $contact_loan_info,
-                'contact_broker_info' => $contact_broker_info
+                'contact_broker_info' => $contact_broker_info,
+                'company_users_by_group' => $company_users_by_group,
+                'existing_assigned_user' => $existing_assigned_user,
             ]);   
         }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
             $contact = Contact::where('id', '=', $id)->first();
@@ -327,7 +394,9 @@ class ContactController extends Controller
                 'companies' => $companies,
                 'contact_business_info' => $contact_business_info,
                 'contact_loan_info' => $contact_loan_info,
-                'contact_broker_info' => $contact_broker_info                
+                'contact_broker_info' => $contact_broker_info,
+                'company_users_by_group' => $company_users_by_group,  
+                'existing_assigned_user' => $existing_assigned_user,             
             ]);   
         }
     }    
@@ -358,7 +427,7 @@ class ContactController extends Controller
                     'address1'         => 'required',   
                     'zip_code'         => 'required',  
                     'company_id'       => 'required',
-                    'user_id'          => 'required',
+                    //'user_id'          => 'required',
                     'gross_monthly_credit_card_sales' => 'numeric',
                     'gross_yearly_sales' => 'numeric', 
                     'loan_amount'        => 'numeric',
@@ -366,13 +435,15 @@ class ContactController extends Controller
                  ]);                
             }
 
-            $id = Hashids::decode($request->input('id'))[0];
-            $contact = Contact::find($id); 
+            $id       = Hashids::decode($request->input('id'))[0];
+            $contact  = Contact::find($id); 
+            $user_id  = Auth::user()->id;
 
             if($contact) {
 
                 if(UserHelper::isAdminUser(Auth::user()->group_id)) {
-                    $contact->user_id       = $request->input('user_id');
+                    //$contact->user_id       = $request->input('user_id');
+                    $contact->user_id       = $user_id;
                     $contact->company_id    = $request->input('company_id');
                 } 
 
@@ -398,7 +469,7 @@ class ContactController extends Controller
                     if($contact_business_info) {
 
                         if(UserHelper::isAdminUser(Auth::user()->group_id)) {
-                            $contact_business_info->user_id       = $request->input('user_id');
+                            $contact_business_info->user_id       = $user_id; //$request->input('user_id');
                             $contact_business_info->company_id    = $request->input('company_id');
                         } 
 
@@ -418,7 +489,7 @@ class ContactController extends Controller
                     $contact_loan_info = ContactLoanInformation::where('contact_id', '=', $id)->first(); 
                     if($contact_loan_info) {
                         if(UserHelper::isAdminUser(Auth::user()->group_id)) {
-                            $contact_loan_info->user_id       = $request->input('user_id');
+                            $contact_loan_info->user_id       = $user_id; //$request->input('user_id');
                             $contact_loan_info->company_id    = $request->input('company_id');
                         }         
                         
@@ -430,7 +501,7 @@ class ContactController extends Controller
                     $contact_broker_info = ContactBrokerInformation::where('contact_id', '=', $id)->first(); 
                     if($contact_broker_info) {
                         if(UserHelper::isAdminUser(Auth::user()->group_id)) {
-                            $contact_broker_info->user_id       = $request->input('user_id');
+                            $contact_broker_info->user_id       = $user_id; //$request->input('user_id');
                             $contact_broker_info->company_id    = $request->input('company_id');
                         }         
                         
@@ -438,6 +509,31 @@ class ContactController extends Controller
                         $contact_broker_info->brokerage_fee = !empty($request->input('brokerage_fee')) ? $request->input('brokerage_fee') : 0;   
                         $contact_broker_info->save(); 
                     }
+
+                    /* assigned contact to company user */
+                    $delete_previous_assigned_user = ContactAssignedUser::where('contact_id', $contact->id)->delete();
+                    $assigned_users = $request->input('company_assigned_users');     
+                    if(isset($assigned_users) && !empty($assigned_users)) {
+
+                        foreach($assigned_users as $a_user) {
+                            $uid        = $a_user;
+                            $company_id = 0;
+                            $contact_id = $contact->id;
+                            $c_user     = CompanyUser::where('user_id', '=', $uid)->first();
+
+                            if($c_user) {
+                                $company_id = $c_user->company_id;
+                            }
+
+                            $contact_assigned_user = new ContactAssignedUser;
+                            $contact_assigned_user->contact_id  = $contact_id;
+                            $contact_assigned_user->company_id  = $company_id;
+                            $contact_assigned_user->user_id     = $uid;
+                            $contact_assigned_user->save();
+                        }
+
+                    }
+                    /* assigned contact to company user - end */                    
 
                 }
 

@@ -1,5 +1,5 @@
 @extends('layouts.backend.master')
-<style>
+<!-- <style>
 .nav-tabs-custom>.tab-content{
   border:1px solid #d2d6de !important;
   box-shadow: 0 1px 1px rgba(0,0,0,0.1);
@@ -16,7 +16,7 @@
 .nav-tabs-custom>.nav-tabs>li.active {
   padding-left: 3px;
 }
-</style>
+</style> -->
 @section('header-php')
   <?php
   $body_id = '';
