@@ -2,7 +2,7 @@
   <div class="col-md-5">
     <div class="form-group">
       <label>Business Name <span class="required"></span></label>
-      <?php echo Form::text('business_name', old('business_name') ,['class' => 'form-control']); ?>
+      <?php echo Form::text('business_name', old('business_name') ,['class' => 'form-control', 'id' => 'business_name']); ?>
     </div>
   </div>
 

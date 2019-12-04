@@ -73,38 +73,63 @@ class ContactController extends Controller
     {
         $search_by    = $request->input('search_by');
         $search_field = $request->input('search_field');  
-        $user_id = Auth::user()->id;
+        $user_id      = Auth::user()->id;
+
         if($search_by != '' && $search_field != '') {
             $contact_query = Contact::query();
 
             if($search_by != '' && $search_field != '') {
 
             	if( $search_by == 'name' ){
-            		$contact_query = $contact_query->where('contacts.firstname', 'like', '%' . $search_field . '%')->orWhere('contacts.lastname', 'like', '%' . $search_field . '%');
+
+            		/*$contact_query = $contact_query->where('contacts.firstname', 'like', '%' . $search_field . '%')->orWhere('contacts.lastname', 'like', '%' . $search_field . '%');
                     if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
                         $contact_query = $contact_query->where('user_id', '=', Auth::user()->id);
-                    }            	       
-                }else{
-            		$contact_query = $contact_query->where('contacts.'.$search_by, 'like', '%' . $search_field . '%');
-            	    if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
-                        $contact_query = $contact_query->where('user_id', '=', Auth::user()->id);
+                    } */
+
+                    $user_id       = Auth::user()->id;
+                    $contact_query = $contact_query->leftJoin('contact_assigned_users', 'contacts.id','=', 'contact_assigned_users.contact_id');
+                    if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
+                        $contact_query = $contact_query->where('contact_assigned_users.user_id','=', $user_id);
                     }
+                    $contact_query = $contact_query->where('contacts.firstname', 'like', '%' . $search_field . '%')->orWhere('contacts.lastname', 'like', '%' . $search_field . '%');
+
+                }else{
+
+                    $contact_query = $contact_query->leftJoin('contact_assigned_users', 'contacts.id','=', 'contact_assigned_users.contact_id');
+                    if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
+                        $contact_query = $contact_query->where('contact_assigned_users.user_id','=', $user_id);
+                    }                    
+            		$contact_query = $contact_query->where('contacts.'.$search_by, 'like', '%' . $search_field . '%');
+
                 }
 
-                $contact = $contact_query = $contact_query->orderBy('created_at', 'desc')->paginate(15);
+                $contact = $contact_query = $contact_query->orderBy('contacts.created_at', 'desc')->paginate(15);
             }            
         } else {
-            
-            if(UserHelper::isCompanyUser(Auth::user()->group_id)) {                
-                $contact = Contact::where('user_id','=', $user_id)
+            if(UserHelper::isCompanyUser(Auth::user()->group_id)) {       
+       
+                /*$contact = Contact::where('user_id','=', $user_id)
                             ->orderBy('created_at', 'desc')
-                            ->paginate(15); 
+                            ->paginate(15); */
+
+                $contact = Contact::leftJoin('contact_assigned_users', 'contacts.id','=', 'contact_assigned_users.contact_id')
+                                ->where('contact_assigned_users.user_id','=', $user_id)
+                                ->orderBy('contacts.created_at', 'desc')
+                                ->paginate(15);
+
             }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
                 $contact = Contact::orderBy('created_at', 'desc')->paginate(15);  
             }else{
-                $contact = Contact::where('user_id','=', $user_id)
+
+                /*$contact = Contact::where('user_id','=', $user_id)
                             ->orderBy('created_at', 'desc')
-                            ->paginate(15); 
+                            ->paginate(15); */
+
+                $contact = Contact::leftJoin('contact_assigned_users', 'contacts.id','=', 'contact_assigned_users.contact_id')
+                                ->where('contact_assigned_users.user_id','=', $user_id)
+                                ->orderBy('contacts.created_at', 'desc')
+                                ->paginate(15);                        
             }            
         }
 
