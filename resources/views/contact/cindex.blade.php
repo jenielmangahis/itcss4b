@@ -131,39 +131,39 @@
                     @foreach($contact as $con)
                         <?php 
                           $workflow_status = App\Workflow::where('id', '=', $con->status)->first();
-                          $business_info   = App\ContactBusinessInformation::where('contact_id', '=', $con->id)->first();
+                          $business_info   = App\ContactBusinessInformation::where('contact_id', '=', $con->contact_id)->first();
 
                           $business_name   = '';
                           if( $business_info ){
                             $business_name = $business_info->business_name;
                           }
 
-                          $assigned_user = App\ContactAssignedUser::where('contact_id', '=', $con->id)->get();
+                          $assigned_user = App\ContactAssignedUser::where('contact_id', '=', $con->contact_id)->get();
                           if($assigned_user) {
                             $a_user_list = "";
                             foreach($assigned_user as $assign_u) {
                               $a_user_list .= $assign_u->contact->firstname . " " . $assign_u->contact->lastname . ", ";
                             }
-                          }
+                          }                          
                         ?>
                         <tr>
-                            <td>{{ $con->id }}</td>                            
+                            <td>{{ $con->contact_id }}</td>                            
                             <td>{{ date("F j, Y", strtotime($con->created_at)) }}</td>
                             <td><?= $business_name; ?></td>
                             <!-- <td>-</td> -->
                             @if(!empty($a_user_list))
-                              <td><?php echo  $a_user_list; ?></td>
+                              <td><?php echo $a_user_list; ?></td>
                             @else
                               <td>-</td>
                             @endif
-                            <td><a href="{{url('contact_dashboard/'.Hashids::encode($con->id))}}">{{ $con->firstname }} {{$con->lastname }}</a></td>
+                            <td><a href="{{url('contact_dashboard/'.Hashids::encode($con->contact_id))}}">{{ $con->firstname }} {{$con->lastname }}</a></td>
                             <td>
-                              <a href="javascript:void(0);" class="btn" id="" onclick="javascript:load_activity_history_tab_list('<?php echo  Hashids::encode($con->id); ?>');" data-toggle="modal" data-target="#modalCallTracker">
+                              <a href="javascript:void(0);" class="btn" id="" onclick="javascript:load_activity_history_tab_list('<?php echo  Hashids::encode($con->contact_id); ?>');" data-toggle="modal" data-target="#modalCallTracker">
                                  {{ $con->mobile_number }}
                               </a>                                
                             </td>
                             <td>
-                              <a href="javascript:void(0);" data-key="{{ $con->email }}" data-id="{{ $con->id }}" class="btn btn-quick-send-modal" id="" data-toggle="modal" data-target="#modalSendEmail">
+                              <a href="javascript:void(0);" data-key="{{ $con->email }}" data-id="{{ $con->contact_id }}" class="btn btn-quick-send-modal" id="" data-toggle="modal" data-target="#modalSendEmail">
                                 {{ $con->email }}
                               </a>
                             </td>
@@ -171,19 +171,19 @@
                             <td>{{ !empty($workflow_status->status) ? $workflow_status->status : '-' }}</td>
                             <td>{{ isset($con->data_source) ? $con->data_source : 'Form Fill' }}</td>
                             <td>
-                                <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $con->id; ?>" >
+                                <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $con->contact_id; ?>" >
                                     <i class="fa fa-trash"></i> Delete
                                 </a>
-                                <a href="{{route('contact/edit',[Hashids::encode($con->id)])}}" class="btn btn-xs btn-primary">
+                                <a href="{{route('contact/edit',[Hashids::encode($con->contact_id)])}}" class="btn btn-xs btn-primary">
                                     <i class="fa fa-edit"></i> Edit
                                 </a> 
-                                <a href="javascript:void(0);" class="btn btn-xs btn-primary" onclick="javascript:load_update_status_field('<?php echo $con->id; ?>')" id="edit-modal-status-<?php echo $con->id; ?>" data-toggle="modal" data-target="#modalEdit">
+                                <a href="javascript:void(0);" class="btn btn-xs btn-primary" onclick="javascript:load_update_status_field('<?php echo $con->contact_id; ?>')" id="edit-modal-status-<?php echo $con->contact_id; ?>" data-toggle="modal" data-target="#modalEdit">
                                     <i class="fa fa-edit"></i> Status
                                 </a>                                                            
                             </td>
                         </tr>
 
-                        <div id="modalDelete-<?= $con->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
+                        <div id="modalDelete-<?= $con->contact_id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
                             <div class="modal-dialog modal-md">
                               <div class="modal-content">
 
@@ -197,7 +197,7 @@
                                 </div>
                                 <div class="modal-footer">
                                   {{ Form::open(array('url' => 'contact/destroy')) }}
-                                    <?php echo Form::hidden('id', Hashids::encode($con->id) ,[]); ?>
+                                    <?php echo Form::hidden('id', Hashids::encode($con->contact_id) ,[]); ?>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                                     <button type="submit" class="btn btn-danger">Yes</button>
                                   {!! Form::close() !!}

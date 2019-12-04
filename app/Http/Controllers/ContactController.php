@@ -145,16 +145,30 @@ class ContactController extends Controller
             $contacts = Contact::all();
         }
         
-        return view('contact.index',[
-        	'contact' => $contact,
-            'search_field' => $search_field,
-            'stages' => $stages,
-            'event_types' => $event_types,
-            'call_log_activity_history' => $call_log_activity_history,
-            'event_types' => $event_types,
-            'emailTemplates' => $emailTemplates,
-            'contacts' => $contacts
-        ]); 
+        if(UserHelper::isAdminUser(Auth::user()->group_id)) {
+            return view('contact.index',[
+                'contact' => $contact,
+                'search_field' => $search_field,
+                'stages' => $stages,
+                'event_types' => $event_types,
+                'call_log_activity_history' => $call_log_activity_history,
+                'event_types' => $event_types,
+                'emailTemplates' => $emailTemplates,
+                'contacts' => $contacts
+            ]); 
+        } else {
+            return view('contact.cindex',[
+                'contact' => $contact,
+                'search_field' => $search_field,
+                'stages' => $stages,
+                'event_types' => $event_types,
+                'call_log_activity_history' => $call_log_activity_history,
+                'event_types' => $event_types,
+                'emailTemplates' => $emailTemplates,
+                'contacts' => $contacts
+            ]); 
+        }
+
     } 
 
     public function create()
