@@ -124,6 +124,15 @@
 <script>
   var base_url = '<?php echo url("/"); ?>'; 
 
+  $("#filed_bankruptcy").change(function(){
+    var selected = $(this).val();
+    if( selected == 'Yes' ){
+      $(".date-bankruptcy-container").removeClass("hide");
+    }else{
+      $(".date-bankruptcy-container").addClass("hide");
+    }
+  });
+  
   function load_company_users_dropdown() {
 
       /*$.get(base_url + '/contact/ajax_load_company_users', $('#add-contact-form').serialize() , function (o) {

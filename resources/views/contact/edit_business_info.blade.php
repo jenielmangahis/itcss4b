@@ -102,12 +102,19 @@
     </div>   
   </div>
 </div>
-
-<div class="row">
+<?php
+  $date_bankruptcy = $contact_business_info->bankruptcy_filed;
+  $class_date_bankruptcy = "hide";
+  if( $contact_business_info->filed_bankruptcy == 'Yes' ){
+    $date_bankruptcy = '';
+    $class_date_bankruptcy = '';
+  }
+?>
+<div class="row date-bankruptcy-container <?php echo $class_date_bankruptcy; ?>">
   <div class="col-md-5">
     <div class="form-group">
       <label>Date of Bankruptcy <span class="required">*</span></label>
-      <?php echo Form::text('bankruptcy_filed', $contact_business_info->bankruptcy_filed ,['class' => 'form-control bankruptcy_filed']); ?>
+      <?php echo Form::text('bankruptcy_filed', $date_bankruptcy ,['class' => 'form-control bankruptcy_filed']); ?>
     </div>
   </div>
 </div>
