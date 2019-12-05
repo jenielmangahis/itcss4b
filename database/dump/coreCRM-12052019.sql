@@ -12,7 +12,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Dumping structure for table corecmsdb.companies
-DROP TABLE IF EXISTS `companies`;
 CREATE TABLE IF NOT EXISTS `companies` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -38,7 +37,6 @@ INSERT INTO `companies` (`id`, `name`, `contact_number`, `facebook`, `twitter`, 
 /*!40000 ALTER TABLE `companies` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.company_users
-DROP TABLE IF EXISTS `company_users`;
 CREATE TABLE IF NOT EXISTS `company_users` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `company_id` int(11) NOT NULL,
@@ -59,7 +57,6 @@ INSERT INTO `company_users` (`id`, `company_id`, `user_id`, `created_at`, `updat
 /*!40000 ALTER TABLE `company_users` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contacts
-DROP TABLE IF EXISTS `contacts`;
 CREATE TABLE IF NOT EXISTS `contacts` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `company_id` int(11) NOT NULL,
@@ -87,13 +84,13 @@ CREATE TABLE IF NOT EXISTS `contacts` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table corecmsdb.contacts: ~10 rows (approximately)
+-- Dumping data for table corecmsdb.contacts: ~9 rows (approximately)
 DELETE FROM `contacts`;
 /*!40000 ALTER TABLE `contacts` DISABLE KEYS */;
 INSERT INTO `contacts` (`id`, `company_id`, `user_id`, `stage_id`, `status`, `full_name`, `firstname`, `lastname`, `email`, `mobile_number`, `work_number`, `home_number`, `data_source`, `last_call_activity`, `time_in_status`, `address1`, `address2`, `city`, `state`, `zip_code`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(10, 3, 11, 1, '1', 'Testing01 Demo', 'Testing01', 'Demo', 'testing1223@gmail.com', '454545', '4545', '4545', NULL, NULL, NULL, 'dfd', 'dfdf', 'Santa Rosa', 'Laguna', '2024', '2019-06-13 06:09:00', '2019-06-26 07:12:57', NULL),
 	(11, 3, 10, 1, '2', 'Juan Carlos Binigno', 'Juan Carlos', 'Binigno', 'juanbinigno@gmail.com', '789456', '456897', '456456', NULL, NULL, NULL, '254 Gen. Malvar St., Don Pablo Subd.,', 'None', 'Binan', 'Laguna', '4026', '2019-06-13 06:12:09', '2019-06-26 07:13:03', NULL),
-	(12, 3, 11, 1, NULL, 'Carlos M Magasii', 'Carlos M', 'Magasii', 'carlos.magasi@gmail.com', '45646545', '5456465', '5464', NULL, NULL, NULL, '254 Gen. Malvar St., Don Pablo Subd.,', 'None', 'Davao', 'Mindanao', '96352', '2019-06-13 08:16:20', '2019-06-13 08:19:11', NULL),
+	(12, 3, 1, 1, '1', 'Carlos M Magasii', 'Carlos M', 'Magasii', 'carlos.magasi@gmail.com', '45646545', '5456465', '5464', NULL, NULL, NULL, '254 Gen. Malvar St., Don Pablo Subd.,', 'None', 'Davao', 'Mindanao', '96352', '2019-06-13 08:16:20', '2019-12-04 18:33:24', NULL),
 	(20, 3, 10, 2, '3', 'Marfore Juan D', 'Marfore', 'Juan D', 'marfore@test.com', '3434', '989', '9809', NULL, NULL, NULL, 'iiuikljk', 'kjkl', 'Santa Rosa', 'Laguna', '989', '2019-06-13 08:54:27', '2019-06-21 06:42:50', NULL),
 	(21, 3, 10, 1, NULL, 'BBBB BBB', 'BBBB', 'BBB', 'BBB@test.com', '5656', '9808', '9808', NULL, NULL, NULL, 'jklj', 'kjj', 'jkj', 'ljjk', 'jkj', '2019-06-13 08:56:43', '2019-06-13 08:56:43', NULL),
 	(22, 3, 11, 2, '3', 'Lily Revina', 'Lily', 'Revina', 'lily@test.com', '4545', '88787', '878787', NULL, NULL, NULL, 'dfdf', 'dfdf', 'dfdf', 'dfd', '3434', '2019-06-21 06:31:17', '2019-06-21 06:40:50', NULL),
@@ -104,7 +101,6 @@ INSERT INTO `contacts` (`id`, `company_id`, `user_id`, `stage_id`, `status`, `fu
 /*!40000 ALTER TABLE `contacts` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_advances
-DROP TABLE IF EXISTS `contact_advances`;
 CREATE TABLE IF NOT EXISTS `contact_advances` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `contact_id` int(11) NOT NULL DEFAULT '0',
@@ -147,7 +143,6 @@ INSERT INTO `contact_advances` (`id`, `contact_id`, `company_id`, `lender_id`, `
 /*!40000 ALTER TABLE `contact_advances` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_advance_financial_bank_statement_records
-DROP TABLE IF EXISTS `contact_advance_financial_bank_statement_records`;
 CREATE TABLE IF NOT EXISTS `contact_advance_financial_bank_statement_records` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `contact_advance_id` int(11) NOT NULL DEFAULT '0',
@@ -186,7 +181,6 @@ INSERT INTO `contact_advance_financial_bank_statement_records` (`id`, `contact_a
 /*!40000 ALTER TABLE `contact_advance_financial_bank_statement_records` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_advance_funding_info
-DROP TABLE IF EXISTS `contact_advance_funding_info`;
 CREATE TABLE IF NOT EXISTS `contact_advance_funding_info` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `contact_advance_id` int(11) NOT NULL DEFAULT '0',
@@ -214,7 +208,6 @@ INSERT INTO `contact_advance_funding_info` (`id`, `contact_advance_id`, `contrac
 /*!40000 ALTER TABLE `contact_advance_funding_info` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_advance_merchant_statement_records
-DROP TABLE IF EXISTS `contact_advance_merchant_statement_records`;
 CREATE TABLE IF NOT EXISTS `contact_advance_merchant_statement_records` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `contact_advance_id` int(11) NOT NULL DEFAULT '0',
@@ -252,7 +245,6 @@ INSERT INTO `contact_advance_merchant_statement_records` (`id`, `contact_advance
 /*!40000 ALTER TABLE `contact_advance_merchant_statement_records` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_advance_participation
-DROP TABLE IF EXISTS `contact_advance_participation`;
 CREATE TABLE IF NOT EXISTS `contact_advance_participation` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `contact_advance_id` int(11) NOT NULL DEFAULT '0',
@@ -279,7 +271,6 @@ INSERT INTO `contact_advance_participation` (`id`, `contact_advance_id`, `lender
 /*!40000 ALTER TABLE `contact_advance_participation` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_advance_payments
-DROP TABLE IF EXISTS `contact_advance_payments`;
 CREATE TABLE IF NOT EXISTS `contact_advance_payments` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `contact_advance_id` int(11) NOT NULL DEFAULT '0',
@@ -310,7 +301,6 @@ INSERT INTO `contact_advance_payments` (`id`, `contact_advance_id`, `transaction
 /*!40000 ALTER TABLE `contact_advance_payments` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_advance_submissions
-DROP TABLE IF EXISTS `contact_advance_submissions`;
 CREATE TABLE IF NOT EXISTS `contact_advance_submissions` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `contact_advance_id` int(11) NOT NULL DEFAULT '0',
@@ -350,7 +340,6 @@ INSERT INTO `contact_advance_submissions` (`id`, `contact_advance_id`, `email_te
 /*!40000 ALTER TABLE `contact_advance_submissions` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_advance_underwriter_notes
-DROP TABLE IF EXISTS `contact_advance_underwriter_notes`;
 CREATE TABLE IF NOT EXISTS `contact_advance_underwriter_notes` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `contact_advance_id` int(11) NOT NULL DEFAULT '0',
@@ -374,7 +363,6 @@ INSERT INTO `contact_advance_underwriter_notes` (`id`, `contact_advance_id`, `un
 /*!40000 ALTER TABLE `contact_advance_underwriter_notes` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_assigned_users
-DROP TABLE IF EXISTS `contact_assigned_users`;
 CREATE TABLE IF NOT EXISTS `contact_assigned_users` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `contact_id` int(11) NOT NULL,
@@ -384,23 +372,18 @@ CREATE TABLE IF NOT EXISTS `contact_assigned_users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table corecmsdb.contact_assigned_users: ~7 rows (approximately)
+-- Dumping data for table corecmsdb.contact_assigned_users: ~0 rows (approximately)
 DELETE FROM `contact_assigned_users`;
 /*!40000 ALTER TABLE `contact_assigned_users` DISABLE KEYS */;
 INSERT INTO `contact_assigned_users` (`id`, `contact_id`, `company_id`, `user_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-	(1, 31, 0, 10, NULL, '2019-12-03 12:06:46', '2019-12-03 12:06:46'),
-	(2, 31, 0, 11, NULL, '2019-12-03 12:06:46', '2019-12-03 12:06:46'),
-	(3, 31, 2, 1, '2019-12-03 12:06:46', '2019-12-03 12:06:46', NULL),
-	(4, 31, 3, 10, '2019-12-03 12:06:46', '2019-12-03 12:06:46', NULL),
-	(5, 31, 3, 11, '2019-12-03 12:06:46', '2019-12-03 12:06:46', NULL),
-	(6, 27, 2, 1, '2019-12-03 12:07:30', '2019-12-03 12:07:30', NULL),
-	(7, 27, 3, 11, '2019-12-03 12:07:30', '2019-12-03 12:07:30', NULL);
+	(1, 26, 3, 10, '2019-12-04 18:29:17', '2019-12-04 18:29:17', NULL),
+	(2, 12, 3, 10, '2019-12-04 18:33:24', '2019-12-04 18:33:24', NULL),
+	(3, 12, 3, 11, '2019-12-04 18:33:24', '2019-12-04 18:33:24', NULL);
 /*!40000 ALTER TABLE `contact_assigned_users` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_bank_accounts
-DROP TABLE IF EXISTS `contact_bank_accounts`;
 CREATE TABLE IF NOT EXISTS `contact_bank_accounts` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `contact_id` int(11) NOT NULL DEFAULT '0',
@@ -427,7 +410,6 @@ DELETE FROM `contact_bank_accounts`;
 /*!40000 ALTER TABLE `contact_bank_accounts` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_broker_informations
-DROP TABLE IF EXISTS `contact_broker_informations`;
 CREATE TABLE IF NOT EXISTS `contact_broker_informations` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `contact_id` int(11) NOT NULL DEFAULT '0',
@@ -440,13 +422,13 @@ CREATE TABLE IF NOT EXISTS `contact_broker_informations` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table corecmsdb.contact_broker_informations: ~10 rows (approximately)
+-- Dumping data for table corecmsdb.contact_broker_informations: ~9 rows (approximately)
 DELETE FROM `contact_broker_informations`;
 /*!40000 ALTER TABLE `contact_broker_informations` DISABLE KEYS */;
 INSERT INTO `contact_broker_informations` (`id`, `contact_id`, `company_id`, `user_id`, `brokerage_fee`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 10, 3, 11, 0.00, '2019-06-13 06:09:00', '2019-06-13 08:55:13', NULL),
 	(2, 11, 3, 10, 9999.00, '2019-06-13 06:12:10', '2019-06-13 08:27:40', NULL),
-	(3, 12, 3, 11, 9999.00, '2019-06-13 08:16:20', '2019-06-13 08:19:11', NULL),
+	(3, 12, 3, 1, 9999.00, '2019-06-13 08:16:20', '2019-12-04 18:33:24', NULL),
 	(5, 20, 3, 10, 0.00, '2019-06-13 08:54:27', '2019-06-13 08:54:27', NULL),
 	(6, 21, 3, 10, 0.00, '2019-06-13 08:56:44', '2019-06-13 08:56:44', NULL),
 	(7, 22, 3, 11, 0.00, '2019-06-21 06:31:17', '2019-06-21 06:31:17', NULL),
@@ -457,7 +439,6 @@ INSERT INTO `contact_broker_informations` (`id`, `contact_id`, `company_id`, `us
 /*!40000 ALTER TABLE `contact_broker_informations` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_business_informations
-DROP TABLE IF EXISTS `contact_business_informations`;
 CREATE TABLE IF NOT EXISTS `contact_business_informations` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `contact_id` int(11) NOT NULL DEFAULT '0',
@@ -478,24 +459,23 @@ CREATE TABLE IF NOT EXISTS `contact_business_informations` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table corecmsdb.contact_business_informations: ~10 rows (approximately)
+-- Dumping data for table corecmsdb.contact_business_informations: ~9 rows (approximately)
 DELETE FROM `contact_business_informations`;
 /*!40000 ALTER TABLE `contact_business_informations` DISABLE KEYS */;
 INSERT INTO `contact_business_informations` (`id`, `contact_id`, `company_id`, `user_id`, `business_name`, `years_in_business`, `legal_entity_of_business`, `accept_credit_card_from_customer`, `gross_monthly_credit_card_sales`, `gross_yearly_sales`, `filed_bankruptcy`, `bankruptcy_filed`, `credit_score`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 10, 3, 11, 'Business name..', 1.00, 'Sole Proprietorship', 'Yes', 454.00, 454.00, 'No', '1970-01-01', 'har', '2019-06-13 06:09:00', '2019-06-25 08:14:22', NULL),
 	(2, 11, 3, 10, 'Tambay Update', 30.00, 'Partnership', 'Yes', 334334.00, 343434.23, 'Yes', '2019-06-30', 'Credit store update', '2019-06-13 06:12:09', '2019-06-13 08:28:20', NULL),
-	(3, 12, 3, 11, 'Test Busines', 2.00, 'Limited Liability Company-LLC', 'Yes', 4545.00, 45454.00, 'Yes', '2019-06-21', 'fgfg', '2019-06-13 08:16:20', '2019-06-13 08:19:11', NULL),
+	(3, 12, 3, 1, 'Test Busines', 2.00, 'Limited Liability Company-LLC', 'Yes', 4545.00, 45454.00, 'Yes', '2019-06-21', 'fgfg', '2019-06-13 08:16:20', '2019-12-04 18:33:24', NULL),
 	(5, 20, 3, 10, NULL, 1.00, 'Sole Proprietorship', 'Yes', 0.00, 0.00, 'Yes', '1910-01-01', 'NA', '2019-06-13 08:54:27', '2019-06-21 06:42:50', NULL),
 	(6, 21, 3, 10, NULL, 1.00, 'Sole Proprietorship', 'NA', 0.00, 0.00, 'Yes', '1910-01-01', 'NA', '2019-06-13 08:56:44', '2019-06-13 09:01:37', NULL),
 	(7, 22, 3, 11, NULL, 1.00, 'Sole Proprietorship', 'Yes', 0.00, 0.00, 'Yes', '1910-01-01', 'NA', '2019-06-21 06:31:17', '2019-06-21 06:40:50', NULL),
-	(8, 26, 2, 1, '', 0.00, '', 'NA', 0.00, 0.00, '', NULL, 'NA', '2019-07-01 21:00:44', '2019-07-01 21:00:44', NULL),
+	(8, 26, 2, 1, NULL, 1.00, 'Sole Proprietorship', 'NA', 0.00, 0.00, 'Yes', '1910-01-01', 'NA', '2019-07-01 21:00:44', '2019-12-04 18:29:17', NULL),
 	(9, 27, 2, 1, 'Core CMS Laravel Application', 1.00, 'Sole Proprietorship', 'NA', 0.00, 0.00, 'Yes', '1910-01-01', 'NA', '2019-07-01 21:00:45', '2019-12-03 12:07:30', NULL),
 	(10, 28, 2, 1, '', 0.00, '', 'NA', 0.00, 0.00, '', NULL, 'NA', '2019-07-01 21:00:45', '2019-07-01 21:00:45', NULL),
 	(12, 31, 1, 1, 'Lily\'s Dress Maker', 1.00, 'Sole Proprietorship', '3434', 34343.00, 445454.00, 'Yes', '2019-12-31', '5353', '2019-12-03 11:09:20', '2019-12-03 12:06:46', NULL);
 /*!40000 ALTER TABLE `contact_business_informations` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_call_trackers
-DROP TABLE IF EXISTS `contact_call_trackers`;
 CREATE TABLE IF NOT EXISTS `contact_call_trackers` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -529,7 +509,6 @@ INSERT INTO `contact_call_trackers` (`id`, `user_id`, `contact_id`, `call_type`,
 /*!40000 ALTER TABLE `contact_call_trackers` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_campaigns
-DROP TABLE IF EXISTS `contact_campaigns`;
 CREATE TABLE IF NOT EXISTS `contact_campaigns` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `contact_id` int(11) NOT NULL DEFAULT '0',
@@ -560,7 +539,6 @@ INSERT INTO `contact_campaigns` (`id`, `contact_id`, `company_id`, `user_id`, `s
 /*!40000 ALTER TABLE `contact_campaigns` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_credit_cards
-DROP TABLE IF EXISTS `contact_credit_cards`;
 CREATE TABLE IF NOT EXISTS `contact_credit_cards` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `contact_id` int(11) NOT NULL DEFAULT '0',
@@ -588,7 +566,6 @@ DELETE FROM `contact_credit_cards`;
 /*!40000 ALTER TABLE `contact_credit_cards` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_custom_fields
-DROP TABLE IF EXISTS `contact_custom_fields`;
 CREATE TABLE IF NOT EXISTS `contact_custom_fields` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `contact_id` int(11) NOT NULL,
@@ -608,7 +585,6 @@ INSERT INTO `contact_custom_fields` (`id`, `contact_id`, `name`, `value`, `creat
 /*!40000 ALTER TABLE `contact_custom_fields` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_datasource
-DROP TABLE IF EXISTS `contact_datasource`;
 CREATE TABLE IF NOT EXISTS `contact_datasource` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `company_id` int(11) NOT NULL,
@@ -633,7 +609,6 @@ INSERT INTO `contact_datasource` (`id`, `company_id`, `user_id`, `source_name`, 
 /*!40000 ALTER TABLE `contact_datasource` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_docs
-DROP TABLE IF EXISTS `contact_docs`;
 CREATE TABLE IF NOT EXISTS `contact_docs` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -661,7 +636,6 @@ INSERT INTO `contact_docs` (`id`, `user_id`, `contact_id`, `filename`, `document
 /*!40000 ALTER TABLE `contact_docs` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_events
-DROP TABLE IF EXISTS `contact_events`;
 CREATE TABLE IF NOT EXISTS `contact_events` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -695,7 +669,6 @@ INSERT INTO `contact_events` (`id`, `title`, `event_date`, `event_time`, `event_
 /*!40000 ALTER TABLE `contact_events` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_history
-DROP TABLE IF EXISTS `contact_history`;
 CREATE TABLE IF NOT EXISTS `contact_history` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -754,7 +727,6 @@ INSERT INTO `contact_history` (`id`, `user_id`, `contact_id`, `company_id`, `tit
 /*!40000 ALTER TABLE `contact_history` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_loan_informations
-DROP TABLE IF EXISTS `contact_loan_informations`;
 CREATE TABLE IF NOT EXISTS `contact_loan_informations` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `contact_id` int(11) NOT NULL DEFAULT '0',
@@ -767,13 +739,13 @@ CREATE TABLE IF NOT EXISTS `contact_loan_informations` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table corecmsdb.contact_loan_informations: ~10 rows (approximately)
+-- Dumping data for table corecmsdb.contact_loan_informations: ~9 rows (approximately)
 DELETE FROM `contact_loan_informations`;
 /*!40000 ALTER TABLE `contact_loan_informations` DISABLE KEYS */;
 INSERT INTO `contact_loan_informations` (`id`, `contact_id`, `company_id`, `user_id`, `loan_amount`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 10, 3, 11, 1111.00, '2019-06-13 06:09:00', '2019-06-13 08:18:49', NULL),
 	(2, 11, 3, 10, 9999.00, '2019-06-13 06:12:10', '2019-06-13 08:27:40', NULL),
-	(3, 12, 3, 11, 9999.00, '2019-06-13 08:16:20', '2019-06-13 08:19:11', NULL),
+	(3, 12, 3, 1, 9999.00, '2019-06-13 08:16:20', '2019-12-04 18:33:24', NULL),
 	(5, 20, 3, 10, 0.00, '2019-06-13 08:54:27', '2019-06-13 08:54:27', NULL),
 	(6, 21, 3, 10, 0.00, '2019-06-13 08:56:44', '2019-06-13 08:56:44', NULL),
 	(7, 22, 3, 11, 0.00, '2019-06-21 06:31:17', '2019-06-21 06:31:17', NULL),
@@ -784,7 +756,6 @@ INSERT INTO `contact_loan_informations` (`id`, `contact_id`, `company_id`, `user
 /*!40000 ALTER TABLE `contact_loan_informations` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_notes
-DROP TABLE IF EXISTS `contact_notes`;
 CREATE TABLE IF NOT EXISTS `contact_notes` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL DEFAULT '0',
@@ -815,7 +786,6 @@ INSERT INTO `contact_notes` (`id`, `user_id`, `contact_id`, `note_type_id`, `not
 /*!40000 ALTER TABLE `contact_notes` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_tasks
-DROP TABLE IF EXISTS `contact_tasks`;
 CREATE TABLE IF NOT EXISTS `contact_tasks` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL DEFAULT '0',
@@ -848,7 +818,6 @@ INSERT INTO `contact_tasks` (`id`, `user_id`, `assigned_user_id`, `contact_id`, 
 /*!40000 ALTER TABLE `contact_tasks` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.contact_users
-DROP TABLE IF EXISTS `contact_users`;
 CREATE TABLE IF NOT EXISTS `contact_users` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `contact_id` int(11) NOT NULL,
@@ -867,7 +836,6 @@ INSERT INTO `contact_users` (`id`, `contact_id`, `user_id`, `created_at`, `updat
 /*!40000 ALTER TABLE `contact_users` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.email_templates
-DROP TABLE IF EXISTS `email_templates`;
 CREATE TABLE IF NOT EXISTS `email_templates` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `company_id` int(11) NOT NULL,
@@ -888,7 +856,6 @@ INSERT INTO `email_templates` (`id`, `company_id`, `user_id`, `name`, `content`,
 /*!40000 ALTER TABLE `email_templates` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.event_types
-DROP TABLE IF EXISTS `event_types`;
 CREATE TABLE IF NOT EXISTS `event_types` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -909,7 +876,6 @@ INSERT INTO `event_types` (`id`, `name`, `created_at`, `updated_at`, `deleted_at
 /*!40000 ALTER TABLE `event_types` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.groups
-DROP TABLE IF EXISTS `groups`;
 CREATE TABLE IF NOT EXISTS `groups` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -929,7 +895,6 @@ INSERT INTO `groups` (`id`, `name`, `created_at`, `updated_at`, `deleted_at`) VA
 /*!40000 ALTER TABLE `groups` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.lenders
-DROP TABLE IF EXISTS `lenders`;
 CREATE TABLE IF NOT EXISTS `lenders` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `company_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -958,7 +923,6 @@ INSERT INTO `lenders` (`id`, `company_name`, `street`, `suburb`, `city`, `state`
 /*!40000 ALTER TABLE `lenders` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.lender_contacts
-DROP TABLE IF EXISTS `lender_contacts`;
 CREATE TABLE IF NOT EXISTS `lender_contacts` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -979,7 +943,6 @@ INSERT INTO `lender_contacts` (`id`, `name`, `email`, `created_at`, `updated_at`
 /*!40000 ALTER TABLE `lender_contacts` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.mail_messaging
-DROP TABLE IF EXISTS `mail_messaging`;
 CREATE TABLE IF NOT EXISTS `mail_messaging` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -1011,7 +974,6 @@ INSERT INTO `mail_messaging` (`id`, `user_id`, `contact_id`, `recipient`, `sende
 /*!40000 ALTER TABLE `mail_messaging` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.media_types
-DROP TABLE IF EXISTS `media_types`;
 CREATE TABLE IF NOT EXISTS `media_types` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1030,7 +992,6 @@ INSERT INTO `media_types` (`id`, `name`, `created_at`, `updated_at`, `deleted_at
 /*!40000 ALTER TABLE `media_types` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.migrations
-DROP TABLE IF EXISTS `migrations`;
 CREATE TABLE IF NOT EXISTS `migrations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1100,7 +1061,6 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.note_types
-DROP TABLE IF EXISTS `note_types`;
 CREATE TABLE IF NOT EXISTS `note_types` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1121,7 +1081,6 @@ INSERT INTO `note_types` (`id`, `name`, `created_at`, `updated_at`, `deleted_at`
 /*!40000 ALTER TABLE `note_types` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.password_resets
-DROP TABLE IF EXISTS `password_resets`;
 CREATE TABLE IF NOT EXISTS `password_resets` (
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1135,7 +1094,6 @@ DELETE FROM `password_resets`;
 /*!40000 ALTER TABLE `password_resets` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.sources
-DROP TABLE IF EXISTS `sources`;
 CREATE TABLE IF NOT EXISTS `sources` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1154,7 +1112,6 @@ INSERT INTO `sources` (`id`, `name`, `created_at`, `updated_at`, `deleted_at`) V
 /*!40000 ALTER TABLE `sources` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.stages
-DROP TABLE IF EXISTS `stages`;
 CREATE TABLE IF NOT EXISTS `stages` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1173,7 +1130,6 @@ INSERT INTO `stages` (`id`, `name`, `created_at`, `updated_at`, `deleted_at`) VA
 /*!40000 ALTER TABLE `stages` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.states
-DROP TABLE IF EXISTS `states`;
 CREATE TABLE IF NOT EXISTS `states` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1189,7 +1145,6 @@ DELETE FROM `states`;
 /*!40000 ALTER TABLE `states` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.users
-DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `group_id` int(11) NOT NULL,
@@ -1220,18 +1175,17 @@ CREATE TABLE IF NOT EXISTS `users` (
 DELETE FROM `users`;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`, `group_id`, `nickname`, `firstname`, `lastname`, `mobile_number`, `work_number`, `home_number`, `username`, `email`, `email_verified_at`, `password`, `status`, `profile_img`, `is_active`, `remember_token`, `created_at`, `updated_at`, `deleted_at`, `last_login`, `reset_code`) VALUES
-	(1, 1, 'B1', 'Bryann', 'Revina', '09279983995', NULL, NULL, 'bryann03', 'bryann.revina@gmail.com', NULL, '$2y$10$t780SAl1b2k0yXzhh5eCtuwOjgzBEukfDScQrs6CW/FUzJHhAF2qK', NULL, '0723844514a8e149966354f21b337c34.jpg', 0, NULL, '2019-05-11 06:03:15', '2019-12-03 05:52:08', NULL, '2019-12-03 05:52:08', NULL),
+	(1, 1, 'B1', 'Bryann', 'Revina', '09279983995', NULL, NULL, 'bryann03', 'bryann.revina@gmail.com', NULL, '$2y$10$t780SAl1b2k0yXzhh5eCtuwOjgzBEukfDScQrs6CW/FUzJHhAF2qK', NULL, '0723844514a8e149966354f21b337c34.jpg', 0, NULL, '2019-05-11 06:03:15', '2019-12-04 15:30:51', NULL, '2019-12-04 15:30:51', NULL),
 	(3, 3, 'User 01', 'User', '01', '5119685', '9876565', '855965', 'user01', 'user01@gmail.com', NULL, '$2y$10$t780SAl1b2k0yXzhh5eCtuwOjgzBEukfDScQrs6CW/FUzJHhAF2qK', NULL, NULL, 0, NULL, '2019-05-11 06:03:15', '2019-05-29 09:08:40', NULL, NULL, NULL),
 	(4, 0, 'User 02', 'User', '02', NULL, NULL, NULL, 'user02', 'user02@gmail.com', NULL, '$2y$10$t780SAl1b2k0yXzhh5eCtuwOjgzBEukfDScQrs6CW/FUzJHhAF2qK', NULL, NULL, 0, NULL, '2019-05-11 06:03:15', '2019-05-11 06:03:15', NULL, NULL, NULL),
 	(5, 0, 'User 03', 'User', '03', NULL, NULL, NULL, 'user03', 'user03@gmail.com', NULL, '$2y$10$t780SAl1b2k0yXzhh5eCtuwOjgzBEukfDScQrs6CW/FUzJHhAF2qK', NULL, NULL, 0, NULL, '2019-05-11 06:03:15', '2019-05-11 06:03:15', NULL, NULL, NULL),
 	(6, 0, 'User 04', 'User', '04', NULL, NULL, NULL, 'user04', 'test04@test.com', NULL, '$2y$10$t780SAl1b2k0yXzhh5eCtuwOjgzBEukfDScQrs6CW/FUzJHhAF2qK', NULL, NULL, 0, NULL, '2019-05-16 04:05:06', '2019-05-16 04:05:12', NULL, NULL, NULL),
 	(9, 0, 'Aleng Ilay', 'Lily', 'Revina', '343', '343', '343', 'bryann4545', 'test@test.com', NULL, '$2y$10$mI/RYgVKvbxjTyW6oG4QRuZNJKo9TYIWGnpUIIUKA2EJPeUJJC0le', 'active', NULL, 0, NULL, '2019-05-16 06:49:06', '2019-05-16 07:18:05', NULL, NULL, NULL),
-	(10, 2, 'Sir Juke Pangan', 'Juke', 'Pangan', '09279876542', '09209876542', '09109876542', 'juke101', 'juke.pangan@test.com', NULL, '$2y$10$iZTWCTeclAJe0Np8LUK/9eZ8Uv2ecwmgg9Hjsf1kN4.KAvXxsQaiK', NULL, NULL, 0, NULL, '2019-05-23 07:44:49', '2019-12-03 07:32:52', NULL, '2019-12-03 07:32:52', NULL),
+	(10, 2, 'Sir Juke Pangan', 'Juke', 'Pangan', '09279876542', '09209876542', '09109876542', 'juke101', 'juke.pangan@test.com', NULL, '$2y$10$iZTWCTeclAJe0Np8LUK/9eZ8Uv2ecwmgg9Hjsf1kN4.KAvXxsQaiK', NULL, NULL, 0, NULL, '2019-05-23 07:44:49', '2019-12-04 15:31:37', NULL, '2019-12-04 15:31:37', NULL),
 	(11, 2, 'Bonn', 'Bonn', 'Mendoza', '5465454', '5465465', '56546', 'bonn03', 'bonn.mendoza@gmail.com', NULL, '$2y$10$5brM7VSVkntHle4hJRtrBOJ8X4aLJ0mGJLEQeeqlfzW0NSyT0GPSi', NULL, NULL, 0, NULL, '2019-06-13 07:39:01', '2019-06-13 07:39:01', NULL, NULL, NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.workflows
-DROP TABLE IF EXISTS `workflows`;
 CREATE TABLE IF NOT EXISTS `workflows` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `workflow_category_id` int(11) NOT NULL,
@@ -1254,7 +1208,6 @@ INSERT INTO `workflows` (`id`, `workflow_category_id`, `stage_id`, `status`, `co
 /*!40000 ALTER TABLE `workflows` ENABLE KEYS */;
 
 -- Dumping structure for table corecmsdb.workflow_categories
-DROP TABLE IF EXISTS `workflow_categories`;
 CREATE TABLE IF NOT EXISTS `workflow_categories` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,

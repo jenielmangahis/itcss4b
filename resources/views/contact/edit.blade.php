@@ -189,6 +189,9 @@
     load_stage_status_dropdown();
     $('#company_id').change(function () {
 
+      var company_name = $("#company_id option:selected").text();
+      $('#business_name').val(company_name);
+
       /*$.get(base_url + '/contact/ajax_load_company_users', $('#add-contact-form').serialize() , function (o) {
         $('#company-users-container').html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
 
