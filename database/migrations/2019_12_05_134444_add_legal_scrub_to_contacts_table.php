@@ -14,7 +14,7 @@ class AddLegalScrubToContactsTable extends Migration
     public function up()
     {
         Schema::table('contacts', function (Blueprint $table) {
-            $table->text('legal_scrub')->default(0)->after('zip_code');
+            $table->text('legal_scrub')->default("")->after('zip_code');
         });
     }
 
