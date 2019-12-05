@@ -423,6 +423,7 @@
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_tasks" data-toggle="tab">Tasks</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_bank_accounts" data-toggle="tab">Bank Account</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_credit_card" data-toggle="tab">Credit Card</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_legal_scrub" data-toggle="tab">Legal Scrub</a></li>
                       </ul>
                     </li>                
                   </ul>
@@ -460,6 +461,9 @@
                     </div>
                     <div class="tab-pane" id="tab_bank_accounts">
                       @include('contact.dashboard.tab-sections.tab_bank_accounts')
+                    </div>
+                    <div class="tab-pane" id="tab_legal_scrub">
+                      @include('contact.dashboard.tab-sections.tab_legal_scrub')
                     </div>
 
                     <!-- /.tab-pane -->
@@ -587,6 +591,7 @@
     CKEDITOR.replace('ckeditor');    
     CKEDITOR.replace('note_content');   
     CKEDITOR.replace('task_notes'); 
+    CKEDITOR.replace('ck_legal_scrub',{height: '500px'});    
 
     <?php foreach($contact_tasks as $task) { ?>
       CKEDITOR.replace('task_notes-<?php echo $task->id; ?>');   

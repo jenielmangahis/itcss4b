@@ -742,5 +742,24 @@ class ContactController extends Controller
             'mail_messaging' => $mail_messaging,
             'search_field' => $search_field
         ]); 
-    }    
+    } 
+
+    public function update_legal_scrub(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $contact_id  = Hashids::decode($request->input('contact_id'))[0];
+            $contact = Contact::find($contact_id); 
+            $contact->legal_scrub = $request->input('legal_scrub');
+            $contact->save();
+
+            Session::flash('message', 'You have successfully update bank account');
+            Session::flash('alert_class', 'alert-success');
+        }else{
+            Session::flash('message', 'Cannot find record');
+            Session::flash('alert_class', 'alert-danger');  
+        }
+
+        return redirect()->back();    
+    }   
 }
