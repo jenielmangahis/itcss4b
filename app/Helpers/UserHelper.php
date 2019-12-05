@@ -141,7 +141,7 @@ class UserHelper
                               
                               $last_activity_date = $contact_history->created_at;
 
-                              if(strtotime($last_activity_date) < strtotime('-30 days')) {
+                              if(strtotime($last_activity_date) < strtotime('-15 days')) {
                                     $return['idle_data'][] = $contact_history->toArray();
                                     $count_idle++;
                               }                              
