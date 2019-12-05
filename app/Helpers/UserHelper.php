@@ -129,6 +129,7 @@ class UserHelper
             $contacts   = Contact::select('id')->get();
 
             $count_idle = 0;
+            $idle_data  = array();
 
             if(!$contacts->isEmpty()) {
                   foreach($contacts as $contact) {
@@ -142,13 +143,15 @@ class UserHelper
                               $last_activity_date = $contact_history->created_at;
 
                               if(strtotime($last_activity_date) < strtotime('-15 days')) {
-                                    $return['idle_data'][] = $contact_history->toArray();
+                                    $idle_data[] = $contact_history->toArray();
+                                    //$return['idle_data'][] = $contact_history->toArray();
                                     $count_idle++;
                               }                              
                         }
                   }
             }
 
+            $return['idle_data']  = $idle_data;
             $return['total_idle'] = $count_idle; 
 
             return $return;
