@@ -67,7 +67,7 @@
                 <?php echo Form::text('contact_number', old('contact_number') ,['class' => 'form-control', 'required' => '']); ?>
               </div>
              
-              <br />
+              <!-- <br />
               <div class="form-group">
                 <h2 class="page-header">
                   <i class="fa fa-info-circle"></i> Social Media
@@ -85,8 +85,8 @@
               <div class="form-group">
                 <label>Instagram</label>
                 <?php echo Form::text('instagram', old('instagram') ,['class' => 'form-control']); ?>
-              </div>
-
+              </div> -->
+              <br />
               <div class="form-group">
                 <h2 class="page-header">
                   <i class="fa fa-info-circle"></i> Status
