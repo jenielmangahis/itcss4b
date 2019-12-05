@@ -24,6 +24,8 @@ Route::get('/admin-lte-login', function () {
 Route::get('/lte_fixed', 'BenchmarkController@lte_fixed')->name('lte_fixed');
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('cron_job/idle_contact', 'CronJobController@idle_contact')->name('cron_job/idle_contact');
+
 Auth::routes();
 
 //Dashboard Module
