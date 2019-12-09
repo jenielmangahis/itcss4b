@@ -90,9 +90,23 @@
                     @foreach($company_users as $c_user)
                         <tr>
                             <td>{{ $c_user->id }}</td>
-                            <td>{{ $c_user->company->name }}</td>
-                            <td>{{ $c_user->user->firstname }} {{ $c_user->user->lastname }}</td>
-                            <td>{{ $c_user->user->email }}</td>
+                            @if(isset($c_user->company->name))
+                              <td>{{ $c_user->company->name }}</td>
+                            @else
+                              <td>-</td>
+                            @endif
+
+                            @if(isset($c_user->user->firstname) && isset($c_user->user->lastname))
+                              <td>{{ $c_user->user->firstname }} {{ $c_user->user->lastname }}</td>
+                            @else
+                              <td>-</td>
+                            @endif
+                            @if(isset($c_user->user->email))
+                              <td>{{ $c_user->user->email }}</td>
+                            @else
+                              <td>-</td>
+                            @endif
+                            
                             <td>
                                 <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $c_user->id; ?>">
                                     <i class="fa fa-trash"></i> Delete
