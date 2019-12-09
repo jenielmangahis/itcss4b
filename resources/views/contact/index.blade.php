@@ -142,7 +142,7 @@
                           if($assigned_user) {
                             $a_user_list = "";
                             foreach($assigned_user as $assign_u) {
-                              $a_user_list .= $assign_u->contact->firstname . " " . $assign_u->contact->lastname . ", ";
+                              $a_user_list .= $assign_u->user->firstname . " " . $assign_u->user->lastname . ", ";
                             }
                           }
                         ?>
