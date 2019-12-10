@@ -90,13 +90,25 @@
         </div>
       @endif  --> 
 
-      <label style="margin-bottom: 10px;">Assigned to Company Users</label>
+
+      <span class="btn badge badge-primary" style="margin-bottom: 10px; margin-top: 10px;">Assigned to Company Users</span>
 
       @foreach($company_users_by_group as $company_name => $company_users_group )
       <div class="form-group">
-        <label style="">{{ $company_name }}</label><br />
+        <label style="">{{ ucwords($company_name) }}</label><br />
         @foreach($company_users_group as $company_user_data)        
         &nbsp;&nbsp;&nbsp;<input name="company_assigned_users[]" type="checkbox" value="{{ $company_user_data['user_id'] }}" class="minimal"> {{ $company_user_data['name'] }} <br />
+        @endforeach
+      </div>
+      @endforeach
+
+      <span class="btn badge badge-primary" style="margin-bottom: 10px; margin-top: 10px;">Assigned to Group Users</span>
+
+      @foreach($users_other_groups as $group_name => $user_group )
+      <div class="form-group">
+        <label style="">{{ ucwords($group_name) }}</label><br />
+        @foreach($user_group as $user_d)        
+        &nbsp;&nbsp;&nbsp;<input name="company_assigned_users[]" type="checkbox" value="{{ $user_d['user_id'] }}" class="minimal"> {{ $user_d['name'] }} <br />
         @endforeach
       </div>
       @endforeach

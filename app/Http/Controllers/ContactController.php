@@ -20,6 +20,7 @@ use App\Stage;
 use App\EventType;
 use App\EmailTemplate;
 use App\MailMessaging;
+use App\User;
 
 
 use UserHelper;
@@ -190,7 +191,25 @@ class ContactController extends Controller
 
             $inc++;
             }
-        }      
+        }   
+
+        $users_other_groups = array();
+        $users_all_others = User::where('group_id','!=',2)->get();  
+
+        if($users_all_others) {
+            $inc = 1;
+            foreach($users_all_others as $g_user) {
+                if(isset($g_user->group->name)) {
+                    $users_other_groups[$g_user->group->name][$inc]['user_id'] = $g_user->id;
+                    $users_other_groups[$g_user->group->name][$inc]['name']    = $g_user->firstname . " " . $g_user->lastname;
+                } else {
+                    $users_other_groups['others'][$inc]['user_id'] = $g_user->id;
+                    $users_other_groups['others'][$inc]['name']    = $g_user->firstname . " " . $g_user->lastname;
+                }
+                
+            $inc++;
+            }
+        } 
 
         if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
 
@@ -206,12 +225,14 @@ class ContactController extends Controller
                 'companies' => $companies,
                 'company_id' => $company_id,
                 'company_users_by_group' => $company_users_by_group,
+                'users_other_groups' => $users_other_groups,
             ]);   
         }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
             return view('contact.create', [
                 'stages' => $stages,
                 'companies' => $companies,
                 'company_users_by_group' => $company_users_by_group,
+                'users_other_groups' => $users_other_groups,
             ]);   
         } 
     }      
@@ -405,6 +426,24 @@ class ContactController extends Controller
             }
         }   
 
+        $users_other_groups = array();
+        $users_all_others = User::where('group_id','!=',2)->get();  
+
+        if($users_all_others) {
+            $inc = 1;
+            foreach($users_all_others as $g_user) {
+                if(isset($g_user->group->name)) {
+                    $users_other_groups[$g_user->group->name][$inc]['user_id'] = $g_user->id;
+                    $users_other_groups[$g_user->group->name][$inc]['name']    = $g_user->firstname . " " . $g_user->lastname;
+                } else {
+                    $users_other_groups['others'][$inc]['user_id'] = $g_user->id;
+                    $users_other_groups['others'][$inc]['name']    = $g_user->firstname . " " . $g_user->lastname;
+                }
+                
+            $inc++;
+            }
+        }         
+
         $existing_contact_assigned_user = ContactAssignedUser::where('contact_id','=', $id)->get();  
         $existing_assigned_user = array();
         if($existing_contact_assigned_user) {
@@ -426,6 +465,7 @@ class ContactController extends Controller
                 'contact_broker_info' => $contact_broker_info,
                 'company_users_by_group' => $company_users_by_group,
                 'existing_assigned_user' => $existing_assigned_user,
+                'users_other_groups' => $users_other_groups
             ]);   
         }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
             $contact = Contact::where('id', '=', $id)->first();
@@ -440,7 +480,8 @@ class ContactController extends Controller
                 'contact_loan_info' => $contact_loan_info,
                 'contact_broker_info' => $contact_broker_info,
                 'company_users_by_group' => $company_users_by_group,  
-                'existing_assigned_user' => $existing_assigned_user,             
+                'existing_assigned_user' => $existing_assigned_user,    
+                'users_other_groups' => $users_other_groups,         
             ]);   
         }
     }    
