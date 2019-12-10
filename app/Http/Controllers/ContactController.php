@@ -182,9 +182,12 @@ class ContactController extends Controller
         if($company_users) {
             $inc = 1;
             foreach($company_users as $company_u) {
-                $company_users_by_group[$company_u->company->name][$inc]['user_id'] = $company_u->user_id;
-                $company_users_by_group[$company_u->company->name][$inc]['company_id'] = $company_u->company_id;
-                $company_users_by_group[$company_u->company->name][$inc]['name'] = $company_u->user->firstname . " " . $company_u->user->lastname;
+                if(isset($company_u->company->name)) {
+                    $company_users_by_group[$company_u->company->name][$inc]['user_id'] = $company_u->user_id;
+                    $company_users_by_group[$company_u->company->name][$inc]['company_id'] = $company_u->company_id;
+                    $company_users_by_group[$company_u->company->name][$inc]['name'] = $company_u->user->firstname . " " . $company_u->user->lastname;
+                }
+
             $inc++;
             }
         }      
@@ -393,9 +396,11 @@ class ContactController extends Controller
         if($company_users) {
             $inc = 1;
             foreach($company_users as $company_u) {
-                $company_users_by_group[$company_u->company->name][$inc]['user_id'] = $company_u->user_id;
-                $company_users_by_group[$company_u->company->name][$inc]['company_id'] = $company_u->company_id;
-                $company_users_by_group[$company_u->company->name][$inc]['name'] = $company_u->user->firstname . " " . $company_u->user->lastname;
+                if(isset($company_u->company->name)) {
+                    $company_users_by_group[$company_u->company->name][$inc]['user_id'] = $company_u->user_id;
+                    $company_users_by_group[$company_u->company->name][$inc]['company_id'] = $company_u->company_id;
+                    $company_users_by_group[$company_u->company->name][$inc]['name'] = $company_u->user->firstname . " " . $company_u->user->lastname;
+                }
             $inc++;
             }
         }   
