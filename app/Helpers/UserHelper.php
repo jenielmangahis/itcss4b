@@ -10,11 +10,15 @@ use Illuminate\Support\Facades\DB;
 
 class UserHelper
 {
-      const ADMIN_USER   = 1;
-      const COMPANY_USER = 2;
-      const CUSTOMER_USER = 3;
+      const ADMIN_USER     = 1;
+      const COMPANY_USER   = 2;
+      const CUSTOMER_USER  = 3;
+
       const USER_ACTIVE    = 0;
       const USER_SUSPENDED = 1;
+
+      const ACCESS_TYPE_VIEW_ONLY = 1; //View Only
+      CONST ACCESS_TYPE_ALL       = 2; //ACCESS ALL (View, Edit & Delete)
 
       public static function checkUserRole($group_id = null,$module = null) 
       {
@@ -73,6 +77,10 @@ class UserHelper
             }
 
             return $with_permission;
+      }
+
+      public static function checkPermission() {
+            
       }
 
       public static function isCompanyUser($group_id = null) 

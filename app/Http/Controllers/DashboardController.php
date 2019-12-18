@@ -46,7 +46,12 @@ class DashboardController extends Controller
 
             $user_id  = Auth::user()->id;
             $group_id = Auth::user()->group_id;
+
             if($group_id == 1 || $group_id == 2){
+                if(Session::has('message')) {
+                    Session::flash('message', Session::get('message'));
+                    Session::flash('alert_class', 'alert-danger');                      
+                }
                 return redirect()->route('contact'); 
             }
             
@@ -88,8 +93,6 @@ class DashboardController extends Controller
         $contact_id = $contactUser->contact_id;
         $contact    = Contact::find($contact_id); 
         $business_info = ContactBusinessInformation::where('contact_id','=', $contact_id)->first();
-
-
 
         /*
          * For contact event - start

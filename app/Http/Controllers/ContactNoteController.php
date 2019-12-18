@@ -68,15 +68,18 @@ class ContactNoteController extends Controller
             $this->validate($request, [
                 'note_title'      => 'required',
                 'note_content'    => 'required',
-                //'cc_emails'       => 'email',
              ]);
 
-            
             $cc_emails           = "";
             $cc_emails_serialize = "";
             if(!empty($request->input('cc_emails'))) {
             	$cc_emails = json_decode($request->input('cc_emails'));
             	$cc_emails_serialize = serialize($cc_emails);
+            }
+
+            $notify_user_id = 0;
+            if(!empty($request->input('notify_user_id'))) {
+                $notify_user_id = $request->input('notify_user_id');
             }
 
             $contact_id = $request->input('contact_id');
@@ -87,7 +90,7 @@ class ContactNoteController extends Controller
             $contact_note->note_type_id = $request->input('note_type_id');
             $contact_note->note_title   = $request->input('note_title');
             $contact_note->note_content = $request->input('note_content');
-            $contact_note->notify_user_id = $request->input('notify_user_id');
+            $contact_note->notify_user_id = $notify_user_id;
             $contact_note->cc_emails      = $cc_emails_serialize;
             $contact_note->save();
 
