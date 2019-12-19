@@ -117,7 +117,7 @@
                 </div>                
               </div>
               <div class="col-xs-6">
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <label for="inputNotifyUser">Notify User</label>
                   <select name="notify_user_id" id="notify_user_id" class="form-control">
                     @if( !empty($company_users->toArray()) )
@@ -135,24 +135,24 @@
                       </select>
                     @endif
                   </select>                   
-                </div>                
+                </div> -->                
               </div>
             </div>
 
             <div class="row">
               <div class="col-xs-6">
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <label for="inputNoteTemplate">Note Template</label>
                   <select name="note_template" id="note_template" class="form-control"> 
                     <option value="">Blank</option>
                   </select>  
-                </div>                
+                </div> -->                
               </div>
               <div class="col-xs-6">
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <label for="inputccEmail">CC Email</label>
                   <input type="text" class="form-control cc_emails" id="cc_emails" name="cc_emails" placeholder="" value="{{old('cc_emails')}}">
-                </div>                
+                </div>  -->               
               </div>
             </div>            
 
