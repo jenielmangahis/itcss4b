@@ -35,7 +35,7 @@
     background-color: #3c8dbc !important;
     color: #ffffff !important;
   }
-  .dropdown ul.dropdown-menu li a{
+  .dropdown ul.tab-dropdown li a{
     color: #ffffff !important;
   }
   .btn-contact-dashboard{
@@ -419,7 +419,7 @@
                       <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         Others <span class="caret"></span>
                       </a>
-                      <ul class="dropdown-menu">
+                      <ul class="dropdown-menu tab-dropdown">
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_tasks" data-toggle="tab">Tasks</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_bank_accounts" data-toggle="tab">Bank Account</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_credit_card" data-toggle="tab">Credit Card</a></li>

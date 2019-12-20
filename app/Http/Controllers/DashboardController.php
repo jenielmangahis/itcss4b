@@ -47,12 +47,18 @@ class DashboardController extends Controller
             $user_id  = Auth::user()->id;
             $group_id = Auth::user()->group_id;
 
-            if($group_id == 1 || $group_id == 2){
+            if($group_id == 1 || $group_id == 2 || $group_id ){
                 if(Session::has('message')) {
                     Session::flash('message', Session::get('message'));
                     Session::flash('alert_class', 'alert-danger');                      
                 }
                 return redirect()->route('contact'); 
+            }else{
+                return redirect()->route('contact'); 
+                /*$contact_count = Contact::where('user_id','=', $user_id)->count();
+                if( $contact_count <= 0 ){
+                    return redirect()->route('contact'); 
+                }*/
             }
             
             $module   = 'dashboard';

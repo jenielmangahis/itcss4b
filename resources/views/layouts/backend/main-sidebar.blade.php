@@ -36,6 +36,8 @@
 	  	@include('layouts.backend.sections.admin-user-sidebar')
 	  @elseif(Auth::user()->group_id == 2)
 	  	@include('layouts.backend.sections.company-user-sidebar')
+	  @else
+	  	@include('layouts.backend.sections.company-user-sidebar')
 	  @endif
 	  <!-- /.sidebar-menu -->
 	</section>

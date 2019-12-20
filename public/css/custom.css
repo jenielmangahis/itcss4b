@@ -73,9 +73,12 @@ color:#3c8dbc !important;
 background-color: #3c8dbc !important;
 color: #ffffff !important;
 }
-.dropdown ul.dropdown-menu li a{
-color: #ffffff !important;
+.dropdown .user-footer div a{
+color:#666666 !important;
 }
+/*.dropdown ul.dropdown-menu li a{
+color: #ffffff !important;
+}*/
 .btn-contact-dashboard{
 width: 100%;
 margin-bottom: 2px;
