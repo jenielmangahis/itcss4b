@@ -54,11 +54,10 @@ class DashboardController extends Controller
                 }
                 return redirect()->route('contact'); 
             }else{
-                return redirect()->route('contact'); 
-                /*$contact_count = Contact::where('user_id','=', $user_id)->count();
+                $contact_count = Contact::where('user_id','=', $user_id)->count();
                 if( $contact_count <= 0 ){
-                    return redirect()->route('contact'); 
-                }*/
+                    return redirect()->route('contact');   
+                }
             }
             
             $module   = 'dashboard';
