@@ -13,6 +13,7 @@ class UserHelper
       const ADMIN_USER     = 1;
       const COMPANY_USER   = 2;
       const CUSTOMER_USER  = 3;
+      const RTR_USER       = 4;
 
       const USER_ACTIVE    = 0;
       const USER_SUSPENDED = 1;
@@ -62,6 +63,16 @@ class UserHelper
                   'mail_messaging'
             );
 
+            $roles['rtr_user'] = array(
+                  'dashboard',
+                  'contact_docs',
+                  'contact_notes',
+                  'contact_task',
+                  'contacts',
+                  'contact_advance',
+                  'mail_messaging'
+            );
+
             if($group_id == self::ADMIN_USER) {
                   if (!in_array($module, $roles['admin_user'], TRUE)) { 
                         $with_permission = FALSE;
@@ -72,6 +83,10 @@ class UserHelper
                   } 
             }elseif($group_id == self::CUSTOMER_USER) {
                   if (!in_array($module, $roles['customer_user'], TRUE)) { 
+                        $with_permission = FALSE;          
+                  }
+            }elseif($group_id == self::RTR_USER) {
+                  if (!in_array($module, $roles['rtr_user'], TRUE)) { 
                         $with_permission = FALSE;          
                   }
             }
@@ -87,6 +102,16 @@ class UserHelper
       {
             $return = FALSE;
             if($group_id == self::COMPANY_USER) {
+                  $return = TRUE;
+            }
+
+            return $return;
+      }
+
+      public static function isRTRUser($group_id = null) 
+      {
+            $return = FALSE;
+            if($group_id == self::RTR_USER) {
                   $return = TRUE;
             }
 

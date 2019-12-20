@@ -211,7 +211,7 @@ class ContactController extends Controller
             }
         } 
 
-        if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
+        if(UserHelper::isCompanyUser(Auth::user()->group_id) || UserHelper::isRTRUser(Auth::user()->group_id)) {
 
             $company_id   = 0;
             $user_id      = Auth::user()->id;
@@ -451,7 +451,7 @@ class ContactController extends Controller
         }
 
 
-        if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
+        if(UserHelper::isCompanyUser(Auth::user()->group_id) || UserHelper::isRTRUser(Auth::user()->group_id) ) {
             $contact = Contact::where('id', '=', $id)->first();
             $contact_business_info = ContactBusinessInformation::where('contact_id', '=', $id)->first();
             $contact_loan_info     = ContactLoanInformation::where('contact_id', '=', $id)->first();
