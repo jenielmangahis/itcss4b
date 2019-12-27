@@ -137,12 +137,13 @@
                           if( $business_info ){
                             $business_name = $business_info->business_name;
                           }
-
+                          $a_user_list = "";
                           $assigned_user = App\ContactAssignedUser::where('contact_id', '=', $con->contact_id)->get();
-                          if($assigned_user) {
-                            $a_user_list = "";
+                          if(!$assigned_user->isEmpty()) {
                             foreach($assigned_user as $assign_u) {
-                              $a_user_list .= $assign_u->user->firstname . " " . $assign_u->user->lastname . ", ";
+                              if(isset($assign_u->user->firstname) && isset($assign_u->user->lastname)) {
+                                $a_user_list .= $assign_u->user->firstname . " " . $assign_u->user->lastname . ", ";
+                              }
                             }
                           }                          
                         ?>
