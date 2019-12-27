@@ -65,7 +65,7 @@ class UserController extends Controller
     {
         $group_id     = Auth::user()->group_id;
         $search_by    = $request->input('search_by');
-        $search_field = $request->input('search_field');  
+        $search_field = $request->input('search_field'); 
 
         if($search_by != '' && $search_field != '') {
             $users_query = User::query();
@@ -212,7 +212,12 @@ class UserController extends Controller
     }    
 
     public function edit($id)
-    {     
+    {    
+        $w_access = UserHelper::checkUserRolePermission(Auth::user()->group_id, 'users', 'edit', true);    
+        if(!$w_access) {
+            return redirect('dashboard');
+        } 
+
         $id     = Hashids::decode($id)[0];
         $user   = User::where('id', '=', $id)->first();
         $groups = Group::all();
@@ -225,6 +230,11 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
+        $w_access = UserHelper::checkUserRolePermission(Auth::user()->group_id, 'users', 'edit', true);    
+        if(!$w_access) {
+            return redirect('dashboard');
+        } 
+
         if ($request->isMethod('post'))
         {
             $this->validate($request, [
@@ -272,6 +282,11 @@ class UserController extends Controller
     {
         if ($request->isMethod('post'))
         {
+            $w_access = UserHelper::checkUserRolePermission(Auth::user()->group_id, 'users', 'delete', true);    
+            if(!$w_access) {
+                return redirect('dashboard');
+            }          
+               
             $id = $request->input('id');
             $id = Hashids::decode($id)[0];
             $u = User::find($id);

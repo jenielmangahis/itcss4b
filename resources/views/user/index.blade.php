@@ -108,12 +108,18 @@
                             <td>{{ $user->is_active == 0 ? 'active' : 'Suspended' }}</td>
                             <td>{{ !empty($user->group->name) ? $user->group->name : '-' }}</td>
                             <td>
-                                <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $user->id; ?>">
-                                    <i class="fa fa-trash"></i> Delete
-                                </a>
-                                <a href="{{route('user/edit',[Hashids::encode($user->id)])}}" class="btn btn-xs btn-primary">
-                                    <i class="fa fa-edit"></i> Edit
-                                </a>                                                              
+                                <?php $edit_access = UserHelper::checkUserRolePermission(Auth::user()->group_id, 'users', 'edit');  ?>
+                                @if($edit_access)
+                                  <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $user->id; ?>">
+                                      <i class="fa fa-trash"></i> Delete
+                                  </a>
+                                @endif
+                                <?php $delete_access = UserHelper::checkUserRolePermission(Auth::user()->group_id, 'users', 'delete');  ?>
+                                 @if($delete_access)
+                                  <a href="{{route('user/edit',[Hashids::encode($user->id)])}}" class="btn btn-xs btn-primary">
+                                      <i class="fa fa-edit"></i> Edit
+                                  </a> 
+                                @endif                                                             
                             </td>
                         </tr>
 

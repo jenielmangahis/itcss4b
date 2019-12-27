@@ -6,6 +6,8 @@ use App\Contact;
 use App\ContactTask;
 use App\ContactHistory;
 
+use Session;
+
 use Illuminate\Support\Facades\DB;
 
 class UserHelper
@@ -21,10 +23,8 @@ class UserHelper
       const ACCESS_TYPE_VIEW_ONLY = 1; //View Only
       CONST ACCESS_TYPE_ALL       = 2; //ACCESS ALL (View, Edit & Delete)
 
-      public static function checkUserRole($group_id = null,$module = null) 
+      public static function getRoles() 
       {
-            $with_permission = TRUE;
-
             $roles['admin_user'] = array(
                   'dashboard',
                   'companies',
@@ -65,13 +65,55 @@ class UserHelper
 
             $roles['rtr_user'] = array(
                   'dashboard',
-                  'contact_docs',
-                  'contact_notes',
-                  'contact_task',
+                  'companies',
+                  'company_users',
+                  'users',
                   'contacts',
-                  'contact_advance',
-                  'mail_messaging'
+                  'contact_datasource',
+                  'lenders',
+                  'contact_campaigns',
+                  'workflow',
+                  'email_templates',
+                  'reports',
+                  'settings',
+                  'groups',
+                  'mail_messaging',
+                  'contact_docs'
+            );           
+            
+            return $roles; 
+      }
+
+      public static function getModulePermissions()
+      {
+            /*
+             * Note: Default to all access (view, edit, create & Delete)
+            */
+
+            $permission['admin_user'] = array(
+                  'all_access' => TRUE
             );
+
+            $permission['company_user'] = array(
+                  'all_access' => FALSE
+            );
+
+            $permission['customer_user'] = array(
+                  'all_access' => FALSE
+            );
+
+            $permission['rtr_user'] = array(
+                  'all_access' => TRUE
+            );
+
+            return $permission;
+      }      
+
+      public static function checkUserRole($group_id = null,$module = null) 
+      {
+            $with_permission = TRUE;
+
+            $roles = self::getRoles();
 
             if($group_id == self::ADMIN_USER) {
                   if (!in_array($module, $roles['admin_user'], TRUE)) { 
@@ -94,8 +136,73 @@ class UserHelper
             return $with_permission;
       }
 
-      public static function checkPermission() {
-            
+      public static function checkUserRolePermission($group_id = null, $module = null, $function = null, $redirect = false) {
+            $with_permission = TRUE;
+            $with_access     = FALSE;
+            $roles           = self::getRoles();
+
+            if($group_id == self::ADMIN_USER) {
+                  if (!in_array($module, $roles['admin_user'], TRUE)) { 
+                        $with_permission = FALSE;
+                  } 
+            }elseif($group_id == self::COMPANY_USER) {
+                  if (!in_array($module, $roles['company_user'], TRUE)) { 
+                        $with_permission = FALSE;          
+                  } 
+            }elseif($group_id == self::CUSTOMER_USER) {
+                  if (!in_array($module, $roles['customer_user'], TRUE)) { 
+                        $with_permission = FALSE;          
+                  }
+            }elseif($group_id == self::RTR_USER) {
+                  if (!in_array($module, $roles['rtr_user'], TRUE)) { 
+                        $with_permission = FALSE;          
+                  }
+            }
+
+            if($with_permission == TRUE) {
+                  $function_permission = self::getModulePermissions();
+
+                  if($group_id == self::ADMIN_USER) {
+                        if (!in_array($module, $function_permission['admin_user'], TRUE)) { 
+                              $all_access = $function_permission['admin_user']['all_access'];   
+                              if($all_access) {
+                                    $with_access = TRUE;
+                              }
+                        } 
+                  }elseif($group_id == self::COMPANY_USER) {
+                        if (!in_array($module, $function_permission['company_user'], TRUE)) { 
+                              $all_access = $function_permission['company_user']['all_access'];   
+                              if($all_access) {
+                                    $with_access = TRUE;
+                              }
+                        } 
+                  }elseif($group_id == self::CUSTOMER_USER) {
+                        if (!in_array($module, $function_permission['customer_user'], TRUE)) {  
+                              $all_access = $function_permission['customer_user']['all_access'];   
+                              if($all_access) {
+                                    $with_access = TRUE;
+                              }
+                        }
+                  }elseif($group_id == self::RTR_USER) {
+                        if (!in_array($module, $function_permission['rtr_user'], TRUE)) {   
+                              $all_access = $function_permission['rtr_user']['all_access'];   
+                              if($all_access) {
+                                    $with_access = TRUE;
+                              }     
+                        }
+                  }                  
+            }      
+
+            if($redirect && !$with_access) {
+                  Session::flash('message', 'You have no permission to access the '. $module . ' page.');
+                  Session::flash('alert_class', 'alert-danger');    
+                  /*redirect()->route('dashboard');
+                  $redirect_url = url('dashboard');
+                  header('Location: '.$redirect_url); */                            
+            } else {
+                  return $with_access;
+            }
+
       }
 
       public static function isCompanyUser($group_id = null) 
