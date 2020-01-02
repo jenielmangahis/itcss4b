@@ -797,13 +797,13 @@ class ContactController extends Controller
         {
             $contact_id  = Hashids::decode($request->input('contact_id'))[0];
 
-            /*$contact = Contact::find($contact_id); 
-            $contact->legal_scrub = $request->input('legal_scrub');
-            $contact->save();*/
+            $this->validate($request, [
+                'legal_note'      => 'required'
+             ]);
 
             $contact_note_legal_scrub = ContactNote::where('contact_id','=',$contact_id)->first();
             if(!empty($contact_note_legal_scrub)) {
-                $contact_note_legal_scrub->legal_scrub = $request->input('legal_scrub');
+                $contact_note_legal_scrub->legal_scrub = $request->input('legal_note');
                 $contact_note_legal_scrub->save();    
             } else {
                 $contact_note_legal_scrub = new ContactNote; 
@@ -812,7 +812,7 @@ class ContactController extends Controller
                 $contact_note_legal_scrub->note_title     = 'legal_scrub';
                 $contact_note_legal_scrub->note_content   = 'legal_scrub';
                 $contact_note_legal_scrub->notify_user_id = 0;
-                $contact_note_legal_scrub->legal_scrub = $request->input('legal_scrub');
+                $contact_note_legal_scrub->legal_scrub = $request->input('legal_note');
                 $contact_note_legal_scrub->save();                    
             }
 

@@ -371,7 +371,12 @@ class ContactDashboardController extends Controller
         /*
          * Legal Scrub from Contact Notes - start
         */
-            $legal_scrub = ContactNote::where('note_title','=','legal_scrub')->where('note_content','=','legal_scrub')->first();
+            $legal_scrub = ContactNote::where('contact_id','=',$contact->id)->where('note_title','=','legal_scrub')->where('note_content','=','legal_scrub')->first();
+            if(isset($legal_scrub->legal_scrub)) {
+                $lscrub = $legal_scrub->legal_scrub;
+            } else {
+                $lscrub = "";
+            }
         /*
          * Legal Scrub from Contact Notes - end
         */
@@ -414,7 +419,7 @@ class ContactDashboardController extends Controller
             'userContactInfo' => $userContactInfo,
             'has_client_portal' => $has_client_portal,
             'group_id' => Auth::user()->group_id,
-            'lscrub' => $legal_scrub
+            'lscrub' => $lscrub
 
         ]); 
     }     

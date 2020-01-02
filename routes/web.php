@@ -246,6 +246,7 @@ Route::post('contact_bank_account/update', ['as'=>'contact_bank_account/update',
 
 //Legal Scrub
 Route::post('contact/update_legal_scrub', ['as'=>'contact/update_legal_scrub','uses'=>'ContactController@update_legal_scrub'])->middleware('auth');
+Route::post('contact_note/update_legal_scrub', ['as'=>'contact_note/update_legal_scrub','uses'=>'ContactNoteController@update_legal_scrub'])->middleware('auth');
 
 //Contact Credit Card
 Route::post('contact_credit_card/update', ['as'=>'contact_credit_card/update','uses'=>'ContactCreditCardController@update'])->middleware('auth');

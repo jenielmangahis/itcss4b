@@ -591,7 +591,8 @@
     CKEDITOR.replace('ckeditor');    
     CKEDITOR.replace('note_content');   
     CKEDITOR.replace('task_notes'); 
-    CKEDITOR.replace('ck_legal_scrub',{height: '500px'});    
+    CKEDITOR.replace('legal_note'); 
+    //CKEDITOR.replace('ck_legal_scrub',{height: '500px'});    
 
     <?php foreach($contact_tasks as $task) { ?>
       CKEDITOR.replace('task_notes-<?php echo $task->id; ?>');   

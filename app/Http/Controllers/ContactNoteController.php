@@ -163,6 +163,45 @@ class ContactNoteController extends Controller
         }
     } 
 
+    public function update_legal_scrub(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $this->validate($request, [
+                'legal_note'      => 'required'
+             ]);
+
+            $contact_id  = Hashids::decode($request->input('contact_id'))[0];
+
+            /*$contact = Contact::find($contact_id); 
+            $contact->legal_scrub = $request->input('legal_scrub');
+            $contact->save();*/
+
+            $contact_note_legal_scrub = ContactNote::where('contact_id','=',$contact_id)->where('note_title','=','legal_scrub')->where('note_content','=','legal_scrub')->first();
+            if(!empty($contact_note_legal_scrub)) {
+                $contact_note_legal_scrub->legal_scrub = $request->input('legal_note');
+                $contact_note_legal_scrub->save();    
+            } else {
+                $contact_note_legal_scrub = new ContactNote; 
+                $contact_note_legal_scrub->contact_id     = $contact_id;
+                $contact_note_legal_scrub->note_type_id   = 1;
+                $contact_note_legal_scrub->note_title     = 'legal_scrub';
+                $contact_note_legal_scrub->note_content   = 'legal_scrub';
+                $contact_note_legal_scrub->notify_user_id = 0;
+                $contact_note_legal_scrub->legal_scrub    = $request->input('legal_note');
+                $contact_note_legal_scrub->save();                    
+            }
+
+            Session::flash('message', 'You have successfully update legal scrub');
+            Session::flash('alert_class', 'alert-success');
+        }else{
+            Session::flash('message', 'Cannot find record');
+            Session::flash('alert_class', 'alert-danger');  
+        }
+
+        return redirect()->back();    
+    }       
+
     public function destroy(Request $request)
     {
         if ($request->isMethod('post'))
