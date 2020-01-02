@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Contact;
 use App\ContactTask;
+use App\ContactNote;
 use App\ContactBusinessInformation;
 use App\ContactBrokerInformation;
 use App\ContactLoanInformation;
@@ -795,11 +796,27 @@ class ContactController extends Controller
         if ($request->isMethod('post'))
         {
             $contact_id  = Hashids::decode($request->input('contact_id'))[0];
-            $contact = Contact::find($contact_id); 
-            $contact->legal_scrub = $request->input('legal_scrub');
-            $contact->save();
 
-            Session::flash('message', 'You have successfully update bank account');
+            /*$contact = Contact::find($contact_id); 
+            $contact->legal_scrub = $request->input('legal_scrub');
+            $contact->save();*/
+
+            $contact_note_legal_scrub = ContactNote::where('contact_id','=',$contact_id)->first();
+            if(!empty($contact_note_legal_scrub)) {
+                $contact_note_legal_scrub->legal_scrub = $request->input('legal_scrub');
+                $contact_note_legal_scrub->save();    
+            } else {
+                $contact_note_legal_scrub = new ContactNote; 
+                $contact_note_legal_scrub->contact_id     = $contact_id;
+                $contact_note_legal_scrub->note_type_id   = 1;
+                $contact_note_legal_scrub->note_title     = 'legal_scrub';
+                $contact_note_legal_scrub->note_content   = 'legal_scrub';
+                $contact_note_legal_scrub->notify_user_id = 0;
+                $contact_note_legal_scrub->legal_scrub = $request->input('legal_scrub');
+                $contact_note_legal_scrub->save();                    
+            }
+
+            Session::flash('message', 'You have successfully update legal scrub');
             Session::flash('alert_class', 'alert-success');
         }else{
             Session::flash('message', 'Cannot find record');

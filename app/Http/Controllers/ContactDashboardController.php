@@ -163,6 +163,7 @@ class ContactDashboardController extends Controller
             $contact_notes_query = ContactNote::query();
             if($contact) {
                 $contact_notes_query = $contact_notes_query->where('contact_id','=', $contact->id);
+                $contact_notes_query = $contact_notes_query->where('note_title','!=', 'legal_scrub')->where('note_title','!=', 'note_content');
             }
             $contact_notes = $contact_notes_query->orderBy('created_at', 'desc')->paginate(10);
         /*
@@ -367,6 +368,14 @@ class ContactDashboardController extends Controller
          * Contact User - end
         */
 
+        /*
+         * Legal Scrub from Contact Notes - start
+        */
+            $legal_scrub = ContactNote::where('note_title','=','legal_scrub')->where('note_content','=','legal_scrub')->first();
+        /*
+         * Legal Scrub from Contact Notes - end
+        */
+
         return view('contact.dashboard.index',[
         	'contact_id' => $contact_id,            
         	'contact' => $contact,            
@@ -404,7 +413,8 @@ class ContactDashboardController extends Controller
             'search_by_advance' => $search_by_advance,
             'userContactInfo' => $userContactInfo,
             'has_client_portal' => $has_client_portal,
-            'group_id' => Auth::user()->group_id
+            'group_id' => Auth::user()->group_id,
+            'lscrub' => $legal_scrub
 
         ]); 
     }     

@@ -8,7 +8,7 @@
   <div class="box-body">
     <div class="row">
       <div class="col-sm-10">
-        <?php echo Form::textarea('legal_scrub', $contact->legal_scrub ,['style' => 'height:900px', 'id' => 'ck_legal_scrub', 'class' => 'form-control', 'required' => '']); ?>
+        <?php echo Form::textarea('legal_scrub', $lscrub->legal_scrub ,['style' => 'height:900px', 'id' => 'ck_legal_scrub', 'class' => 'form-control', 'required' => '']); ?>
       </div>
     </div>
   </div>  
