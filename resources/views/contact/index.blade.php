@@ -179,9 +179,12 @@
                                 <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $con->id; ?>" >
                                     <i class="fa fa-trash"></i> Delete
                                 </a>
-                                <a href="{{route('contact/edit',[Hashids::encode($con->id)])}}" class="btn btn-xs btn-primary">
-                                    <i class="fa fa-edit"></i> Edit
-                                </a> 
+                                <?php $edit_access = UserHelper::checkUserRolePermission(Auth::user()->group_id, 'contacts', 'edit');  ?>
+                                @if($edit_access)                                
+                                  <a href="{{route('contact/edit',[Hashids::encode($con->id)])}}" class="btn btn-xs btn-primary">
+                                      <i class="fa fa-edit"></i> Edit
+                                  </a> 
+                                @endif
                                 <a href="javascript:void(0);" class="btn btn-xs btn-primary" onclick="javascript:load_update_status_field('<?php echo $con->id; ?>')" id="edit-modal-status-<?php echo $con->id; ?>" data-toggle="modal" data-target="#modalEdit">
                                     <i class="fa fa-edit"></i> Status
                                 </a>                                                            
@@ -229,7 +232,9 @@
                               <div id="stage-status-container"></div>
                             </div>
                             <div class="modal-footer">
-                              <button type="submit" class="btn btn-default">Update</button>
+                              @if(UserHelper::checkUserRolePermission(Auth::user()->group_id, 'contacts', 'edit'))
+                                <button type="submit" class="btn btn-default">Update</button>
+                              @endif
                               <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                             </div>
 

@@ -405,27 +405,51 @@
               <section class="col-lg-9 connectedSortable ui-sortable">
                 <div class="nav-tabs-custom contact-dashboard contact-dashboard-tabs">
                   <ul class="nav nav-tabs">
-                    <li class="active"><a href="#tab_history" data-toggle="tab"><i class="fa fa-history"></i> History</a></li>
-                    <li class=""><a href="#tab_advances" data-toggle="tab"><i class="fa fa-dollar"></i> Advances</a></li>
-                    <li class=""><a href="#tab_calls" data-toggle="tab"><i class="fa fa-phone"></i> Calls</a></li>
-                    <li class=""><a href="#tab_emails" data-toggle="tab"><i class="fa fa-envelope-open"></i> Emails</a></li>
-                    <li class=""><a href="#tab_notes" data-toggle="tab"><i class="fa fa-list"></i> Notes</a></li>
-                    <li class=""><a href="#tab_emarketing" data-toggle="tab"><i class="fa fa-address-card-o"></i> E-Marketing</a></li>
-                    <li class=""><a href="#tab_docs" data-toggle="tab"><i class="fa fa-file"></i> Docs</a></li>
-                    <li class=""><a href="#tab_events" data-toggle="tab"><i class="fa fa-calendar"></i> Events</a></li>
-                    <!-- <li class=""><a href="#tab_bank_accounts" data-toggle="tab"><i class="fa fa-bank"></i> Bank Account</a></li>
-                    <li class=""><a href="#tab_credit_card" data-toggle="tab"><i class="fa fa-credit-card"></i> Credit Card</a></li> -->
-                    <li class="dropdown">
-                      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        Others <span class="caret"></span>
-                      </a>
-                      <ul class="dropdown-menu tab-dropdown">
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_tasks" data-toggle="tab">Tasks</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_bank_accounts" data-toggle="tab">Bank Account</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_credit_card" data-toggle="tab">Credit Card</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_legal_scrub" data-toggle="tab">Legal Scrub</a></li>
-                      </ul>
-                    </li>                
+                    @if( UserHelper::checkUserRole(Auth::user()->group_id, 'history') )
+                      <li class="active"><a href="#tab_history" data-toggle="tab"><i class="fa fa-history"></i> History</a></li>
+                    @endif
+                    @if( UserHelper::checkUserRole(Auth::user()->group_id, 'advances') )
+                      <li class=""><a href="#tab_advances" data-toggle="tab"><i class="fa fa-dollar"></i> Advances</a></li>
+                    @endif
+                    @if( UserHelper::checkUserRole(Auth::user()->group_id, 'calls') )
+                      <li class=""><a href="#tab_calls" data-toggle="tab"><i class="fa fa-phone"></i> Calls</a></li>
+                    @endif
+                    @if( UserHelper::checkUserRole(Auth::user()->group_id, 'emails') )
+                      <li class=""><a href="#tab_emails" data-toggle="tab"><i class="fa fa-envelope-open"></i> Emails</a></li>
+                    @endif
+                    @if( UserHelper::checkUserRole(Auth::user()->group_id, 'notes') )
+                      <li class=""><a href="#tab_notes" data-toggle="tab"><i class="fa fa-list"></i> Notes</a></li>
+                    @endif
+                    @if( UserHelper::checkUserRole(Auth::user()->group_id, 'emarketing') )
+                      <li class=""><a href="#tab_emarketing" data-toggle="tab"><i class="fa fa-address-card-o"></i> E-Marketing</a></li>
+                    @endif
+                    @if( UserHelper::checkUserRole(Auth::user()->group_id, 'docs') )
+                      <li class=""><a href="#tab_docs" data-toggle="tab"><i class="fa fa-file"></i> Docs</a></li>
+                    @endif
+                    @if( UserHelper::checkUserRole(Auth::user()->group_id, 'events') )
+                      <li class=""><a href="#tab_events" data-toggle="tab"><i class="fa fa-calendar"></i> Events</a></li>
+                    @endif
+                    @if( UserHelper::checkUserRole(Auth::user()->group_id, 'others') )
+                      <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                          Others <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu tab-dropdown">
+                          @if( UserHelper::checkUserRole(Auth::user()->group_id, 'tasks') )
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_tasks" data-toggle="tab">Tasks</a></li>
+                          @endif
+                          @if( UserHelper::checkUserRole(Auth::user()->group_id, 'bank_account') )
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_bank_accounts" data-toggle="tab">Bank Account</a></li>
+                          @endif
+                          @if( UserHelper::checkUserRole(Auth::user()->group_id, 'credit_card') )
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_credit_card" data-toggle="tab">Credit Card</a></li>
+                          @endif
+                          @if( UserHelper::checkUserRole(Auth::user()->group_id, 'legal_scrub') )
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="#tab_legal_scrub" data-toggle="tab">Legal Scrub</a></li>
+                          @endif
+                        </ul>
+                      </li>  
+                    @endif              
                   </ul>
                 
                   <div class="tab-content">
