@@ -308,6 +308,19 @@ class ContactController extends Controller
             $contact->state         = $request->input('state');
             $contact->zip_code      = $request->input('zip_code');
             $contact->status        = $request->input('status');
+            
+            if( $request->input('other_name') != '' ){
+                $contact->other_name = $request->input('other_name');
+            }
+
+            if( $request->input('other_email') != '' ){
+                $contact->other_email = $request->input('other_email');
+            }
+
+            if( $request->input('other_work_number') != '' ){
+                $contact->other_work_number = $request->input('other_work_number');
+            }
+
             $contact->save();
 
             if($contact) {
@@ -547,6 +560,19 @@ class ContactController extends Controller
                 $contact->state         = $request->input('state');
                 $contact->zip_code      = $request->input('zip_code');
                 $contact->status        = $request->input('status');
+
+                if( $request->input('other_name') != '' ){
+                $contact->other_name = $request->input('other_name');
+                }
+
+                if( $request->input('other_email') != '' ){
+                    $contact->other_email = $request->input('other_email');
+                }
+
+                if( $request->input('other_work_number') != '' ){
+                    $contact->other_work_number = $request->input('other_work_number');
+                }
+                
                 $contact->save();
 
                 if($contact) {
