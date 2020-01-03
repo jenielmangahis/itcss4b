@@ -11,6 +11,8 @@
 
 <script src="{{ asset ('/bower_components/ckeditor/ckeditor.js') }}"></script>
 <script src="{{ asset ('/js/admin.js') }}"></script>
+<!-- Select2 - dropdown -->
+<script src="{{ asset ('/js/select2.min.js') }}"></script>
 
 <!-- Bootstrap Datepicker -->
 <script src="{{ asset ('/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>

@@ -183,7 +183,11 @@
     $('.bankruptcy_filed').datepicker({
       autoclose: true,
       format: 'yyyy-mm-dd',
-    })    
+    });
+
+    $(".default-select2").select2();
+
+
 
     load_company_users_dropdown();
     load_stage_status_dropdown();

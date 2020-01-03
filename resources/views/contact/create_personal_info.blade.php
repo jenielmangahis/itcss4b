@@ -4,7 +4,7 @@
       @if(UserHelper::isAdminUser(Auth::user()->group_id))
       <div class="form-group">
         <label>Company:</label>
-        <select name="company_id" id="company_id" class="form-control">
+        <select name="company_id" id="company_id" class="form-control default-select2">
           @foreach($companies as $company)
           <option value="{{ $company->id }}">{{ $company->name }}</option>
           @endforeach
