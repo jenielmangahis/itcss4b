@@ -22,9 +22,11 @@
               {{ date("F j, Y, g:i a", strtotime($ch->created_at)) }}
               | <a class="" href="javascript:void(0);">{{$ch->title}}</a>
               | {{$ch->user->firstname}} {{$ch->user->lastname}}
-              <a style="float: right;" href="javascript:void(0);" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalDelete-<?= $ch->id; ?>">
-                <i class="fa fa-trash"></i>
-              </a>
+              @if( UserHelper::checkUserRolePermission(Auth::user()->group_id, 'history', 'delete') )
+                <a style="float: right;" href="javascript:void(0);" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalDelete-<?= $ch->id; ?>">
+                  <i class="fa fa-trash"></i>
+                </a>
+              @endif
             </h3>
 
             <!-- <div class="timeline-body" style="overflow: auto; min-height: 40px; max-height: 120px;">

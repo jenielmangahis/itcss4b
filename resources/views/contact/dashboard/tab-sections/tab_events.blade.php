@@ -40,9 +40,11 @@
   <div class="col-xs-12 calendar-events-header">
     <div class="pull-left calendar-events-title">Calendar Events</div>
     <div class="pull-right">
+      @if( UserHelper::checkUserRolePermission(Auth::user()->group_id, 'events', 'add') )
         <a href="javascript:void(0);" class="btn btn-primary" id="" data-toggle="modal" data-target="#modalAddEvent">
             <i class="fa fa-plus"></i> Add Event
-        </a>          
+        </a>   
+      @endif       
         <a href="javascript:location.reload();" class="btn btn-primary">
             <i class="fa fa-refresh"></i>
         </a>
@@ -105,12 +107,16 @@
       <td>{{ $event->event_type->name }}</td>
       <td>{{ $event->description }}</td>
       <td>
+        @if( UserHelper::checkUserRolePermission(Auth::user()->group_id, 'events', 'delete') )
         <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDeleteEvent-<?= $event->id; ?>">
             <i class="fa fa-trash"></i>
         </a>
+        @endif
+        @if( UserHelper::checkUserRolePermission(Auth::user()->group_id, 'events', 'edit') )
         <a href="javascript:void(0);" class="btn btn-xs btn-primary" id="" data-toggle="modal" data-target="#modalEditEvent-<?= $event->id; ?>">
             <i class="fa fa-edit"></i>
-        </a>                                                     
+        </a> 
+        @endif                                                    
       </td>
     </tr>  
 
@@ -285,7 +291,7 @@
               <div class="col-xs-3">
                 <div class="form-group">
                   <label for="inputAssignedUser">Assigned User</label>
-                  <select name="user_id" id="user_id" class="form-control">
+                  <select name="user_id" id="user_id" class="form-control" required="">
                     @if( !empty($company_users->toArray()) )
                       @foreach($company_users as $company_user)   
                         @if(isset($company_user->user->firstname) && isset($company_user->user->lastname))
@@ -295,7 +301,7 @@
                         @endif
                       @endforeach
                     @else
-                      <select name="user_id" id="user_id" class="form-control">
+                      <select name="user_id" id="user_id" class="form-control" required="">
                         <option value="">No company users available</option>
                       </select>
                     @endif

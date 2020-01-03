@@ -2,9 +2,11 @@
   <div class="col-xs-12 calendar-events-header">
     <div class="pull-left calendar-events-title">Notes</div>
     <div class="pull-right">
+      @if( UserHelper::checkUserRolePermission(Auth::user()->group_id, 'notes', 'add') )
         <a href="javascript:void(0);" class="btn btn-primary" id="" data-toggle="modal" data-target="#modalAddNote">
             <i class="fa fa-plus"></i> Add Note
-        </a>          
+        </a>    
+      @endif      
         <a href="javascript:location.reload();" class="btn btn-primary">
             <i class="fa fa-refresh"></i>
         </a>
@@ -36,9 +38,11 @@
           
           <div class="timeline-footer">
             <!-- <a class="btn btn-primary btn-xs">Read more</a> -->
+            @if( UserHelper::checkUserRolePermission(Auth::user()->group_id, 'notes', 'delete') )
             <a href="javascript:void(0);" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalDeleteNote-<?= $contact_note->id; ?>">
                 Delete
-            </a>            
+            </a>    
+            @endif        
           </div>
         </div>
       </li>

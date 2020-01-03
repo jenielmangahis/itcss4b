@@ -2,9 +2,11 @@
   <div class="col-xs-12 calendar-events-header">
     <div class="pull-left calendar-events-title">Advances</div>
     <div class="pull-right">
-        <a href="javascript:void(0);" class="btn btn-primary" id="" data-toggle="modal" data-target="#modalAddAdvance">
-            <i class="fa fa-plus"></i> New Advance
-        </a>          
+        @if( UserHelper::checkUserRolePermission(Auth::user()->group_id, 'advances', 'delete') )
+          <a href="javascript:void(0);" class="btn btn-primary" id="" data-toggle="modal" data-target="#modalAddAdvance">
+              <i class="fa fa-plus"></i> New Advance
+          </a>      
+        @endif    
         <a href="javascript:location.reload();" class="btn btn-primary">
             <i class="fa fa-refresh"></i>
         </a>
