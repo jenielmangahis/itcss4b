@@ -48,9 +48,11 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Email Template List</h3>
                     <div class="pull-right">
+                      @if(UserHelper::checkUserRolePermission(Auth::user()->group_id, 'email_templates', 'create'))
                         <a href="{{route('email_template/create')}}" class="btn btn-primary">
                             <i class="fa fa-plus"></i> Create New
                         </a>
+                      @endif
                     </div>
                 </div>
                 <!-- /.box-header -->
@@ -105,12 +107,17 @@
                             @endif
                             <td>{{ $et->name }}</td>
                             <td>
+                              @if(UserHelper::checkUserRolePermission(Auth::user()->group_id, 'email_templates', 'delete'))
                                 <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $et->id; ?>">
                                     <i class="fa fa-trash"></i> Delete
                                 </a>
+                              @endif
+
+                              @if(UserHelper::checkUserRolePermission(Auth::user()->group_id, 'email_templates', 'edit'))
                                 <a href="{{route('email_template/edit',[Hashids::encode($et->id)])}}" class="btn btn-xs btn-primary">
                                     <i class="fa fa-edit"></i> Edit
-                                </a>                                                              
+                                </a>  
+                              @endif                                                            
                             </td>
                         </tr>
 

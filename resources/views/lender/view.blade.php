@@ -118,9 +118,11 @@
                       <th colspan="2">
                         Contacts
                         <div class="pull-right">
-                          <a href="javascript:void(0);" class="" id="" data-toggle="modal" data-target="#modalAddLenderContact">
-                          Add Contact
-                          </a>
+                          @if(UserHelper::checkUserRolePermission(Auth::user()->group_id, 'contacts', 'create'))
+                            <a href="javascript:void(0);" class="" id="" data-toggle="modal" data-target="#modalAddLenderContact">
+                            Add Contact
+                            </a>
+                          @endif
                         </div>
                       </th>
                     </tr>

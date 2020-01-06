@@ -31,6 +31,7 @@ class CompanyUserController extends Controller
             $module   = 'company_users';
             $with_permission = UserHelper::checkUserRole($group_id, $module); 
             if(!$with_permission) {
+                $module = 'MCA Funders';
                 Session::flash('message', 'You have no permission to access the '. $module . ' page.');
                 Session::flash('alert_class', 'alert-danger');                
                 return redirect('dashboard');

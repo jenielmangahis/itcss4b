@@ -56,7 +56,7 @@
   <ul class="dropdown-menu">
     <li class="header">
       <?php $idle_contact_count_value = isset($idle_contacts_count) ? $idle_contacts_count : 0; ?>
-      <strong>You have {{ $idle_contact_count_value }} idle contacts (30 days)</strong>
+      <strong>You have {{ $idle_contact_count_value }} idle contacts (15 days)</strong>
     </li>
     <li>
       <!-- Inner menu: contains the tasks -->

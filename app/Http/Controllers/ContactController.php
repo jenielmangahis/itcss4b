@@ -175,6 +175,11 @@ class ContactController extends Controller
 
     public function create()
     {
+        $w_access = UserHelper::checkUserRolePermission(Auth::user()->group_id, 'contacts', 'create', true);    
+        if(!$w_access) {
+            return redirect('dashboard');
+        }         
+
         $stages    = Stage::all();
         $companies = Companies::all();
 
@@ -407,7 +412,12 @@ class ContactController extends Controller
     }     
 
     public function edit($id)
-    {     
+    {    
+        $w_access = UserHelper::checkUserRolePermission(Auth::user()->group_id, 'contacts', 'create', true);    
+        if(!$w_access) {
+            return redirect('dashboard');
+        }         
+             
         $id        = Hashids::decode($id)[0]; 
         $stages    = Stage::all();
         $companies = Companies::all();

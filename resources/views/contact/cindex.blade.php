@@ -61,9 +61,12 @@
               <div class="box">
                 <div class="box-header with-border">
                     <div class="pull-left">
-                        <a href="{{route('contact/create')}}" class="btn btn-primary">
-                            <i class="fa fa-plus"></i> Create New
-                        </a>
+                        <?php $create_access = UserHelper::checkUserRolePermission(Auth::user()->group_id, 'contacts', 'create');  ?>
+                        @if($create_access)                           
+                          <a href="{{route('contact/create')}}" class="btn btn-primary">
+                              <i class="fa fa-plus"></i> Create New
+                          </a>
+                        @endif
                     </div>                  
                     <div class="pull-left" style="margin-left: 5px;">
                       <a href="{{route('contact_datasource')}}" class="btn">

@@ -152,6 +152,11 @@ class UserController extends Controller
 
     public function create()
     {
+        $w_access = UserHelper::checkUserRolePermission(Auth::user()->group_id, 'users', 'create', true);    
+        if(!$w_access) {
+            return redirect('dashboard');
+        } 
+
         $groups = Group::all();
         return view('user.create', [
         	'groups' => $groups

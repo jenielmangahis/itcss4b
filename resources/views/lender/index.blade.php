@@ -77,9 +77,11 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Lenders List</h3>
                     <div class="pull-right">
-                        <a href="javascript:void(0);" class="btn btn-primary" id="" data-toggle="modal" data-target="#modalAddLender">
-                            <i class="fa fa-plus"></i> Add Lender
-                        </a>                           
+                        @if(UserHelper::checkUserRolePermission(Auth::user()->group_id, 'lenders', 'create'))
+                          <a href="javascript:void(0);" class="btn btn-primary" id="" data-toggle="modal" data-target="#modalAddLender">
+                              <i class="fa fa-plus"></i> Add Lender
+                          </a>          
+                        @endif                 
                     </div>
                 </div>
                 <!-- /.box-header -->
@@ -155,12 +157,16 @@
                             <td>{{ $adv_count }}</td>
                             <td>{{ number_format($total_funded,2) }}</td>
                             <td>
+                              @if(UserHelper::checkUserRolePermission(Auth::user()->group_id, 'lenders', 'delete'))
                                 <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $lender->id; ?>" >
                                     <i class="fa fa-trash"></i>
                                 </a>
+                              @endif
+                              @if(UserHelper::checkUserRolePermission(Auth::user()->group_id, 'lenders', 'edit'))
                                 <a href="javascript:void(0);" class="btn btn-xs btn-primary" id="" data-toggle="modal" data-target="#modalEditLender-<?php echo $lender->id;?>">
                                     <i class="fa fa-edit"></i>
-                                </a>                                                            
+                                </a>          
+                              @endif                                                  
                             </td>
                         </tr>
 

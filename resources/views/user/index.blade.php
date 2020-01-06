@@ -48,9 +48,11 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">User List</h3>
                     <div class="pull-right">
-                        <a href="{{route('user/create')}}" class="btn btn-primary">
-                            <i class="fa fa-plus"></i> Create New
-                        </a>
+                        @if(UserHelper::checkUserRolePermission(Auth::user()->group_id, 'users', 'create'))
+                          <a href="{{route('user/create')}}" class="btn btn-primary">
+                              <i class="fa fa-plus"></i> Create New
+                          </a>
+                        @endif
                     </div>
                 </div>
                 <!-- /.box-header -->
