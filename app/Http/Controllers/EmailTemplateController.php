@@ -88,6 +88,11 @@ class EmailTemplateController extends Controller
 
     public function create()
     {
+        $w_access = UserHelper::checkUserRolePermission(Auth::user()->group_id, 'email_templates', 'create', true);    
+        if(!$w_access) {
+            return redirect('dashboard');
+        } 
+
     	$emailTemplate = EmailTemplate::get();
     	$companies = Companies::all();
 
@@ -142,6 +147,11 @@ class EmailTemplateController extends Controller
 
     public function edit($id)
     {     
+        $w_access = UserHelper::checkUserRolePermission(Auth::user()->group_id, 'email_templates', 'edit', true);    
+        if(!$w_access) {
+            return redirect('dashboard');
+        } 
+
         $id = Hashids::decode($id)[0];
         $emailTemplate   = EmailTemplate::where('id', '=', $id)->first();
         $companies = Companies::all();

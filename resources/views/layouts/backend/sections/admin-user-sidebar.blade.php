@@ -43,9 +43,9 @@
 	    	<a href="{{route('workflow')}}"><i class="fa fa-server"></i> <span>Workflow </span></a>
 	    </li>
 
-	    <li <?php echo Route::current()->getName() == 'reports' ? 'class="active"' : ''; ?>>
+	    <!-- <li <?php //echo Route::current()->getName() == 'reports' ? 'class="active"' : ''; ?>>
 	    	<a href="{{route('companies')}}"><i class="fa fa-newspaper-o"></i> <span>Reports </span></a>
-	    </li>
+	    </li> -->
 
 	    <?php 
 	    	$multi_tab_settings = '';
