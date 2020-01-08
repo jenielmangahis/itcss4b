@@ -35,7 +35,9 @@
 	    <ul class="nav navbar-nav">
 
 	      	{{-- @include('layouts.backend.header-notification') --}}
-	      	@include('layouts.backend.header-notification')
+	      	@if(UserHelper::checkUserRole(Auth::user()->group_id, 'notifications')) 
+	      		@include('layouts.backend.header-notification')
+	      	@endif
 	      	<!-- User Account Menu -->
 	      	<li class="dropdown user user-menu">
 		        <!-- Menu Toggle Button -->

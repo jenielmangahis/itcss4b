@@ -29,7 +29,10 @@ class UserHelper
                   'dashboard',
                   'companies',
                   'company_users',
-                  'users',
+                  'user_management',
+                        'users',
+                        'mca_funders',
+                        'groups',
                   'contacts',
                         'history',
                         'advances',
@@ -51,9 +54,9 @@ class UserHelper
                   'email_templates',
                   'reports',
                   'settings',
-                  'groups',
                   'mail_messaging',
-                  'contact_docs'
+                  'contact_docs',
+                  'notifications'
             );
 
             //this is also the mca funders/user also
@@ -65,9 +68,6 @@ class UserHelper
                         'advances',
                         'notes',
                         'events',
-                  'lenders',
-                  'email_templates',
-                  'mail_messaging',
                   'contact_docs'
             );
 
@@ -85,7 +85,10 @@ class UserHelper
                   'dashboard',
                   'companies',
                   'company_users',
-                  'users',
+                  'user_management',
+                        'users',
+                        'mca_funders',
+                        'groups',
                   'contacts',
                         'history',
                         'advances',
@@ -107,9 +110,9 @@ class UserHelper
                   'email_templates',
                   'reports',
                   'settings',
-                  'groups',
                   'mail_messaging',
-                  'contact_docs'
+                  'contact_docs',
+                  'notifications'
             );           
             
             return $roles; 

@@ -186,14 +186,50 @@
                   </select>  
                 </div>                
               </div>
-              <div class="col-xs-5">
+              <div class="col-xs-4">
                 <div class="form-group">
                   <label for="inputTime">Description</label>
                   <input type="text" class="form-control" name="description" required="">
                 </div>                
-              </div>           
-
+              </div>     
+              <div class="col-xs-1">
+                <div class="form-group">
+                  <label for="inputTime">&nbsp;</label>
+                  <a class="btn btn-primary" href="javascript:void(0);"><strong>+</strong></a>
+                </div>                
+              </div>         
             </div>
+
+            <!-- <div class="row">
+              <div class="col-xs-4">
+                <div class="form-group">
+                  <label for="inputTime">Filename</label>
+                  <input type="file" class="form-control" id="filename_2" name="filename_2" placeholder="Click to Select File">
+                </div>
+              </div>
+              <div class="col-xs-3">
+                <div class="form-group">
+                  <label for="inputCallType">Document Type</label>
+                  <select name="document_type_2" id="document_type_2" class="form-control">
+                    <?php foreach($documentTypes as $key => $value){ ?>
+                      <option value="<?= $key; ?>"><?= $value; ?></option>
+                    <?php } ?>
+                  </select>  
+                </div>                
+              </div>
+              <div class="col-xs-4">
+                <div class="form-group">
+                  <label for="inputTime">Description</label>
+                  <input type="text" class="form-control" id="description_2" name="description_2" required="">
+                </div>                
+              </div>    
+              <div class="col-xs-1">
+                <div class="form-group">
+                  <label for="inputTime">&nbsp;</label>
+                  <a class="btn btn-danger" href="javascript:void(0);"><strong>-</strong></a>
+                </div>                
+              </div>                        
+            </div>  -->           
 
           </div>
           <div class="modal-footer">
