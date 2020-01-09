@@ -173,13 +173,13 @@
               <div class="col-xs-4">
                 <div class="form-group">
                   <label for="inputTime">Filename</label>
-                  <input type="file" class="form-control" id="filename" name="filename" placeholder="Click to Select File" required="">
+                  <input type="file" class="form-control" id="filename" name="filename[]" placeholder="Click to Select File" required="" multiple>
                 </div>                
               </div>
               <div class="col-xs-3">
                 <div class="form-group">
                   <label for="inputCallType">Document Type</label>
-                  <select name="document_type" id="document_type" class="form-control">
+                  <select name="document_type[]" id="document_type" class="form-control">
                     <?php foreach($documentTypes as $key => $value){ ?>
                       <option value="<?= $key; ?>"><?= $value; ?></option>
                     <?php } ?>
@@ -189,47 +189,50 @@
               <div class="col-xs-4">
                 <div class="form-group">
                   <label for="inputTime">Description</label>
-                  <input type="text" class="form-control" name="description" required="">
+                  <input type="text" class="form-control" name="description[]" required="">
                 </div>                
               </div>     
               <div class="col-xs-1">
                 <div class="form-group">
                   <label for="inputTime">&nbsp;</label>
-                  <a class="btn btn-primary" href="javascript:void(0);"><strong>+</strong></a>
+                  <a class="btn btn-primary add_file_0" onclick="javascript:add_row_file_upload(0);" href="javascript:void(0);"><strong>+</strong></a>
                 </div>                
               </div>         
             </div>
 
-            <!-- <div class="row">
-              <div class="col-xs-4">
-                <div class="form-group">
-                  <label for="inputTime">Filename</label>
-                  <input type="file" class="form-control" id="filename_2" name="filename_2" placeholder="Click to Select File">
+            @for($inc = 1; $inc <= 10; $inc++)
+              <div class="row row_file_{{$inc}}" id="row_file_{{$inc}}" style="display: none;">
+                <div class="col-xs-4">
+                  <div class="form-group">
+                    <label for="inputTime">Filename</label>
+                    <input type="file" class="form-control filename_{{$inc}}" id="filename_{{$inc}}" required="" name="filename[]" placeholder="Click to Select File" disabled="" multiple>
+                  </div>
                 </div>
-              </div>
-              <div class="col-xs-3">
-                <div class="form-group">
-                  <label for="inputCallType">Document Type</label>
-                  <select name="document_type_2" id="document_type_2" class="form-control">
-                    <?php foreach($documentTypes as $key => $value){ ?>
-                      <option value="<?= $key; ?>"><?= $value; ?></option>
-                    <?php } ?>
-                  </select>  
-                </div>                
-              </div>
-              <div class="col-xs-4">
-                <div class="form-group">
-                  <label for="inputTime">Description</label>
-                  <input type="text" class="form-control" id="description_2" name="description_2" required="">
-                </div>                
-              </div>    
-              <div class="col-xs-1">
-                <div class="form-group">
-                  <label for="inputTime">&nbsp;</label>
-                  <a class="btn btn-danger" href="javascript:void(0);"><strong>-</strong></a>
-                </div>                
-              </div>                        
-            </div>  -->           
+                <div class="col-xs-3">
+                  <div class="form-group">
+                    <label for="inputCallType">Document Type</label>
+                    <select name="document_type[]" id="document_type" class="form-control document_type_{{$inc}}" disabled="">
+                      <?php foreach($documentTypes as $key => $value){ ?>
+                        <option value="<?= $key; ?>"><?= $value; ?></option>
+                      <?php } ?>
+                    </select>  
+                  </div>                
+                </div>
+                <div class="col-xs-3">
+                  <div class="form-group">
+                    <label for="inputTime">Description</label>
+                    <input type="text" class="form-control description_{{$inc}}" id="description" required="" name="description[]" disabled="">
+                  </div>                
+                </div>    
+                <div class="col-xs-2">
+                  <div class="form-group" style="margin-top: 25px;">
+                    <label for="inputTime">&nbsp;</label>
+                    <a style="display: none;" class="btn btn-primary add_file_{{$inc}}" onclick="javascript:add_row_file_upload(<?php echo $inc; ?>);" href="javascript:void(0);"><strong>+</strong></a>
+                    <a style="display: none;" class="btn btn-danger minus_file_{{$inc}}" onclick="javascript:delete_row_file_upload(<?php echo $inc; ?>);" href="javascript:void(0);"><strong>-</strong></a>
+                  </div>                
+                </div>                        
+              </div>     
+            @endfor    
 
           </div>
           <div class="modal-footer">

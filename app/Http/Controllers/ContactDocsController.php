@@ -64,16 +64,87 @@ class ContactDocsController extends Controller
         if ($request->isMethod('post'))
         {
             $this->validate($request, [
-                //'document_title'           => 'required',
-                'filename' => 'required',
+                'filename'      => 'required',
                 'document_type' => 'required',
-                'description' => 'required'
+                'description'   => 'required'
              ]);
+
+            $upload_files = $request->file('filename');            
+
+            foreach($upload_files as $file_key => $file) {
+
+                if($file) {
+                    $doc_file          = $file;
+                    $original_filename = $doc_file->getClientOriginalName();
+                    $doc_filename      = $original_filename;
+                    $destinationPath   = public_path('/uploads/contact_docs');
+                    $doc_file->move($destinationPath, $doc_filename);
+                    $location          = $destinationPath . "/" . $doc_filename;
+                }              
+
+                $document_type = $request->input('document_type');
+                $description   = $request->input('description');
+
+                $user_id                    = Auth::user()->id;
+                $contact_id                 = Hashids::decode($request->input('contact_id'))[0];                 
+                $contactDoc                 = new ContactDocs;
+                $contactDoc->user_id        = $user_id;
+                $contactDoc->contact_id     = $contact_id;
+                $contactDoc->filename       = $doc_filename;
+                $contactDoc->document_title = $original_filename;
+                $contactDoc->document_type  = $document_type[$file_key];
+                $contactDoc->description    = $description[$file_key];
+                $contactDoc->save();    
+
+                //Adding history - Start
+                if($contactDoc) {
+                    $user_id    = Auth::user()->id;
+                    $contact_id = Hashids::decode($request->input('contact_id'))[0];
+                    $ch = new ContactHistory;
+                    $ch->user_id       = $user_id;
+                    $ch->contact_id    = $contact_id;
+                    $ch->company_id    = 0;
+                    $ch->title         = "Add New Document";
+                    $ch->description   = "Document File Name: " . $original_filename;
+                    $ch->module        = "Docs";
+                    $ch->save();
+                }
+                //Adding history - End              
+
+            } 
+
+            Session::flash('message', 'You have successfully uploaded new document');
+            Session::flash('alert_class', 'alert-success');
+        }else{
+            Session::flash('message', 'Unable to upload document');
+            Session::flash('alert_class', 'alert-danger');              
+        }
+        return redirect()->back();	  
+    }
+
+    public function storeBackup(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $this->validate($request, [
+                //'filename'      => 'required',
+                'document_type' => 'required',
+                'description'   => 'required'
+             ]);
+
+            $upload_files = $request->file('filename');   
+
+            echo '<pre>';
+            print_r($upload_files);
+            echo '<hr />';
+            print_r($request->input());
+            echo '</pre>';
+            exit;            
 
             if($request->file('filename')) {
                 $doc_file        = $request->file('filename');
                 $original_filename = $doc_file->getClientOriginalName();
-                $doc_filename      = $original_filename; //md5(date("Y-m-d") . "-" . rand()) . '.' . $doc_file->getClientOriginalExtension();
+                $doc_filename      = $original_filename;
                 $destinationPath   = public_path('/uploads/contact_docs');
                 $doc_file->move($destinationPath, $doc_filename);
                 $location          = $destinationPath . "/" . $doc_filename;
@@ -81,7 +152,7 @@ class ContactDocsController extends Controller
 
             $user_id = Auth::user()->id;
             $contact_id      = Hashids::decode($request->input('contact_id'))[0];                 
-            $contactDoc              	= new ContactDocs;
+            $contactDoc                 = new ContactDocs;
             $contactDoc->user_id        = $user_id;
             $contactDoc->contact_id     = $contact_id;
             $contactDoc->filename       = $doc_filename;
@@ -111,8 +182,8 @@ class ContactDocsController extends Controller
             Session::flash('message', 'Unable to upload document');
             Session::flash('alert_class', 'alert-danger');              
         }
-        return redirect()->back();	  
-    }
+        return redirect()->back();    
+    }    
 
     public function destroy(Request $request)
     {

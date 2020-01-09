@@ -661,6 +661,42 @@
       }, 250);
     });    
   }
+
+  function add_row_file_upload(id) {
+    var f_id = id + 1;
+    var m_id = id - 1;
+
+    $(".row_file_" + f_id).show();
+    $(".add_file_" + f_id).show();
+    $(".minus_file_" + f_id).show();
+
+    $(".filename_" + f_id).removeAttr("disabled");
+    $(".document_type_" + f_id).removeAttr("disabled");
+    $(".description_" + f_id).removeAttr("disabled");
+
+    if(id < 10) {
+      $(".add_file_" + id).hide();
+      $(".minus_file_" + id).hide();
+      $(".add_file_0").hide();      
+    }
+
+  }
+
+  function delete_row_file_upload(id) {
+    var f_id = id;
+    var m_id = id - 1;
+
+    $(".row_file_" + f_id).hide();
+
+    $(".row_file_" + m_id).show();
+    $(".add_file_" + m_id).show();
+    $(".minus_file_" + m_id).show();    
+
+    $(".filename_" + f_id).attr( "disabled", "disabled" );
+    $(".document_type_" + f_id).attr( "disabled", "disabled" );
+    $(".description_" + f_id).attr( "disabled", "disabled" );
+  }
+
 </script>
 
 @endsection
