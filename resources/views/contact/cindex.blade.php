@@ -93,7 +93,8 @@
                               <label>Search By: </label><br />
                               <select name="search_by" class="form-control select2" style="width: 30%; float: left;">
                                 <option value="name" selected="selected">Name</option>
-                                <option value="email" selected="selected">Email</option>
+                                <option value="email">Email</option>
+                                <!-- <option value="business_name">Business Name</option> -->
                               </select>
                               <input class="form-control" type="text" value="<?php echo $search_field; ?>" name="search_field" placeholder="Default Search" style="width: 70%; float: right;">
                             </div>

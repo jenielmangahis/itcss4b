@@ -83,23 +83,19 @@ class ContactController extends Controller
             if($search_by != '' && $search_field != '') {
 
             	if( $search_by == 'name' ){
-
-            		/*$contact_query = $contact_query->where('contacts.firstname', 'like', '%' . $search_field . '%')->orWhere('contacts.lastname', 'like', '%' . $search_field . '%');
-                    if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
-                        $contact_query = $contact_query->where('user_id', '=', Auth::user()->id);
-                    } */
-
                     $user_id       = Auth::user()->id;
-                    $contact_query = $contact_query->leftJoin('contact_assigned_users', 'contacts.id','=', 'contact_assigned_users.contact_id');
+
                     if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
+                        $contact_query = $contact_query->leftJoin('contact_assigned_users', 'contacts.id','=', 'contact_assigned_users.contact_id');
                         $contact_query = $contact_query->where('contact_assigned_users.user_id','=', $user_id);
+                        //$contact_query = $contact_query->groupBy('contacts.company_id');
                     }
                     $contact_query = $contact_query->where('contacts.firstname', 'like', '%' . $search_field . '%')->orWhere('contacts.lastname', 'like', '%' . $search_field . '%');
+                    
 
                 }else{
-
-                    $contact_query = $contact_query->leftJoin('contact_assigned_users', 'contacts.id','=', 'contact_assigned_users.contact_id');
                     if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
+                        $contact_query = $contact_query->leftJoin('contact_assigned_users', 'contacts.id','=', 'contact_assigned_users.contact_id');
                         $contact_query = $contact_query->where('contact_assigned_users.user_id','=', $user_id);
                     }                    
             		$contact_query = $contact_query->where('contacts.'.$search_by, 'like', '%' . $search_field . '%');
