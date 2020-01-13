@@ -92,9 +92,9 @@
                             <div class="form-group">
                               <label>Search By: </label><br />
                               <select name="search_by" class="form-control select2" style="width: 30%; float: left;">
-                                <option value="name" selected="selected">Name</option>
-                                <option value="email">Email</option>
-                                <!-- <option value="business_name">Business Name</option> -->
+                                <option <?php echo $search_by == 'name' ? 'selected="selected"' : ''; ?> value="name" selected="selected">Name</option>
+                                <option <?php echo $search_by == 'email' ? 'selected="selected"' : ''; ?> value="email">Email</option>
+                                <option <?php echo $search_by == 'business_name' ? 'selected="selected"' : ''; ?> value="business_name">Business Name</option>
                               </select>
                               <input class="form-control" type="text" value="<?php echo $search_field; ?>" name="search_field" placeholder="Default Search" style="width: 70%; float: right;">
                             </div>
@@ -117,21 +117,23 @@
                     {!! Form::close() !!}         
                   </div>
 
-                  <table class="table table-bordered">
-                    <tr>
-                      <th >#</th>
-
-                      <th>Created</th>
-                      <th>Business Name</th>
-                      <th>Assigned To</th>
-                      <th>Full Name</th>
-                      <th>Home Phone</th>
-                      <th>Email</th>
-                      <th>Stage</th>
-                      <th>Status</th>
-                      <th>Data Source</th>
-                      <th>Actions</th>
-                    </tr>
+                  <table id="table_contact" class="table-bordered table_contact">
+                    <thead>
+                      <tr>
+                        <th >#</th>
+                        <th>Created</th>
+                        <th>Business Name</th>
+                        <th>Assigned To</th>
+                        <th>Full Name</th>
+                        <th>Home Phone</th>
+                        <th>Email</th>
+                        <th>Stage</th>
+                        <th>Status</th>
+                        <th>Data Source</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
                     @foreach($contact as $con)
                         <?php 
                           $workflow_status = App\Workflow::where('id', '=', $con->status)->first();
@@ -219,6 +221,7 @@
                         </div>   
 
                     @endforeach
+                    </tbody>
                   </table>
 
                   <div id="modalEdit" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
@@ -664,6 +667,15 @@
     })       
 
     CKEDITOR.replace('ckeditor');
+
+    $('#table_contact').DataTable({
+      'paging'      : false,
+      'lengthChange': false,
+      'searching'   : false,
+      'ordering'    : true,
+      'info'        : false,
+      'autoWidth'   : true
+    })       
     
   });
   

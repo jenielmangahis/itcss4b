@@ -4,6 +4,9 @@
 <!-- Ionicons -->
 <link href="{{ asset('/bower_components/Ionicons/css/ionicons.min.css')}}" rel="stylesheet" type="text/css" />
 
+<!-- DataTables -->
+<link rel="stylesheet" href="{{ asset('/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
+
 <link href="{{ asset('/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css')}}" rel="stylesheet" type="text/css" />
 
 <!-- Bootstrap Datepicker -->

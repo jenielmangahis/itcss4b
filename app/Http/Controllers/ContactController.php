@@ -83,8 +83,8 @@ class ContactController extends Controller
             if($search_by != '' && $search_field != '') {
 
             	if( $search_by == 'name' ){
-                    $user_id       = Auth::user()->id;
 
+                    $user_id       = Auth::user()->id;
                     if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
                         $contact_query = $contact_query->leftJoin('contact_assigned_users', 'contacts.id','=', 'contact_assigned_users.contact_id');
                         $contact_query = $contact_query->where('contact_assigned_users.user_id','=', $user_id);
@@ -92,7 +92,18 @@ class ContactController extends Controller
                     }
                     $contact_query = $contact_query->where('contacts.firstname', 'like', '%' . $search_field . '%')->orWhere('contacts.lastname', 'like', '%' . $search_field . '%');
                     
+                }elseif( $search_by == 'business_name' ) {
 
+                    $user_id       = Auth::user()->id;
+                    if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
+                        $contact_query = $contact_query->leftJoin('contact_assigned_users', 'contacts.id','=', 'contact_assigned_users.contact_id');
+                        $contact_query = $contact_query->where('contact_assigned_users.user_id','=', $user_id);
+                        //$contact_query = $contact_query->groupBy('contacts.company_id');
+                    }
+
+                    $contact_query = $contact_query->leftJoin('contact_business_informations', 'contacts.id','=', 'contact_business_informations.contact_id');
+                    $contact_query = $contact_query->where('contact_business_informations.business_name', 'like', '%' . $search_field . '%');
+                    //exit;
                 }else{
                     if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
                         $contact_query = $contact_query->leftJoin('contact_assigned_users', 'contacts.id','=', 'contact_assigned_users.contact_id');
@@ -152,7 +163,8 @@ class ContactController extends Controller
                 'call_log_activity_history' => $call_log_activity_history,
                 'event_types' => $event_types,
                 'emailTemplates' => $emailTemplates,
-                'contacts' => $contacts
+                'contacts' => $contacts,
+                'search_by' => $search_by,
             ]); 
         } else {
             return view('contact.cindex',[
@@ -163,7 +175,8 @@ class ContactController extends Controller
                 'call_log_activity_history' => $call_log_activity_history,
                 'event_types' => $event_types,
                 'emailTemplates' => $emailTemplates,
-                'contacts' => $contacts
+                'contacts' => $contacts,
+                'search_by' => $search_by,
             ]); 
         }
 

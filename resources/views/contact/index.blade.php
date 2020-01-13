@@ -92,9 +92,9 @@
                             <div class="form-group">
                               <label>Search By: </label><br />
                               <select name="search_by" class="form-control select2" style="width: 30%; float: left;">
-                                <option value="name" selected="selected">Name</option>
-                                <option value="email">Email</option>
-                                <!-- <option value="business_name">Business Name</option> -->
+                                <option <?php echo $search_by == 'name' ? 'selected="selected"' : ''; ?> value="name">Name</option>
+                                <option <?php echo $search_by == 'email' ? 'selected="selected"' : ''; ?> value="email">Email</option>
+                                <option <?php echo $search_by == 'business_name' ? 'selected="selected"' : ''; ?> value="business_name">Business Name</option>
                               </select>
                               <input class="form-control" type="text" value="<?php echo $search_field; ?>" name="search_field" placeholder="Default Search" style="width: 70%; float: right;">
                             </div>
@@ -117,10 +117,10 @@
                     {!! Form::close() !!}         
                   </div>
 
-                  <table class="table table-bordered table_contact" id="table_contact">
+                  <table id="table_contact" class="table-bordered table_contact">
+                    <thead>
                     <tr>
-                      <th >#</th>
-
+                      <th>#</th>
                       <th>Created</th>
                       <th>Business Name</th>
                       <th>Assigned To</th>
@@ -132,6 +132,8 @@
                       <th>Data Source</th>
                       <th>Actions</th>
                     </tr>
+                    </thead>
+                    <tbody>
                     @foreach($contact as $con)
                         <?php 
                           $workflow_status = App\Workflow::where('id', '=', $con->status)->first();
@@ -156,43 +158,42 @@
                           }
                         ?>
                         <tr>
-                            <td>{{ $con->id }}</td>                            
-                            <td>{{ date("F j, Y", strtotime($con->created_at)) }}</td>
-                            <td><?= $business_name; ?></td>
-                            <!-- <td>-</td> -->
-                            @if(!empty($a_user_list))
-                              <td><?php echo  $a_user_list; ?></td>
-                            @else
-                              <td>-</td>
-                            @endif
-                            <td><a href="{{url('contact_dashboard/'.Hashids::encode($con->id))}}">{{ $con->firstname }} {{$con->lastname }}</a></td>
-                            <td>
-                              <a href="javascript:void(0);" class="btn" id="" onclick="javascript:load_activity_history_tab_list('<?php echo  Hashids::encode($con->id); ?>');" data-toggle="modal" data-target="#modalCallTracker">
-                                 {{ $con->mobile_number }}
-                              </a>                                
-                            </td>
-                            <td>
-                              <a href="javascript:void(0);" data-key="{{ $con->email }}" data-id="{{ $con->id }}" class="btn btn-quick-send-modal" id="" data-toggle="modal" data-target="#modalSendEmail">
-                                {{ $con->email }}
+                          <td>{{ $con->id }}</td>                            
+                          <td>{{ date("F j, Y", strtotime($con->created_at)) }}</td>
+                          <td><?= $business_name; ?></td>
+                          @if(!empty($a_user_list))
+                            <td><?php echo  $a_user_list; ?></td>
+                          @else
+                            <td>-</td>
+                          @endif
+                          <td><a href="{{url('contact_dashboard/'.Hashids::encode($con->id))}}">{{ $con->firstname }} {{$con->lastname }}</a></td>
+                          <td>
+                            <a href="javascript:void(0);" class="btn" id="" onclick="javascript:load_activity_history_tab_list('<?php echo  Hashids::encode($con->id); ?>');" data-toggle="modal" data-target="#modalCallTracker">
+                               {{ $con->mobile_number }}
+                            </a>                                
+                          </td>
+                          <td>
+                            <a href="javascript:void(0);" data-key="{{ $con->email }}" data-id="{{ $con->id }}" class="btn btn-quick-send-modal" id="" data-toggle="modal" data-target="#modalSendEmail">
+                              {{ $con->email }}
+                            </a>
+                          </td>
+                          <td>{{  !empty($con->stage->name) ? $con->stage->name : '-' }}</td>
+                          <td>{{ !empty($workflow_status->status) ? $workflow_status->status : '-' }}</td>
+                          <td>{{ isset($con->data_source) ? $con->data_source : 'Form Fill' }}</td>
+                          <td>
+                              <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $con->id; ?>" >
+                                  <i class="fa fa-trash"></i> Delete
                               </a>
-                            </td>
-                            <td>{{  !empty($con->stage->name) ? $con->stage->name : '-' }}</td>
-                            <td>{{ !empty($workflow_status->status) ? $workflow_status->status : '-' }}</td>
-                            <td>{{ isset($con->data_source) ? $con->data_source : 'Form Fill' }}</td>
-                            <td>
-                                <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $con->id; ?>" >
-                                    <i class="fa fa-trash"></i> Delete
-                                </a>
-                                <?php $edit_access = UserHelper::checkUserRolePermission(Auth::user()->group_id, 'contacts', 'edit');  ?>
-                                @if($edit_access)                                
-                                  <a href="{{route('contact/edit',[Hashids::encode($con->id)])}}" class="btn btn-xs btn-primary">
-                                      <i class="fa fa-edit"></i> Edit
-                                  </a> 
-                                @endif
-                                <a href="javascript:void(0);" class="btn btn-xs btn-primary" onclick="javascript:load_update_status_field('<?php echo $con->id; ?>')" id="edit-modal-status-<?php echo $con->id; ?>" data-toggle="modal" data-target="#modalEdit">
-                                    <i class="fa fa-edit"></i> Status
-                                </a>                                                            
-                            </td>
+                              <?php $edit_access = UserHelper::checkUserRolePermission(Auth::user()->group_id, 'contacts', 'edit');  ?>
+                              @if($edit_access)                                
+                                <a href="{{route('contact/edit',[Hashids::encode($con->id)])}}" class="btn btn-xs btn-primary">
+                                    <i class="fa fa-edit"></i> Edit
+                                </a> 
+                              @endif
+                              <a href="javascript:void(0);" class="btn btn-xs btn-primary" onclick="javascript:load_update_status_field('<?php echo $con->id; ?>')" id="edit-modal-status-<?php echo $con->id; ?>" data-toggle="modal" data-target="#modalEdit">
+                                  <i class="fa fa-edit"></i> Status
+                              </a>                                                            
+                          </td>
                         </tr>
 
                         <div id="modalDelete-<?= $con->id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
@@ -220,6 +221,7 @@
                         </div>   
 
                     @endforeach
+                    </tbody>
                   </table>
 
                   <div id="modalEdit" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
@@ -666,6 +668,16 @@
     })       
 
     CKEDITOR.replace('ckeditor');
+
+    //$('#table_contact').DataTable();
+    $('#table_contact').DataTable({
+      'paging'      : false,
+      'lengthChange': false,
+      'searching'   : false,
+      'ordering'    : true,
+      'info'        : false,
+      'autoWidth'   : true
+    })    
     
   });
   
