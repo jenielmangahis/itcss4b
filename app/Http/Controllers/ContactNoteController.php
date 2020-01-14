@@ -86,6 +86,7 @@ class ContactNoteController extends Controller
             $contact_id = Hashids::decode($contact_id)[0];
 
             $contact_note               = new ContactNote;
+            $contact_note->user_id      = Auth::user()->id;
             $contact_note->contact_id   = $contact_id;  
             $contact_note->note_type_id = $request->input('note_type_id');
             $contact_note->note_title   = $request->input('note_title');

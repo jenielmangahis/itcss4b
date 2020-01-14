@@ -27,8 +27,11 @@
           <span class="time"><i class="fa fa-clock-o"></i> {{ date("F j, Y, g:i a", strtotime($contact_note->created_at)) }} </span>
           <?php $note_type_name = isset($contact_note->note_type->name) ? $contact_note->note_type->name : 'NA'; ?>
           <h3 class="timeline-header">
-            <?php $notify_user = isset($contact_note->notify_user->firstname) ? $contact_note->notify_user->firstname . " " . $contact_note->notify_user->lastname : 'NA'; ?>
-            <a href="javascript:void(0);"><?php echo $notify_user; ?></a> | <strong>{{ $note_type_name }}</strong>
+            <?php 
+              $notify_user = isset($contact_note->notify_user->firstname) ? $contact_note->notify_user->firstname . " " . $contact_note->notify_user->lastname : 'NA'; 
+              $created_by  = isset($contact_note->user->firstname) ? 'Created By: ' . $contact_note->user->firstname . ' ' . $contact_note->user->lastname : 'Created By: NA';
+            ?>
+            <a href="javascript:void(0);"><?php echo $created_by; ?></a> | <strong>{{ $note_type_name }}</strong>
             <?php echo " | " . $contact_note->note_title; ?>
           </h3>
 

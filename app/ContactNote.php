@@ -18,5 +18,10 @@ class ContactNote extends Model
     public function notify_user()
     {
         return $this->belongsTo('App\User');
-    }      
+    }     
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }       
 }
