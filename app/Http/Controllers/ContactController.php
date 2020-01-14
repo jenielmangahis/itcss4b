@@ -881,7 +881,7 @@ class ContactController extends Controller
             $contact->status = $request->input('contact_status');
             $contact->save();
 
-            Session::flash('message', 'You have successfully update contact status');
+            Session::flash('message', 'You have successfully updated contact status');
             Session::flash('alert_class', 'alert-success');
 
         }else{
