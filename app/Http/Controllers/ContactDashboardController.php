@@ -381,6 +381,8 @@ class ContactDashboardController extends Controller
          * Legal Scrub from Contact Notes - end
         */
 
+        $workflow = Workflow::where('stage_id', '=', $contact->stage_id)->get();
+
         return view('contact.dashboard.index',[
         	'contact_id' => $contact_id,            
         	'contact' => $contact,            
@@ -419,7 +421,8 @@ class ContactDashboardController extends Controller
             'userContactInfo' => $userContactInfo,
             'has_client_portal' => $has_client_portal,
             'group_id' => Auth::user()->group_id,
-            'lscrub' => $lscrub
+            'lscrub' => $lscrub,
+            'workflow' => $workflow
 
         ]); 
     }     

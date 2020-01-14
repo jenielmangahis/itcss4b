@@ -115,10 +115,56 @@
                       <tbody>
                         <tr>
                           <td>Status</td>
-                          <td><div class="pull-right"><a href="javascript:void(0);">{{ $contact->stage->name }} - {{ !empty($workflow_status->status) ? $workflow_status->status : '' }}</a></div></td>
+                          <td><div class="pull-right"><a href="javascript:void(0);" data-toggle="modal" data-target="#modalUpdateStatus">{{ $contact->stage->name }} - {{ !empty($workflow_status->status) ? $workflow_status->status : '' }}</a></div></td>
                         </tr>
                         <tr>
-                          <td colspan="2" style="text-align: center;"><a href="#"><span class="badge badge-primary"><i class="fa fa-pencil"></i> Update Status</span></a></td>
+                          <td colspan="2" style="text-align: center;">                            
+                            <a href="javascript:void(0);" data-toggle="modal" data-target="#modalUpdateStatus"><span class="badge badge-primary"><i class="fa fa-pencil"></i> Update Status</span></a>
+                            <div id="modalUpdateStatus" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
+                              {{ Form::open(array('url' => 'contact/update_contact_status', 'class' => '', 'id' => 'edit-contact-status-form')) }}
+                                <input type="hidden" name="contact_id" value="<?= $contact_id ?>">
+                                <div class="modal-dialog modal-md">
+                                  <div class="modal-content">
+
+                                    <div class="modal-header">
+                                      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                                      </button>
+                                      <h4 class="modal-title" id="myModalLabel">Update Status</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                      
+                                      <div class="form-group row">
+                                        <label class="col-sm-3 col-form-label">Change Status to <span class="required"></span></label>
+                                        <div class="col-sm-9">
+                                         @if( !empty($workflow->toArray()) )
+                                          <?php 
+                                            $selected = "";
+                                          ?>
+                                          <select name="contact_status" id="status" class="form-control">
+                                            @foreach($workflow as $w)        
+                                              <option <?php echo $contact->status == $w->id ? 'selected="selected"' : ''; ?> value="{{ $w->id }}">{{ $w->status }}</option>
+                                            @endforeach
+                                          </select>   
+                                        @else
+                                          <select name="workflow_id" id="workflow_id" class="form-control">
+                                            <option value="">No status assigned to stage selected</option>
+                                          </select>
+                                        @endif
+                                        </div>
+                                      </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="submit" class="btn btn-default">Update</button>
+                                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+
+                                  </div>
+                                </div>
+                              {!! Form::close() !!}        
+                            </div>
+
+                          </td>
                         </tr>
                       </tbody>
                     </table>   
@@ -247,7 +293,7 @@
                                     </div>
                                   </div>
                                 {!! Form::close() !!}        
-                            </div>
+                              </div>
                             <?php }else{ ?>
                               <div class="row">
                                 

@@ -869,5 +869,26 @@ class ContactController extends Controller
         }
 
         return redirect()->back();    
+    } 
+
+    public function update_contact_status(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $contact_id  = Hashids::decode($request->input('contact_id'))[0];
+            $contact     = Contact::where('id', '=', $contact_id)->first();
+
+            $contact->status = $request->input('contact_status');
+            $contact->save();
+
+            Session::flash('message', 'You have successfully update contact status');
+            Session::flash('alert_class', 'alert-success');
+
+        }else{
+            Session::flash('message', 'Cannot find record');
+            Session::flash('alert_class', 'alert-danger');  
+        }
+
+        return redirect()->back();    
     }   
 }
