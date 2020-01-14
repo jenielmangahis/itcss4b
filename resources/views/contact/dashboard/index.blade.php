@@ -134,7 +134,7 @@
                                     <div class="modal-body">
                                       
                                       <div class="form-group row">
-                                        <label class="col-sm-3 col-form-label">Change Status to <span class="required"></span></label>
+                                        <label class="col-sm-3 col-form-label">Change status to <span class="required"></span></label>
                                         <div class="col-sm-9">
                                          @if( !empty($workflow->toArray()) )
                                           <?php 
