@@ -878,7 +878,8 @@ class ContactController extends Controller
             $contact_id  = Hashids::decode($request->input('contact_id'))[0];
             $contact     = Contact::where('id', '=', $contact_id)->first();
 
-            $contact->status = $request->input('contact_status');
+            $contact->stage_id = $request->input('stage_id');
+            $contact->status   = $request->input('status');
             $contact->save();
 
             Session::flash('message', 'You have successfully updated contact status');

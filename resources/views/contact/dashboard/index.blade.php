@@ -132,25 +132,23 @@
                                       <h4 class="modal-title" id="myModalLabel">Update Status</h4>
                                     </div>
                                     <div class="modal-body">
-                                      
-                                      <div class="form-group row">
-                                        <label class="col-sm-3 col-form-label">Change status to <span class="required"></span></label>
-                                        <div class="col-sm-9">
-                                         @if( !empty($workflow->toArray()) )
-                                          <?php 
-                                            $selected = "";
-                                          ?>
-                                          <select name="contact_status" id="status" class="form-control">
-                                            @foreach($workflow as $w)        
-                                              <option <?php echo $contact->status == $w->id ? 'selected="selected"' : ''; ?> value="{{ $w->id }}">{{ $w->status }}</option>
-                                            @endforeach
-                                          </select>   
-                                        @else
-                                          <select name="workflow_id" id="workflow_id" class="form-control">
-                                            <option value="">No status assigned to stage selected</option>
-                                          </select>
-                                        @endif
-                                        </div>
+                                      <div class="form-group">
+                                        <label>Status <span class="required"></span></label>
+                                        <input class="form-control" value="{{ $contact->stage->name }} - {{ !empty($workflow_status->status) ? $workflow_status->status : '' }}" readonly="readonly" disabled="disabled" />                   
+                                      </div>
+                                      <hr />
+                                      <h4 style="font-size: 16px;padding: 10px; background-color: #337ab7;color: #ffffff;margin-bottom: 18px;">Change status to</h4>
+                                      <div class="form-group">
+                                        <label>Stage <span class="required"></span></label>
+                                        <select name="stage_id" class="form-control" id="contact_edit_stage_id">
+                                          @foreach($stages as $stage)
+                                          <option value="{{ $stage->id }}">{{ $stage->name }}</option>
+                                          @endforeach
+                                        </select>                    
+                                      </div> 
+
+                                      <div class="form-group">
+                                        <div id="stage-status-container"></div>
                                       </div>
 
                                     </div>
@@ -741,6 +739,27 @@
     $(".filename_" + f_id).attr( "disabled", "disabled" );
     $(".document_type_" + f_id).attr( "disabled", "disabled" );
     $(".description_" + f_id).attr( "disabled", "disabled" );
+  }
+
+  load_stage_status_dropdown();
+
+  $('#contact_edit_stage_id').change(function(){
+    load_stage_status_dropdown();
+  }); 
+
+  function load_stage_status_dropdown() {
+    var stage_id = $('#contact_edit_stage_id').val();
+    $('#stage-status-container').html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
+    var url = base_url + '/workflow/ajax_load_stage_status'
+    $.ajax({
+         type: "GET",
+         url: url,               
+         data: {"stage_id":stage_id}, 
+         success: function(o)
+         {
+            $('#stage-status-container').html(o);
+         }
+    });
   }
 
 </script>

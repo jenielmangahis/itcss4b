@@ -27,6 +27,7 @@ use App\ContactHistory;
 use App\ContactAdvance;
 use App\ContactUser;
 use App\User;
+use App\Stage;
 
 use DB;
 
@@ -379,10 +380,8 @@ class ContactDashboardController extends Controller
             }
         /*
          * Legal Scrub from Contact Notes - end
-        */
-
-        $workflow = Workflow::where('stage_id', '=', $contact->stage_id)->get();
-
+        */        
+        $stages    = Stage::all();
         return view('contact.dashboard.index',[
         	'contact_id' => $contact_id,            
         	'contact' => $contact,            
@@ -422,7 +421,7 @@ class ContactDashboardController extends Controller
             'has_client_portal' => $has_client_portal,
             'group_id' => Auth::user()->group_id,
             'lscrub' => $lscrub,
-            'workflow' => $workflow
+            'stages' => $stages
 
         ]); 
     }     
