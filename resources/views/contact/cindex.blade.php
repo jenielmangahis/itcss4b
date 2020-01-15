@@ -117,10 +117,10 @@
                     {!! Form::close() !!}         
                   </div>
 
-                  <table id="table_contact" class="table-bordered table_contact">
+                  <table id="table_contact" class="table-striped table-hover table_contact">
                     <thead>
                       <tr>
-                        <th >#</th>
+                        <th>#</th>
                         <th>Created</th>
                         <th>Business Name</th>
                         <th>Assigned To</th>
@@ -129,35 +129,34 @@
                         <th>Email</th>
                         <th>Stage</th>
                         <th>Status</th>
-                        <th>Data Source</th>
+                        <th>Source</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
-                    @foreach($contact as $con)
-                        <?php 
-                          $workflow_status = App\Workflow::where('id', '=', $con->status)->first();
-                          $business_info   = App\ContactBusinessInformation::where('contact_id', '=', $con->contact_id)->first();
+                      @foreach($contact as $con)
+                          <?php 
+                            $workflow_status = App\Workflow::where('id', '=', $con->status)->first();
+                            $business_info   = App\ContactBusinessInformation::where('contact_id', '=', $con->contact_id)->first();
 
-                          $business_name   = '';
-                          if( $business_info ){
-                            $business_name = $business_info->business_name;
-                          }
-                          $a_user_list = "";
-                          $assigned_user = App\ContactAssignedUser::where('contact_id', '=', $con->contact_id)->get();
-                          if(!$assigned_user->isEmpty()) {
-                            foreach($assigned_user as $assign_u) {
-                              if(isset($assign_u->user->firstname) && isset($assign_u->user->lastname)) {
-                                $a_user_list .= $assign_u->user->firstname . " " . $assign_u->user->lastname . ", ";
-                              }
+                            $business_name   = '';
+                            if( $business_info ){
+                              $business_name = $business_info->business_name;
                             }
-                          }                          
-                        ?>
-                        <tr>
+                            $a_user_list = "";
+                            $assigned_user = App\ContactAssignedUser::where('contact_id', '=', $con->contact_id)->get();
+                            if(!$assigned_user->isEmpty()) {
+                              foreach($assigned_user as $assign_u) {
+                                if(isset($assign_u->user->firstname) && isset($assign_u->user->lastname)) {
+                                  $a_user_list .= '<span class="label label-success">' . $assign_u->user->firstname . " " . $assign_u->user->lastname . "</span> ";
+                                }
+                              }
+                            }                          
+                          ?>
+                          <tr>
                             <td>{{ $con->contact_id }}</td>                            
-                            <td>{{ date("F j, Y", strtotime($con->created_at)) }}</td>
+                            <td>{{ date("M j, Y", strtotime($con->created_at)) }}</td>
                             <td><?= $business_name; ?></td>
-                            <!-- <td>-</td> -->
                             @if(!empty($a_user_list))
                               <td><?php echo $a_user_list; ?></td>
                             @else
@@ -194,33 +193,33 @@
                                     <i class="fa fa-edit"></i> Status
                                 </a>                                                            
                             </td>
-                        </tr>
+                          </tr>
 
-                        <div id="modalDelete-<?= $con->contact_id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
-                            <div class="modal-dialog modal-md">
-                              <div class="modal-content">
+                          <div id="modalDelete-<?= $con->contact_id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
+                              <div class="modal-dialog modal-md">
+                                <div class="modal-content">
 
-                                <div class="modal-header">
-                                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-                                  </button>
-                                  <h4 class="modal-title" id="myModalLabel">Delete</h4>
-                                </div>
-                                <div class="modal-body">
-                                  Are you sure you want to delete selected contact?
-                                </div>
-                                <div class="modal-footer">
-                                  {{ Form::open(array('url' => 'contact/destroy')) }}
-                                    <?php echo Form::hidden('id', Hashids::encode($con->contact_id) ,[]); ?>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                                    <button type="submit" class="btn btn-danger">Yes</button>
-                                  {!! Form::close() !!}
-                                </div>
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                                    </button>
+                                    <h4 class="modal-title" id="myModalLabel">Delete</h4>
+                                  </div>
+                                  <div class="modal-body">
+                                    Are you sure you want to delete selected contact?
+                                  </div>
+                                  <div class="modal-footer">
+                                    {{ Form::open(array('url' => 'contact/destroy')) }}
+                                      <?php echo Form::hidden('id', Hashids::encode($con->contact_id) ,[]); ?>
+                                      <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                                      <button type="submit" class="btn btn-danger">Yes</button>
+                                    {!! Form::close() !!}
+                                  </div>
 
+                                </div>
                               </div>
-                            </div>
-                        </div>   
+                          </div>   
 
-                    @endforeach
+                      @endforeach
                     </tbody>
                   </table>
 

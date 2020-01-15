@@ -297,13 +297,13 @@ class ContactController extends Controller
 
             if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
                 if(!empty($request->input('user_id')) && $request->input('user_id') != "") {
-                    $contact->user_id       = $request->input('user_id');
+                    //$contact->user_id       = $request->input('user_id');
+                    $contact->user_id       = $user_id;
                 } else {
                     $contact->user_id       = $user_id;
                 }
                 $contact->company_id    = $company_id;  
             }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
-                //$contact->user_id       = $request->input('user_id');
                 $contact->user_id       = $user_id;
                 $contact->company_id    = $request->input('company_id');
             } 

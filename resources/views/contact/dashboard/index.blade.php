@@ -174,20 +174,53 @@
                     <table class="table">
                       <thead>
                         <tr>
-                          <th>Assigned User</th>
+                          <th>Created By</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
                           <td><div class="pull-left">
                             @if(isset($contact->user->firstname) && isset($contact->user->lastname))
-                              {{ $contact->user->firstname }} {{ $contact->user->lastname }}
+                              <span class="label label-primary">{{ $contact->user->firstname }} {{ $contact->user->lastname }}</span>
                             @endif
                           </div></td>
                         </tr>
                       </tbody>
                     </table>    
                   </div>
+
+                  <?php 
+                    $a_user_list = "";
+                    $assigned_user = App\ContactAssignedUser::where('contact_id', '=', $contact->id)->get();
+                    if(!$assigned_user->isEmpty()) {
+                      
+                      foreach($assigned_user as $assign_u) {
+                        if(isset($assign_u->user->firstname) && isset($assign_u->user->lastname)) {
+                          if(isset($assign_u->user->firstname) && isset($assign_u->user->lastname)) {
+                            $a_user_list .= '<span class="label label-success">' . $assign_u->user->firstname . " " . $assign_u->user->lastname . "</span> ";
+                          }
+                        }
+                        
+                      }
+                    }
+                  ?>                  
+
+                  <div class="box box-primary">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Assigned User</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><div class="pull-left">
+                            <?php echo $a_user_list; ?>
+                          </div></td>
+                        </tr>
+                      </tbody>
+                    </table>    
+                  </div>                  
 
                   <div class="box box-primary">
 

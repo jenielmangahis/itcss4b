@@ -112,12 +112,11 @@
                             <!-- /.form-group -->
                           </div>
                         </div>                
-
                       </div>                      
                     {!! Form::close() !!}         
                   </div>
 
-                  <table id="table_contact" class="table-bordered table_contact">
+                  <table id="table_contact" class="table-striped table-hover table_contact">
                     <thead>
                     <tr>
                       <th>#</th>
@@ -129,7 +128,7 @@
                       <th>Email</th>
                       <th>Stage</th>
                       <th>Status</th>
-                      <th>Data Source</th>
+                      <th>Source</th>
                       <th>Actions</th>
                     </tr>
                     </thead>
@@ -150,7 +149,7 @@
                             foreach($assigned_user as $assign_u) {
                               if(isset($assign_u->user->firstname) && isset($assign_u->user->lastname)) {
                                 if(isset($assign_u->user->firstname) && isset($assign_u->user->lastname)) {
-                                  $a_user_list .= $assign_u->user->firstname . " " . $assign_u->user->lastname . ", ";
+                                  $a_user_list .= '<span class="label label-success">' . $assign_u->user->firstname . " " . $assign_u->user->lastname . "</span> ";
                                 }
                               }
                               
@@ -159,7 +158,7 @@
                         ?>
                         <tr>
                           <td>{{ $con->id }}</td>                            
-                          <td>{{ date("F j, Y", strtotime($con->created_at)) }}</td>
+                          <td>{{ date("M j, Y", strtotime($con->created_at)) }}</td>
                           <td><?= $business_name; ?></td>
                           @if(!empty($a_user_list))
                             <td><?php echo  $a_user_list; ?></td>
