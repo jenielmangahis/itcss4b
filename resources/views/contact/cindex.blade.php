@@ -130,7 +130,9 @@
                         <th>Stage</th>
                         <th>Status</th>
                         <th>Source</th>
-                        <th>Actions</th>
+                        @if(Auth::user()->group_id != 2)
+                          <th>Actions</th>
+                        @endif
                       </tr>
                     </thead>
                     <tbody>
@@ -176,23 +178,26 @@
                             <td>{{  !empty($con->stage->name) ? $con->stage->name : '-' }}</td>
                             <td>{{ !empty($workflow_status->status) ? $workflow_status->status : '-' }}</td>
                             <td>{{ isset($con->data_source) ? $con->data_source : 'Form Fill' }}</td>
-                            <td>
-                                <?php $delete_access = UserHelper::checkUserRolePermission(Auth::user()->group_id, 'contacts', 'delete');  ?>
-                                @if($delete_access)                              
-                                <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $con->contact_id; ?>" >
-                                    <i class="fa fa-trash"></i> Delete
-                                </a>
-                                @endif
-                                <?php $edit_access = UserHelper::checkUserRolePermission(Auth::user()->group_id, 'contacts', 'edit');  ?>
-                                @if($edit_access)
-                                  <a href="{{route('contact/edit',[Hashids::encode($con->contact_id)])}}" class="btn btn-xs btn-primary">
-                                      <i class="fa fa-edit"></i> Edit
-                                  </a> 
-                                @endif
-                                <a href="javascript:void(0);" class="btn btn-xs btn-primary" onclick="javascript:load_update_status_field('<?php echo $con->contact_id; ?>')" id="edit-modal-status-<?php echo $con->contact_id; ?>" data-toggle="modal" data-target="#modalEdit">
-                                    <i class="fa fa-edit"></i> Status
-                                </a>                                                            
-                            </td>
+
+                            @if(Auth::user()->group_id != 2)
+                              <td>
+                                  <?php $delete_access = UserHelper::checkUserRolePermission(Auth::user()->group_id, 'contacts', 'delete');  ?>
+                                  @if($delete_access)                              
+                                  <a href="javascript:void(0);" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#modalDelete-<?= $con->contact_id; ?>" >
+                                      <i class="fa fa-trash"></i> Delete
+                                  </a>
+                                  @endif
+                                  <?php $edit_access = UserHelper::checkUserRolePermission(Auth::user()->group_id, 'contacts', 'edit');  ?>
+                                  @if($edit_access)
+                                    <a href="{{route('contact/edit',[Hashids::encode($con->contact_id)])}}" class="btn btn-xs btn-primary">
+                                        <i class="fa fa-edit"></i> Edit
+                                    </a> 
+                                  @endif
+                                  <a href="javascript:void(0);" class="btn btn-xs btn-primary" onclick="javascript:load_update_status_field('<?php echo $con->contact_id; ?>')" id="edit-modal-status-<?php echo $con->contact_id; ?>" data-toggle="modal" data-target="#modalEdit">
+                                      <i class="fa fa-edit"></i> Status
+                                  </a>                                                            
+                              </td>
+                            @endif
                           </tr>
 
                           <div id="modalDelete-<?= $con->contact_id; ?>" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
