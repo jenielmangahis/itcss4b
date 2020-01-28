@@ -20,7 +20,7 @@
             <h3 class="timeline-header">
               <a class="btn btn-primary btn-sm" href="javascript:void(0);">{{$ch->module}}</a> | 
               {{ date("F j, Y, g:i a", strtotime($ch->created_at)) }}
-              | <a class="" href="javascript:void(0);">{{$ch->title}}</a>
+              | <strong style="color: #367fa9;">{{$ch->title}}</strong>
               | {{$ch->user->firstname}} {{$ch->user->lastname}}
               @if( UserHelper::checkUserRolePermission(Auth::user()->group_id, 'history', 'delete') )
                 <a style="float: right;" href="javascript:void(0);" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modalDelete-<?= $ch->id; ?>">
