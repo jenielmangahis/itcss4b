@@ -88,7 +88,6 @@ class ContactController extends Controller
                     if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
                         $contact_query = $contact_query->leftJoin('contact_assigned_users', 'contacts.id','=', 'contact_assigned_users.contact_id');
                         $contact_query = $contact_query->where('contact_assigned_users.user_id','=', $user_id);
-                        //$contact_query = $contact_query->groupBy('contacts.company_id');
                     }
                     $contact_query = $contact_query->where('contacts.firstname', 'like', '%' . $search_field . '%')->orWhere('contacts.lastname', 'like', '%' . $search_field . '%');
                     
@@ -104,6 +103,19 @@ class ContactController extends Controller
                     $contact_query = $contact_query->leftJoin('contact_business_informations', 'contacts.id','=', 'contact_business_informations.contact_id');
                     $contact_query = $contact_query->where('contact_business_informations.business_name', 'like', '%' . $search_field . '%');
                     //exit;
+                }elseif( $search_by == 'assigned_to' ){
+                    if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
+                        $user_id       = Auth::user()->id;
+                        $contact_query = $contact_query->leftJoin('contact_assigned_users', 'contacts.id','=', 'contact_assigned_users.contact_id');
+                        $contact_query = $contact_query->where('contact_assigned_users.user_id','=', $user_id);
+                    } else {
+                        $user_id       = $search_field;
+                        $contact_query = $contact_query->select('contacts.*');
+                        $contact_query = $contact_query->leftJoin('contact_assigned_users', 'contacts.id','=', 'contact_assigned_users.contact_id');
+                        $contact_query = $contact_query->where('contact_assigned_users.user_id','=', $user_id);
+                        $contact_query = $contact_query->groupBy('contacts.id');
+                    }
+
                 }else{
                     if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
                         $contact_query = $contact_query->leftJoin('contact_assigned_users', 'contacts.id','=', 'contact_assigned_users.contact_id');
@@ -114,6 +126,7 @@ class ContactController extends Controller
                 }
 
                 $contact = $contact_query = $contact_query->orderBy('contacts.created_at', 'desc')->paginate(15);
+
             }            
         } else {
             if(UserHelper::isCompanyUser(Auth::user()->group_id)) {       
@@ -153,6 +166,8 @@ class ContactController extends Controller
         }else{
             $contacts = Contact::all();
         }
+
+        $users_list = User::all();
         
         if(UserHelper::isAdminUser(Auth::user()->group_id)) {
             return view('contact.index',[
@@ -165,6 +180,7 @@ class ContactController extends Controller
                 'emailTemplates' => $emailTemplates,
                 'contacts' => $contacts,
                 'search_by' => $search_by,
+                'users_list' => $users_list,
             ]); 
         } else {
             return view('contact.cindex',[
@@ -177,6 +193,7 @@ class ContactController extends Controller
                 'emailTemplates' => $emailTemplates,
                 'contacts' => $contacts,
                 'search_by' => $search_by,
+                'users_list' => $users_list,
             ]); 
         }
 

@@ -91,12 +91,22 @@
                           <div class="col-md-6">
                             <div class="form-group">
                               <label>Search By: </label><br />
-                              <select name="search_by" class="form-control select2" style="width: 30%; float: left;">
+                              <select name="search_by" class="form-control search_by" style="width: 30%; float: left;">
                                 <option <?php echo $search_by == 'name' ? 'selected="selected"' : ''; ?> value="name">Name</option>
                                 <option <?php echo $search_by == 'email' ? 'selected="selected"' : ''; ?> value="email">Email</option>
                                 <option <?php echo $search_by == 'business_name' ? 'selected="selected"' : ''; ?> value="business_name">Business Name</option>
+                                <option <?php echo $search_by == 'assigned_to' ? 'selected="selected"' : ''; ?> value="assigned_to">Assigned To</option>
                               </select>
-                              <input class="form-control" type="text" value="<?php echo $search_field; ?>" name="search_field" placeholder="Default Search" style="width: 70%; float: right;">
+                              <div class="search-field-container" style="">
+                                <input class="form-control search_field" type="text" value="<?php echo $search_field; ?>" name="search_field" placeholder="Default Search" style="width: 70%; float: right;">
+                              </div>
+                              <div class="dropdown-list-container" style="display: none;">
+                                <select disabled="" name="search_field" class="form-control search_field_list" style="width: 70%; float: right;">
+                                  @foreach($users_list as $ulist)
+                                  <option value="{{$ulist->id}}">{{$ulist->firstname}} {{$ulist->lastname}}</option>
+                                  @endforeach
+                                </select>
+                              </div>
                             </div>
                             <!-- /.form-group -->
                           </div>
@@ -475,7 +485,8 @@
                 <!-- /.box-body -->
 
                 <div style="text-align: center;" class="box-footer clearfix">
-                    {{ $contact->links() }}
+                    {{-- $contact->links() --}}
+                    {{$contact->appends(request()->input())->links()}}
                 </div>
 
               </div>
@@ -619,10 +630,31 @@
     });  
   }
 
+  function loat_default_search_value() {
+      var search_by_value = $('.search_by').val();
+      if(search_by_value == 'assigned_to') {
+        $(".search-field-container").hide();
+        $(".dropdown-list-container").show();
+
+        $('.search_field_list').removeAttr("disabled");
+        $('.search_field').attr('disabled', true);
+      } else {
+        $(".search-field-container").show();
+        $(".dropdown-list-container").hide();
+
+        $('.search_field').removeAttr("disabled");
+        $('.search_field_list').attr('disabled', true);
+      }
+  }
+
   $(function () { 
+
+    loat_default_search_value();
+
     $('.select_recipient').select2();
     $('.select_recipient_to').select2();
-
+    $('.search_field_list').select2();
+    
     $(".btn-quick-send-modal").click(function(){
       var email_selected = $(this).attr("data-key");
       var contact_id = $(this).attr("data-id");
@@ -677,6 +709,23 @@
       'info'        : false,
       'autoWidth'   : true
     })    
+
+    $( ".search_by" ).change(function() {
+      var search_by_value = $('.search_by').val();
+      if(search_by_value == 'assigned_to') {
+        $(".search-field-container").hide();
+        $(".dropdown-list-container").show();
+
+        $('.search_field_list').removeAttr("disabled");
+        $('.search_field').attr('disabled', true);
+      } else {
+        $(".search-field-container").show();
+        $(".dropdown-list-container").hide();
+
+        $('.search_field').removeAttr("disabled");
+        $('.search_field_list').attr('disabled', true);
+      }
+    });    
     
   });
   
