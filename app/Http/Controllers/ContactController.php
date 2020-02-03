@@ -87,7 +87,7 @@ class ContactController extends Controller
                     $user_id       = Auth::user()->id;
                     if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
                         $contact_query = $contact_query->leftJoin('contact_assigned_users', 'contacts.id','=', 'contact_assigned_users.contact_id');
-                        $contact_query = $contact_query->where('contact_assigned_users.user_id','=', $user_id);
+                        $contact_query = $contact_query->where('contact_assigned_users.user_id','=', $user_id)->groupBy('contact_assigned_users.contact_id');
                     }
                     $contact_query = $contact_query->where('contacts.firstname', 'like', '%' . $search_field . '%')->orWhere('contacts.lastname', 'like', '%' . $search_field . '%');
                     
@@ -96,7 +96,7 @@ class ContactController extends Controller
                     $user_id       = Auth::user()->id;
                     if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
                         $contact_query = $contact_query->leftJoin('contact_assigned_users', 'contacts.id','=', 'contact_assigned_users.contact_id');
-                        $contact_query = $contact_query->where('contact_assigned_users.user_id','=', $user_id);
+                        $contact_query = $contact_query->where('contact_assigned_users.user_id','=', $user_id)->groupBy('contact_assigned_users.contact_id');
                         //$contact_query = $contact_query->groupBy('contacts.company_id');
                     }
 
@@ -107,19 +107,19 @@ class ContactController extends Controller
                     if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
                         $user_id       = Auth::user()->id;
                         $contact_query = $contact_query->leftJoin('contact_assigned_users', 'contacts.id','=', 'contact_assigned_users.contact_id');
-                        $contact_query = $contact_query->where('contact_assigned_users.user_id','=', $user_id);
+                        $contact_query = $contact_query->where('contact_assigned_users.user_id','=', $user_id)->groupBy('contact_assigned_users.contact_id');
                     } else {
                         $user_id       = $search_field;
                         $contact_query = $contact_query->select('contacts.*');
                         $contact_query = $contact_query->leftJoin('contact_assigned_users', 'contacts.id','=', 'contact_assigned_users.contact_id');
-                        $contact_query = $contact_query->where('contact_assigned_users.user_id','=', $user_id);
+                        $contact_query = $contact_query->where('contact_assigned_users.user_id','=', $user_id)->groupBy('contact_assigned_users.contact_id');
                         $contact_query = $contact_query->groupBy('contacts.id');
                     }
 
                 }else{
                     if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
                         $contact_query = $contact_query->leftJoin('contact_assigned_users', 'contacts.id','=', 'contact_assigned_users.contact_id');
-                        $contact_query = $contact_query->where('contact_assigned_users.user_id','=', $user_id);
+                        $contact_query = $contact_query->where('contact_assigned_users.user_id','=', $user_id)->groupBy('contact_assigned_users.contact_id');
                     }                    
             		$contact_query = $contact_query->where('contacts.'.$search_by, 'like', '%' . $search_field . '%');
 
@@ -133,11 +133,11 @@ class ContactController extends Controller
        
                 /*$contact = Contact::where('user_id','=', $user_id)
                             ->orderBy('created_at', 'desc')
-                            ->paginate(15); */
-
+                            ->paginate(15); */                
                 $contact = Contact::leftJoin('contact_assigned_users', 'contacts.id','=', 'contact_assigned_users.contact_id')
                                 ->where('contact_assigned_users.user_id','=', $user_id)
-                                ->orderBy('contacts.created_at', 'desc')
+                                ->groupBy('contact_assigned_users.contact_id')               
+                                ->orderBy('contacts.created_at', 'desc')                                                                
                                 ->paginate(15);
 
             }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
@@ -150,6 +150,7 @@ class ContactController extends Controller
 
                 $contact = Contact::leftJoin('contact_assigned_users', 'contacts.id','=', 'contact_assigned_users.contact_id')
                                 ->where('contact_assigned_users.user_id','=', $user_id)
+                                ->groupBy('contact_assigned_users.contact_id')      
                                 ->orderBy('contacts.created_at', 'desc')
                                 ->paginate(15);                        
             }            
