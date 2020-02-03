@@ -20,7 +20,7 @@
 </style>
 <div class="login-box">
   <div class="login-logo" style="margin-bottom: 10px;">
-    <a href="#"><img src="{{ asset('/images/corelogo_big.jpg') }}" alt="CoreCMS" style="width:100%;" /></a>
+    <a href="#"><img src="{{ asset('/images/corelogo_big.png') }}" alt="CoreCMS" style="width:100%;" /></a>
   </div>
 
   <div class="login-box-body">

@@ -19,9 +19,9 @@
 	<!-- Logo -->
 	<a href="index2.html" class="logo">
 	  <!-- mini logo for sidebar mini 50x50 pixels -->
-	  <span class="logo-mini"><img src="{{ asset('/images/corelogo.jpg') }}" alt="CoreCMS" style="width:77%;margin-top: 22px;" /></span>
+	  <span class="logo-mini"><img src="{{ asset('/images/corelogo.png') }}" alt="CoreCMS" style="width:77%;margin-top: 22px;" /></span>
 	  <!-- logo for regular state and mobile devices -->
-	  <span class="logo-lg"><img src="{{ asset('/images/corelogo_big.jpg') }}" alt="CoreCMS" style="width:78%;margin-top: 7px;" /></span>
+	  <span class="logo-lg"><img src="{{ asset('/images/corelogo_big.png') }}" alt="CoreCMS" style="width:99%;margin-top: 16px;" /></span>
 	</a>
 
 	<!-- Header Navbar -->
