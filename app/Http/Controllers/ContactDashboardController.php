@@ -381,7 +381,9 @@ class ContactDashboardController extends Controller
         /*
          * Legal Scrub from Contact Notes - end
         */        
+
         $stages    = Stage::all();
+
         return view('contact.dashboard.index',[
         	'contact_id' => $contact_id,            
         	'contact' => $contact,            

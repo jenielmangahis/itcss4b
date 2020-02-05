@@ -142,7 +142,7 @@
                                         <label>Stage <span class="required"></span></label>
                                         <select name="stage_id" class="form-control" id="contact_edit_stage_id">
                                           @foreach($stages as $stage)
-                                          <option value="{{ $stage->id }}">{{ $stage->name }}</option>
+                                          <option <?php echo $contact->stage->id == $stage->id ? 'selected="selected"' : ''; ?> value="{{ $stage->id }}">{{ $stage->name }}</option>
                                           @endforeach
                                         </select>                    
                                       </div> 
@@ -782,12 +782,13 @@
 
   function load_stage_status_dropdown() {
     var stage_id = $('#contact_edit_stage_id').val();
+    var status = '<?php echo isset($workflow_status->id) ? $workflow_status->id : 'null'; ?>';
     $('#stage-status-container').html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
     var url = base_url + '/workflow/ajax_load_stage_status'
     $.ajax({
          type: "GET",
          url: url,               
-         data: {"stage_id":stage_id}, 
+         data: {"stage_id":stage_id,"status":status}, 
          success: function(o)
          {
             $('#stage-status-container').html(o);
