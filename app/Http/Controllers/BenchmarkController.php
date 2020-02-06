@@ -40,6 +40,8 @@ class BenchmarkController extends Controller
     {
     	echo 'Test Model Here <hr />';
 
+        echo 'Test Commit';
+
         /*$ins = new Companies;
         $ins->name   		 = 'bryann';
         $ins->contact_number = '0929986589';
