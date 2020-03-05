@@ -107,13 +107,13 @@ class CompanyUserController extends Controller
             if(!$this->validateEmail($request->input('email'))) {
                 Session::flash('message', 'Email already exist.');
                 Session::flash('alert_class', 'alert-danger');
-                return redirect('company_user/create');
+                return redirect('company_users/create');
             }
 
             if(!$this->validateUsername($request->input('username'))) {
                 Session::flash('message', 'Username already exist.');
                 Session::flash('alert_class', 'alert-danger');
-                return redirect('company_user/create');
+                return redirect('company_users/create');
             }
 
             if($request->input('password') == $request->input('confirm_password')) {
@@ -202,7 +202,7 @@ class CompanyUserController extends Controller
                     } else {
                         Session::flash('message', 'Password does not match');
                         Session::flash('alert_class', 'alert-danger');
-                        return redirect('company_user/edit/' . Hashids::encode($request->input('id')));                        
+                        return redirect('company_users/edit/' . Hashids::encode($request->input('id')));                        
                     }
                 }
 
