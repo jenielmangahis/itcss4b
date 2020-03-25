@@ -56,7 +56,10 @@ class UserHelper
                   'settings',
                   'mail_messaging',
                   'contact_docs',
-                  'notifications'
+                  'notifications',
+                  'reports',
+                        'users_log',
+
             );
 
             //this is also the mca funders/user also
@@ -329,6 +332,35 @@ class UserHelper
             $return['total_idle'] = $count_idle; 
 
             return $return;
+      }
+
+      public static function getTotalUserContactEntry($user_id)
+      {
+            $total = 0;
+
+            $total_entry = Contact::where('user_id','=', $user_id)
+                  ->count();
+
+            if($total_entry > 0) {
+                  $total = $total_entry;
+            }
+
+            return $total;
+      }
+
+      public static function getTodayTotalUserContactEntry($user_id)
+      {
+            $total = 0;
+
+            $total_entry = Contact::where('user_id','=', $user_id)
+                  ->whereDay('created_at', '=', date('d'))
+                  ->count();
+
+            if($total_entry > 0) {
+                  $total = $total_entry;
+            }
+
+            return $total;            
       }
 }
 ?>

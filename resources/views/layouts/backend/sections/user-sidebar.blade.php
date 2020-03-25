@@ -102,4 +102,19 @@
 		    </li>
 	    @endif
 
+	    @if(UserHelper::checkUserRole(Auth::user()->group_id, 'reports'))
+		    <li class="treeview {{ $multi_tab_settings }}">
+		      <a href="#"><i class="fa fa-gear"></i> <span>Reports</span>
+		        <span class="pull-right-container">
+		            <i class="fa fa-angle-left pull-right"></i>
+		          </span>
+		      </a>
+		      <ul class="treeview-menu">
+		      	@if(UserHelper::checkUserRole(Auth::user()->group_id, 'users_log')) 
+		        	<li <?php echo Route::current()->getName() == 'report_users_log' ? 'class="active"' : ''; ?>><a href="{{route('report_users_log')}}"><i class="fa fa-circle-o"></i>User Log</a></li>
+		        @endif
+		      </ul>
+		    </li>	 
+		@endif   
+
 	</ul>

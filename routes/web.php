@@ -266,6 +266,9 @@ Route::post('contact_docs/destroy', ['as'=>'contact_docs/destroy','uses'=>'Conta
 //Contact User
 Route::post('/contact_user/store', ['as'=>'contact_user/store','uses'=>'ContactUserController@store'])->middleware('auth');
 
+//Reports Users Log
+Route::get('/report_users_log', ['as'=>'report_users_log','uses'=>'ReportUserLogController@index'])->middleware('auth');
+
 //Benchmark
 Route::get('benchmark/test_model', ['as'=>'benchmark/test_model','uses'=>'BenchmarkController@testModel'])->middleware('auth');
 Route::get('benchmark/test_email', ['as'=>'benchmark/test_email','uses'=>'BenchmarkController@testMail'])->middleware('auth');
