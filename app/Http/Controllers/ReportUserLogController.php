@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Contact;
 use App\ContactTask;
 use App\User;
+use App\UserLog;
 
 use UserHelper;
 use GlobalHelper;
@@ -57,7 +58,7 @@ class ReportUserLogController extends Controller
         });                 
     }
 
-    public function index(Request $request)
+    public function indexBackup(Request $request)
     {
         $search_by    = $request->input('search_by');
         $search_field = $request->input('search_field');  
@@ -78,5 +79,28 @@ class ReportUserLogController extends Controller
         	'users_log' => $users_log,
             'search_field' => $search_field
         ]); 
-    }    
+    } 
+
+    public function index(Request $request)
+    {
+        $search_by    = $request->input('search_by');
+        $search_field = $request->input('search_field');  
+
+        if($search_by != '' && $search_field != '') {
+            $users_log_query = UserLog::query();
+
+            if($search_by != '' && $search_field != '') {
+                $users_log_query = $users_log_query->where('users.'.$search_by, 'like', '%' . $search_field . '%');
+                $users_log_query = $users_log_query->where('users.is_active','=',0);
+                $users_log = $users_log_query->paginate(10);
+            }            
+        } else {
+            $users_log = UserLog::paginate(10);
+        }
+
+        return view('reports.users_log.user_logs',[
+            'users_log' => $users_log,
+            'search_field' => $search_field
+        ]); 
+    }       
 }

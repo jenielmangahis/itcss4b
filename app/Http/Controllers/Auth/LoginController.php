@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Auth;
+use UserLog;
+use DB;
 
 class LoginController extends Controller
 {
@@ -54,6 +56,15 @@ class LoginController extends Controller
     }  
 
     function authenticated(Request $request, $user) {
+
+        DB::table('user_logs')->insert(
+            array(
+                'user_id'    => $user->id,
+                'login_date' => Carbon::now()->toDateTimeString(),
+                'created_at' => Carbon::now()->toDateTimeString()
+            )
+        );
+
         $user->last_login = Carbon::now()->toDateTimeString();
         $user->save();
     }        

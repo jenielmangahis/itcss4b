@@ -362,5 +362,20 @@ class UserHelper
 
             return $total;            
       }
+
+      public static function getTotalUserContactEntryByDate($user_id, $date)
+      {
+            $total = 0;
+
+            $total_entry = Contact::where('user_id','=', $user_id)
+                  ->whereDate('created_at', '=', date('Y-m-d', strtotime($date)))
+                  ->count();
+
+            if($total_entry > 0) {
+                  $total = $total_entry;
+            }
+
+            return $total;            
+      }      
 }
 ?>
