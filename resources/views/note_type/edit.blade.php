@@ -8,7 +8,7 @@
 @endsection 
 
 @section('meta-dynamic')
-  <title>coreCMS</title>  
+  <title>{{ config('app.name') }}</title>  
   <meta name="description" content="-">    
 @endsection
 
