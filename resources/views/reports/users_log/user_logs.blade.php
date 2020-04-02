@@ -65,11 +65,13 @@
                           <div class="col-md-6">
                             <div class="form-group">
                               <label>Search By: </label><br />
-                              <select name="search_by" class="form-control select2" style="width: 30%; float: left;">
+                              <select name="search_by" class="form-control select2 search_by" id="search_by" style="width: 30%; float: left;">
                                 <option value="firstname">Firstname</option>
                                 <option value="lastname">Lastname</option>
+                                <option value="login_date">Date</option>
                               </select>
-                              <input class="form-control" type="text" value="<?php echo $search_field; ?>" name="search_field" placeholder="Default Search" style="width: 70%; float: right;">
+                              <div id="search_field_container"><input class="form-control search_field" type="text" value="<?php echo $search_field; ?>" name="search_field" placeholder="Default Search" style="width: 70%; float: right;"></div>
+                              <div style="display: none;" id="search_field_by_date_container"><input class="form-control login_date_search" disabled="disabled" type="text" id="login_date_search" value="<?php echo $search_field; ?>" name="search_field" placeholder="Search by Date" style="width: 70%; float: right;"></div>
                             </div>
                             <!-- /.form-group -->
                           </div>
@@ -99,12 +101,10 @@
                     @foreach($users_log as $usr_log)
                         <tr>
                             <td>{{ $usr_log->id }}</td>
-                            <td>{{ $usr_log->user->firstname }} {{ $usr_log->user->lastname }}</td>
+                            <td>{{ $usr_log->firstname }} {{ $usr_log->lastname }}</td>
                             <td><?php echo date("F j, Y", strtotime($usr_log->login_date));?></td>
                             <td><span class="label label-default">{{ UserHelper::getTotalUserContactEntryByDate($usr_log->user_id, $usr_log->login_date) }}</span></td>
                         </tr>
-
-
                     @endforeach
                   </table>
 
@@ -126,3 +126,32 @@
   <!-- /.content -->
 @endsection
 
+@section('page-footer-scripts')
+<script>
+  var base_url = '<?php echo url("/"); ?>';
+
+  $(function () {
+    
+
+    $('.login_date_search').datepicker({
+      autoclose: true,
+      format: 'yyyy-mm-dd',
+    });
+
+    $(".search_by").change(function(){
+      if ($('#search_by').val() == "login_date"){
+        $('.login_date_search').removeAttr("disabled")
+        $(".search_field").attr("disabled", true);
+        $("#search_field_container").hide();
+        $("#search_field_by_date_container").show();
+      } else {
+        $(".login_date_search").attr("disabled", true);
+        $('.search_field').removeAttr("disabled")
+        $("#search_field_container").show();
+        $("#search_field_by_date_container").hide();
+      }
+    });
+  });
+
+</script>
+@endsection
