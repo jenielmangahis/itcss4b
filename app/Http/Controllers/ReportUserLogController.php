@@ -94,35 +94,80 @@ class ReportUserLogController extends Controller
             if($search_by != '' && $search_field != '') {
                 if($search_by == 'login_date') {
                     $users_log_query = $users_log_query->select(
-                        'users.firstname','users.lastname','user_logs.id','user_logs.login_date'
+                        'users.firstname','users.lastname','user_logs.id','user_logs.login_date','users.email','user_logs.user_id'
                     );
 
                     $users_log_query = $users_log_query->leftJoin('users', 'users.id', '=', 'user_logs.user_id');
                     $users_log_query = $users_log_query->whereDate('user_logs.'.$search_by, $search_field);
                     $users_log_query = $users_log_query->where('users.is_active','=',0);
-                    $users_log = $users_log_query->groupBy(DB::raw("DATE(login_date)"))->paginate(25);
+                    $users_log = $users_log_query->groupBy(DB::raw("DATE(login_date)"),'users.email')->paginate(25);
                 } else {
                     $users_log_query = $users_log_query->select(
-                        'users.firstname','users.lastname','user_logs.id','user_logs.login_date'
+                        'users.firstname','users.lastname','user_logs.id','user_logs.login_date','users.email','user_logs.user_id'
                     );
                     $users_log_query = $users_log_query->leftJoin('users', 'users.id', '=', 'user_logs.user_id');
                     $users_log_query = $users_log_query->where('users.'.$search_by, 'like', '%' . $search_field . '%');
                     $users_log_query = $users_log_query->where('users.is_active','=',0);
-                    $users_log = $users_log_query->groupBy(DB::raw("DATE(login_date)"))->paginate(25);
+                    $users_log = $users_log_query->groupBy(DB::raw("DATE(login_date)"),'users.email')->paginate(25);
                 }
             }            
         } else {
             $users_log_query = UserLog::query();
             $users_log_query = $users_log_query->select(
-                        'users.firstname','users.lastname','user_logs.id','user_logs.login_date'
+                        'user_logs.login_date','users.firstname','users.lastname','user_logs.id','users.email','user_logs.user_id'
                     );
             $users_log_query = $users_log_query->leftJoin('users', 'users.id', '=', 'user_logs.user_id');
-            $users_log = $users_log_query->groupBy(DB::raw("DATE(login_date)"))->paginate(25);
+            $users_log_query = $users_log_query->where('users.is_active','=',0);
+            //$users_log = $users_log_query->groupBy(DB::raw("DATE(login_date)"))->paginate(25);
+            $users_log = $users_log_query->groupBy(DB::raw("DATE(login_date)"),'users.email')->paginate(25);
         }
 
         return view('reports.users_log.user_logs',[
-            'users_log' => $users_log,
+            'users_log'    => $users_log,
+            'search_by'    => $search_by,
             'search_field' => $search_field
         ]); 
-    }       
+    }    
+
+    public function export_users_log(Request $request)
+    {
+        $search_by    = $request->input('_search_by');
+        $search_field = $request->input('_search_field');  
+
+        if($search_by != '' && $search_field != '') {
+            $users_log_query = UserLog::query();
+
+            if($search_by != '' && $search_field != '') {
+                if($search_by == 'login_date') {
+                    $users_log_query = $users_log_query->select(
+                        'users.firstname','users.lastname','user_logs.id','user_logs.login_date','users.email','user_logs.user_id'
+                    );
+
+                    $users_log_query = $users_log_query->leftJoin('users', 'users.id', '=', 'user_logs.user_id');
+                    $users_log_query = $users_log_query->whereDate('user_logs.'.$search_by, $search_field);
+                    $users_log_query = $users_log_query->where('users.is_active','=',0);
+                    $users_log = $users_log_query->groupBy(DB::raw("DATE(login_date)"),'users.email')->paginate(25);
+                } else {
+                    $users_log_query = $users_log_query->select(
+                        'users.firstname','users.lastname','user_logs.id','user_logs.login_date','users.email','user_logs.user_id'
+                    );
+                    $users_log_query = $users_log_query->leftJoin('users', 'users.id', '=', 'user_logs.user_id');
+                    $users_log_query = $users_log_query->where('users.'.$search_by, 'like', '%' . $search_field . '%');
+                    $users_log_query = $users_log_query->where('users.is_active','=',0);
+                    $users_log = $users_log_query->groupBy(DB::raw("DATE(login_date)"),'users.email')->get();
+                }
+            }            
+        } else {
+            $users_log_query = UserLog::query();
+            $users_log_query = $users_log_query->select(
+                        'users.firstname','users.lastname','user_logs.id','user_logs.login_date','users.email','user_logs.user_id'
+                    );
+            $users_log_query = $users_log_query->leftJoin('users', 'users.id', '=', 'user_logs.user_id');
+            $users_log = $users_log_query->groupBy(DB::raw("DATE(login_date)"),'users.email')->get();
+        }
+
+        return view('reports.users_log.export_users_log',[
+            'users_log'    => $users_log
+        ]);         
+    }   
 }

@@ -77,7 +77,7 @@
                           </div>
                           <!-- /.col -->
 
-                          <div class="col-md-6">
+                          <div class="col-md-4">
                             <div class="form-group">
                               <label>&nbsp;</label><br />
                               <button type="submit" class="btn btn-primary">Filter</button>
@@ -85,10 +85,23 @@
                             </div>
                             <!-- /.form-group -->
                           </div>
+                    {!! Form::close() !!}    
+
+                    {{ Form::open(array('url' => 'export_users_log', 'class' => '', 'method' => 'get')) }}
+                          <input type="hidden" name="_search_by" value="{{ $search_by }}">
+                          <input type="hidden" name="_search_field" value="{{ $search_field }}">
+                          <div class="col-md-2">
+                            <div class="form-group">
+                              <label>&nbsp;</label><br />
+                              <button style="float: right;" type="submit" class="btn btn-default">Export to Excel</button>
+                            </div>                            
+                          </div>
+                    {!! Form::close() !!}    
+
                         </div>                
 
                       </div>                      
-                    {!! Form::close() !!}         
+                         
                   </div>
 
                   <table class="table table-bordered table-hover">

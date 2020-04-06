@@ -268,6 +268,7 @@ Route::post('/contact_user/store', ['as'=>'contact_user/store','uses'=>'ContactU
 
 //Reports Users Log
 Route::get('/report_users_log', ['as'=>'report_users_log','uses'=>'ReportUserLogController@index'])->middleware('auth');
+Route::get('/export_users_log', ['as'=>'export_users_log','uses'=>'ReportUserLogController@export_users_log'])->middleware('auth');
 
 //Benchmark
 Route::get('benchmark/test_model', ['as'=>'benchmark/test_model','uses'=>'BenchmarkController@testModel'])->middleware('auth');
