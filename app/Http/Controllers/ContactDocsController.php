@@ -76,7 +76,7 @@ class ContactDocsController extends Controller
                 if($file) {
                     $doc_file          = $file;
                     $original_filename = $doc_file->getClientOriginalName();
-                    $doc_filename      = $original_filename;
+                    $doc_filename      = time() . "-" . $original_filename;
                     $destinationPath   = public_path('/uploads/contact_docs');
                     $doc_file->move($destinationPath, $doc_filename);
                     $location          = $destinationPath . "/" . $doc_filename;
