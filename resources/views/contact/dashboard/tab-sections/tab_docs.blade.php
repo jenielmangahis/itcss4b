@@ -55,6 +55,7 @@
 <table class="table table-bordered table-hover">
   <tr>    
     <th>Document Title</th>
+    <th>Document Type</th>
     <th>Date Created</th>
     <th>Created By</th>
     <th style="width:10%;">Action</th>
@@ -62,6 +63,7 @@
     @foreach($contactDocs as $doc)
     <tr>
       <td>{{ $doc->document_title }}</td>
+      <td><?= $documentTypes[$doc->document_type]; ?></td>
       <td>{{ $doc->created_at }}</td>
       @if(isset($doc->user->firstname) && isset($doc->user->lastname))
         <td>{{ $doc->user->firstname }} {{ $doc->user->lastname }}</td>
