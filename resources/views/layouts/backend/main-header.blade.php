@@ -17,7 +17,7 @@
 </style>
 <header class="main-header">
 	<!-- Logo -->
-	<a href="index2.html" class="logo">
+	<a href="{{url('/')}}" class="logo">
 	  <!-- mini logo for sidebar mini 50x50 pixels -->
 	  <span class="logo-mini"><img src="{{ asset('/images/corelogo.png') }}" alt="CoreCMS" style="width:77%;margin-top: 22px;" /></span>
 	  <!-- logo for regular state and mobile devices -->
