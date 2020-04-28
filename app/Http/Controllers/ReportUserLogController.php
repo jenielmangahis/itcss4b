@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Contact;
 use App\ContactTask;
+use App\ContactHistory;
 use App\User;
 use App\UserLog;
 
@@ -169,5 +170,97 @@ class ReportUserLogController extends Controller
         return view('reports.users_log.export_users_log',[
             'users_log'    => $users_log
         ]);         
-    }   
+    }  
+
+    public function audit_logs(Request $request)
+    {
+        $search_by    = $request->input('search_by');
+        $search_field = $request->input('search_field');  
+
+        if($search_by != '' && $search_field != '') {
+            $audit_log_query = ContactHistory::query();
+
+            if($search_by != '' && $search_field != '') {
+                if($search_by == 'created_at') {
+                    $audit_log_query = $audit_log_query->select(
+                        'users.firstname','users.lastname','users.email',
+                        'contact_history.title','contact_history.module',
+                        'contact_history.created_at'
+                    );
+                    $audit_log_query = $audit_log_query->leftJoin('users', 'users.id', '=', 'contact_history.user_id');
+                    $audit_log_query = $audit_log_query->whereDate('contact_history.'.$search_by, $search_field);
+                    $audit_logs = $audit_log_query->orderBy('contact_history.created_at', 'desc')->paginate(25);
+                } else {
+                    $audit_log_query = $audit_log_query->select(
+                        'users.firstname','users.lastname','users.email',
+                        'contact_history.title','contact_history.module',
+                        'contact_history.created_at'
+                    );
+                    $audit_log_query = $audit_log_query->leftJoin('users', 'users.id', '=', 'contact_history.user_id');
+                    $audit_log_query = $audit_log_query->where('users.'.$search_by, 'like', '%' . $search_field . '%');
+                    $audit_logs = $audit_log_query->orderBy('contact_history.created_at', 'desc')->paginate(25);
+                }
+            }            
+        } else {
+            $audit_log_query = ContactHistory::query();
+            $audit_log_query = $audit_log_query->select(
+                        'users.firstname','users.lastname','users.email',
+                        'contact_history.title','contact_history.module',
+                        'contact_history.created_at'
+                );
+            $audit_log_query = $audit_log_query->leftJoin('users', 'users.id', '=', 'contact_history.user_id');
+            $audit_logs = $audit_log_query->orderBy('contact_history.created_at', 'desc')->paginate(25);
+        }
+
+        return view('reports.audit_log.audit_logs',[
+            'audit_logs'    => $audit_logs,
+            'search_by'    => $search_by,
+            'search_field' => $search_field
+        ]); 
+    }
+
+    public function export_audit_logs(Request $request)
+    {
+        $search_by    = $request->input('_search_by');
+        $search_field = $request->input('_search_field');  
+
+        if($search_by != '' && $search_field != '') {
+            $audit_log_query = ContactHistory::query();
+
+            if($search_by != '' && $search_field != '') {
+                if($search_by == 'created_at') {
+                    $audit_log_query = $audit_log_query->select(
+                        'users.firstname','users.lastname','users.email',
+                        'contact_history.title','contact_history.module',
+                        'contact_history.created_at'
+                    );
+                    $audit_log_query = $audit_log_query->leftJoin('users', 'users.id', '=', 'contact_history.user_id');
+                    $audit_log_query = $audit_log_query->whereDate('contact_history.'.$search_by, $search_field);
+                    $audit_logs = $audit_log_query->orderBy('contact_history.created_at', 'desc')->get();
+                } else {
+                    $audit_log_query = $audit_log_query->select(
+                        'users.firstname','users.lastname','users.email',
+                        'contact_history.title','contact_history.module',
+                        'contact_history.created_at'
+                    );
+                    $audit_log_query = $audit_log_query->leftJoin('users', 'users.id', '=', 'contact_history.user_id');
+                    $audit_log_query = $audit_log_query->where('users.'.$search_by, 'like', '%' . $search_field . '%');
+                    $audit_logs = $audit_log_query->orderBy('contact_history.created_at', 'desc')->get();
+                }
+            }            
+        } else {
+            $audit_log_query = ContactHistory::query();
+            $audit_log_query = $audit_log_query->select(
+                        'users.firstname','users.lastname','users.email',
+                        'contact_history.title','contact_history.module',
+                        'contact_history.created_at'
+                );
+            $audit_log_query = $audit_log_query->leftJoin('users', 'users.id', '=', 'contact_history.user_id');
+            $audit_logs = $audit_log_query->orderBy('contact_history.created_at', 'desc')->paginate(25);
+        }
+
+        return view('reports.audit_log.export_audit_logs',[
+            'audit_logs'    => $audit_logs
+        ]);         
+    }     
 }

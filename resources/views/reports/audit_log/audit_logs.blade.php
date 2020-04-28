@@ -16,7 +16,7 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      Users Log
+      Audit Logs
     </h1>
     
     <!-- 
@@ -58,7 +58,7 @@
                 <div class="box-body">
 
                   <div class="row">
-                    {{ Form::open(array('url' => 'report_users_log', 'class' => '', 'method' => 'get')) }}
+                    {{ Form::open(array('url' => 'audit_logs', 'class' => '', 'method' => 'get')) }}
 
                       <div class="col-xs-12">
                         <div class="row">
@@ -66,9 +66,9 @@
                             <div class="form-group">
                               <label>Search By: </label><br />
                               <select name="search_by" class="form-control select2 search_by" id="search_by" style="width: 30%; float: left;">
-                                <option value="firstname">Firstname</option>
-                                <option value="lastname">Lastname</option>
-                                <option value="login_date">Date</option>
+                                <option <?php echo $search_by == 'firstname' ? 'selected="selected"' : ''; ?> value="firstname">Firstname</option>
+                                <option <?php echo $search_by == 'lastname' ? 'selected="selected"' : ''; ?> value="lastname">Lastname</option>
+                                <option <?php echo $search_by == 'created_at' ? 'selected="selected"' : ''; ?> value="created_at">Date</option>
                               </select>
                               <div id="search_field_container"><input class="form-control search_field" type="text" value="<?php echo $search_field; ?>" name="search_field" placeholder="Default Search" style="width: 70%; float: right;"></div>
                               <div style="display: none;" id="search_field_by_date_container"><input class="form-control login_date_search" disabled="disabled" type="text" id="login_date_search" value="<?php echo $search_field; ?>" name="search_field" placeholder="Search by Date" style="width: 70%; float: right;"></div>
@@ -81,13 +81,13 @@
                             <div class="form-group">
                               <label>&nbsp;</label><br />
                               <button type="submit" class="btn btn-primary">Filter</button>
-                              <a class="btn btn-success" href="{{route('report_users_log')}}">Refresh</a>
+                              <a class="btn btn-success" href="{{route('audit_logs')}}">Refresh</a>
                             </div>
                             <!-- /.form-group -->
                           </div>
                     {!! Form::close() !!}    
 
-                    {{ Form::open(array('url' => 'export_users_log', 'class' => '', 'method' => 'get')) }}
+                    {{ Form::open(array('url' => 'export_audit_logs', 'class' => '', 'method' => 'get')) }}
                           <input type="hidden" name="_search_by" value="{{ $search_by }}">
                           <input type="hidden" name="_search_field" value="{{ $search_field }}">
                           <div class="col-md-2">
@@ -109,14 +109,16 @@
                       <th style="width: 1%;" >#</th>
                       <th>Name</th>
                       <th>Date</th>
-                      <th>Total Entry</th>
+                      <th>Module Action</th>
                     </tr>
-                    @foreach($users_log as $usr_log)
+                    @foreach($audit_logs as $aud_log)
                         <tr>
-                            <td>{{ $usr_log->id }}</td>
-                            <td>{{ $usr_log->firstname }} {{ $usr_log->lastname }}</td>
-                            <td><?php echo date("F j, Y", strtotime($usr_log->login_date));?></td>
-                            <td><span class="label label-default">{{ UserHelper::getTotalUserContactEntryByDate($usr_log->user_id, $usr_log->login_date) }}</span></td>
+                            <td>{{ $aud_log->id }}</td>
+                            <td>{{ $aud_log->firstname }} {{ $aud_log->lastname }}</td>
+                            <td><?php echo date("F j, Y", strtotime($aud_log->created_at));?></td>
+                            <td>
+                              <span class="label label-default">{{$aud_log->module}}</span> : {{$aud_log->title}}
+                          </td>
                         </tr>
                     @endforeach
                   </table>
@@ -125,7 +127,7 @@
                 <!-- /.box-body -->
 
                 <div style="text-align: center;" class="box-footer clearfix">
-                    {{ $users_log->appends(request()->except('page'))->links() }}
+                    {{ $audit_logs->appends(request()->except('page'))->links() }}
                 </div>
 
               </div>
@@ -152,7 +154,7 @@
     });
 
     $(".search_by").change(function(){
-      if ($('#search_by').val() == "login_date"){
+      if ($('#search_by').val() == "created_at"){
         $('.login_date_search').removeAttr("disabled")
         $(".search_field").attr("disabled", true);
         $("#search_field_container").hide();

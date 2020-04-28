@@ -102,6 +102,13 @@
 		    </li>
 	    @endif
 
+	    <?php 
+	    	$multi_tab_settings = '';
+	    	if(Route::current()->getName() == 'audit_logs' || Route::current()->getName() == 'report_users_log') {
+	    		$multi_tab_settings = 'active';
+	    	}
+	    ?>	    
+
 	    @if(UserHelper::checkUserRole(Auth::user()->group_id, 'reports'))
 		    <li class="treeview {{ $multi_tab_settings }}">
 		      <a href="#"><i class="fa fa-gear"></i> <span>Reports</span>
@@ -113,8 +120,13 @@
 		      	@if(UserHelper::checkUserRole(Auth::user()->group_id, 'users_log')) 
 		        	<li <?php echo Route::current()->getName() == 'report_users_log' ? 'class="active"' : ''; ?>><a href="{{route('report_users_log')}}"><i class="fa fa-circle-o"></i>User Log</a></li>
 		        @endif
+		        @if(UserHelper::checkUserRole(Auth::user()->group_id, 'audit_logs')) 
+		        	<li <?php echo Route::current()->getName() == 'audit_logs' ? 'class="active"' : ''; ?>><a href="{{route('audit_logs')}}"><i class="fa fa-circle-o"></i>Audit Logs</a></li>
+		        @endif
 		      </ul>
 		    </li>	 
-		@endif   
+		@endif  
+
+
 
 	</ul>

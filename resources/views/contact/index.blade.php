@@ -8,7 +8,7 @@
 @endsection 
 
 @section('meta-dynamic')
-  <title>coreCMS</title>  
+  <title>BizBoxCRM</title>  
   <meta name="description" content="-">    
 @endsection
 
