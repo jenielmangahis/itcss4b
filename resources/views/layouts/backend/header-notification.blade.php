@@ -58,6 +58,10 @@
       <?php $idle_contact_count_value = isset($idle_contacts_count) ? $idle_contacts_count : 0; ?>
       <strong>You have {{ $idle_contact_count_value }} idle contacts (15 days)</strong>
     </li>
+    <li class="header">
+      <?php $total_bankruptcy_count_value = isset($bankruptcy_count) ? $bankruptcy_count : 0; ?>
+      <strong>Total Bankruptcy as of today : <?php echo $total_bankruptcy_count_value; ?></strong>
+    </li>
     <li>
       <!-- Inner menu: contains the tasks -->
       @if(isset($idle_contacts) && $idle_contacts)

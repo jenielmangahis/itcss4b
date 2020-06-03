@@ -11,6 +11,7 @@ use App\Lender;
 use App\LenderContact;
 use App\ContactAdvance;
 use App\ContactHistory;
+use App\ContactBusinessInformation;
 
 use UserHelper;
 use GlobalHelper;
@@ -43,6 +44,8 @@ class LenderController extends Controller
             $pending_task_count = ContactTask::where('assigned_user_id','=', $user_id)->where('status','=', 'pending')->count();
             $pending_task       = ContactTask::where('assigned_user_id','=', $user_id)->where('status','=', 'pending')->get();
 
+            $bankruptcy_count   = ContactBusinessInformation::where('filed_bankruptcy','=','Yes')->where('bankruptcy_filed','<=',now()->subMonth(2))->count();
+
             $idl_contacts = UserHelper::getIdleContacts();
             $idle_contacts_count = 0;
             $idle_contacts       = array();
@@ -55,7 +58,9 @@ class LenderController extends Controller
             View::share ( 'idle_contacts', $idle_contacts);             
 
             View::share ( 'pending_task_count', $pending_task_count );   
-            View::share ( 'pending_task', $pending_task);             
+            View::share ( 'pending_task', $pending_task);         
+
+            View::share ( 'bankruptcy_count', $bankruptcy_count );       
 
             return $next($request);     
         });                 
