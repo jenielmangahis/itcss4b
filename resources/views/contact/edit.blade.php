@@ -180,6 +180,13 @@
 
   $(function () {
 
+    $('#company_assigned_users').select2({
+
+    });  
+    $('#company_assigned_users2').select2({
+
+    });
+
     $('.bankruptcy_filed').datepicker({
       autoclose: true,
       format: 'yyyy-mm-dd',

@@ -177,6 +177,14 @@
   }
 
   $(function () {
+
+    $('#company_assigned_users').select2({
+
+    });  
+    $('#company_assigned_users2').select2({
+
+    });
+
     var company_name = $("#company_id option:selected").text();
     $('#business_name').val(company_name);
 

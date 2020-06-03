@@ -113,26 +113,31 @@
       @endif  --> 
 
 
-      <span class="btn badge badge-primary" style="margin-bottom: 10px; margin-top: 10px;">Assigned to Company Users</span>
+      <span class="btn badge badge-primary" style="margin-bottom: 10px; margin-top: 10px;">Assigned to Company Funders</span>
 
-      @foreach($company_users_by_group as $company_name => $company_users_group )
       <div class="form-group">
-        <label style="">{{ ucwords($company_name) }}</label><br />
-        @foreach($company_users_group as $company_user_data)        
-        &nbsp;&nbsp;&nbsp;<input name="company_assigned_users[]" type="checkbox" value="{{ $company_user_data['user_id'] }}" class="minimal"> {{ $company_user_data['name'] }} <br />
-        @endforeach
-      </div>
-      @endforeach
+        <select name="company_assigned_users[]" class="form-control company_assigned_users" id="company_assigned_users" multiple="multiple">
+          @foreach($company_users_by_group as $company_name => $company_users_group )
+            <optgroup label="{{ ucwords($company_name) }}">
+            @foreach($company_users_group as $company_user_data)    
+              <option value="{{ $company_user_data['user_id'] }}">{{ $company_user_data['name'] }}</option>
+            @endforeach          
+          @endforeach
+        </select>
+      </div>         
 
       <span class="btn badge badge-primary" style="margin-bottom: 10px; margin-top: 10px;">Assigned to Group Users</span>
 
-      @foreach($users_other_groups as $group_name => $user_group )
       <div class="form-group">
-        <label style="">{{ ucwords($group_name) }}</label><br />
-        @foreach($user_group as $user_d)        
-        &nbsp;&nbsp;&nbsp;<input name="company_assigned_users[]" type="checkbox" value="{{ $user_d['user_id'] }}" class="minimal"> {{ $user_d['name'] }} <br />
-        @endforeach
-      </div>
-      @endforeach
+        <select name="company_assigned_users[]" class="form-control company_assigned_users" id="company_assigned_users2" multiple="multiple">
+          @foreach($users_other_groups as $group_name => $user_group )
+            <optgroup label="{{ ucwords($group_name) }}">
+            @foreach($user_group as $user_d)   
+              <option value="{{ $user_d['user_id'] }}">{{ $user_d['name'] }}</option>
+            @endforeach          
+          @endforeach
+        </select>
+      </div>       
+
     </div>
 </div>
