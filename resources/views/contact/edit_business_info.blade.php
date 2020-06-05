@@ -106,7 +106,7 @@
   $date_bankruptcy = $contact_business_info->bankruptcy_filed;
   $class_date_bankruptcy = "hide";
   if( $contact_business_info->filed_bankruptcy == 'Yes' ){
-    $date_bankruptcy = '';
+    //$date_bankruptcy = '';
     $class_date_bankruptcy = '';
   }
 ?>
