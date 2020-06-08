@@ -53,6 +53,8 @@ class ContactController extends Controller
             $pending_task_count = ContactTask::where('assigned_user_id','=', $user_id)->where('status','=', 'pending')->count();
             $pending_task       = ContactTask::where('assigned_user_id','=', $user_id)->where('status','=', 'pending')->get();
 
+            $bankruptcy         = UserHelper::getCompaniesBankrupt();
+
             $idl_contacts = UserHelper::getIdleContacts();
             $idle_contacts_count = 0;
             $idle_contacts       = array();
@@ -65,7 +67,9 @@ class ContactController extends Controller
             View::share ( 'idle_contacts', $idle_contacts);             
 
             View::share ( 'pending_task_count', $pending_task_count );   
-            View::share ( 'pending_task', $pending_task);             
+            View::share ( 'pending_task', $pending_task); 
+
+            View::share ( 'bankruptcy', $bankruptcy );               
 
             return $next($request);     
         });                 
