@@ -56,13 +56,17 @@
   <ul class="dropdown-menu">
     <?php if($bankruptcy){ ?>
       <li class="header"><b>Total Bankruptcy as of today : <?php echo count($bankruptcy); ?></b></li>
-      @foreach($bankruptcy as $b)
-        <li class="header">
-          <a style="display: inline-block;width:100%;padding: 0px 5px;" href="<?php echo url('contact_dashboard/' . Hashids::encode($b->contact->id)) ?>">
-          Company : <?php echo $b->company->name; ?><br />Date : <?php echo date("Y-m-d", strtotime($b->bankruptcy_filed)) ?>
-          </a>
-        </li>
-      @endforeach
+      <li>
+        <ul class="menu">
+        @foreach($bankruptcy as $b)          
+          <?php if(isset($b->contact->id) && isset($b->company->id)) { ?>              
+              <li><a href="<?php echo url('contact_dashboard/' . Hashids::encode($b->contact->id)) ?>">
+              Company : <?php echo $b->company->name; ?><br />Date : <?php echo date("Y-m-d", strtotime($b->bankruptcy_filed)) ?>
+              </a></li>
+          <?php } ?>                  
+        @endforeach
+        </ul>
+      </li>
     <?php } ?>    
     <li class="header">
       <?php $idle_contact_count_value = isset($idle_contacts_count) ? $idle_contacts_count : 0; ?>
