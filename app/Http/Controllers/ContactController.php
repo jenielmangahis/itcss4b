@@ -344,6 +344,8 @@ class ContactController extends Controller
             $contact->state         = $request->input('state');
             $contact->zip_code      = $request->input('zip_code');
             $contact->status        = $request->input('status');
+            $contact->is_settled    = $request->input('is_settled');
+            $contact->date_settled  = $request->input('date_settled');
             
             if( $request->input('other_name') != '' ){
                 $contact->other_name = $request->input('other_name');
@@ -601,6 +603,8 @@ class ContactController extends Controller
                 $contact->state         = $request->input('state');
                 $contact->zip_code      = $request->input('zip_code');
                 $contact->status        = $request->input('status');
+                $contact->is_settled    = $request->input('is_settled');
+                $contact->date_settled  = $request->input('date_settled');
 
                 if( $request->input('other_name') != '' ){
                 $contact->other_name = $request->input('other_name');
@@ -717,7 +721,9 @@ class ContactController extends Controller
             if($contact) {
 
                 $contact->stage_id = $request->input('stage_id');
-                $contact->status  = $request->input('status');
+                $contact->status   = $request->input('status');
+                $contact->is_settled   = $request->input('is_settled');
+                $contact->date_settled = $request->input('date_settled');
                 $contact->save();           
 
                 Session::flash('message', 'Contact Status has been updated');
@@ -902,6 +908,8 @@ class ContactController extends Controller
 
             $contact->stage_id = $request->input('stage_id');
             $contact->status   = $request->input('status');
+            $contact->is_settled   = $request->input('is_settled');
+            $contact->date_settled = $request->input('date_settled');
             $contact->save();
 
             Session::flash('message', 'You have successfully updated contact status');

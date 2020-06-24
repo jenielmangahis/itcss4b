@@ -79,7 +79,12 @@
         
         <div class="form-group">
           <div id="stage-status-container"></div>
-        </div>  
+        </div> 
+
+        <div class="form-group hide date-settled-grp">
+          <label>Date Settled</label>
+          <?php echo Form::text('date_settled', date("Y-m-d") ,['class' => 'form-control date_settled']); ?>
+        </div> 
       </div>
       </div>
       <div class="row">

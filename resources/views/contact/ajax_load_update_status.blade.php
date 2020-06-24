@@ -1,4 +1,5 @@
 <input type="hidden" id="id" value="<?php echo Hashids::encode($contact->id) ?>" name="id">
+<input type="hidden" id="is_settled" name="is_settled" value="<?= $contact->is_settled; ?>">
 <div class="row">
   <div class="col-md-5">
     <div class="form-group">
@@ -17,7 +18,7 @@
       <label>Status</label>
       @if( !empty($workflow->toArray()) )
 
-        <select name="status" id="status" class="form-control">
+        <select name="status" id="status" class="form-control status-list">
           @foreach($workflow as $w)        
             <option <?php echo $w->id == $status ? 'selected="selected"' : ''; ?> value="{{ $w->id }}">{{ $w->status }}</option>
           @endforeach
@@ -32,12 +33,30 @@
     </div>
   </div>
 </div>
+<?php 
+  $date_settled = $contact->date_settled;          
+  $class_date_settled = "hide";
+  if( strtolower($contact->is_settled) == 'yes' ){
+    $class_date_settled = '';
+  }
+?>
+<div class="row <?= $class_date_settled; ?> date-settled-grp">
+  <div class="col-md-5">
+    <div class="form-group">
+      <label>Date Settled</label>
+      <?php echo Form::text('date_settled', $date_settled ,['class' => 'form-control date_settled']); ?>
+    </div>
+  </div>
+</div>
 
 <script>
   
   function load_stage_status_dropdown(status) {
     var stage_id = $('#stage_id').val();
     $('#stage-status-dropdown-container').html('<br /><div style="text-align: center;" class="wrap"><i class="fa fa-spin fa-spinner"></i> Loading</div><br />');
+
+    $(".date-settled-grp").addClass("hide");
+    $("#is_settled").val("No");
 
     var url = base_url + '/contact/ajax_load_stage_status'
     $.ajax({
@@ -50,5 +69,21 @@
          }
     });
   }    
+
+  $('.date_settled').datepicker({
+    autoclose: true,
+    format: 'yyyy-mm-dd',
+  });
+  
+  $(".status-list").change(function(){
+    var status = $(".status-list option:selected").text();
+    if( status.toLowerCase() == 'settled' ){
+      $(".date-settled-grp").removeClass('hide');
+      $("#is_settled").val("Yes");
+    }else{
+      $(".date-settled-grp").addClass('hide');
+      $("#is_settled").val("No");
+    }
+  });
 
 </script>

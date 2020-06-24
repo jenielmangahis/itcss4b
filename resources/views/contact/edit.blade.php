@@ -74,6 +74,7 @@
 
           {{ Form::open(array('url' => 'contact/update', 'class' => '', 'id' => 'edit-contact-form')) }}
           <input type="hidden" name="id" value="<?= Hashids::encode($contact->id); ?>">
+          <input type="hidden" name="is_settled" id="is_settled" value="<?= $contact->is_settled; ?>">
           <input type="hidden" id="c_user_id" name="c_user_id" value="<?= Hashids::encode($contact->user_id); ?>">            
             <div class="box-body">
               <div id="" class="form-group">
@@ -190,7 +191,12 @@
     $('.bankruptcy_filed').datepicker({
       autoclose: true,
       format: 'yyyy-mm-dd',
-    })    
+    });
+
+    $('.date_settled').datepicker({
+      autoclose: true,
+      format: 'yyyy-mm-dd',
+    });    
 
     load_company_users_dropdown();
     load_stage_status_dropdown();
