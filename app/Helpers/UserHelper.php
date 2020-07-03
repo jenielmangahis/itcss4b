@@ -232,10 +232,7 @@ class UserHelper
 
             if($redirect && !$with_access) {
                   Session::flash('message', 'You have no permission to access the '. $module . ' page.');
-                  Session::flash('alert_class', 'alert-danger');    
-                  /*redirect()->route('dashboard');
-                  $redirect_url = url('dashboard');
-                  header('Location: '.$redirect_url); */                            
+                  Session::flash('alert_class', 'alert-danger');                               
             } else {
                   return $with_access;
             }
