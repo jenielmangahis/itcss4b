@@ -145,7 +145,16 @@ class ContactController extends Controller
                                 ->paginate(10);
 
             }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
-                $contact = Contact::orderBy('created_at', 'desc')->paginate(10);  
+
+                $contact = Contact::select(
+                                    'id','created_at','firstname','lastname','mobile_number','email',
+                                    'data_source','data_source','stage_id','status'
+                                )
+                                ->orderBy('created_at', 'desc')
+                                ->paginate(10);
+
+                //$contact = Contact::orderBy('created_at', 'desc')->paginate(10);  
+                                
             }else{
 
                 /*$contact = Contact::where('user_id','=', $user_id)
