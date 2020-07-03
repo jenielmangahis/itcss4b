@@ -81,6 +81,18 @@
         <div class="form-group">
           <div id="stage-status-container"></div>
         </div>  
+
+        <?php 
+          $date_settled = $contact->date_settled;          
+          $class_date_settled = "hide";
+          if( strtolower($contact->is_settled) == 'yes' ){
+            $class_date_settled = '';
+          }
+        ?>
+        <div class="form-group <?= $class_date_settled; ?> date-settled-grp">
+          <label>Date Settled</label>
+          <?php echo Form::text('date_settled', $date_settled ,['class' => 'form-control date_settled']); ?>
+        </div>
       </div>
     </div>
     <div class="row">

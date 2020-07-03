@@ -54,10 +54,24 @@
     @endif
   </a>
   <ul class="dropdown-menu">
+    <?php if($bankruptcy){ ?>
+      <li class="header"><b>Total Bankruptcy as of today : <?php echo count($bankruptcy); ?></b></li>
+      <li>
+        <ul class="menu">
+        @foreach($bankruptcy as $b)          
+          <?php if(isset($b->contact->id) && isset($b->company->id)) { ?>              
+              <li><a href="<?php echo url('contact_dashboard/' . Hashids::encode($b->contact->id)) ?>">
+              Company : <?php echo $b->company->name; ?><br />Date : <?php echo date("Y-m-d", strtotime($b->bankruptcy_filed)) ?>
+              </a></li>
+          <?php } ?>                  
+        @endforeach
+        </ul>
+      </li>
+    <?php } ?>    
     <li class="header">
       <?php $idle_contact_count_value = isset($idle_contacts_count) ? $idle_contacts_count : 0; ?>
       <strong>You have {{ $idle_contact_count_value }} idle contacts (15 days)</strong>
-    </li>
+    </li>        
     <li>
       <!-- Inner menu: contains the tasks -->
       @if(isset($idle_contacts) && $idle_contacts)
@@ -71,12 +85,7 @@
             }
           ?>
           <li>
-            <a href="<?php echo url('contact_dashboard/' . Hashids::encode($idl_contact['contact_id']) . '#tab_tasks') ?>">
-              <h3>
-                <strong>Contact</strong> - {{ $contact_name }}
-                <!-- <small class="pull-right">-</small> -->            
-              </h3>
-            </a>
+            <a href="<?php echo url('contact_dashboard/' . Hashids::encode($idl_contact['contact_id']) . '#tab_tasks') ?>"><strong>Contact</strong> - {{ $contact_name }}</a>
           </li>
         @endforeach
       </ul>

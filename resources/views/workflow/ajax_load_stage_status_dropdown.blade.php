@@ -5,7 +5,7 @@
     $selected = "";
   ?>
 
-  <select name="status" id="status" class="form-control">
+  <select name="status" id="status" class="form-control status-list">
     @foreach($workflow as $w)        
       <option <?php echo $w->id == $status ? 'selected="selected"' : ''; ?> value="{{ $w->id }}">{{ $w->status }}</option>
     @endforeach
@@ -15,3 +15,17 @@
     <option value="">No status assigned to stage selected</option>
   </select>
 @endif
+<script>
+$(function(){
+  $(".status-list").change(function(){
+    var status = $(".status-list option:selected").text();
+    if( status.toLowerCase() == 'settled' ){
+      $(".date-settled-grp").removeClass('hide');
+      $("#is_settled").val("Yes");
+    }else{
+      $(".date-settled-grp").addClass('hide');
+      $("#is_settled").val("No");
+    }
+  });
+});  
+</script>

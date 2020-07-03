@@ -53,6 +53,8 @@ class ContactController extends Controller
             $pending_task_count = ContactTask::where('assigned_user_id','=', $user_id)->where('status','=', 'pending')->count();
             $pending_task       = ContactTask::where('assigned_user_id','=', $user_id)->where('status','=', 'pending')->get();
 
+            $bankruptcy         = UserHelper::getCompaniesBankrupt();
+
             $idl_contacts = UserHelper::getIdleContacts();
             $idle_contacts_count = 0;
             $idle_contacts       = array();
@@ -65,7 +67,9 @@ class ContactController extends Controller
             View::share ( 'idle_contacts', $idle_contacts);             
 
             View::share ( 'pending_task_count', $pending_task_count );   
-            View::share ( 'pending_task', $pending_task);             
+            View::share ( 'pending_task', $pending_task); 
+
+            View::share ( 'bankruptcy', $bankruptcy );               
 
             return $next($request);     
         });                 
@@ -340,6 +344,8 @@ class ContactController extends Controller
             $contact->state         = $request->input('state');
             $contact->zip_code      = $request->input('zip_code');
             $contact->status        = $request->input('status');
+            $contact->is_settled    = $request->input('is_settled');
+            $contact->date_settled  = $request->input('date_settled');
             
             if( $request->input('other_name') != '' ){
                 $contact->other_name = $request->input('other_name');
@@ -597,6 +603,8 @@ class ContactController extends Controller
                 $contact->state         = $request->input('state');
                 $contact->zip_code      = $request->input('zip_code');
                 $contact->status        = $request->input('status');
+                $contact->is_settled    = $request->input('is_settled');
+                $contact->date_settled  = $request->input('date_settled');
 
                 if( $request->input('other_name') != '' ){
                 $contact->other_name = $request->input('other_name');
@@ -713,7 +721,9 @@ class ContactController extends Controller
             if($contact) {
 
                 $contact->stage_id = $request->input('stage_id');
-                $contact->status  = $request->input('status');
+                $contact->status   = $request->input('status');
+                $contact->is_settled   = $request->input('is_settled');
+                $contact->date_settled = $request->input('date_settled');
                 $contact->save();           
 
                 Session::flash('message', 'Contact Status has been updated');
@@ -898,6 +908,8 @@ class ContactController extends Controller
 
             $contact->stage_id = $request->input('stage_id');
             $contact->status   = $request->input('status');
+            $contact->is_settled   = $request->input('is_settled');
+            $contact->date_settled = $request->input('date_settled');
             $contact->save();
 
             Session::flash('message', 'You have successfully updated contact status');

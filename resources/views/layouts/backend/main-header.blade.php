@@ -54,7 +54,12 @@
 		        <ul class="dropdown-menu">
 		          <!-- The user image in the menu -->
 		          <li class="user-header">
-		            <img src="{{ asset('/images/user-default-160x160.jpg') }}" class="img-circle" alt="User Image"/>
+		            
+		            @if(file_exists(public_path() . "/uploads/users/".Auth::user()->profile_img) && Auth::user()->profile_img != "")
+	                  <img src="{{ asset("/uploads/users/".Auth::user()->profile_img) }}" class="img-circle" alt="User Image"/>
+	                @else
+	                  <img src="{{ asset('/images/user-default-160x160.jpg') }}" class="img-circle" alt="User Image1"/>      
+	                @endif  		   
 		            <p><?= Auth::user()->firstname ?> <?= Auth::user()->lastname ?></p>
 		          </li>
 		          <!-- Menu Body -->

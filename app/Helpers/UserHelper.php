@@ -5,6 +5,7 @@ use App\User;
 use App\Contact;
 use App\ContactTask;
 use App\ContactHistory;
+use App\ContactBusinessInformation;
 
 use Session;
 
@@ -374,5 +375,11 @@ class UserHelper
 
             return $total;            
       }      
+
+      public static function getCompaniesBankrupt()
+      {
+            $bankruptcy         = ContactBusinessInformation::where('filed_bankruptcy','=','Yes')->where('bankruptcy_filed','<=',now()->subMonth(2))->get();
+            return $bankruptcy;
+      }
 }
 ?>

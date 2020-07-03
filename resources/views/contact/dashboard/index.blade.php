@@ -123,6 +123,7 @@
                             <div id="modalUpdateStatus" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
                               {{ Form::open(array('url' => 'contact/update_contact_status', 'class' => '', 'id' => 'edit-contact-status-form')) }}
                                 <input type="hidden" name="contact_id" value="<?= $contact_id ?>">
+                                <input type="hidden" name="is_settled" id="is_settled" value="<?= $contact->is_settled; ?>">
                                 <div class="modal-dialog modal-md">
                                   <div class="modal-content">
 
@@ -150,6 +151,18 @@
                                       <div class="form-group">
                                         <div id="stage-status-container"></div>
                                       </div>
+
+                                      <?php 
+                                          $date_settled = $contact->date_settled;          
+                                          $class_date_settled = "hide";
+                                          if( strtolower($contact->is_settled) == 'yes' ){
+                                            $class_date_settled = '';
+                                          }
+                                        ?>
+                                        <div class="form-group <?= $class_date_settled; ?> date-settled-grp">
+                                          <label>Date Settled</label>
+                                          <?php echo Form::text('date_settled', $date_settled ,['class' => 'form-control date_settled']); ?>
+                                        </div>
 
                                     </div>
                                     <div class="modal-footer">
@@ -633,16 +646,21 @@
     $('.event_date').datepicker({
       autoclose: true,
       format: 'yyyy-mm-dd',
-    }) 
+    });
+
+    $('.date_settled').datepicker({
+      autoclose: true,
+      format: 'yyyy-mm-dd',
+    });
 
     $('.due_date').datepicker({
       autoclose: true,
       format: 'yyyy-mm-dd',
-    })     
+    });     
 
     $('.timepicker').timepicker({
       showInputs: false
-    })
+    });
 
     $(".mail-messaging-show-content").click(function(){
       var data_value = $(this).attr("data-value");

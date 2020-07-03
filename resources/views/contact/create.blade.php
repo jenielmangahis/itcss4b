@@ -193,6 +193,11 @@
       format: 'yyyy-mm-dd',
     });
 
+    $('.date_settled').datepicker({
+      autoclose: true,
+      format: 'yyyy-mm-dd',
+    });
+
     $(".default-select2").select2();
 
 
