@@ -129,7 +129,7 @@ class ContactController extends Controller
 
                 }
 
-                $contact = $contact_query = $contact_query->orderBy('contacts.created_at', 'desc')->paginate(15);
+                $contact = $contact_query = $contact_query->orderBy('contacts.created_at', 'desc')->paginate(10);
 
             }            
         } else {
@@ -142,10 +142,10 @@ class ContactController extends Controller
                                 ->where('contact_assigned_users.user_id','=', $user_id)
                                 ->groupBy('contact_assigned_users.contact_id')               
                                 ->orderBy('contacts.created_at', 'desc')                                                                
-                                ->paginate(15);
+                                ->paginate(10);
 
             }elseif(UserHelper::isAdminUser(Auth::user()->group_id)) {
-                $contact = Contact::orderBy('created_at', 'desc')->paginate(15);  
+                $contact = Contact::orderBy('created_at', 'desc')->paginate(10);  
             }else{
 
                 /*$contact = Contact::where('user_id','=', $user_id)
@@ -156,7 +156,7 @@ class ContactController extends Controller
                                 ->where('contact_assigned_users.user_id','=', $user_id)
                                 ->groupBy('contact_assigned_users.contact_id')      
                                 ->orderBy('contacts.created_at', 'desc')
-                                ->paginate(15);                        
+                                ->paginate(10);                        
             }            
         }
 
@@ -167,9 +167,11 @@ class ContactController extends Controller
 
         $emailTemplates = EmailTemplate::where('user_id', '=', $user_id)->get();
         if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
-            $contacts = Contact::where('user_id','=', $user_id)->get();
+            //$contacts = Contact::where('user_id','=', $user_id)->get();
+            $contacts = Contact::where('user_id','=', $user_id)->paginate(10);
         }else{
-            $contacts = Contact::all();
+            $contacts = Contact::paginate(10);
+            //$contacts = Contact::all();
         }
 
         $users_list = User::all();
