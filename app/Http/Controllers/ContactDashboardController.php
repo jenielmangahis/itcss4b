@@ -69,7 +69,8 @@ class ContactDashboardController extends Controller
                 $idle_contacts_count = $idl_contacts['total_idle'];
                 $idle_contacts       = $idl_contacts['idle_data'];
             }          
-
+            $settled            = UserHelper::getContactsSettled();
+            View::share ( 'settled', $settled );
             View::share ( 'idle_contacts_count', $idle_contacts_count );   
             View::share ( 'idle_contacts', $idle_contacts);               
 

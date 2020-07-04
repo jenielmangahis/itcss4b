@@ -9,6 +9,7 @@ use App\Group;
 use App\ContactTask;
 use App\ContactHistory;
 use App\ContactBusinessInformation;
+use App\Contact;
 
 use UserHelper;
 
@@ -47,7 +48,8 @@ class GroupController extends Controller
                 $idle_contacts_count = $idl_contacts['total_idle'];
                 $idle_contacts       = $idl_contacts['idle_data'];
             }
-
+            $settled            = UserHelper::getContactsSettled();
+            View::share ( 'settled', $settled );
             View::share ( 'idle_contacts_count', $idle_contacts_count );   
             View::share ( 'idle_contacts', $idle_contacts);             
 

@@ -11,6 +11,7 @@ use App\User;
 use App\ContactTask;
 use App\ContactHistory;
 use App\ContactBusinessInformation;
+use App\Contact;
 
 use UserHelper;
 
@@ -51,13 +52,17 @@ class CompanyUserController extends Controller
                 $idle_contacts       = $idl_contacts['idle_data'];
             }
 
+            $settled            = UserHelper::getContactsSettled();
+            View::share ( 'settled', $settled );
             View::share ( 'idle_contacts_count', $idle_contacts_count );   
             View::share ( 'idle_contacts', $idle_contacts);             
 
             View::share ( 'pending_task_count', $pending_task_count );   
             View::share ( 'pending_task', $pending_task); 
 
-            View::share ( 'bankruptcy', $bankruptcy );              
+            View::share ( 'bankruptcy', $bankruptcy );     
+
+
 
             return $next($request);     
         });           

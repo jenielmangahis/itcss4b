@@ -67,7 +67,23 @@
         @endforeach
         </ul>
       </li>
-    <?php } ?>    
+    <?php } ?>
+
+    <?php if($settled){ ?>
+      <li class="header"><b>Total Settled as of today : <?php echo count($settled); ?></b></li>
+      <li>
+        <ul class="menu">
+        @foreach($settled as $s)          
+          <?php if(isset($s->id) && isset($s->company_id)) { ?>              
+              <li><a href="<?php echo url('contact_dashboard/' . Hashids::encode($s->id)) ?>">
+              Company : <?php echo $s->full_name; ?><br />Date : <?php echo date("Y-m-d", strtotime($s->date_settled)) ?>
+              </a></li>
+          <?php } ?>                  
+        @endforeach
+        </ul>
+      </li>
+    <?php } ?>
+
     <li class="header">
       <?php $idle_contact_count_value = isset($idle_contacts_count) ? $idle_contacts_count : 0; ?>
       <strong>You have {{ $idle_contact_count_value }} idle contacts (15 days)</strong>
