@@ -521,21 +521,13 @@
             <div class="form-group multi-select row">
               <label class="col-sm-2 col-form-label">BCC <span class="required"></span></label>
               <div class="col-sm-10">
-                <select class="select_recipient form-control" name="bcc[]" multiple="multiple">
-                  @foreach($contacts as $c)
-                    <option value="{{ $c->email }}">{{ $c->email }}</option>
-                  @endforeach
-                </select>                                 
+                <select class="select_recipient form-control" name="bcc[]" multiple="multiple"></select>                                 
               </div>
             </div>
             <div class="form-group multi-select row">
               <label class="col-sm-2 col-form-label">CC <span class="required"></span></label>
               <div class="col-sm-10">
-                <select class="select_recipient form-control" name="cc[]" multiple="multiple">
-                  @foreach($contacts as $c)
-                    <option value="{{ $c->email }}">{{ $c->email }}</option>
-                  @endforeach
-                </select>                                 
+                <select class="select_recipient form-control" name="cc[]" multiple="multiple"></select>                                 
               </div>
             </div> 
             <div class="form-group row">
@@ -651,8 +643,55 @@
 
     loat_default_search_value();
 
-    $('.select_recipient').select2();
-    $('.select_recipient_to').select2();
+    //$('.select_recipient').select2();
+    $('.select_recipient').select2({
+      ajax: {
+        url: base_url + '/contact/_search_contacts',
+        data: function (params) {
+          var query = {
+            search: params.term,
+            type: 'public'
+          }
+
+          // Query parameters will be ?search=[term]&type=public
+          return query;
+        },
+        processResults: function (data) {
+            return {
+                results: $.map(data, function (item) {
+                    return {
+                        text: item.name,
+                        id: item.id
+                    }
+                })
+            };
+        }
+      }
+    });
+    $('.select_recipient_to').select2({
+      ajax: {
+        url: base_url + '/contact/_search_contacts',
+        data: function (params) {
+          var query = {
+            search: params.term,
+            type: 'public'
+          }
+
+          // Query parameters will be ?search=[term]&type=public
+          return query;
+        },
+        processResults: function (data) {
+            return {
+                results: $.map(data, function (item) {
+                    return {
+                        text: item.name,
+                        id: item.id
+                    }
+                })
+            };
+        }
+      }
+    });
     $('.search_field_list').select2();
     
     $(".btn-quick-send-modal").click(function(){

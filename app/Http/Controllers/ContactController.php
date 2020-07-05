@@ -935,4 +935,18 @@ class ContactController extends Controller
 
         return redirect()->back();    
     }   
+
+    public function ajax_search_contacts(Request $request)
+    {
+        $user_id  = Auth::user()->id;
+        $search   = $request->input('search');
+        $contacts = Contact::where('email', 'LIKE', '%' . $search . '%')->get();
+        $items    = array();
+
+        foreach( $contacts as $c ){
+            $items[] = ['id' => $c->id, 'name' => $c->email];
+        }
+
+        return response()->json($items);
+    }
 }
