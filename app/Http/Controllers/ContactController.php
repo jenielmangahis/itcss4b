@@ -940,7 +940,7 @@ class ContactController extends Controller
     {
         $user_id  = Auth::user()->id;
         $search   = $request->input('search');
-        $contacts = Contact::where('email', 'LIKE', '%' . $search . '%')->get();
+        $contacts = Contact::select('id','email')->where('email', 'like', '%' . $search . '%')->get();
         $items    = array();
 
         foreach( $contacts as $c ){
