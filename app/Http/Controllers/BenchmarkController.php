@@ -13,6 +13,7 @@ use App\Contact;
 use App\ContactCustomField;
 use App\EmailTemplate;
 use App\Group;
+use App\ContactBusinessInformation;
 
 /*
  * Note: below 'MailNotification' class is located in 'app/Mail' folder
@@ -40,7 +41,22 @@ class BenchmarkController extends Controller
     {
     	echo 'Test Model Here <hr />';
 
-        echo 'Test Commit';
+        $bankruptcy         = ContactBusinessInformation::where('filed_bankruptcy','=','Yes')->where('bankruptcy_filed','<=',now()->subMonth(2))->get();
+
+        foreach($bankruptcy as $bankrup) {
+            
+            if(isset($bankrup->contact->status)) {
+                echo 'Contact Status: ' . $bankrup->contact->status;
+                echo '<br />';
+            }
+
+            echo $bankrup->business_name;
+            echo '<hr />';
+        }
+
+        echo '<pre>';
+        print_r($bankruptcy->toArray());
+        echo '</pre>';        
 
         /*$ins = new Companies;
         $ins->name   		 = 'bryann';
@@ -77,9 +93,9 @@ class BenchmarkController extends Controller
         $ins->content    = 'this is only a test';
         $ins->save();*/
 
-        $ins = new Group;
+        /*$ins = new Group;
         $ins->name    = 'this is only a test';
-        $ins->save();
+        $ins->save();*/
 
     }
 
