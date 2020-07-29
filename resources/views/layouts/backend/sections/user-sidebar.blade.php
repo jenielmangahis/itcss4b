@@ -104,7 +104,7 @@
 
 	    <?php 
 	    	$multi_tab_settings = '';
-	    	if(Route::current()->getName() == 'audit_logs' || Route::current()->getName() == 'report_users_log') {
+	    	if(Route::current()->getName() == 'audit_logs' || Route::current()->getName() == 'report_users_log' || Route::current()->getName() == 'report_merchants') {
 	    		$multi_tab_settings = 'active';
 	    	}
 	    ?>	    
@@ -122,6 +122,10 @@
 		        @endif
 		        @if(UserHelper::checkUserRole(Auth::user()->group_id, 'audit_logs')) 
 		        	<li <?php echo Route::current()->getName() == 'audit_logs' ? 'class="active"' : ''; ?>><a href="{{route('audit_logs')}}"><i class="fa fa-circle-o"></i>Audit Logs</a></li>
+		        @endif
+
+		        @if(UserHelper::checkUserRole(Auth::user()->group_id, 'merchant_logs')) 
+		        	<li <?php echo Route::current()->getName() == 'report_merchants' ? 'class="active"' : ''; ?>><a href="{{route('report_merchants')}}"><i class="fa fa-circle-o"></i>Company/Merchant</a></li>
 		        @endif
 		      </ul>
 		    </li>	 

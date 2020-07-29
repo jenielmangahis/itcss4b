@@ -60,7 +60,8 @@ class UserHelper
                   'notifications',
                   'reports',
                         'users_log',
-                        'audit_logs'
+                        'audit_logs',
+                        'merchant_logs',
             );
 
             //this is also the mca funders/user also
