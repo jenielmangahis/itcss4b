@@ -343,6 +343,13 @@ class ContactController extends Controller
                 $contact->company_id    = $request->input('company_id');
             } 
 
+            $workflow = Workflow::find($request->input('status')); 
+            if( $workflow->status == 'Completed' ){
+                $is_completed = 1;
+            }else{
+                $is_completed = 0;
+            }
+
             $contact->stage_id      = $request->input('stage_id');
             $contact->full_name     = ucfirst($request->input('firstname')) . ' ' . ucfirst($request->input('lastname'));
             $contact->firstname     = ucfirst($request->input('firstname'));
@@ -359,6 +366,7 @@ class ContactController extends Controller
             $contact->status        = $request->input('status');
             $contact->is_settled    = $request->input('is_settled');
             $contact->date_settled  = $request->input('date_settled');
+            $contact->is_completed  = $is_completed;
             
             if( $request->input('other_name') != '' ){
                 $contact->other_name = $request->input('other_name');
@@ -557,7 +565,7 @@ class ContactController extends Controller
     }    
 
     public function update(Request $request)
-    {
+    {    
         if ($request->isMethod('post'))
         {
             if(UserHelper::isCompanyUser(Auth::user()->group_id)) {
@@ -602,6 +610,13 @@ class ContactController extends Controller
                     $contact->company_id    = $request->input('company_id');
                 } 
 
+                $workflow = Workflow::find($request->input('status')); 
+                if( $workflow->status == 'Completed' ){
+                    $is_completed = 1;
+                }else{
+                    $is_completed = 0;
+                }
+
                 $contact->stage_id      = $request->input('stage_id');
                 $contact->full_name     = ucfirst($request->input('firstname')) . ' ' . ucfirst($request->input('lastname'));
                 $contact->firstname     = ucfirst($request->input('firstname'));
@@ -618,9 +633,10 @@ class ContactController extends Controller
                 $contact->status        = $request->input('status');
                 $contact->is_settled    = $request->input('is_settled');
                 $contact->date_settled  = $request->input('date_settled');
+                $contact->is_completed  = $is_completed;
 
                 if( $request->input('other_name') != '' ){
-                $contact->other_name = $request->input('other_name');
+                    $contact->other_name = $request->input('other_name');
                 }
 
                 if( $request->input('other_email') != '' ){
@@ -731,10 +747,17 @@ class ContactController extends Controller
             $id      = Hashids::decode($request->input('id'))[0];
             $contact = Contact::find($id); 
 
-            if($contact) {
+            if($contact) {                
+                $workflow = Workflow::find($request->input('status')); 
+                if( $workflow->status == 'Completed' ){
+                    $is_completed = 1;
+                }else{
+                    $is_completed = 0;
+                }
 
                 $contact->stage_id = $request->input('stage_id');
                 $contact->status   = $request->input('status');
+                $contact->is_completed = $is_completed;
                 $contact->is_settled   = $request->input('is_settled');
                 $contact->date_settled = $request->input('date_settled');
                 $contact->save();           
@@ -915,12 +938,20 @@ class ContactController extends Controller
     public function update_contact_status(Request $request)
     {
         if ($request->isMethod('post'))
-        {
+        {            
             $contact_id  = Hashids::decode($request->input('contact_id'))[0];
             $contact     = Contact::where('id', '=', $contact_id)->first();
 
+            $workflow = Workflow::find($request->input('status')); 
+            if( $workflow->status == 'Completed' ){
+                $is_completed = 1;
+            }else{
+                $is_completed = 0;
+            }
+
             $contact->stage_id = $request->input('stage_id');
             $contact->status   = $request->input('status');
+            $contact->is_completed = $is_completed;
             $contact->is_settled   = $request->input('is_settled');
             $contact->date_settled = $request->input('date_settled');
             $contact->save();

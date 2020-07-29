@@ -378,13 +378,14 @@ class UserHelper
 
       public static function getCompaniesBankrupt()
       {
-            $bankruptcy         = ContactBusinessInformation::where('filed_bankruptcy','=','Yes')->where('bankruptcy_filed','<=',now()->subMonth(2))->get();
+            $bankruptcy = ContactBusinessInformation::leftJoin('contacts', 'contact_business_informations.contact_id', 'contacts.id')->where('filed_bankruptcy','=','Yes')->where('contacts.is_completed', '!=', 1)->where('bankruptcy_filed','<=',now()->subMonth(2))->get();
+
             return $bankruptcy;
       }
 
       public static function getContactsSettled()
       {
-            $settled  = Contact::where('is_settled','=','Yes')->where('date_settled','<=',now()->subMonth(1))->get();
+            $settled  = Contact::where('is_settled','=','Yes')->where('is_completed','<>',1)->where('date_settled','<=',now()->subMonth(1))->get();
             return $settled;
       }
 }
