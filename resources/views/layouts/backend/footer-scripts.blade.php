@@ -1,5 +1,32 @@
 <!-- REQUIRED JS SCRIPTS -->
+<div id="modal-quick-search-company" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="text-align: left">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      {{ Form::open(array('url' => 'contact/quick_search', 'class' => '', 'method' => 'post')) }}
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel"><i class="fa fa fa-search"></i> Quick Search</h4>
+      </div>
+		<div class="modal-body">
+			<div class="box-body">
+		      <div class="form-group">
+		        <label>Search Name</label>
+		        <select class="search-contact-name form-control" name="qs_contact"></select>
+		      </div>
+			</div>
+		</div>
+      	<div class="modal-footer">
+		    <button type="submit" class="btn btn-primary"><i class="fa fa fa-search"></i> Search</button>
+		</div>
+      {!! Form::close() !!}  
+    </div>
+  </div>
+</div>
 
+<script>
+var base_url = '<?php echo url("/"); ?>';
+</script>
 <!-- jQuery 3 -->
 <script src="{{ asset ('/bower_components/jquery/dist/jquery.min.js') }}"></script>
 <!-- Bootstrap 3.3.7 -->

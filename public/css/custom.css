@@ -87,3 +87,7 @@ padding: 4px;
 .small-box h3 {
 	font-size: 20px !important;
 }
+/*Quick Search*/
+#modal-quick-search-company .select2-container{
+	width: 100% !important;
+}

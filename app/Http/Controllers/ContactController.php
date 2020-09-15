@@ -980,4 +980,12 @@ class ContactController extends Controller
 
         return response()->json($items);
     }
+
+    public function quick_search(Request $request)
+    {
+        $user_id  = Auth::user()->id;
+        $hid   = $request->input('qs_contact');
+
+        return redirect('contact_dashboard/' . $hid);
+    }
 }

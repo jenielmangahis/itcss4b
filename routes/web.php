@@ -87,6 +87,7 @@ Route::post('contact/update_status', ['as'=>'contact/update_status','uses'=>'Con
 Route::get('/contact/search_mail_records', ['as'=>'contact/search_mail_records','uses'=>'ContactController@search_mail_records'])->middleware('auth');
 Route::post('contact/update_contact_status', ['as'=>'contact/update_contact_status','uses'=>'ContactController@update_contact_status'])->middleware('auth');
 Route::get('contact/_search_contacts', ['as'=>'contact/ajax_search_contacts','uses'=>'ContactController@ajax_search_contacts'])->middleware('auth');
+Route::post('contact/quick_search', ['as'=>'contact/quick_search','uses'=>'ContactController@quick_search'])->middleware('auth');
 
 //Contact Datasource Module
 Route::get('/contact_datasource', ['as'=>'contact_datasource','uses'=>'ContactDatasourceController@index'])->middleware('auth');
@@ -282,3 +283,6 @@ Route::get('/export_merchants', ['as'=>'export_merchants','uses'=>'ReportMerchan
 //Benchmark
 Route::get('benchmark/test_model', ['as'=>'benchmark/test_model','uses'=>'BenchmarkController@testModel'])->middleware('auth');
 Route::get('benchmark/test_email', ['as'=>'benchmark/test_email','uses'=>'BenchmarkController@testMail'])->middleware('auth');
+
+//Autocomplete
+Route::get('/_get_contact_list', ['as'=>'auto_complete/ajax_search_contacts','uses'=>'AutoCompleteController@ajax_search_contacts']);
