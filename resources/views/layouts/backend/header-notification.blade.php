@@ -82,7 +82,7 @@
         @foreach($settled as $s)          
           <?php if(isset($s->id) && isset($s->company_id)) { ?>              
               <li><a href="<?php echo url('contact_dashboard/' . Hashids::encode($s->id)) ?>">
-              Company : <?php echo $s->full_name; ?><br />Date : <?php echo date("Y-m-d", strtotime($s->date_settled)) ?>
+              Company : <?php echo $s->company->name; ?><br />Date : <?php echo date("Y-m-d", strtotime($s->date_settled)) ?>
               </a></li>
           <?php } ?>                  
         @endforeach
