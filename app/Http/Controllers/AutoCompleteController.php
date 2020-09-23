@@ -39,6 +39,20 @@ class AutoCompleteController extends Controller
 
     public function ajax_search_contacts(Request $request)
     {
+        $user_id  = Auth::user()->id;
+        $search   = $request->input('q');
+        $contact_query = Contact::query();
+        $contact_query = $contact_query->leftJoin('contact_business_informations', 'contacts.id','=', 'contact_business_informations.contact_id');
+        $contact_query = $contact_query->where('contact_business_informations.business_name', 'like', '%' . $search . '%')->get();
+        
+        $items    = array();
+        foreach( $contact_query as $c ){
+            $items[] = ['id' => Hashids::encode($c->id), 'text' => $c->business_name];
+        }
+
+        $json_data['results'] = $items;
+        return response()->json($json_data);/*
+
         $user_id   = Auth::user()->id;
         $search    = $request->input('q');
         $companies = Contact::select('id','full_name')->where('full_name', 'like', '%' . $search . '%')->get();
@@ -49,6 +63,6 @@ class AutoCompleteController extends Controller
         }
 
         $json_data['results'] = $items;
-        return response()->json($json_data);
+        return response()->json($json_data);*/
     }  
 }

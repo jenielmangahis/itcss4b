@@ -971,7 +971,12 @@ class ContactController extends Controller
     {
         $user_id  = Auth::user()->id;
         $search   = $request->input('search');
-        $contacts = Contact::select('id','email')->where('email', 'like', '%' . $search . '%')->get();
+        $contact_query = Contact::query();
+        $contact_query = $contact_query->leftJoin('contact_business_informations', 'contacts.id','=', 'contact_business_informations.contact_id');
+                    $contact_query = $contact_query->where('contact_business_informations.business_name', 'like', '%' . $search . '%');
+        $contacts = $contact_query = $contact_query->orderBy('contacts.created_at', 'desc');
+
+        //$contacts = Contact::select('id','email')->where('email', 'like', '%' . $search . '%')->get();
         $items    = array();
 
         foreach( $contacts as $c ){
