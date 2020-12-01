@@ -60,7 +60,8 @@ class ContactDashboardController extends Controller
             $pending_task_count = ContactTask::where('assigned_user_id','=', $user_id)->where('status','=', 'pending')->count();
             $pending_task       = ContactTask::where('assigned_user_id','=', $user_id)->where('status','=', 'pending')->get();
 
-            $bankruptcy         = ContactBusinessInformation::where('filed_bankruptcy','=','Yes')->where('bankruptcy_filed','<=',now()->subMonth(2))->get();
+            //$bankruptcy         = ContactBusinessInformation::where('filed_bankruptcy','=','Yes')->where('bankruptcy_filed','<=',now()->subMonth(2))->get();
+            $bankruptcy         = UserHelper::getCompaniesBankrupt();
 
             $idl_contacts = UserHelper::getIdleContacts();
             $idle_contacts_count = 0;

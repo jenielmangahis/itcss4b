@@ -301,8 +301,9 @@ class UserHelper
 
       public static function getIdleContacts()
       {
+            $status_discharge_id = 28;
             $return     = array();
-            $contacts   = Contact::select('id')->get();
+            $contacts   = Contact::select('id')->where('status', '<>', $status_discharge_id)->get();
 
             $count_idle = 0;
             $idle_data  = array();
@@ -379,14 +380,18 @@ class UserHelper
 
       public static function getCompaniesBankrupt()
       {
-            $bankruptcy = ContactBusinessInformation::leftJoin('contacts', 'contact_business_informations.contact_id', 'contacts.id')->where('filed_bankruptcy','=','Yes')->where('contacts.is_completed', '!=', 1)->where('bankruptcy_filed','<=',now()->subMonth(2))->get();
+            $status_discharge_id = 28;
+
+            $bankruptcy = ContactBusinessInformation::leftJoin('contacts', 'contact_business_informations.contact_id', 'contacts.id')->where('filed_bankruptcy','=','Yes')->where('contacts.is_completed', '!=', 1)->where('contacts.status', '<>', $status_discharge_id)->where('bankruptcy_filed','<=',now()->subMonth(2))->get();
 
             return $bankruptcy;
       }
 
       public static function getContactsSettled()
-      {
-            $settled  = Contact::where('is_settled','=','Yes')->where('is_completed','<>',1)->where('date_settled','<=',now()->subMonth(1))->get();
+      {     
+            $status_discharge_id = 28;
+
+            $settled  = Contact::where('is_settled','=','Yes')->where('is_completed','<>',1)->where('status', '<>', $status_discharge_id)->where('date_settled','<=',now()->subMonth(1))->get();
             return $settled;
       }
 }
